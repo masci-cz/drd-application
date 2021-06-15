@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.masci.dd</groupId>
+    <artifactId>dd-application</artifactId>
+    <packaging>pom</packaging>
+    <version>${revision}</version>
+    <name>D&amp;D: Parent</name>
+    
+    <modules>
+        <module>app</module>
+    </modules>
+    
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <java.version>16</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- plugin versions -->        
+        <resolve.parent.version.plugin.version>0.8</resolve.parent.version.plugin.version>
+        
+        <!-- dependency versions -->
+        <flapdoodle.mongo.version>3.0.0</flapdoodle.mongo.version>
+    </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>de.flapdoodle.embed</groupId>
+                <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                <version>${flapdoodle.mongo.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.hbakkum.maven.plugins</groupId>
+                    <artifactId>resolve-parent-version-maven-plugin</artifactId>
+                    <version>${resolve.parent.version.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>flapdoodle</id>
+            <name>Flap doodle repository</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+</project>
