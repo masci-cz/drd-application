@@ -1,0 +1,63 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Release Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  version:
+    name: Version Job
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.gitversion.outputs.version }}
+      previous-version: ${{ steps.gitversion.outputs.previous-version }}
+      
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}   # checkout the correct branch name
+          fetch-depth: 0                # fetch the whole repo history
+
+      - name: Git Version
+        id: gitversion
+        uses: codacy/git-version@2.2.0
+
+      - name: Display GitVersion outputs
+        run: |
+          echo "Version: ${{ steps.gitversion.outputs.version }}"
+          echo "Previous Version: ${{ steps.gitversion.outputs.previous-version }}"
+          
+  build:
+    name: Build Job
+    runs-on: ubuntu-latest
+    needs: version
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up JDK 16
+      uses: actions/setup-java@v2
+      with:
+        java-version: '16'
+        distribution: 'adopt'
+
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+      
+    - name: Build with Maven
+      env:
+        JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: mvn -B package -Prelease -Drevision=${{ needs.version.outputs.version}} --file ./app/pom.xml
+
+    - name: Display JReleaser output
+      run: |
+        cat /home/runner/work/cicd-test/cicd-test/target/jreleaser/trace.log

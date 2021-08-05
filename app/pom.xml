@@ -23,10 +23,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-        </dependency>
         
         <!-- Tests -->
         <dependency>
@@ -42,6 +38,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <finalName>${project.parent.artifactId}-${project.version}</finalName>
                     <mainClass>cz.masci.dd.app.Application</mainClass>
                     <executable>true</executable>
                     <skip>false</skip>
@@ -62,4 +59,105 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jreleaser</groupId>
+                        <artifactId>jdks-maven-plugin</artifactId>
+                        <version>${jreleaser.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>setup-jdks</goal>
+                                </goals>
+                                <configuration>
+                                    <jdks>
+                                        <jdk>
+                                            <name>adopt16Windows</name>
+                                            <platform>windows</platform>
+                                            <url>https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_windows_hotspot_16.0.1_9.zip</url>
+                                            <checksum>0a91e179c4d34b5d905fd2945a21927a6acb798b4e8f2d528ece32c025bbcaff</checksum>
+                                        </jdk>
+                                    </jdks>
+                                </configuration>                                                        
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jreleaser</groupId>
+                        <artifactId>jreleaser-maven-plugin</artifactId>
+                        <version>${jreleaser.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>config</goal>
+                                    <goal>assemble</goal>
+                                    <goal>full-release</goal>
+                                </goals>
+                                <configuration>
+                                    <jreleaser>
+                                        <release>
+                                            <github>
+                                                <tagName>${project.version}</tagName>
+                                                <releaseName>Release v${project.version}</releaseName>
+                                            </github>
+                                        </release>
+                                        <assemble>
+                                            <jlink>
+                                                <dd-app>
+                                                    <active>RELEASE</active>
+                                                    <imageName>${parent.project.artifactId}-${project.version}</imageName>
+                                                    <executable>app</executable>
+                                                    <exported>false</exported>
+                                                    <mainJar>
+                                                        <path>${project.build.directory}/dist/${parent.project.artifactId}-${project.version}-exec.jar</path>
+                                                    </mainJar>
+                                                    <moduleNames>
+                                                        <moduleName>java.base</moduleName>
+                                                        <moduleName>java.logging</moduleName>                                                    
+                                                    </moduleNames>
+                                                    <targetJdks>
+                                                        <targetJdk>
+                                                            <path>{{ Env.JAVA_HOME }}</path>
+                                                            <platform>linux</platform>
+                                                        </targetJdk>
+                                                        <targetJdk>
+                                                            <path>${project.build.directory}/jdks/jdk-16.0.1+9</path>
+                                                            <platform>windows</platform>
+                                                        </targetJdk>
+                                                    </targetJdks>
+                                                </dd-app>
+                                            </jlink>
+                                        </assemble>
+                                        <distributions>
+                                            <dd-app>
+                                                <active>RELEASE</active>
+                                                <type>JLINK</type>
+                                                <artifacts>
+                                                    <artifact>
+                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${parent.project.artifactId}-${project.version}-linux.zip</path>
+                                                        <platform>linux</platform>
+                                                    </artifact>
+                                                    <artifact>
+                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${parent.project.artifactId}-${project.version}-windows.zip</path>
+                                                        <platform>windows</platform>
+                                                    </artifact>
+                                                </artifacts>
+                                            </dd-app>
+                                        </distributions>
+                                    </jreleaser>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
 </project>
