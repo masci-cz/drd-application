@@ -56,8 +56,8 @@ jobs:
     - name: Build with Maven
       env:
         JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn -B package -Prelease -Drevision=${{ needs.version.outputs.version}} --file ./app/pom.xml
+      run: mvn -B package -Prelease -Drevision=${{ needs.version.outputs.version}} --file pom.xml
 
     - name: Display JReleaser output
       run: |
-        cat /home/runner/work/cicd-test/cicd-test/target/jreleaser/trace.log
+        cat /home/runner/work/dd-app/dd-app/target/jreleaser/trace.log
