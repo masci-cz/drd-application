@@ -60,4 +60,4 @@ jobs:
 
     - name: Display JReleaser output
       run: |
-        cat /home/runner/work/dd-app/dd-app/target/jreleaser/trace.log
+        cat /home/runner/work/dd-app/dd-app/app/target/jreleaser/trace.log
