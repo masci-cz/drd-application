@@ -111,11 +111,11 @@
                                             <jlink>
                                                 <dd-app>
                                                     <active>RELEASE</active>
-                                                    <imageName>${parent.project.artifactId}-${project.version}</imageName>
-                                                    <executable>app</executable>
+                                                    <imageName>${project.parent.artifactId}-${project.version}</imageName>
+                                                    <executable>${project.parent.artifactId}</executable>
                                                     <exported>false</exported>
                                                     <mainJar>
-                                                        <path>${project.build.directory}/dist/${parent.project.artifactId}-${project.version}-exec.jar</path>
+                                                        <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}-exec.jar</path>
                                                     </mainJar>
                                                     <moduleNames>
                                                         <moduleName>java.base</moduleName>
@@ -140,11 +140,11 @@
                                                 <type>JLINK</type>
                                                 <artifacts>
                                                     <artifact>
-                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${parent.project.artifactId}-${project.version}-linux.zip</path>
+                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${project.parent.artifactId}-${project.version}-linux.zip</path>
                                                         <platform>linux</platform>
                                                     </artifact>
                                                     <artifact>
-                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${parent.project.artifactId}-${project.version}-windows.zip</path>
+                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${project.parent.artifactId}-${project.version}-windows.zip</path>
                                                         <platform>windows</platform>
                                                     </artifact>
                                                 </artifacts>
