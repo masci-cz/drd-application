@@ -4,16 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>cz.masci.dd</groupId>
-        <artifactId>dd-application</artifactId>
+        <groupId>cz.masci.drd</groupId>
+        <artifactId>drd-application</artifactId>
         <version>${revision}</version>
     </parent>
     
-    <groupId>cz.masci.dd</groupId>
+    <groupId>cz.masci.drd</groupId>
     <artifactId>app</artifactId>
     <version>${revision}</version>
-    <name>D&amp;D: Application</name>
-    <description>D&amp;D Application</description>
+    <name>DrD: Application</name>
+    <description>DrD Application</description>
         
     <properties>
     </properties>
@@ -39,7 +39,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <finalName>${project.parent.artifactId}-${project.version}</finalName>
-                    <mainClass>cz.masci.dd.app.Application</mainClass>
+                    <mainClass>cz.masci.drd.app.Application</mainClass>
                     <executable>true</executable>
                     <skip>false</skip>
                 </configuration>
@@ -56,6 +56,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <configuration>
+                    <!-- This is an app, so we don't want to install it in the local Maven repository -->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>        
         </plugins>
     </build>
 
@@ -109,7 +117,7 @@
                                         </release>
                                         <assemble>
                                             <jlink>
-                                                <dd-app>
+                                                <drd-app>
                                                     <active>RELEASE</active>
                                                     <imageName>${project.parent.artifactId}-${project.version}</imageName>
                                                     <executable>${project.parent.artifactId}</executable>
@@ -141,11 +149,11 @@
                                                             <platform>windows</platform>
                                                         </targetJdk>
                                                     </targetJdks>
-                                                </dd-app>
+                                                </drd-app>
                                             </jlink>
                                         </assemble>
                                         <distributions>
-                                            <dd-app>
+                                            <drd-app>
                                                 <active>RELEASE</active>
                                                 <type>JLINK</type>
                                                 <artifacts>
@@ -158,7 +166,7 @@
                                                         <platform>windows</platform>
                                                     </artifact>
                                                 </artifacts>
-                                            </dd-app>
+                                            </drd-app>
                                         </distributions>
                                     </jreleaser>
                                 </configuration>
