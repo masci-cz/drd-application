@@ -1,4 +1,4 @@
-package cz.masci.dd.app;
+package cz.masci.drd.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
