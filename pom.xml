@@ -9,11 +9,11 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>cz.masci.dd</groupId>
-    <artifactId>dd-application</artifactId>
+    <groupId>cz.masci.drd</groupId>
+    <artifactId>drd-application</artifactId>
     <packaging>pom</packaging>
     <version>${revision}</version>
-    <name>D&amp;D: Parent</name>
+    <name>DrD: Parent</name>
     
     <modules>
         <module>app</module>
