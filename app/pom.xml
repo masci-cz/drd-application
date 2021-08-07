@@ -119,7 +119,17 @@
                                                     </mainJar>
                                                     <moduleNames>
                                                         <moduleName>java.base</moduleName>
-                                                        <moduleName>java.logging</moduleName>                                                    
+                                                        <moduleName>java.desktop</moduleName>
+                                                        <moduleName>java.instrument</moduleName>
+                                                        <moduleName>java.management</moduleName>
+                                                        <moduleName>java.naming</moduleName>
+                                                        <moduleName>java.prefs</moduleName>
+                                                        <moduleName>java.rmi</moduleName>
+                                                        <moduleName>java.scripting</moduleName>
+                                                        <moduleName>java.sql</moduleName>
+                                                        <moduleName>jdk.httpserver</moduleName>
+                                                        <moduleName>jdk.jfr</moduleName>
+                                                        <moduleName>jdk.unsupported</moduleName>
                                                     </moduleNames>
                                                     <targetJdks>
                                                         <targetJdk>
