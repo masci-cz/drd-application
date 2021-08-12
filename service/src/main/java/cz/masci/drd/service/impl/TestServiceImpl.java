@@ -14,40 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.app.runner;
+package cz.masci.drd.service.impl;
 
+import cz.masci.drd.dto.TestDTO;
+import cz.masci.drd.persistence.TestRepository;
+import cz.masci.drd.service.TestMapper;
 import cz.masci.drd.service.TestService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Daniel
- */
-@Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
-public class Runner implements ApplicationRunner {
+public class TestServiceImpl implements TestService {
 
-    private final TestService testService;
+    private final TestRepository testRepository;
+    private final TestMapper mapper;
     
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        log.info("Running DrD application");
-        printTest(0l);
-        printTest(4l);
+    public Optional<TestDTO> getTest(Long id) {
+        return testRepository.findById(id).map(test -> mapper.mapToDto(test));
     }
-
-    private void printTest(long id) {
-        var test = testService.getTest(id);
-        
-        if (test.isPresent()) {
-            log.info("Found record: {}", test.get());
-        } else {
-            log.info("Record id = {} not found", id);
-        }
-    }
+    
 }

@@ -3,7 +3,7 @@ package cz.masci.drd.app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "cz.masci.drd")
 public class Application {
 
     public static void main(String[] args) {
