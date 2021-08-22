@@ -17,6 +17,11 @@
     
     <modules>
         <module>app</module>
+        <module>database</module>
+        <module>dto</module>
+        <module>model</module>
+        <module>persistence</module>
+        <module>service</module>
     </modules>
     
     <properties>
@@ -29,10 +34,48 @@
         <jreleaser.version>0.5.0</jreleaser.version>
 
         <!-- dependency versions -->
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     </properties>
     
     <dependencyManagement>
         <dependencies>
+            <!-- cz.masci dependencies -->
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>database</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>dto</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>model</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>persistence</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     
@@ -57,16 +100,15 @@
         
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+                <groupId>com.hbakkum.maven.plugins</groupId>
+                <artifactId>resolve-parent-version-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resolve-parent-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
