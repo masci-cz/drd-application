@@ -1,9 +1,3 @@
-package cz.masci.drd.service;
-
-import cz.masci.drd.dto.TestDTO;
-import cz.masci.drd.model.Test;
-import org.mapstruct.Mapper;
-
 /*
  * Copyright (C) 2021 Daniel
  *
@@ -20,13 +14,15 @@ import org.mapstruct.Mapper;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package cz.masci.drd.service;
+
+import cz.masci.drd.dto.MonsterDTO;
+import java.util.Optional;
 
 /**
  *
  * @author Daniel
  */
-@Mapper(componentModel = "spring")
-public interface TestMapper {
-    
-    TestDTO mapToDto(Test test);
+public interface MonsterService {
+    Optional<MonsterDTO> getMonster(Long id);
 }

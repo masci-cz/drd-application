@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright (C) 2021 Daniel
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,14 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.persistence;
-
-import cz.masci.drd.model.Test;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 /**
- *
- * @author Daniel
+ * Author:  Daniel
+ * Created: 10. 8. 2021
  */
-public interface TestRepository extends JpaRepository<Test, Long>{
-}
+
+CREATE TABLE MONSTER (
+    MONSTER_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
+    NAME VARCHAR(255) NOT NULL,
+    VIABILITY VARCHAR(100) NOT NULL,
+    ATTACK VARCHAR(255) NOT NULL,
+    DEFENSE VARCHAR(255) NOT NULL,
+    ENDURANCE SMALLINT NOT NULL,
+    DIMENSION VARCHAR(100) NOT NULL,
+    COMBATIVENESS SMALLINT,
+    VULNERABILITY VARCHAR(100) NOT NULL,
+    MOVEABILITY VARCHAR(100) NOT NULL,
+    STAMINA VARCHAR(100),
+    INTELLIGENCE SMALLINT NOT NULL,
+    CONVICTION SMALLINT,
+    TREASURE VARCHAR(50) NOT NULL,
+    EXPERIENCE VARCHAR(50) NOT NULL,
+    DESCRIPTION VARCHAR
+);

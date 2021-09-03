@@ -14,15 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
+package cz.masci.drd.service.impl;
 
-import cz.masci.drd.dto.TestDTO;
+import cz.masci.drd.dto.MonsterDTO;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import cz.masci.drd.persistence.MonsterRepository;
+import cz.masci.drd.service.MonsterService;
+import cz.masci.drd.service.MonsterMapper;
 
-/**
- *
- * @author Daniel
- */
-public interface TestService {
-    Optional<TestDTO> getTest(Long id);
+@Service
+@RequiredArgsConstructor
+public class MonsterServiceImpl implements MonsterService {
+
+    private final MonsterRepository monsterRepository;
+    private final MonsterMapper mapper;
+    
+    @Override
+    public Optional<MonsterDTO> getMonster(Long id) {
+        return monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
+    }
+    
 }

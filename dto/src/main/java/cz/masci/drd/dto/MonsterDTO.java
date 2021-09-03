@@ -24,8 +24,22 @@ import lombok.Data;
  * @author Daniel
  */
 @Data
-public class TestDTO {
+public class MonsterDTO {
     
     private Long id;
     private String name;
+    private String viability;
+    private String attack;
+    private String defence;
+    private Integer endurance;
+    private String dimension;
+    private Integer combativeness;
+    private String vulnerability;
+    private String moveability;
+    private String stamina;
+    private Integer intelligence;
+    private Integer conviction;
+    private String treasure;
+    private String experience;
+    private String description;
 }
