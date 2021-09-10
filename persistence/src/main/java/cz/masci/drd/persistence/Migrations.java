@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2021 Daniel
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,26 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Author:  Daniel
- * Created: 10. 8. 2021
- */
+package cz.masci.drd.persistence;
 
-CREATE TABLE MONSTER (
-    MONSTER_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
-    NAME VARCHAR(255) NOT NULL,
-    VIABILITY VARCHAR(100) NOT NULL,
-    ATTACK VARCHAR(255) NOT NULL,
-    DEFENCE VARCHAR(255) NOT NULL,
-    ENDURANCE SMALLINT NOT NULL,
-    DIMENSION VARCHAR(100) NOT NULL,
-    COMBATIVENESS SMALLINT,
-    VULNERABILITY VARCHAR(100) NOT NULL,
-    MOVEABILITY VARCHAR(100) NOT NULL,
-    STAMINA VARCHAR(100),
-    INTELLIGENCE SMALLINT NOT NULL,
-    CONVICTION SMALLINT,
-    TREASURE VARCHAR(50) NOT NULL,
-    EXPERIENCE VARCHAR(50) NOT NULL,
-    DESCRIPTION VARCHAR(1000)
-);
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ *
+ * @author Daniel
+ */
+@ConfigurationProperties
+public class Migrations {
+
+    static final String TEST_MIGRATIONS = "classpath:db/migration";
+    static final String TEST_DATA = "classpath:db/starter-data";
+}
