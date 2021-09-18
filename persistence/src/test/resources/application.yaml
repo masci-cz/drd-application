@@ -1,0 +1,12 @@
+spring:
+  main:
+    banner-mode: off
+    web-application-type: none
+
+  datasource:
+    url: jdbc:derby:memory:SA;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+    username: SA
+    
+#  flyway:
+#    enabled: true
+#    locations: "classpath:db/migration"

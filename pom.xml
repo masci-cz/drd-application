@@ -35,6 +35,7 @@
 
         <!-- dependency versions -->
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <flyway.version>7.0.0</flyway.version>
     </properties>
     
     <dependencyManagement>
@@ -75,6 +76,13 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${org.mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.flywaydb.flyway-test-extensions</groupId>
+                <artifactId>flyway-spring5-test</artifactId>
+                <version>${flyway.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

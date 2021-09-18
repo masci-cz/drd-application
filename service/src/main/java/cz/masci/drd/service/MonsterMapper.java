@@ -1,4 +1,10 @@
-/* 
+package cz.masci.drd.service;
+
+import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.model.Monster;
+import org.mapstruct.Mapper;
+
+/*
  * Copyright (C) 2021 Daniel
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,10 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Author:  Daniel
- * Created: 11. 8. 2021
- */
 
-INSERT INTO test (test_id, name) VALUES (0, 'First');
-INSERT INTO test (test_id, name) VALUES (1, 'Second');
+/**
+ *
+ * @author Daniel
+ */
+@Mapper(componentModel = "spring")
+public interface MonsterMapper {
+    
+    MonsterDTO mapToDto(Monster test);
+}

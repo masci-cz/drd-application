@@ -14,15 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
+package cz.masci.drd.persistence;
 
-import cz.masci.drd.dto.TestDTO;
-import java.util.Optional;
+import cz.masci.drd.model.ModelConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 
 /**
  *
  * @author Daniel
  */
-public interface TestService {
-    Optional<TestDTO> getTest(Long id);
+@SpringBootApplication
+@Import(ModelConfiguration.class)
+public class TestApplication {
+    
 }

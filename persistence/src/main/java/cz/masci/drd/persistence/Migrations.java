@@ -16,12 +16,15 @@
  */
 package cz.masci.drd.persistence;
 
-import cz.masci.drd.model.Test;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  *
  * @author Daniel
  */
-public interface TestRepository extends JpaRepository<Test, Long>{
+@ConfigurationProperties
+public class Migrations {
+
+    static final String TEST_MIGRATIONS = "classpath:db/migration";
+    static final String TEST_DATA = "classpath:db/starter-data";
 }

@@ -16,12 +16,12 @@
  */
 package cz.masci.drd.app.runner;
 
-import cz.masci.drd.service.TestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import cz.masci.drd.service.MonsterService;
 
 /**
  *
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Runner implements ApplicationRunner {
 
-    private final TestService testService;
+    private final MonsterService monsterService;
     
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -42,7 +42,7 @@ public class Runner implements ApplicationRunner {
     }
 
     private void printTest(long id) {
-        var test = testService.getTest(id);
+        var test = monsterService.getMonster(id);
         
         if (test.isPresent()) {
             log.info("Found record: {}", test.get());

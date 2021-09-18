@@ -38,3 +38,5 @@ build/
 
 # Embedded Database data
 /app/drd-db
+/persistence/nbproject/
+/service/nbproject/
