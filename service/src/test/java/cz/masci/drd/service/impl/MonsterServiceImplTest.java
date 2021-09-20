@@ -16,39 +16,43 @@
  */
 package cz.masci.drd.service.impl;
 
+import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterMapper;
-import cz.masci.drd.service.MonsterMapperImpl;
-import static cz.masci.drd.service.impl.TestConstants.*;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  *
  * @author Daniel
  */
+@ExtendWith(MockitoExtension.class)
 public class MonsterServiceImplTest {
 
+    @Mock
     private MonsterMapper monsterMapper;
 
+    @Mock
     private MonsterRepository monsterRepository;
 
+    @InjectMocks
     private MonsterServiceImpl monsterService;
-
-    @BeforeEach
-    void init() {
-        monsterMapper = new MonsterMapperImpl();
-        monsterRepository = mock(MonsterRepository.class);
-        monsterService = new MonsterServiceImpl(monsterRepository, monsterMapper);
-    }
 
     @Test
     void testSomeMethod() {
-        when(monsterRepository.findById(any())).thenReturn(Optional.of(TestUtils.createMonsterEntity()));
+        var mockMonster = mock(MonsterDTO.class);
+        
+        when(monsterRepository.findById(any())).thenReturn(Optional.of(mock(Monster.class)));
+        when(monsterMapper.mapToDto(any())).thenReturn(mockMonster);
 
         var result = monsterService.getMonster(1l);
 
@@ -56,20 +60,7 @@ public class MonsterServiceImplTest {
         
         var monster = result.get();
         
-        assertAll("Monster dto",
-                () -> assertEquals(MONSTER_NAME, monster.getName()),
-                () -> assertEquals(VIABILITY, monster.getViability()),
-                () -> assertEquals(ATTACK, monster.getAttack()),
-                () -> assertEquals(DEFENCE, monster.getDefence()),
-                () -> assertEquals(ENDURANCE, monster.getEndurance()),
-                () -> assertEquals(DIMENSION, monster.getDimension()),
-                () -> assertEquals(VULNERABILITY, monster.getVulnerability()),
-                () -> assertEquals(MOVEABILITY, monster.getMoveability()),
-                () -> assertEquals(INTELLIGENCE, monster.getIntelligence()),
-                () -> assertEquals(TREASURE, monster.getTreasure()),
-                () -> assertEquals(EXPERIENCE, monster.getExperience())
-        );
-
+        assertThat(monster).isSameAs(mockMonster);
     }
 
 }
