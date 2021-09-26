@@ -20,6 +20,7 @@ import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterMapper;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,13 +49,13 @@ public class MonsterServiceImplTest {
     private MonsterServiceImpl monsterService;
 
     @Test
-    void testSomeMethod() {
+    void getById() {
         var mockMonster = mock(MonsterDTO.class);
         
         when(monsterRepository.findById(any())).thenReturn(Optional.of(mock(Monster.class)));
         when(monsterMapper.mapToDto(any())).thenReturn(mockMonster);
 
-        var result = monsterService.getMonster(1l);
+        var result = monsterService.getById(1l);
 
         assertTrue(result.isPresent());
         
@@ -63,4 +64,44 @@ public class MonsterServiceImplTest {
         assertThat(monster).isSameAs(mockMonster);
     }
 
+    @Test
+    void getAll() {
+        var expectedMosters = List.of(mock(MonsterDTO.class), mock(MonsterDTO.class));
+        var mockMonsterEntityList = List.of(mock(Monster.class), mock(Monster.class));
+        
+        var i = 0;
+        for (var entity : mockMonsterEntityList) {
+            when(monsterMapper.mapToDto(entity)).thenReturn(expectedMosters.get(i++));
+        }
+        when(monsterRepository.findAll()).thenReturn(mockMonsterEntityList);
+        
+        var result = monsterService.getAll();
+
+        assertThat(result)
+                .isNotNull()
+                .hasSameSizeAs(expectedMosters)
+                .containsAll(expectedMosters);
+    }
+    
+    @Test
+    void save() {
+        var mockMonster = mock(MonsterDTO.class);
+        
+        when(monsterRepository.save(any())).thenReturn(mock(Monster.class));
+        when(monsterMapper.mapToEntity(any())).thenReturn(mock(Monster.class));
+        when(monsterMapper.mapToDto(any())).thenReturn(mockMonster);
+        
+        var result = monsterService.save(mock(MonsterDTO.class));
+        
+        assertThat(result).isSameAs(mockMonster);
+    }
+    
+    @Test
+    void delete() {
+        when(monsterMapper.mapToEntity(any())).thenReturn(mock(Monster.class));
+        
+        monsterService.delete(mock(MonsterDTO.class));
+        
+        verify(monsterRepository).delete(any());
+    }
 }

@@ -42,7 +42,7 @@ public class Runner implements ApplicationRunner {
     }
 
     private void printTest(long id) {
-        var test = monsterService.getMonster(id);
+        var test = monsterService.getById(id);
         
         if (test.isPresent()) {
             log.info("Found record: {}", test.get());
