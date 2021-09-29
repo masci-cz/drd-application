@@ -17,6 +17,7 @@
 package cz.masci.drd.service;
 
 import cz.masci.drd.dto.MonsterDTO;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,5 +25,8 @@ import java.util.Optional;
  * @author Daniel
  */
 public interface MonsterService {
-    Optional<MonsterDTO> getMonster(Long id);
+    Optional<MonsterDTO> getById(Long id);
+    List<MonsterDTO> getAll();
+    MonsterDTO save(MonsterDTO monster);
+    void delete(MonsterDTO monster);
 }

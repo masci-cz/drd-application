@@ -16,6 +16,7 @@
  */
 package cz.masci.drd.service.impl;
 
+import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.model.Monster;
 import static cz.masci.drd.service.impl.TestConstants.*;
 
@@ -27,6 +28,23 @@ public class TestUtils {
     
     public static Monster createMonsterEntity() {
         var monster = new Monster();
+        monster.setName(MONSTER_NAME);
+        monster.setViability(VIABILITY);
+        monster.setAttack(ATTACK);
+        monster.setDefence(DEFENCE);
+        monster.setEndurance(ENDURANCE);
+        monster.setDimension(DIMENSION);
+        monster.setVulnerability(VULNERABILITY);
+        monster.setMoveability(MOVEABILITY);
+        monster.setIntelligence(INTELLIGENCE);
+        monster.setTreasure(TREASURE);
+        monster.setExperience(EXPERIENCE);
+
+        return monster;
+    }
+
+    public static MonsterDTO createMonster() {
+        var monster = new MonsterDTO();
         monster.setName(MONSTER_NAME);
         monster.setViability(VIABILITY);
         monster.setAttack(ATTACK);

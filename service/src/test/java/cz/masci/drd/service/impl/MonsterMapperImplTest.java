@@ -44,7 +44,7 @@ public class MonsterMapperImplTest {
     @Test
     void mapToDto() {
         var result = monsterMapper.mapToDto(TestUtils.createMonsterEntity());
-        
+
         assertAll("Monster entity",
                 () -> assertEquals(MONSTER_NAME, result.getName()),
                 () -> assertEquals(VIABILITY, result.getViability()),
@@ -60,4 +60,21 @@ public class MonsterMapperImplTest {
         );
     }
 
+    void mapToEntity_null() {
+        var result = monsterMapper.mapToEntity(TestUtils.createMonster());
+
+        assertAll("Monster dto",
+                () -> assertEquals(MONSTER_NAME, result.getName()),
+                () -> assertEquals(VIABILITY, result.getViability()),
+                () -> assertEquals(ATTACK, result.getAttack()),
+                () -> assertEquals(DEFENCE, result.getDefence()),
+                () -> assertEquals(ENDURANCE, result.getEndurance()),
+                () -> assertEquals(DIMENSION, result.getDimension()),
+                () -> assertEquals(VULNERABILITY, result.getVulnerability()),
+                () -> assertEquals(MOVEABILITY, result.getMoveability()),
+                () -> assertEquals(INTELLIGENCE, result.getIntelligence()),
+                () -> assertEquals(TREASURE, result.getTreasure()),
+                () -> assertEquals(EXPERIENCE, result.getExperience())
+        );
+    }
 }
