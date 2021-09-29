@@ -35,8 +35,17 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-        <!-- masci.cz dependencies -->
         
+        <dependency>
+            <groupId>net.rgielen</groupId>
+            <artifactId>javafx-weaver-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+        </dependency>
+                
+        <!-- masci.cz dependencies -->
         <dependency>
             <groupId>cz.masci.drd</groupId>
             <artifactId>database</artifactId>
@@ -48,6 +57,10 @@
         <dependency>
             <groupId>cz.masci.drd</groupId>
             <artifactId>dto</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cz.masci.drd</groupId>
+            <artifactId>ui</artifactId>
         </dependency>
         
         <!-- Tests -->
@@ -65,7 +78,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <finalName>${project.parent.artifactId}-${project.version}</finalName>
-                    <mainClass>cz.masci.drd.app.Application</mainClass>
+                    <mainClass>cz.masci.drd.app.SpringApplication</mainClass>
                     <executable>true</executable>
                     <skip>false</skip>
                 </configuration>
