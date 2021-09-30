@@ -185,10 +185,6 @@
                                                         <moduleName>jdk.jdi</moduleName>
                                                         <moduleName>jdk.jfr</moduleName>
                                                         <moduleName>jdk.unsupported</moduleName>
-                                                        <moduleName>javafx.base</moduleName>
-                                                        <moduleName>javafx.controls</moduleName>
-                                                        <moduleName>javafx.fxml</moduleName>
-                                                        <moduleName>javafx.graphics</moduleName>
                                                     </moduleNames>
                                                     <targetJdks>
                                                         <targetJdk>
