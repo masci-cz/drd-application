@@ -43,6 +43,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <classifier>linux</classifier>
         </dependency>
                 
         <!-- masci.cz dependencies -->
@@ -169,14 +175,23 @@
                                                         <moduleName>java.desktop</moduleName>
                                                         <moduleName>java.instrument</moduleName>
                                                         <moduleName>java.management</moduleName>
-                                                        <moduleName>java.naming</moduleName>
                                                         <moduleName>java.prefs</moduleName>
                                                         <moduleName>java.rmi</moduleName>
                                                         <moduleName>java.scripting</moduleName>
-                                                        <moduleName>java.sql</moduleName>
+                                                        <moduleName>java.security.jgss</moduleName>
+                                                        <moduleName>java.sql.rowset</moduleName>
+                                                        <moduleName>jdk.attach</moduleName>
                                                         <moduleName>jdk.httpserver</moduleName>
+                                                        <moduleName>jdk.jdi</moduleName>
                                                         <moduleName>jdk.jfr</moduleName>
                                                         <moduleName>jdk.unsupported</moduleName>
+                                                        <moduleName>javafx.base</moduleName>
+                                                        <moduleName>javafx.controls</moduleName>
+                                                        <moduleName>javafx.fxml</moduleName>
+                                                        <moduleName>javafx.graphics</moduleName>
+                                                        <moduleName>javafx.web</moduleName>
+                                                        <moduleName>javafx.media</moduleName>
+                                                        <moduleName>javafx.swing</moduleName>
                                                     </moduleNames>
                                                     <targetJdks>
                                                         <targetJdk>
