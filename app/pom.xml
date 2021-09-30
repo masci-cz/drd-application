@@ -189,9 +189,6 @@
                                                         <moduleName>javafx.controls</moduleName>
                                                         <moduleName>javafx.fxml</moduleName>
                                                         <moduleName>javafx.graphics</moduleName>
-                                                        <moduleName>javafx.web</moduleName>
-                                                        <moduleName>javafx.media</moduleName>
-                                                        <moduleName>javafx.swing</moduleName>
                                                     </moduleNames>
                                                     <targetJdks>
                                                         <targetJdk>
