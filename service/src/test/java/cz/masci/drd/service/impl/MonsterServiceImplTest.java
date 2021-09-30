@@ -16,60 +16,92 @@
  */
 package cz.masci.drd.service.impl;
 
+import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterMapper;
-import cz.masci.drd.service.MonsterMapperImpl;
-import static cz.masci.drd.service.impl.TestConstants.*;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  *
  * @author Daniel
  */
+@ExtendWith(MockitoExtension.class)
 public class MonsterServiceImplTest {
 
+    @Mock
     private MonsterMapper monsterMapper;
 
+    @Mock
     private MonsterRepository monsterRepository;
 
+    @InjectMocks
     private MonsterServiceImpl monsterService;
 
-    @BeforeEach
-    void init() {
-        monsterMapper = new MonsterMapperImpl();
-        monsterRepository = mock(MonsterRepository.class);
-        monsterService = new MonsterServiceImpl(monsterRepository, monsterMapper);
-    }
-
     @Test
-    void testSomeMethod() {
-        when(monsterRepository.findById(any())).thenReturn(Optional.of(TestUtils.createMonsterEntity()));
+    void getById() {
+        var mockMonster = mock(MonsterDTO.class);
+        
+        when(monsterRepository.findById(any())).thenReturn(Optional.of(mock(Monster.class)));
+        when(monsterMapper.mapToDto(any())).thenReturn(mockMonster);
 
-        var result = monsterService.getMonster(1l);
+        var result = monsterService.getById(1l);
 
         assertTrue(result.isPresent());
         
         var monster = result.get();
         
-        assertAll("Monster dto",
-                () -> assertEquals(MONSTER_NAME, monster.getName()),
-                () -> assertEquals(VIABILITY, monster.getViability()),
-                () -> assertEquals(ATTACK, monster.getAttack()),
-                () -> assertEquals(DEFENCE, monster.getDefence()),
-                () -> assertEquals(ENDURANCE, monster.getEndurance()),
-                () -> assertEquals(DIMENSION, monster.getDimension()),
-                () -> assertEquals(VULNERABILITY, monster.getVulnerability()),
-                () -> assertEquals(MOVEABILITY, monster.getMoveability()),
-                () -> assertEquals(INTELLIGENCE, monster.getIntelligence()),
-                () -> assertEquals(TREASURE, monster.getTreasure()),
-                () -> assertEquals(EXPERIENCE, monster.getExperience())
-        );
-
+        assertThat(monster).isSameAs(mockMonster);
     }
 
+    @Test
+    void getAll() {
+        var expectedMosters = List.of(mock(MonsterDTO.class), mock(MonsterDTO.class));
+        var mockMonsterEntityList = List.of(mock(Monster.class), mock(Monster.class));
+        
+        var i = 0;
+        for (var entity : mockMonsterEntityList) {
+            when(monsterMapper.mapToDto(entity)).thenReturn(expectedMosters.get(i++));
+        }
+        when(monsterRepository.findAll()).thenReturn(mockMonsterEntityList);
+        
+        var result = monsterService.getAll();
+
+        assertThat(result)
+                .isNotNull()
+                .hasSameSizeAs(expectedMosters)
+                .containsAll(expectedMosters);
+    }
+    
+    @Test
+    void save() {
+        var mockMonster = mock(MonsterDTO.class);
+        
+        when(monsterRepository.save(any())).thenReturn(mock(Monster.class));
+        when(monsterMapper.mapToEntity(any())).thenReturn(mock(Monster.class));
+        when(monsterMapper.mapToDto(any())).thenReturn(mockMonster);
+        
+        var result = monsterService.save(mock(MonsterDTO.class));
+        
+        assertThat(result).isSameAs(mockMonster);
+    }
+    
+    @Test
+    void delete() {
+        when(monsterMapper.mapToEntity(any())).thenReturn(mock(Monster.class));
+        
+        monsterService.delete(mock(MonsterDTO.class));
+        
+        verify(monsterRepository).delete(any());
+    }
 }

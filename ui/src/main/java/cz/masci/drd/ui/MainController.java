@@ -42,7 +42,7 @@ public class MainController {
     
     public void loadNextMonster(ActionEvent actionEvent) {
         var index = random.nextInt(10);
-        var monster = monsterService.getMonster(Integer.valueOf(index).longValue());
+        var monster = monsterService.getById(Integer.valueOf(index).longValue());
         
         monsterLabel.setText(monster.isPresent() ? monster.get().getName() : "Monster not found");
     }

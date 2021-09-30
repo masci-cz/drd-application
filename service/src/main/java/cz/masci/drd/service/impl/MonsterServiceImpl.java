@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterService;
 import cz.masci.drd.service.MonsterMapper;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +34,24 @@ public class MonsterServiceImpl implements MonsterService {
     private final MonsterMapper mapper;
     
     @Override
-    public Optional<MonsterDTO> getMonster(Long id) {
+    public Optional<MonsterDTO> getById(Long id) {
         return monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
+    }
+
+    @Override
+    public List<MonsterDTO> getAll() {
+        return monsterRepository.findAll().stream().map(mapper::mapToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public MonsterDTO save(MonsterDTO monster) {
+        var entity = monsterRepository.save(mapper.mapToEntity(monster));
+        return mapper.mapToDto(entity);
+    }
+
+    @Override
+    public void delete(MonsterDTO monster) {
+        monsterRepository.delete(mapper.mapToEntity(monster));
     }
     
 }

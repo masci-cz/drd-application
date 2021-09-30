@@ -28,5 +28,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface MonsterMapper {
     
-    MonsterDTO mapToDto(Monster test);
+    MonsterDTO mapToDto(Monster entity);
+    
+    Monster mapToEntity(MonsterDTO monster);
 }
