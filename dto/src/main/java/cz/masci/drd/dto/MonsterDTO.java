@@ -27,19 +27,34 @@ import lombok.Data;
 public class MonsterDTO {
     
     private Long id;
+    /** Monster name - Jméno nestvůry */
     private String name;
+    /** Monster viability - Životaschopnost */
     private String viability;
+    /** Monster attack - Útočné číslo */
     private String attack;
+    /** Monster defence - Obranné číslo */
     private String defence;
+    /** Monster endurance - Odolnost */
     private Integer endurance;
+    /** Monster dimension - Velikost */
     private String dimension;
+    /** Monster combativeness - Bojovnost */
     private Integer combativeness;
+    /** Monster vulnerability - Zranitelnost */
     private String vulnerability;
+    /** Monster moveability - Pohyblivost */
     private String moveability;
+    /** Monster stamina - Vytrvalost */
     private String stamina;
+    /** Monster intelligence - Inteligence */
     private Integer intelligence;
+    /** Monster conviction - Přesvědčení */
     private Integer conviction;
+    /** Monster treasure - Poklady */
     private String treasure;
+    /** Monster experience - Zkušenost */
     private String experience;
+    /** Monster description - Popis */
     private String description;
 }
