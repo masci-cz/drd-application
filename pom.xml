@@ -39,7 +39,7 @@
     <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     <flyway.version>7.0.0</flyway.version>
     <javafx.weaver.version>1.3.0</javafx.weaver.version>
-    <javafx.version>16</javafx.version>
+    <javafx.version>17.0.0.1</javafx.version>
   </properties>
     
   <dependencyManagement>
