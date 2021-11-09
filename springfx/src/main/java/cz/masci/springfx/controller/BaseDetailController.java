@@ -16,7 +16,7 @@
  */
 package cz.masci.springfx.controller;
 
-import cz.masci.springfx.service.Modifiable;
+import cz.masci.springfx.data.Modifiable;
 import cz.masci.springfx.service.ModifiableService;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class DetailViewController<T extends Modifiable> {
+public abstract class BaseDetailController<T extends Modifiable> {
 
   private final String modifiableKey;
   private final ModifiableService modifiableService;

@@ -23,7 +23,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +35,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import cz.masci.springfx.service.CrudService;
 import cz.masci.springfx.service.EditControllerService;
-import cz.masci.springfx.service.Modifiable;
+import cz.masci.springfx.data.Modifiable;
 import cz.masci.springfx.service.ModifiableService;
 import cz.masci.springfx.utility.StyleChangingRowFactory;
 import java.util.List;
@@ -52,7 +51,7 @@ import javafx.collections.FXCollections;
 @Slf4j
 @RequiredArgsConstructor
 @FxmlView("fxml/master-view.fxml")
-public abstract class MasterViewController<T extends Modifiable> {
+public abstract class BaseMasterController<T extends Modifiable> {
 
   private final FxWeaver fxWeaver;
   private final CrudService<T> itemService;
@@ -68,12 +67,6 @@ public abstract class MasterViewController<T extends Modifiable> {
 
   @FXML
   protected VBox items;
-
-  @FXML
-  protected Label tableTitle;
-
-  @FXML
-  protected Label viewTitle;
 
   @FXML
   public void onNewItem(ActionEvent event) {
@@ -127,14 +120,6 @@ public abstract class MasterViewController<T extends Modifiable> {
     tableView.setItems(newList);
   }
 
-  protected void setViewTitle(String title) {
-    viewTitle.setText(title);
-  }
-
-  protected void setTableTitle(String title) {
-    tableTitle.setText(title);
-  }
-
   public void clearCollumns() {
     tableView.getColumns().clear();
   }
@@ -143,11 +128,11 @@ public abstract class MasterViewController<T extends Modifiable> {
     tableView.getColumns().addAll(collumns);
   }
 
-  public <E extends DetailViewController<T>> void setDetailController(Class<E> detailController) {
+  public <E extends BaseDetailController<T>> void setDetailController(Class<E> detailController) {
     setDetailController(detailController, detailController.getSimpleName());
   }
 
-  public <E extends DetailViewController<T>> void setDetailController(Class<E> detailController, String modifiableKey) {
+  public <E extends BaseDetailController<T>> void setDetailController(Class<E> detailController, String modifiableKey) {
     FxControllerAndView<E, Node> detailView = fxWeaver.load(detailController);
 
     borderPane.setCenter(detailView.getView().get());

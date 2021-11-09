@@ -24,6 +24,7 @@
     <module>service</module>
     <module>ui</module>
     <module>springfx</module>
+    <module>springfx-data</module>
   </modules>
     
   <properties>
@@ -79,6 +80,11 @@
       <dependency>
         <groupId>cz.masci.springfx</groupId>
         <artifactId>master-view-editor</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>cz.masci.springfx</groupId>
+        <artifactId>springfx-data</artifactId>
         <version>${revision}</version>
       </dependency>
       

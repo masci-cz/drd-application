@@ -9,50 +9,33 @@
   </parent>
     
   <groupId>cz.masci.springfx</groupId>
-  <artifactId>master-view-editor</artifactId>
+  <artifactId>springfx-data</artifactId>
   <version>${revision}</version>
-  <name>Spring FX: Master View</name>
-  <description>Spring FX modules</description>
+  <name>Spring FX: Data</name>
+  <description>Spring FX data and services</description>
     
   <dependencies>
-    <dependency>
-      <groupId>cz.masci.springfx</groupId>
-      <artifactId>springfx-data</artifactId>
-    </dependency>
-    
-    <!-- spring -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-    </dependency>
-    
-    <!-- spring fx -->
-    <dependency>
-      <groupId>net.rgielen</groupId>
-      <artifactId>javafx-weaver-spring-boot-starter</artifactId>
-    </dependency>
-    
     <!-- open jfx: win -->
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
+      <artifactId>javafx-controls</artifactId>
       <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx-graphics</artifactId>
+      <artifactId>javafx-base</artifactId>
       <classifier>win</classifier>
     </dependency>
     
     <!-- open jfx: linux -->
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
+      <artifactId>javafx-controls</artifactId>
       <classifier>linux</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx-graphics</artifactId>
+      <artifactId>javafx-base</artifactId>
       <classifier>linux</classifier>
     </dependency>
   </dependencies>

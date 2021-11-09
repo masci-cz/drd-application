@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 
-<VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefHeight="100.0" prefWidth="350.0" spacing="10" alignment="CENTER">
 
-    <Label fx:id="monsterLabel"/>
-    <Button onAction="#loadNextMonster">Get next Monster</Button>
-</VBox>
+<TabPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <tabs>
+      <Tab fx:id="tabMonsters" text="Monsters" />
+   </tabs>
+</TabPane>

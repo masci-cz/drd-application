@@ -16,6 +16,7 @@
  */
 package cz.masci.springfx.service;
 
+import cz.masci.springfx.data.Modifiable;
 import java.util.List;
 
 /**
