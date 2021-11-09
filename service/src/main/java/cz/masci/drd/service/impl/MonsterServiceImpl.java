@@ -30,28 +30,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MonsterServiceImpl implements MonsterService {
 
-    private final MonsterRepository monsterRepository;
-    private final MonsterMapper mapper;
-    
-    @Override
-    public Optional<MonsterDTO> getById(Long id) {
-        return monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
-    }
+  private final MonsterRepository monsterRepository;
+  private final MonsterMapper mapper;
 
-    @Override
-    public List<MonsterDTO> getAll() {
-        return monsterRepository.findAll().stream().map(mapper::mapToDto).collect(Collectors.toList());
-    }
+  @Override
+  public Optional<MonsterDTO> getById(Long id) {
+    return monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
+  }
 
-    @Override
-    public MonsterDTO save(MonsterDTO monster) {
-        var entity = monsterRepository.save(mapper.mapToEntity(monster));
-        return mapper.mapToDto(entity);
-    }
+  @Override
+  public List<MonsterDTO> list() {
+    return monsterRepository.findAll().stream().map(mapper::mapToDto).collect(Collectors.toList());
+  }
 
-    @Override
-    public void delete(MonsterDTO monster) {
-        monsterRepository.delete(mapper.mapToEntity(monster));
-    }
-    
+  @Override
+  public MonsterDTO save(MonsterDTO monster) {
+    var entity = monsterRepository.save(mapper.mapToEntity(monster));
+    return mapper.mapToDto(entity);
+  }
+
+  @Override
+  public MonsterDTO delete(MonsterDTO item) {
+    monsterRepository.delete(mapper.mapToEntity(item));
+    return item;
+  }
+
 }

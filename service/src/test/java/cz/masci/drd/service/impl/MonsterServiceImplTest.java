@@ -65,7 +65,7 @@ public class MonsterServiceImplTest {
     }
 
     @Test
-    void getAll() {
+    void list() {
         var expectedMosters = List.of(mock(MonsterDTO.class), mock(MonsterDTO.class));
         var mockMonsterEntityList = List.of(mock(Monster.class), mock(Monster.class));
         
@@ -75,7 +75,7 @@ public class MonsterServiceImplTest {
         }
         when(monsterRepository.findAll()).thenReturn(mockMonsterEntityList);
         
-        var result = monsterService.getAll();
+        var result = monsterService.list();
 
         assertThat(result)
                 .isNotNull()

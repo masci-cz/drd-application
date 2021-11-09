@@ -17,6 +17,8 @@
  */
 package cz.masci.drd.dto;
 
+import cz.masci.springfx.data.Modifiable;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -24,7 +26,8 @@ import lombok.Data;
  * @author Daniel
  */
 @Data
-public class MonsterDTO {
+@Builder
+public class MonsterDTO implements Modifiable {
     
     private Long id;
     /** Monster name - Jméno nestvůry */

@@ -88,8 +88,7 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    */
   @Override
   protected <C, V extends Node> FxControllerAndView<C, V> load(Class<C> controllerClass, String location, ResourceBundle resourceBundle) {
-    return Optional.ofNullable(location)
-            .map(controllerClass::getResource)
+    return Optional.ofNullable(buildFxmlUrl(controllerClass))
             .map(url -> this.<C, V>loadByView(controllerClass, url, resourceBundle))
             .orElseGet(() -> SimpleFxControllerAndView.ofController(getBean(controllerClass)));
   }
@@ -135,10 +134,23 @@ public class ExternalControllerFxWeaver extends FxWeaver {
             .orElse(c.getSimpleName() + ".fxml");
   }
 
+  private URL buildFxmlUrl(Class<?> c) {
+    log.info("buildFxmlUrl from {}", c);
+
+    if (c == null) {
+      return null;
+    }
+
+    return Optional.ofNullable(c.getAnnotation(FxmlView.class))
+            .map(FxmlView::value)
+            .map(s -> s.isEmpty() ? null : c.getResource(s))
+            .orElseGet(() -> buildFxmlUrl(c.getSuperclass()));
+  }
+
   /**
-   * Get the {@link FxmlView} annotation from the class. If it does not contain a
-   * {@link FxmlView} annotation, it search in super class.
-   * If there is no super class it returns null.
+   * Get the {@link FxmlView} annotation from the class. If it does not contain
+   * a {@link FxmlView} annotation, it search in super class. If there is no
+   * super class it returns null.
    *
    * @param c The class to get a {@link FxmlView} annotation from
    * @return a {@link FxmlView}
@@ -148,7 +160,7 @@ public class ExternalControllerFxWeaver extends FxWeaver {
     if (c == null) {
       return null;
     }
-    
+
     return Optional.ofNullable(c.getAnnotation(FxmlView.class))
             .orElseGet(() -> getAnnotation(c.getSuperclass()));
   }

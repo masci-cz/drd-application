@@ -32,32 +32,33 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 public class JavaFxApplication extends Application {
 
-    private ConfigurableApplicationContext applicationContext;
+  private ConfigurableApplicationContext applicationContext;
 
-    @Override
-    public void init() {
-        System.out.println("JavaFxApplication - init");
-        String[] args = getParameters().getRaw().toArray(new String[0]);
+  @Override
+  public void init() {
+    System.out.println("JavaFxApplication - init");
+    String[] args = getParameters().getRaw().toArray(new String[0]);
 
-        this.applicationContext = new SpringApplicationBuilder()
-                .sources(SpringApplication.class)
-                .run(args);
-    }
+    this.applicationContext = new SpringApplicationBuilder()
+            .sources(SpringApplication.class)
+            .run(args);
+  }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        System.out.println("JavaFxApplication - start");
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MainController.class);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+  @Override
+  public void start(Stage stage) throws Exception {
+    System.out.println("JavaFxApplication - start");
+    FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+    Parent root = fxWeaver.loadView(MainController.class);
+    Scene scene = new Scene(root);
+    scene.getStylesheets().add("table-detail.css");
+    stage.setScene(scene);
+    stage.show();
+  }
 
-    @Override
-    public void stop() {
-        System.out.println("JavaFxApplication - stop");
-        this.applicationContext.close();
-        Platform.exit();
-    }
+  @Override
+  public void stop() {
+    System.out.println("JavaFxApplication - stop");
+    this.applicationContext.close();
+    Platform.exit();
+  }
 }

@@ -17,16 +17,14 @@
 package cz.masci.drd.service;
 
 import cz.masci.drd.dto.MonsterDTO;
-import java.util.List;
+import cz.masci.springfx.service.CrudService;
 import java.util.Optional;
 
 /**
  *
  * @author Daniel
  */
-public interface MonsterService {
-    Optional<MonsterDTO> getById(Long id);
-    List<MonsterDTO> getAll();
-    MonsterDTO save(MonsterDTO monster);
-    void delete(MonsterDTO monster);
+public interface MonsterService extends CrudService<MonsterDTO> {
+
+  Optional<MonsterDTO> getById(Long id);
 }

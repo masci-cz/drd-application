@@ -77,7 +77,7 @@ public abstract class BaseMasterController<T extends Modifiable> {
     dialog.setResultConverter(editor.getController().getResultConverter());
     dialog.showAndWait()
             .ifPresent(item -> {
-              itemService.create(item);
+              itemService.save(item);
               tableView.getItems().add(item);
               tableView.getSelectionModel().select(item);
               tableView.scrollTo(item);
@@ -91,7 +91,7 @@ public abstract class BaseMasterController<T extends Modifiable> {
       List<T> modifiedList = modifiableService.getAll(itemKey);
       modifiedList.stream()
               .forEach(item -> {
-                itemService.update(item);
+                itemService.save(item);
                 modifiableService.remove(item);
               });
     });

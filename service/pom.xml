@@ -22,7 +22,11 @@
             <groupId>cz.masci.drd</groupId>
             <artifactId>dto</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>cz.masci.springfx</groupId>
+            <artifactId>springfx-data</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

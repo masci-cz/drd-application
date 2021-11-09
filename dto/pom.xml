@@ -18,6 +18,9 @@
     </properties>
     
     <dependencies>
-        
+        <dependency>
+            <groupId>cz.masci.springfx</groupId>
+            <artifactId>springfx-data</artifactId>
+        </dependency>
     </dependencies>
 </project>

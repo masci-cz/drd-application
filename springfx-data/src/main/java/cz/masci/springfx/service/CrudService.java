@@ -25,7 +25,6 @@ import java.util.List;
  */
 public interface CrudService<T extends Modifiable> {
   List<T> list();
-  T create(T item);
+  T save(T item);
   T delete(T item);
-  T update(T item);
 }

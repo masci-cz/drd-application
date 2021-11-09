@@ -16,12 +16,14 @@
  */
 package cz.masci.drd.ui;
 
-import cz.masci.drd.service.MonsterService;
-import java.util.Random;
-import javafx.event.ActionEvent;
+import cz.masci.drd.ui.monster.MonsterController;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.BorderPane;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.rgielen.fxweaver.core.FxControllerAndView;
+import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -30,20 +32,22 @@ import org.springframework.stereotype.Component;
  * @author Daniel
  */
 @Component
-@FxmlView("main-scene.fxml")
+@Slf4j
+@FxmlView("fxml/main-scene.fxml")
 @RequiredArgsConstructor
 public class MainController {
-    
-    private final MonsterService monsterService;
-    private final Random random = new Random();
-    
-    @FXML
-    private Label monsterLabel;
-    
-    public void loadNextMonster(ActionEvent actionEvent) {
-        var index = random.nextInt(10);
-        var monster = monsterService.getById(Integer.valueOf(index).longValue());
-        
-        monsterLabel.setText(monster.isPresent() ? monster.get().getName() : "Monster not found");
-    }
+
+  private final FxWeaver fxWeaver;
+
+  @FXML
+  private Tab tabMonsters;
+
+  @FXML
+  public void initialize() {
+    log.info("initialize");
+
+    FxControllerAndView<MonsterController, BorderPane> monsterView = fxWeaver.load(MonsterController.class);
+
+    tabMonsters.setContent(monsterView.getView().get());
+  }
 }
