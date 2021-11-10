@@ -51,7 +51,7 @@ import javafx.collections.FXCollections;
 @Slf4j
 @RequiredArgsConstructor
 @FxmlView("fxml/master-view.fxml")
-public abstract class BaseMasterController<T extends Modifiable> {
+public abstract class AbstractMasterController<T extends Modifiable> {
 
   private final FxWeaver fxWeaver;
   private final CrudService<T> itemService;
@@ -128,11 +128,11 @@ public abstract class BaseMasterController<T extends Modifiable> {
     tableView.getColumns().addAll(collumns);
   }
 
-  public <E extends BaseDetailController<T>> void setDetailController(Class<E> detailController) {
+  public <E extends AbstractDetailController<T>> void setDetailController(Class<E> detailController) {
     setDetailController(detailController, detailController.getSimpleName());
   }
 
-  public <E extends BaseDetailController<T>> void setDetailController(Class<E> detailController, String modifiableKey) {
+  public <E extends AbstractDetailController<T>> void setDetailController(Class<E> detailController, String modifiableKey) {
     FxControllerAndView<E, Node> detailView = fxWeaver.load(detailController);
 
     borderPane.setCenter(detailView.getView().get());

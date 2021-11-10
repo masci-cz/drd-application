@@ -20,11 +20,39 @@ import cz.masci.springfx.data.Modifiable;
 import java.util.List;
 
 /**
- *
- * @author Daniel
+ * Service for CRUD operations on {@link Modifiable} entities.
+ * <lt>
+ *   <li>Get list of modifiable items</li>
+ *   <li>Saves modified item</li>
+ *   <li>Delete modified item</li>
+ * </lt>
+ * 
+ * @author Daniel Masek
+ * 
+ * @param <T> Item type
  */
 public interface CrudService<T extends Modifiable> {
+
+  /**
+   * Get list of items to display in Master view table.
+   *
+   * @return List of items
+   */
   List<T> list();
+
+  /**
+   * Saves created/updated item from edit dialog or detail view.
+   *
+   * @param item Item to save
+   * @return Saved item
+   */
   T save(T item);
+
+  /**
+   * Deletes item.
+   *
+   * @param item Item to delete
+   * @return Deleted item
+   */
   T delete(T item);
 }

@@ -18,7 +18,7 @@ package cz.masci.drd.ui.monster;
 
 import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.service.MonsterService;
-import cz.masci.springfx.controller.BaseMasterController;
+import cz.masci.springfx.controller.AbstractMasterController;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class MonsterController extends BaseMasterController<MonsterDTO> {
+public class MonsterController extends AbstractMasterController<MonsterDTO> {
 
   private TableColumn<MonsterDTO, String> name;
 

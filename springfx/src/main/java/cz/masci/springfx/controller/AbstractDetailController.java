@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class BaseDetailController<T extends Modifiable> {
+public abstract class AbstractDetailController<T extends Modifiable> {
 
   private final String modifiableKey;
   private final ModifiableService modifiableService;

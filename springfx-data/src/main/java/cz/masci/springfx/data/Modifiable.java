@@ -17,8 +17,9 @@
 package cz.masci.springfx.data;
 
 /**
- *
- * @author Daniel
+ * Identifier of modifiable items.
+ * 
+ * @author Daniel Masek
  */
 public interface Modifiable {
   
