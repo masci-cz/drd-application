@@ -18,17 +18,20 @@ package cz.masci.springfx.service;
 
 import cz.masci.springfx.data.Modifiable;
 import java.util.List;
-import java.util.function.Supplier;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 
 /**
- * This interface manages mofified items used by Master-Detail View Controller.
- * Each item is managed by different list differentiated by key identifier.
- *
+ * Modifiable observable lists identified by key. Every edit action 
+ * (like {@link #add(java.lang.String, cz.masci.springfx.data.Modifiable)}, 
+ * {@link #remove(java.lang.String, cz.masci.springfx.data.Modifiable)} 
+ * ) on specific list rises change list event which could be listen by external
+ * listener.
+ * <p>
+ * Every list is identified by key and contains {@link Modifiable} items.
+ * 
  * @author Daniel Masek
  */
-public interface ModifiableService {
+public interface ObservableListMap {
 
   /**
    * Add or update item in the list identified by item class.

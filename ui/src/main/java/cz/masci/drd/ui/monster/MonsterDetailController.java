@@ -18,7 +18,6 @@ package cz.masci.drd.ui.monster;
 
 import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.springfx.controller.AbstractDetailController;
-import cz.masci.springfx.service.ModifiableService;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -27,6 +26,7 @@ import javafx.scene.control.TextArea;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+import cz.masci.springfx.service.ObservableListMap;
 
 /**
  *
@@ -43,7 +43,7 @@ public class MonsterDetailController extends AbstractDetailController<MonsterDTO
   @FXML
   private TextArea description;
 
-  public MonsterDetailController(ModifiableService modifiableService) {
+  public MonsterDetailController(ObservableListMap modifiableService) {
     super(MonsterDTO.class.getSimpleName(), modifiableService);
   }
   

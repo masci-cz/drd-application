@@ -36,10 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cz.masci.springfx.service.CrudService;
 import cz.masci.springfx.service.EditControllerService;
 import cz.masci.springfx.data.Modifiable;
-import cz.masci.springfx.service.ModifiableService;
 import cz.masci.springfx.utility.StyleChangingRowFactory;
 import java.util.List;
 import javafx.collections.FXCollections;
+import cz.masci.springfx.service.ObservableListMap;
 
 /**
  * This is abstract controller for Master View editor with list of items.
@@ -57,7 +57,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   private final CrudService<T> itemService;
   private final String itemKey;
   private final Class<? extends EditControllerService<T>> editControllerClass;
-  private ModifiableService modifiableService;
+  private ObservableListMap modifiableService;
 
   @FXML
   protected BorderPane borderPane;
@@ -109,7 +109,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   }
 
   @Autowired
-  public final void setModifiableService(ModifiableService modifiableService) {
+  public final void setModifiableService(ObservableListMap modifiableService) {
     this.modifiableService = modifiableService;
   }
 

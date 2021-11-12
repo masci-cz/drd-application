@@ -20,12 +20,12 @@ import cz.masci.springfx.data.Modifiable;
 import java.util.List;
 
 /**
- * Service for CRUD operations on {@link Modifiable} entities.
- * <lt>
+ * Service for CRUD operations on {@link Modifiable} children items.
+ * <ul>
  *   <li>Get list of modifiable items</li>
  *   <li>Saves modified item</li>
  *   <li>Delete modified item</li>
- * </lt>
+ * </ul>
  * 
  * @author Daniel Masek
  * 

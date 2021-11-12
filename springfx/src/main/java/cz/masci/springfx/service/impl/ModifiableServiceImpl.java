@@ -17,7 +17,6 @@
 package cz.masci.springfx.service.impl;
 
 import cz.masci.springfx.data.Modifiable;
-import cz.masci.springfx.service.ModifiableService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -25,13 +24,14 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import org.springframework.stereotype.Service;
+import cz.masci.springfx.service.ObservableListMap;
 
 /**
  *
  * @author Daniel Masek
  */
 @Service
-public class ModifiableServiceImpl implements ModifiableService {
+public class ModifiableServiceImpl implements ObservableListMap {
 
   private final ObservableMap<String, ObservableList<Modifiable>> modifiedMap = FXCollections.observableHashMap();
 
@@ -92,7 +92,7 @@ public class ModifiableServiceImpl implements ModifiableService {
   public <T extends Modifiable> List<T> getAll(String key) {
     var modifiedList = getModifiedList(key);
 
-    return (List<T>) modifiedList.stream().collect(Collectors.toList());
+    return modifiedList.stream().map(item -> (T) item).collect(Collectors.toList());
   }
 
   @Override

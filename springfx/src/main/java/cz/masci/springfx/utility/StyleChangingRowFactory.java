@@ -17,12 +17,12 @@
 package cz.masci.springfx.utility;
 
 import cz.masci.springfx.data.Modifiable;
-import cz.masci.springfx.service.ModifiableService;
 import java.util.Collections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import cz.masci.springfx.service.ObservableListMap;
 
 /**
  *
@@ -30,27 +30,27 @@ import javafx.util.Callback;
  */
   public class StyleChangingRowFactory<T extends Modifiable> implements Callback<TableView<T>, TableRow<T>> {
 
-    private final ModifiableService modifiableService;
+    private final ObservableListMap modifiableService;
     private final String styleClass;
     private final String modifiableKey;
     private final Callback<TableView<T>, TableRow<T>> baseFactory;
 
-    public StyleChangingRowFactory(String styleClass, String modifiableKey, ModifiableService modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
+    public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
       this.styleClass = styleClass;
       this.modifiableKey = modifiableKey;
       this.modifiableService = modifiableService;
       this.baseFactory = baseFactory;
     }
 
-    public StyleChangingRowFactory(String styleClass, String modifiableKey, ModifiableService modifiableService) {
+    public StyleChangingRowFactory(String styleClass, String modifiableKey, ObservableListMap modifiableService) {
       this(styleClass, modifiableKey, modifiableService, null);
     }
 
-    public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ModifiableService modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
+    public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ObservableListMap modifiableService, Callback<TableView<T>, TableRow<T>> baseFactory) {
       this(styleClass, modifiableKey.getSimpleName(), modifiableService, baseFactory);
     }
 
-    public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ModifiableService modifiableService) {
+    public StyleChangingRowFactory(String styleClass, Class<T> modifiableKey, ObservableListMap modifiableService) {
       this(styleClass, modifiableKey, modifiableService, null);
     }
 
