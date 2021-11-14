@@ -48,7 +48,7 @@ public class Runner implements ApplicationRunner {
 
     private final MonsterService monsterService;
     
-    private Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -71,42 +71,24 @@ public class Runner implements ApplicationRunner {
 
     private MonsterDTO saveMonster() {
         var index = random.nextInt();
-        
-                var monsterBuilder = MonsterDTO.builder()
-                                .name(MONSTER_NAME + "_" + index)
-        .viability(VIABILITY + "_" + index)
-        .attack(ATTACK + "_" + index)
-        .defence(DEFENCE + "_" + index)
-        .dimension(DIMENSION + "_" + index)
-        .vulnerability(VULNERABILITY + "_" + index)
-        .moveability(MOVEABILITY + "_" + index)
-        .stamina(STAMINA + "_" + index)
-        .treasure(TREASURE + "_" + index)
-        .experience(EXPERIENCE + "_" + index)
-        .description(DESCRIPTION + "_" + index)
-        .endurance(random.nextInt(21))
-        .combativeness(random.nextInt(21))
-        .intelligence(random.nextInt(21))
-        .conviction(random.nextInt(21));
-
                         
-//        var monster = new MonsterDTO();
-//        monster.setName(MONSTER_NAME + "_" + index);
-//        monster.setViability(VIABILITY + "_" + index);
-//        monster.setAttack(ATTACK + "_" + index);
-//        monster.setDefence(DEFENCE + "_" + index);
-//        monster.setDimension(DIMENSION + "_" + index);
-//        monster.setVulnerability(VULNERABILITY + "_" + index);
-//        monster.setMoveability(MOVEABILITY + "_" + index);
-//        monster.setStamina(STAMINA + "_" + index);
-//        monster.setTreasure(TREASURE + "_" + index);
-//        monster.setExperience(EXPERIENCE + "_" + index);
-//        monster.setDescription(DESCRIPTION + "_" + index);
-//        monster.setEndurance(random.nextInt(21));
-//        monster.setCombativeness(random.nextInt(21));
-//        monster.setIntelligence(random.nextInt(21));
-//        monster.setConviction(random.nextInt(21));
+        var monster = new MonsterDTO();
+        monster.setName(MONSTER_NAME + "_" + index);
+        monster.setViability(VIABILITY + "_" + index);
+        monster.setAttack(ATTACK + "_" + index);
+        monster.setDefence(DEFENCE + "_" + index);
+        monster.setDimension(DIMENSION + "_" + index);
+        monster.setVulnerability(VULNERABILITY + "_" + index);
+        monster.setMoveability(MOVEABILITY + "_" + index);
+        monster.setStamina(STAMINA + "_" + index);
+        monster.setTreasure(TREASURE + "_" + index);
+        monster.setExperience(EXPERIENCE + "_" + index);
+        monster.setDescription(DESCRIPTION + "_" + index);
+        monster.setEndurance(random.nextInt(21));
+        monster.setCombativeness(random.nextInt(21));
+        monster.setIntelligence(random.nextInt(21));
+        monster.setConviction(random.nextInt(21));
 
-        return monsterService.save(monsterBuilder.build());
+        return monsterService.save(monster);
     }
 }

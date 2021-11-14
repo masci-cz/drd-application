@@ -63,7 +63,10 @@ public class MonsterEditController implements EditControllerService<MonsterDTO> 
   public Callback<ButtonType, MonsterDTO> getResultConverter() {
     return (buttonType) -> {
       if (ButtonType.OK.equals(buttonType) && validate()) {
-        return MonsterDTO.builder().name(name.getText()).description(description.getText()).build();
+        var monster = new MonsterDTO();
+        monster.setName(name.getText());
+        monster.setDescription(description.getText());
+        return monster;
       }
       return null;
     };

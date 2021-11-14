@@ -43,13 +43,13 @@ public class MonsterDetailController extends AbstractDetailController<MonsterDTO
   @FXML
   private TextArea description;
 
-  public MonsterDetailController(ObservableListMap modifiableService) {
-    super(MonsterDTO.class.getSimpleName(), modifiableService);
+  public MonsterDetailController(ObservableListMap observableListMap) {
+    super(observableListMap);
   }
   
   @Override
   protected List<ObservableValue<String>> initObservableValues() {
-    log.info("Init observable values");
+    log.debug("Init observable values");
 
     return List.of(
             description.textProperty()
@@ -58,7 +58,7 @@ public class MonsterDetailController extends AbstractDetailController<MonsterDTO
 
   @Override
   protected void fillInputs(MonsterDTO item) {
-    log.info("Filling inputs {}", item);
+    log.debug("Fill inputs {}", item);
 
     if (item == null) {
       name.setText("");
@@ -71,8 +71,8 @@ public class MonsterDetailController extends AbstractDetailController<MonsterDTO
 
   @Override
   protected void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-    log.info("changes - newValue: {}", newValue);
-    log.info("changes - observable: {}", observable);
+    log.debug("changes - newValue: {}", newValue);
+    log.debug("changes - observable: {}", observable);
     
     if (description.textProperty().equals(observable)) {
       getItem().setDescription(newValue);

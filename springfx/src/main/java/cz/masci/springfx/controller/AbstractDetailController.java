@@ -41,10 +41,6 @@ import cz.masci.springfx.service.ObservableListMap;
 public abstract class AbstractDetailController<T extends Modifiable> {
 
   /**
-   * Key of observable list
-   */
-  private final String observableListMapKey;
-  /**
    * Global observable list map
    */
   private final ObservableListMap observableListMap;
@@ -53,60 +49,73 @@ public abstract class AbstractDetailController<T extends Modifiable> {
    * List of observable values for which the change event should be rised
    */
   private List<ObservableValue<String>> observableValues;
+  
   /**
    * Observable values change listener
    */
   private ChangeListener<String> listener;
+  
   /**
    * Controlled set item
    */
   private T item;
+  
+  /**
+   * Key of observable list
+   */
+  private String itemKey;
 
   /**
    * Initiate observable values list
-   * 
+   *
    * @return List of observable values
    */
   protected abstract List<ObservableValue<String>> initObservableValues();
 
   /**
    * Fill nodes with set item
-   * 
+   *
    * @param item Set item
    */
   protected abstract void fillInputs(T item);
 
   /**
    * React on change of observable value
-   * 
+   *
    * @param observable Changed observable value
    * @param oldValue Old value
    * @param newValue New value
    */
   protected abstract void changed​(ObservableValue<? extends String> observable, String oldValue, String newValue);
-
+  
   /**
    * Set item to be controlled
-   * 
+   *
    * @param item Set item
    */
   public void setItem(T item) {
+    log.trace("Set item: {}", item);
+    
     if (this.item != null) {
       unhookListener();
     }
     this.item = item;
-    hookTo(item);
+    hookTo(this.item);
   }
 
   /**
    * Returns set item. Could be null
-   * 
+   *
    * @return Set item
    */
   public T getItem() {
     return item;
   }
 
+  public void setItemKey(String itemKey) {
+    this.itemKey = itemKey;
+  }
+  
   /**
    * Unhook listener from all observable values
    */
@@ -115,9 +124,8 @@ public abstract class AbstractDetailController<T extends Modifiable> {
   }
 
   /**
-   * Fill inputs.
-   * Hook liseter to all observable values.
-   * 
+   * Fill inputs. Hook liseter to all observable values.
+   *
    * @param item Item to hook
    */
   private void hookTo(T item) {
@@ -126,17 +134,18 @@ public abstract class AbstractDetailController<T extends Modifiable> {
       listener = null;
     } else {
       listener = (observable, oldValue, newValue) -> {
+        log.trace("{} value changed from {} to {}", observable, oldValue, newValue);
+        
         changed(observable, oldValue, newValue);
-        observableListMap.add(observableListMapKey, item);
+        observableListMap.add(itemKey, item);
       };
       getObservableValues().forEach(t -> t.addListener(listener));
     }
   }
 
   /**
-   * Get observable values. 
-   * If is not set it gets them from {@link #getObservableValues() }
-   * 
+   * Get observable values. If is not set get them from {@link #initObservableValues()
+   *
    * @return Observable values
    */
   private List<ObservableValue<String>> getObservableValues() {

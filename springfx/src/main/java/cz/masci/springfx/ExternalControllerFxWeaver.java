@@ -35,11 +35,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * This class extends FxWeaver to be able load fxml files without and only
- * without controller specification fx:controller. It set FXMLLoader controller
- * before loading.
+ * Extending FxWeaver class to be able load fxml files only without controller
+ * specification fx:controller. It set FXMLLoader controller before loading fxml
+ * file.
  *
- * @author Daniel
+ * @author Daniel Masek
  */
 @Component
 @Slf4j
@@ -57,7 +57,7 @@ public class ExternalControllerFxWeaver extends FxWeaver {
   /**
    * Load controller instance, potentially weaved with a FXML view declaring the
    * given class as fx:controller.
-   * <p/>
+   * <p>
    * The possible FXML resource is inferred from a {@link FxmlView} annotation
    * at the controller class or the simple classname and package of said class
    * if it was not annotated like this. If the FXML file is resolvable, the
@@ -67,17 +67,17 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    * factory is based on a dependency management framework such as Spring, Guice
    * or CDI, this means that the instance will be fully managed and injected as
    * declared.
-   * <p/>
+   * <p>
    * If the controller class does not come with a resolvable FXML view resource,
    * the controller will be instantiated by the given bean factory directly.
    *
    * @param controllerClass The controller class of which a weaved instance
    * should be provided
    * @param location The location of the FXML view to load as a classloader
-   * resource. May be <tt>null</tt> or not resolvable, in which case the
+   * resource. May be <code>null</code> or not resolvable, in which case the
    * controller will be directly instantiated by the given bean factory.
    * @param resourceBundle The optional {@link ResourceBundle} to use for view
-   * creation. May be <tt>null</tt>
+   * creation. May be <code>null</code>
    * @param <V> The view type
    * @param <C> The controller type
    * @return A {@link SimpleFxControllerAndView} container with the managed
@@ -134,6 +134,13 @@ public class ExternalControllerFxWeaver extends FxWeaver {
             .orElse(c.getSimpleName() + ".fxml");
   }
 
+  /**
+   * Check existence of FxmlView annotation on the class. If the annotation is
+   * found, builds URL of the file defined in the annotation based on the class.
+   *
+   * @param c Checking class
+   * @return URL of found resource file
+   */
   private URL buildFxmlUrl(Class<?> c) {
     log.info("buildFxmlUrl from {}", c);
 

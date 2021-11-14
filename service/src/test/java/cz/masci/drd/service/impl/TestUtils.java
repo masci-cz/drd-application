@@ -44,33 +44,20 @@ public class TestUtils {
     }
 
     public static MonsterDTO createMonster() {
-//        var monster = new MonsterDTO();
-//        monster.setName(MONSTER_NAME);
-//        monster.setViability(VIABILITY);
-//        monster.setAttack(ATTACK);
-//        monster.setDefence(DEFENCE);
-//        monster.setEndurance(ENDURANCE);
-//        monster.setDimension(DIMENSION);
-//        monster.setVulnerability(VULNERABILITY);
-//        monster.setMoveability(MOVEABILITY);
-//        monster.setIntelligence(INTELLIGENCE);
-//        monster.setTreasure(TREASURE);
-//        monster.setExperience(EXPERIENCE);
+        var monster = new MonsterDTO();
+        monster.setName(MONSTER_NAME);
+        monster.setViability(VIABILITY);
+        monster.setAttack(ATTACK);
+        monster.setDefence(DEFENCE);
+        monster.setEndurance(ENDURANCE);
+        monster.setDimension(DIMENSION);
+        monster.setVulnerability(VULNERABILITY);
+        monster.setMoveability(MOVEABILITY);
+        monster.setIntelligence(INTELLIGENCE);
+        monster.setTreasure(TREASURE);
+        monster.setExperience(EXPERIENCE);
 
-        var monsterBuilder = MonsterDTO.builder()
-        .name(MONSTER_NAME)
-        .viability(VIABILITY)
-        .attack(ATTACK)
-        .defence(DEFENCE)
-        .endurance(ENDURANCE)
-        .dimension(DIMENSION)
-        .vulnerability(VULNERABILITY)
-        .moveability(MOVEABILITY)
-        .intelligence(INTELLIGENCE)
-        .treasure(TREASURE)
-        .experience(EXPERIENCE);
-
-        return monsterBuilder.build();
+        return monster;
     }
 
 }

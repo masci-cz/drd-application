@@ -43,20 +43,20 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
 
   @Override
   protected void init() {
-    log.info("initialize");
+    log.debug("Init table view");
 
     name = new TableColumn<>("Name");
     name.setPrefWidth(100.0);
-    name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    name.setCellValueFactory(new PropertyValueFactory<MonsterDTO, String>("name"));
 
     description = new TableColumn<>("Description");
     description.setPrefWidth(200.0);
-    description.setCellValueFactory(new PropertyValueFactory<>("description"));
+    description.setCellValueFactory(new PropertyValueFactory<MonsterDTO, String>("description"));
 
     addCollumns(name, description);
 
     setDetailController(MonsterDetailController.class);
-    setRowFactory("edited-row", MonsterDTO.class);
+    setRowFactory("edited-row");
   }
 
 }

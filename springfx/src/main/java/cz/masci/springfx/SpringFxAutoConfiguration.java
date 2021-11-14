@@ -20,8 +20,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
- * @author Daniel
+ * Defining spring component scan package.
+ * 
+ * @author Daniel Masek
  */
 @Configuration
 @ComponentScan

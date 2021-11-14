@@ -31,7 +31,7 @@ import cz.masci.springfx.service.ObservableListMap;
  * @author Daniel Masek
  */
 @Service
-public class ModifiableServiceImpl implements ObservableListMap {
+public class ObservableListMapImpl implements ObservableListMap {
 
   private final ObservableMap<String, ObservableList<Modifiable>> modifiedMap = FXCollections.observableHashMap();
 
