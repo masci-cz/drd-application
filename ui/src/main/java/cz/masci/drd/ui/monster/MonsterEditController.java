@@ -17,6 +17,7 @@
 package cz.masci.drd.ui.monster;
 
 import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.springfx.annotation.FxmlController;
 import cz.masci.springfx.service.EditControllerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Getter
 @FxmlView("fxml/monster-edit.fxml")
+@FxmlController
 public class MonsterEditController implements EditControllerService<MonsterDTO> {
 
   @FXML

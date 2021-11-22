@@ -16,6 +16,8 @@
  */
 package cz.masci.springfx;
 
+import cz.masci.springfx.annotation.FxmlController;
+import cz.masci.springfx.annotation.FxmlRoot;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -32,6 +34,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import net.rgielen.fxweaver.core.SimpleFxControllerAndView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Component;
 
 /**
@@ -106,8 +110,18 @@ public class ExternalControllerFxWeaver extends FxWeaver {
         loader.setResources(resourceBundle);
       }
 
-      C controller = getBean(controllerClass);
-      loader.setController(controller);
+      C controller = null;
+      MergedAnnotations controllerAnnotations = MergedAnnotations.from(controllerClass, MergedAnnotations.SearchStrategy.TYPE_HIERARCHY);
+
+      if (controllerAnnotations.isPresent(FxmlController.class)) {
+        controller = getBean(controllerClass);
+        loader.setController(controller);
+      }
+      
+      if (controllerAnnotations.isPresent(FxmlRoot.class)) {
+        loader.setRoot(controller);
+      }
+      
       V view = loader.load(fxmlStream);
 
       return SimpleFxControllerAndView.of(controller, view);
@@ -128,9 +142,8 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    */
   @Override
   protected String buildFxmlReference(Class<?> c) {
-    return Optional.ofNullable(getAnnotation(c))
-            .map(FxmlView::value)
-            .map(s -> s.isEmpty() ? null : s)
+    return getFxmlViewMergedAnnotation(c)
+            .getValue("value", String.class)
             .orElse(c.getSimpleName() + ".fxml");
   }
 
@@ -143,32 +156,27 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    */
   private URL buildFxmlUrl(Class<?> c) {
     log.info("buildFxmlUrl from {}", c);
+    var fxmlViewAnnotation = getFxmlViewMergedAnnotation(c);
 
-    if (c == null) {
-      return null;
+    if (fxmlViewAnnotation.isPresent()) {
+      var value = fxmlViewAnnotation.getValue("value", String.class).get();
+      return ((Class) fxmlViewAnnotation.getSource()).getResource(value);
     }
 
-    return Optional.ofNullable(c.getAnnotation(FxmlView.class))
-            .map(FxmlView::value)
-            .map(s -> s.isEmpty() ? null : c.getResource(s))
-            .orElseGet(() -> buildFxmlUrl(c.getSuperclass()));
+    return null;
   }
 
   /**
-   * Get the {@link FxmlView} annotation from the class. If it does not contain
-   * a {@link FxmlView} annotation, it search in super class. If there is no
-   * super class it returns null.
+   * Get the {@link MergedAnnotation<FxmlView>} annotation from the class. If
+   * there is no such annotation returns MergedAnnotation.missing()
    *
-   * @param c The class to get a {@link FxmlView} annotation from
-   * @return a {@link FxmlView}
+   * @param c The class to get a {@link MergedAnnotation<FxmlView>} annotation
+   * from
+   * @return a MergedAnnotation
    */
-  private FxmlView getAnnotation(Class<?> c) {
-    // there is no other superclass
-    if (c == null) {
-      return null;
-    }
+  private MergedAnnotation<FxmlView> getFxmlViewMergedAnnotation(Class<?> c) {
+    MergedAnnotations annotations = MergedAnnotations.from(c, MergedAnnotations.SearchStrategy.TYPE_HIERARCHY);
 
-    return Optional.ofNullable(c.getAnnotation(FxmlView.class))
-            .orElseGet(() -> getAnnotation(c.getSuperclass()));
+    return annotations.get(FxmlView.class);
   }
 }

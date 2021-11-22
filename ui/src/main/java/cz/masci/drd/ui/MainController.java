@@ -17,6 +17,7 @@
 package cz.masci.drd.ui;
 
 import cz.masci.drd.ui.monster.MonsterController;
+import cz.masci.springfx.annotation.FxmlController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @FxmlView("fxml/main-scene.fxml")
+@FxmlController
 @RequiredArgsConstructor
 public class MainController {
 

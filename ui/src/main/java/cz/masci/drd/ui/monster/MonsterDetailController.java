@@ -17,6 +17,7 @@
 package cz.masci.drd.ui.monster;
 
 import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.springfx.annotation.FxmlController;
 import cz.masci.springfx.controller.AbstractDetailController;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
@@ -35,6 +36,7 @@ import cz.masci.springfx.service.ObservableListMap;
 @Component
 @Slf4j
 @FxmlView("fxml/monster-detail.fxml")
+@FxmlController
 public class MonsterDetailController extends AbstractDetailController<MonsterDTO> {
 
   @FXML
