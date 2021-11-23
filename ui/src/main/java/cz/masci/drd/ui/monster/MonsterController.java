@@ -40,7 +40,7 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
   private TableColumn<MonsterDTO, String> description;
 
   public MonsterController(FxWeaver fxWeaver, MonsterService itemService) {
-    super(fxWeaver, itemService, MonsterDTO.class.getSimpleName(), MonsterEditController.class);
+    super(fxWeaver, itemService, MonsterDTO.class.getSimpleName(), MonsterDetailDialogController.class);
   }
 
   @Override
@@ -57,7 +57,7 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
 
     addCollumns(name, description);
 
-    setDetailController(MonsterDetailController.class);
+    setDetailController(MonsterDetailEditorController.class);
     setRowFactory("edited-row");
   }
 

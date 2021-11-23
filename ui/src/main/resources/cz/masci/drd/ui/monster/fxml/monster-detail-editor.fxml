@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <center>
+    <cz.masci.drd.ui.monster.control.MonsterDetailControl fx:id="editor" />
+  </center>
+</BorderPane>

@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -50,12 +51,21 @@ import org.springframework.stereotype.Component;
 public class ExternalControllerFxWeaver extends FxWeaver {
 
   private final Callback<Class<?>, Object> beanFactory;
+  private final BuilderFactory builderFactory;
 
   @Autowired
   public ExternalControllerFxWeaver(ConfigurableApplicationContext context) {
     super(context::getBean, context::close);
 
     beanFactory = (requiredType) -> context.getBean(requiredType);
+    builderFactory = (type) -> {
+      if (getFxmlViewMergedAnnotation(type).isPresent()) {
+        log.debug("Found FxmlView annotation for type {}", type);
+        return () -> this.loadController(type);
+      }
+      return null;
+    };
+
   }
 
   /**
@@ -102,10 +112,11 @@ public class ExternalControllerFxWeaver extends FxWeaver {
   }
 
   <C, V extends Node> FxControllerAndView<C, V> loadByViewUsingFxmlLoader(FXMLLoader loader, Class<C> controllerClass, URL url, ResourceBundle resourceBundle) {
-    log.info("Loading FXML from {}", url.getFile());
+    log.debug("Loading FXML from {}", url.getFile());
     try ( InputStream fxmlStream = url.openStream()) {
       loader.setLocation(url);
       loader.setControllerFactory(beanFactory);
+      loader.setBuilderFactory(builderFactory);
       if (resourceBundle != null) {
         loader.setResources(resourceBundle);
       }
@@ -114,14 +125,16 @@ public class ExternalControllerFxWeaver extends FxWeaver {
       MergedAnnotations controllerAnnotations = MergedAnnotations.from(controllerClass, MergedAnnotations.SearchStrategy.TYPE_HIERARCHY);
 
       if (controllerAnnotations.isPresent(FxmlController.class)) {
+        log.debug("FxmlController found");
         controller = getBean(controllerClass);
         loader.setController(controller);
       }
-      
+
       if (controllerAnnotations.isPresent(FxmlRoot.class)) {
+        log.debug("FxmlRoot found");
         loader.setRoot(controller);
       }
-      
+
       V view = loader.load(fxmlStream);
 
       return SimpleFxControllerAndView.of(controller, view);
@@ -155,7 +168,7 @@ public class ExternalControllerFxWeaver extends FxWeaver {
    * @return URL of found resource file
    */
   private URL buildFxmlUrl(Class<?> c) {
-    log.info("buildFxmlUrl from {}", c);
+    log.debug("buildFxmlUrl from {}", c);
     var fxmlViewAnnotation = getFxmlViewMergedAnnotation(c);
 
     if (fxmlViewAnnotation.isPresent()) {

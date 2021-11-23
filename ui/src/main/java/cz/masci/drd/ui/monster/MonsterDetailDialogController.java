@@ -17,6 +17,7 @@
 package cz.masci.drd.ui.monster;
 
 import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.ui.monster.control.MonsterDetailControl;
 import cz.masci.springfx.annotation.FxmlController;
 import cz.masci.springfx.service.EditControllerService;
 import javafx.event.ActionEvent;
@@ -24,8 +25,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,18 +38,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @Getter
-@FxmlView("fxml/monster-edit.fxml")
+@FxmlView("fxml/monster-detail-dialog.fxml")
 @FxmlController
-public class MonsterEditController implements EditControllerService<MonsterDTO> {
+public class MonsterDetailDialogController implements EditControllerService<MonsterDTO> {
 
   @FXML
   private DialogPane dialog;
 
   @FXML
-  private TextField name;
-
-  @FXML
-  private TextArea description;
+  private MonsterDetailControl editor;
 
   public void initialize() {
     Button btOk = (Button) dialog.lookupButton(ButtonType.OK);
@@ -66,8 +62,23 @@ public class MonsterEditController implements EditControllerService<MonsterDTO> 
     return (buttonType) -> {
       if (ButtonType.OK.equals(buttonType) && validate()) {
         var monster = new MonsterDTO();
-        monster.setName(name.getText());
-        monster.setDescription(description.getText());
+
+        monster.setName(editor.getName());
+        monster.setViability(editor.getViability());
+        monster.setAttack(editor.getAttack());
+        monster.setDefence(editor.getDefence());
+        monster.setEndurance(Integer.parseInt(editor.getEndurance()));
+        monster.setDimension(editor.getDimension());
+        monster.setCombativeness(Integer.parseInt(editor.getCombativeness()));
+        monster.setVulnerability(editor.getVulnerability());
+        monster.setMoveability(editor.getMoveability());
+        monster.setStamina(editor.getStamina());
+        monster.setIntelligence(Integer.parseInt(editor.getIntelligence()));
+        monster.setConviction(Integer.parseInt(editor.getConviction()));
+        monster.setTreasure(editor.getTreasure());
+        monster.setExperience(editor.getExperience());
+        monster.setDescription(editor.getDescription());
+
         return monster;
       }
       return null;
@@ -75,6 +86,6 @@ public class MonsterEditController implements EditControllerService<MonsterDTO> 
   }
 
   private boolean validate() {
-    return !name.getText().isBlank();
+    return !editor.getName().isBlank();
   }
 }
