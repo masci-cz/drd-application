@@ -17,6 +17,7 @@
 package cz.masci.springfx.service;
 
 import cz.masci.springfx.data.Modifiable;
+import cz.masci.springfx.exception.CrudException;
 import java.util.List;
 
 /**
@@ -37,22 +38,25 @@ public interface CrudService<T extends Modifiable> {
    * Get list of items to display in Master view table.
    *
    * @return List of items
+   * @throws cz.masci.springfx.exception.CrudException
    */
-  List<T> list();
+  List<T> list() throws CrudException;
 
   /**
    * Saves created/updated item from edit dialog or detail view.
    *
    * @param item Item to save
    * @return Saved item
+   * @throws cz.masci.springfx.exception.CrudException
    */
-  T save(T item);
+  T save(T item) throws CrudException;
 
   /**
    * Deletes item.
    *
    * @param item Item to delete
    * @return Deleted item
+   * @throws cz.masci.springfx.exception.CrudException
    */
-  T delete(T item);
+  T delete(T item) throws CrudException;
 }

@@ -14,18 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
-
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.springfx.exception.CrudException;
-import cz.masci.springfx.service.CrudService;
-import java.util.Optional;
+package cz.masci.springfx.exception;
 
 /**
  *
  * @author Daniel
  */
-public interface MonsterService extends CrudService<MonsterDTO> {
+public class ConverterException extends Exception {
 
-  Optional<MonsterDTO> getById(Long id) throws CrudException;
+  public ConverterException(String message, Throwable cause) {
+    super(message, cause);
+  }
+  
 }

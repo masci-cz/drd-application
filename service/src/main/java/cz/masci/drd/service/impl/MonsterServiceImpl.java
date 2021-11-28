@@ -17,12 +17,14 @@
 package cz.masci.drd.service.impl;
 
 import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.model.Monster;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterService;
 import cz.masci.drd.service.MonsterMapper;
+import cz.masci.springfx.exception.CrudException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,24 +36,52 @@ public class MonsterServiceImpl implements MonsterService {
   private final MonsterMapper mapper;
 
   @Override
-  public Optional<MonsterDTO> getById(Long id) {
-    return monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
+  public Optional<MonsterDTO> getById(Long id) throws CrudException {
+    Optional<MonsterDTO> monster;
+
+    try {
+      monster = monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
+    } catch (Exception ex) {
+      throw CrudException.createReadException(ex);
+    }
+
+    return monster;
   }
 
   @Override
-  public List<MonsterDTO> list() {
-    return monsterRepository.findAll().stream().map(mapper::mapToDto).collect(Collectors.toList());
+  public List<MonsterDTO> list() throws CrudException {
+    List<MonsterDTO> monsters;
+
+    try {
+      monsters = monsterRepository.findAll().stream().map(mapper::mapToDto).collect(Collectors.toList());
+    } catch (Exception ex) {
+      throw CrudException.createReadException(ex);
+    }
+
+    return monsters;
   }
 
   @Override
-  public MonsterDTO save(MonsterDTO monster) {
-    var entity = monsterRepository.save(mapper.mapToEntity(monster));
+  public MonsterDTO save(MonsterDTO monster) throws CrudException {
+    Monster entity;
+    
+    try {
+      entity = monsterRepository.save(mapper.mapToEntity(monster));
+    } catch (Exception ex) {
+      throw CrudException.createWriteException(ex);
+    }
+    
     return mapper.mapToDto(entity);
   }
 
   @Override
-  public MonsterDTO delete(MonsterDTO item) {
-    monsterRepository.delete(mapper.mapToEntity(item));
+  public MonsterDTO delete(MonsterDTO item) throws CrudException {
+    try {
+      monsterRepository.delete(mapper.mapToEntity(item));
+    } catch (Exception ex) {
+      throw CrudException.createWriteException(ex);
+    }
+    
     return item;
   }
 

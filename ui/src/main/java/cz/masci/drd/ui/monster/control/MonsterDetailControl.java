@@ -17,14 +17,17 @@
 package cz.masci.drd.ui.monster.control;
 
 import cz.masci.springfx.annotation.FxmlRoot;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import net.rgielen.fxweaver.core.FxmlView;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 /**
  *
@@ -33,8 +36,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope("prototype")
 @FxmlRoot("fxml/monster-detail.fxml")
+@Slf4j
 public class MonsterDetailControl extends GridPane {
 
+  private ValidationSupport validationSupport;
+  
   @FXML
   private TextField name;
   @FXML
@@ -66,6 +72,19 @@ public class MonsterDetailControl extends GridPane {
   @FXML
   private TextArea description;
 
+  public void initialize() {
+    validationSupport = new ValidationSupport();
+    validationSupport.registerValidator(name, Validator.createEmptyValidator("Jméno nestvůry je povinné."));
+  }
+  
+  public ReadOnlyBooleanProperty invalidProperty() {
+    return validationSupport.invalidProperty();
+  }
+  
+  public Boolean isInvalid() {
+    return validationSupport.isInvalid();
+  }
+  
   public StringProperty nameProperty() {
     return name.textProperty();
   }

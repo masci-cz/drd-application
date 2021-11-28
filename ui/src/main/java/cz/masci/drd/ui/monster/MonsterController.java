@@ -49,11 +49,11 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
 
     name = new TableColumn<>("Name");
     name.setPrefWidth(100.0);
-    name.setCellValueFactory(new PropertyValueFactory<MonsterDTO, String>("name"));
+    name.setCellValueFactory(new PropertyValueFactory<>("name"));
 
     description = new TableColumn<>("Description");
     description.setPrefWidth(200.0);
-    description.setCellValueFactory(new PropertyValueFactory<MonsterDTO, String>("description"));
+    description.setCellValueFactory(new PropertyValueFactory<>("description"));
 
     addCollumns(name, description);
 

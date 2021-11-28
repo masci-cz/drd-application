@@ -22,6 +22,7 @@ import cz.masci.springfx.annotation.FxmlController;
 import cz.masci.springfx.service.EditControllerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -51,41 +52,45 @@ public class MonsterDetailDialogController implements EditControllerService<Mons
   public void initialize() {
     Button btOk = (Button) dialog.lookupButton(ButtonType.OK);
     btOk.addEventFilter(ActionEvent.ACTION, event -> {
-      if (!validate()) {
+      if (editor.isInvalid()) {
         event.consume();
       }
     });
+    btOk.disableProperty().bind(editor.invalidProperty());
   }
 
   @Override
   public Callback<ButtonType, MonsterDTO> getResultConverter() {
     return (buttonType) -> {
-      if (ButtonType.OK.equals(buttonType) && validate()) {
+      if (ButtonType.OK.equals(buttonType) && !editor.isInvalid()) {
         var monster = new MonsterDTO();
 
-        monster.setName(editor.getName());
-        monster.setViability(editor.getViability());
-        monster.setAttack(editor.getAttack());
-        monster.setDefence(editor.getDefence());
-        monster.setEndurance(Integer.parseInt(editor.getEndurance()));
-        monster.setDimension(editor.getDimension());
-        monster.setCombativeness(Integer.parseInt(editor.getCombativeness()));
-        monster.setVulnerability(editor.getVulnerability());
-        monster.setMoveability(editor.getMoveability());
-        monster.setStamina(editor.getStamina());
-        monster.setIntelligence(Integer.parseInt(editor.getIntelligence()));
-        monster.setConviction(Integer.parseInt(editor.getConviction()));
-        monster.setTreasure(editor.getTreasure());
-        monster.setExperience(editor.getExperience());
-        monster.setDescription(editor.getDescription());
-
+        try {
+          monster.setName(editor.getName());
+          monster.setViability(editor.getViability());
+          monster.setAttack(editor.getAttack());
+          monster.setDefence(editor.getDefence());
+          monster.setEndurance(Integer.parseInt(editor.getEndurance()));
+          monster.setDimension(editor.getDimension());
+          monster.setCombativeness(Integer.parseInt(editor.getCombativeness()));
+          monster.setVulnerability(editor.getVulnerability());
+          monster.setMoveability(editor.getMoveability());
+          monster.setStamina(editor.getStamina());
+          monster.setIntelligence(Integer.parseInt(editor.getIntelligence()));
+          monster.setConviction(Integer.parseInt(editor.getConviction()));
+          monster.setTreasure(editor.getTreasure());
+          monster.setExperience(editor.getExperience());
+          monster.setDescription(editor.getDescription());
+        } catch (NumberFormatException numberFormatException) {
+          Alert alert = new Alert(Alert.AlertType.ERROR, "Chyba konverze");
+          alert.showAndWait();
+          return null;
+        }
+        
         return monster;
       }
       return null;
     };
   }
 
-  private boolean validate() {
-    return !editor.getName().isBlank();
-  }
 }

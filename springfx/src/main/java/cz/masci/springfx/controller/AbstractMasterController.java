@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cz.masci.springfx.service.CrudService;
 import cz.masci.springfx.service.EditControllerService;
 import cz.masci.springfx.data.Modifiable;
+import cz.masci.springfx.exception.CrudException;
 import cz.masci.springfx.utility.StyleChangingRowFactory;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -48,12 +49,11 @@ import cz.masci.springfx.service.ObservableListMap;
  * <p>
  * Displays three buttons for actions:
  * <ul>
- *   <li>new item</li>
- *   <li>save all</li>
- *   <li>delete</li
- * </ul>
- * <p>
- * 
+ * <li>new item</li>
+ * <li>save all</li>
+ * <li>delete</li </ul> <p>
+ *
+
  * @author Daniel Masek
  *
  * @param <T> Item type
@@ -80,13 +80,13 @@ public abstract class AbstractMasterController<T extends Modifiable> {
 
   /**
    * Open edit dialog and save new item defined in edit controller.
-   * 
+   *
    * @param event Action event
    */
   @FXML
   public void onNewItem(ActionEvent event) {
     log.debug("New item action occured");
-    
+
     FxControllerAndView<? extends EditControllerService<T>, DialogPane> editor = fxWeaver.load(editControllerClass);
     Dialog<T> dialog = new Dialog<>();
     dialog.setTitle("New Item");
@@ -94,51 +94,63 @@ public abstract class AbstractMasterController<T extends Modifiable> {
     dialog.setResultConverter(editor.getController().getResultConverter());
     dialog.showAndWait()
             .ifPresent(item -> {
-              var savedItem = itemService.save(item);
-              tableView.getItems().add(savedItem);
-              tableView.getSelectionModel().select(savedItem);
-              tableView.scrollTo(savedItem);
+              try {
+                var savedItem = itemService.save(item);
+                tableView.getItems().add(savedItem);
+                tableView.getSelectionModel().select(savedItem);
+                tableView.scrollTo(savedItem);
+              } catch (CrudException ex) {
+                log.error(ex.getMessage());
+              }
             });
   }
 
   /**
-   * Get modified item list from observable list map and save them all.
-   * At the end removes them from observable list map.
+   * Get modified item list from observable list map and save them all. At the
+   * end removes them from observable list map.
    * <p>
    * Open alert dialog.
-   * 
+   *
    * @param event Action event
    */
   @FXML
   public void onSaveAll(ActionEvent event) {
     log.debug("Save all action occured");
-    
+
     Alert alert = new Alert(AlertType.INFORMATION, "Saving all items");
     alert.showAndWait().ifPresent(button -> {
       List<T> modifiedItemList = observableListMap.getAll(itemKey);
       modifiedItemList.stream()
               .forEach(item -> {
-                itemService.save(item);
-                observableListMap.remove(item);
+                try {
+                  itemService.save(item);
+                  observableListMap.remove(item);
+                } catch (CrudException ex) {
+                  log.error(ex.getMessage());
+                }
               });
     });
   }
 
   /**
    * Open alert dialog and delete selected item.
-   * 
+   *
    * @param event Action event
    */
   @FXML
   public void onDelete(ActionEvent event) {
     log.debug("Delete action occured");
-    
+
     Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure to delete selected item?");
     alert.showAndWait().ifPresent(button -> {
-      T item = tableView.getSelectionModel().getSelectedItem();
-      tableView.getItems().remove(item);
-      itemService.delete(item);
-      observableListMap.remove(item);
+      try {
+        T item = tableView.getSelectionModel().getSelectedItem();
+        tableView.getItems().remove(item);
+        itemService.delete(item);
+        observableListMap.remove(item);
+      } catch (CrudException ex) {
+        log.error(ex.getMessage());
+      }
     });
   }
 
@@ -146,7 +158,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    * Set observable list map.
    * <p>
    * It is set by Spring injection.
-   * 
+   *
    * @param observableListMap Observable list map to set
    */
   @Autowired
@@ -161,10 +173,14 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    */
   public final void initialize() {
     log.debug("Initialize");
-    
+
     init();
     var newList = FXCollections.<T>observableArrayList();
-    newList.addAll(itemService.list());
+    try {
+      newList.addAll(itemService.list());
+    } catch (CrudException ex) {
+      log.error(ex.getMessage());
+    }
     tableView.setItems(newList);
   }
 
@@ -173,30 +189,30 @@ public abstract class AbstractMasterController<T extends Modifiable> {
    */
   public void clearCollumns() {
     log.trace("Clear table view collumns");
-    
+
     tableView.getColumns().clear();
   }
 
   /**
    * Add table view collumns.
-   * 
+   *
    * @param collumns Collumns to add
    */
   public void addCollumns(TableColumn<T, ?>... collumns) {
-    log.trace("Add table view collumns: {}", collumns);
-    
+    log.trace("Add table view collumns: {}", (Object[]) collumns);
+
     tableView.getColumns().addAll(collumns);
   }
 
   /**
    * Set the detail controller.
-   * 
+   *
    * @param <E> Detail controller type
    * @param detailController Controller to set
    */
   public <E extends AbstractDetailController<T>> void setDetailController(Class<E> detailController) {
     FxControllerAndView<E, Node> detailView = fxWeaver.load(detailController);
-    
+
     borderPane.setCenter(detailView.getView().get());
     detailView.getController().setItemKey(itemKey);
 
