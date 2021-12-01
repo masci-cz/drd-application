@@ -28,6 +28,7 @@ public class TestUtils {
     
     public static Monster createMonsterEntity() {
         var monster = new Monster();
+        monster.setId(ID);
         monster.setName(MONSTER_NAME);
         monster.setViability(VIABILITY);
         monster.setAttack(ATTACK);

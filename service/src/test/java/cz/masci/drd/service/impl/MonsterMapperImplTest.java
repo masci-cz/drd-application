@@ -60,7 +60,14 @@ public class MonsterMapperImplTest {
         );
     }
 
+    @Test
     void mapToEntity_null() {
+      var result = monsterMapper.mapToEntity(null);
+      assertNull(result);
+    }
+    
+    @Test
+    void mapToEntity() {
         var result = monsterMapper.mapToEntity(TestUtils.createMonster());
 
         assertAll("Monster dto",

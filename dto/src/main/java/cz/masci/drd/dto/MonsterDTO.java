@@ -20,8 +20,10 @@ package cz.masci.drd.dto;
 import cz.masci.springfx.data.Modifiable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -59,7 +61,7 @@ public class MonsterDTO implements Modifiable {
   /**
    * Monster combativeness - Bojovnost
    */
-  private IntegerProperty combativenessProperty;
+  private ObjectPropertyBase<Integer> combativenessProperty;
   /**
    * Monster vulnerability - Zranitelnost
    */
@@ -79,7 +81,7 @@ public class MonsterDTO implements Modifiable {
   /**
    * Monster conviction - Přesvědčení
    */
-  private IntegerProperty convictionProperty;
+  private ObjectPropertyBase<Integer> convictionProperty;
   /**
    * Monster treasure - Poklady
    */
@@ -198,9 +200,9 @@ public class MonsterDTO implements Modifiable {
     dimensionProperty().set(dimension);
   }
 
-  public final IntegerProperty combativenessProperty() {
+  public final ObjectPropertyBase<Integer> combativenessProperty() {
     if (combativenessProperty == null) {
-      combativenessProperty = new SimpleIntegerProperty();
+      combativenessProperty = new SimpleObjectProperty<>();
     }
     return combativenessProperty;
   }
@@ -273,9 +275,9 @@ public class MonsterDTO implements Modifiable {
     intelligenceProperty().set(intelligence);
   }
 
-  public final IntegerProperty convictionProperty() {
+  public final ObjectPropertyBase<Integer> convictionProperty() {
     if (convictionProperty == null) {
-      convictionProperty = new SimpleIntegerProperty();
+      convictionProperty = new SimpleObjectProperty<>();
     }
     return convictionProperty;
   }
