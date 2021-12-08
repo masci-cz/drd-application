@@ -22,15 +22,16 @@ package cz.masci.drd.service.impl;
  */
 public class TestConstants {
 
-    public static final String EXPERIENCE = "Experience";
-    public static final String TREASURE = "Treasure";
-    public static final int INTELLIGENCE = 11;
-    public static final String MOVEABILITY = "Moveability";
-    public static final String VULNERABILITY = "Vulnerability";
-    public static final String DIMENSION = "A";
-    public static final int ENDURANCE = 10;
-    public static final String DEFENCE = "Defence";
-    public static final String ATTACK = "Attack";
-    public static final String VIABILITY = "Viability";
-    public static final String MONSTER_NAME = "Monster name";
+  public static final long ID = 1l;
+  public static final String EXPERIENCE = "Experience";
+  public static final String TREASURE = "Treasure";
+  public static final int INTELLIGENCE = 11;
+  public static final String MOVEABILITY = "Moveability";
+  public static final String VULNERABILITY = "Vulnerability";
+  public static final String DIMENSION = "A";
+  public static final int ENDURANCE = 10;
+  public static final String DEFENCE = "Defence";
+  public static final String ATTACK = "Attack";
+  public static final String VIABILITY = "Viability";
+  public static final String MONSTER_NAME = "Monster name";
 }

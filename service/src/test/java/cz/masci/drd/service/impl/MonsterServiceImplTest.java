@@ -20,6 +20,7 @@ import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterMapper;
+import cz.masci.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ public class MonsterServiceImplTest {
     private MonsterServiceImpl monsterService;
 
     @Test
-    void getById() {
+    void getById() throws CrudException {
         var mockMonster = mock(MonsterDTO.class);
         
         when(monsterRepository.findById(any())).thenReturn(Optional.of(mock(Monster.class)));
@@ -65,7 +66,7 @@ public class MonsterServiceImplTest {
     }
 
     @Test
-    void getAll() {
+    void list() throws CrudException {
         var expectedMosters = List.of(mock(MonsterDTO.class), mock(MonsterDTO.class));
         var mockMonsterEntityList = List.of(mock(Monster.class), mock(Monster.class));
         
@@ -75,7 +76,7 @@ public class MonsterServiceImplTest {
         }
         when(monsterRepository.findAll()).thenReturn(mockMonsterEntityList);
         
-        var result = monsterService.getAll();
+        var result = monsterService.list();
 
         assertThat(result)
                 .isNotNull()
@@ -84,7 +85,7 @@ public class MonsterServiceImplTest {
     }
     
     @Test
-    void save() {
+    void save() throws CrudException {
         var mockMonster = mock(MonsterDTO.class);
         
         when(monsterRepository.save(any())).thenReturn(mock(Monster.class));
@@ -97,7 +98,7 @@ public class MonsterServiceImplTest {
     }
     
     @Test
-    void delete() {
+    void delete() throws CrudException {
         when(monsterMapper.mapToEntity(any())).thenReturn(mock(Monster.class));
         
         monsterService.delete(mock(MonsterDTO.class));

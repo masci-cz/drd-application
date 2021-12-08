@@ -14,18 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
+package cz.masci.springfx.service;
 
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.springfx.exception.CrudException;
-import cz.masci.springfx.service.CrudService;
-import java.util.Optional;
+import cz.masci.springfx.data.Modifiable;
+import javafx.scene.control.ButtonType;
+import javafx.util.Callback;
 
 /**
- *
- * @author Daniel
+ * This service is used by Master-Detail View Controllers. It is used to convert
+ * javaFx dialog button type to edited/created item.
+ * 
+ * @author Daniel Masek
+ * 
+ * @param <T> Edited item type
  */
-public interface MonsterService extends CrudService<MonsterDTO> {
-
-  Optional<MonsterDTO> getById(Long id) throws CrudException;
+public interface EditControllerService<T extends Modifiable> {
+  
+  /**
+   * Returns converter from {@link javafx.scene.control.ButtonType} to edited item type.
+   * 
+   * @return ButtonType to edited item Converter 
+   */
+  Callback<ButtonType, T> getResultConverter();
 }

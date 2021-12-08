@@ -14,18 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
+package cz.masci.springfx.annotation;
 
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.springfx.exception.CrudException;
-import cz.masci.springfx.service.CrudService;
-import java.util.Optional;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.core.annotation.AliasFor;
 
 /**
  *
  * @author Daniel
  */
-public interface MonsterService extends CrudService<MonsterDTO> {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@FxmlController
+@FxmlView
+public @interface FxmlRoot {
 
-  Optional<MonsterDTO> getById(Long id) throws CrudException;
+  @AliasFor(annotation = FxmlView.class, attribute = "value")
+  String value() default "";
 }

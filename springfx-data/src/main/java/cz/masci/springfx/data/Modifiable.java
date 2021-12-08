@@ -14,18 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
-
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.springfx.exception.CrudException;
-import cz.masci.springfx.service.CrudService;
-import java.util.Optional;
+package cz.masci.springfx.data;
 
 /**
- *
- * @author Daniel
+ * Identifier of modifiable items.
+ * 
+ * @author Daniel Masek
  */
-public interface MonsterService extends CrudService<MonsterDTO> {
-
-  Optional<MonsterDTO> getById(Long id) throws CrudException;
+public interface Modifiable {
+  
 }
