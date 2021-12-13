@@ -23,6 +23,10 @@
             <artifactId>dto</artifactId>
         </dependency>
         <dependency>
+          <groupId>cz.masci.drd</groupId>
+          <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
             <groupId>cz.masci.springfx</groupId>
             <artifactId>springfx-data</artifactId>
         </dependency>
