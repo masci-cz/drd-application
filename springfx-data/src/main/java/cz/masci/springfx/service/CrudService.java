@@ -55,8 +55,7 @@ public interface CrudService<T extends Modifiable> {
    * Deletes item.
    *
    * @param item Item to delete
-   * @return Deleted item
    * @throws cz.masci.springfx.exception.CrudException
    */
-  T delete(T item) throws CrudException;
+  void delete(T item) throws CrudException;
 }

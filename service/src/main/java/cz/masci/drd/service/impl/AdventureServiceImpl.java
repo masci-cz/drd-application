@@ -36,29 +36,32 @@ public class AdventureServiceImpl extends AbstractService<Adventure, AdventureDT
 
   @Override
   public Optional<AdventureDTO> getById(Long id) throws CrudException {
-    return getOne(() -> adventureRepository.findById(id), mapper::mapToDto);
+    return get(() -> adventureRepository.findById(id));
   }
 
   @Override
   public List<AdventureDTO> list() throws CrudException {
-    return getList(() -> adventureRepository.findAll(), mapper::mapToDto);
+    return list(adventureRepository::findAll);
   }
 
   @Override
   public AdventureDTO save(AdventureDTO item) throws CrudException {
-    return apply(() -> adventureRepository.save(mapper.mapToEntity(item)), mapper::mapToDto);
+    return apply(item, adventureRepository::save);
   }
 
   @Override
-  public AdventureDTO delete(AdventureDTO item) throws CrudException {
-    return apply(
-        () -> {
-          Adventure entity = mapper.mapToEntity(item);
-          adventureRepository.delete(entity);
-          return entity;
-        },
-        mapper::mapToDto
-    );
+  public void delete(AdventureDTO item) throws CrudException {
+    accept(item, adventureRepository::delete);
+  }
+
+  @Override
+  protected Adventure mapToEntity(AdventureDTO item) {
+    return mapper.mapToEntity(item);
+  }
+
+  @Override
+  protected AdventureDTO mapToDto(Adventure item) {
+    return mapper.mapToDto(item);
   }
 
 }

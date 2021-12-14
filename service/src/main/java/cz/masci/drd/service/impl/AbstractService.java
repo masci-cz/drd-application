@@ -20,6 +20,7 @@ import cz.masci.springfx.data.Modifiable;
 import cz.masci.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -35,11 +36,11 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractService<E, T extends Modifiable> {
 
-  protected Optional<T> getOne(Supplier<Optional<E>> entityLoader, Function<E, T> mapper) throws CrudException {
+  protected Optional<T> get(Supplier<Optional<E>> entityLoader) throws CrudException {
     Optional<T> dto;
 
     try {
-      dto = entityLoader.get().map(mapper);
+      dto = entityLoader.get().map(this::mapToDto);
     } catch (Exception ex) {
       throw CrudException.createReadException(ex);
     }
@@ -47,11 +48,11 @@ public abstract class AbstractService<E, T extends Modifiable> {
     return dto;
   }
   
-  protected List<T> getList(Supplier<List<E>> entityLoader, Function<E, T> mapper) throws CrudException {
+  protected List<T> list(Supplier<List<E>> entityLoader) throws CrudException {
     List<T> dtos;
 
     try {
-      dtos = entityLoader.get().stream().map(mapper).collect(Collectors.toList());
+      dtos = entityLoader.get().stream().map(this::mapToDto).collect(Collectors.toList());
     } catch (Exception ex) {
       throw CrudException.createReadException(ex);
     }
@@ -59,15 +60,29 @@ public abstract class AbstractService<E, T extends Modifiable> {
     return dtos;
   }
   
-  protected T apply(Supplier<E> entitySupplier, Function<E, T> mapper) throws CrudException {
+  protected T apply(T item, Function<E, E> entityFunction) throws CrudException {
     T dto;
     
     try {
-      dto = mapper.apply(entitySupplier.get());
+      E entity = mapToEntity(item);
+      dto = mapToDto(entityFunction.apply(entity));
     } catch (Exception ex) {
       throw CrudException.createWriteException(ex);
     }
     
     return dto;
   }
+  
+  protected void accept(T item, Consumer<E> entityConsumer) throws CrudException {
+    try {
+      E entity = mapToEntity(item);
+      entityConsumer.accept(entity);
+    } catch (Exception ex) {
+      throw CrudException.createWriteException(ex);
+    }    
+  }
+  
+  protected abstract E mapToEntity(T item);
+  
+  protected abstract T mapToDto(E item);
 }
