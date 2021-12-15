@@ -26,63 +26,42 @@ import cz.masci.drd.service.MonsterService;
 import cz.masci.drd.service.MonsterMapper;
 import cz.masci.springfx.exception.CrudException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MonsterServiceImpl implements MonsterService {
+public class MonsterServiceImpl extends AbstractService<Monster, MonsterDTO> implements MonsterService {
 
   private final MonsterRepository monsterRepository;
   private final MonsterMapper mapper;
 
   @Override
   public Optional<MonsterDTO> getById(Long id) throws CrudException {
-    Optional<MonsterDTO> monster;
-
-    try {
-      monster = monsterRepository.findById(id).map(test -> mapper.mapToDto(test));
-    } catch (Exception ex) {
-      throw CrudException.createReadException(ex);
-    }
-
-    return monster;
+    return get(() -> monsterRepository.findById(id));
   }
 
   @Override
   public List<MonsterDTO> list() throws CrudException {
-    List<MonsterDTO> monsters;
-
-    try {
-      monsters = monsterRepository.findAll().stream().map(mapper::mapToDto).collect(Collectors.toList());
-    } catch (Exception ex) {
-      throw CrudException.createReadException(ex);
-    }
-
-    return monsters;
+    return list(monsterRepository::findAll);
   }
 
   @Override
   public MonsterDTO save(MonsterDTO monster) throws CrudException {
-    Monster entity;
-    
-    try {
-      entity = monsterRepository.save(mapper.mapToEntity(monster));
-    } catch (Exception ex) {
-      throw CrudException.createWriteException(ex);
-    }
-    
-    return mapper.mapToDto(entity);
+    return apply(monster, monsterRepository::save);
   }
 
   @Override
-  public MonsterDTO delete(MonsterDTO item) throws CrudException {
-    try {
-      monsterRepository.delete(mapper.mapToEntity(item));
-    } catch (Exception ex) {
-      throw CrudException.createWriteException(ex);
-    }
-    
-    return item;
+  public void delete(MonsterDTO monster) throws CrudException {
+    accept(monster, monsterRepository::delete);
+  }
+
+  @Override
+  protected Monster mapToEntity(MonsterDTO item) {
+    return mapper.mapToEntity(item);
+  }
+
+  @Override
+  protected MonsterDTO mapToDto(Monster item) {
+    return mapper.mapToDto(item);
   }
 
 }
