@@ -18,8 +18,10 @@ package cz.masci.drd.service.impl;
 
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.dto.WeaponDTO;
 import cz.masci.drd.model.Adventure;
 import cz.masci.drd.model.Monster;
+import cz.masci.drd.model.Weapon;
 import static cz.masci.drd.service.impl.TestConstants.*;
 
 /**
@@ -76,5 +78,25 @@ public class TestUtils {
       adventure.setName(ADVENTURE_NAME);
       
       return adventure;
+    }
+    
+    public static Weapon createWeaponEntity() {
+      var weapon = new Weapon();
+      weapon.setId(LONG_ID);
+      weapon.setName(WEAPON_NAME);
+      weapon.setStrength(WEAPON_STRENGTH);
+      weapon.setDamage(WEAPON_DAMAGE);
+      
+      return weapon;
+    }
+    
+    public static WeaponDTO createWeapon() {
+      var weapon = new WeaponDTO();
+      weapon.setId(LONG_ID);
+      weapon.setName(WEAPON_NAME);
+      weapon.setStrength(WEAPON_STRENGTH);
+      weapon.setDamage(WEAPON_DAMAGE);
+      
+      return weapon;
     }
 }
