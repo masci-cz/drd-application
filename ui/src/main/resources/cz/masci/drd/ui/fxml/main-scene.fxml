@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-
+<?import javafx.scene.control.*?>
 
 <TabPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
-      <Tab fx:id="tabMonsters" text="Monsters" />
+      <Tab fx:id="tabAdventures" closable="false" text="Dobrodružství" />
+      <Tab fx:id="tabMonsters" closable="false" text="Příšery" />
    </tabs>
 </TabPane>

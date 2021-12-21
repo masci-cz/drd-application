@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.ui.monster;
+package cz.masci.drd.ui.adventure;
 
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.drd.ui.monster.control.MonsterDetailControl;
+import cz.masci.drd.dto.AdventureDTO;
+import cz.masci.drd.ui.adventure.control.AdventureDetailControl;
 import cz.masci.springfx.annotation.FxmlController;
+import cz.masci.springfx.annotation.FxmlRoot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -33,22 +33,26 @@ import org.springframework.stereotype.Component;
 import cz.masci.springfx.service.EditDialogControllerService;
 
 /**
+ * FXML Controller class
  *
  * @author Daniel
  */
 @Component
 @Slf4j
 @Getter
-@FxmlView("fxml/monster-detail-dialog.fxml")
+@FxmlView("fxml/adventure-detail-dialog.fxml")
 @FxmlController
-public class MonsterDetailDialogController implements EditDialogControllerService<MonsterDTO> {
+public class AdventureDetailDialogController implements EditDialogControllerService<AdventureDTO> {
 
   @FXML
   private DialogPane dialog;
 
   @FXML
-  private MonsterDetailControl editor;
+  private AdventureDetailControl editor;
 
+  /**
+   * Initializes the controller class.
+   */
   public void initialize() {
     Button btOk = (Button) dialog.lookupButton(ButtonType.OK);
     btOk.addEventFilter(ActionEvent.ACTION, event -> {
@@ -60,35 +64,16 @@ public class MonsterDetailDialogController implements EditDialogControllerServic
   }
 
   @Override
-  public Callback<ButtonType, MonsterDTO> getResultConverter() {
+  public Callback<ButtonType, AdventureDTO> getResultConverter() {
     return (buttonType) -> {
       if (ButtonType.OK.equals(buttonType) && !editor.isInvalid()) {
-        var monster = new MonsterDTO();
+        var adventure = new AdventureDTO();
 
-        try {
-          monster.setName(editor.getName());
-          monster.setViability(editor.getViability());
-          monster.setAttack(editor.getAttack());
-          monster.setDefence(editor.getDefence());
-          monster.setEndurance(Integer.parseInt(editor.getEndurance()));
-          monster.setDimension(editor.getDimension());
-          monster.setCombativeness(Integer.parseInt(editor.getCombativeness()));
-          monster.setVulnerability(editor.getVulnerability());
-          monster.setMoveability(editor.getMoveability());
-          monster.setStamina(editor.getStamina());
-          monster.setIntelligence(Integer.parseInt(editor.getIntelligence()));
-          monster.setConviction(Integer.parseInt(editor.getConviction()));
-          monster.setTreasure(editor.getTreasure());
-          monster.setExperience(editor.getExperience());
-          monster.setDescription(editor.getDescription());
-        } catch (NumberFormatException numberFormatException) {
-          Alert alert = new Alert(Alert.AlertType.ERROR, "Chyba konverze");
-          alert.showAndWait();
-          return null;
-        }
-        
-        return monster;
+        adventure.setName(editor.getName());
+
+        return adventure;
       }
+      
       return null;
     };
   }

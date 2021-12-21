@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * Annotated class is defined as Fxml Controller and is used for loading fxml as the controller.
+ * 
  * @author Daniel
  */
 @Target(ElementType.TYPE)

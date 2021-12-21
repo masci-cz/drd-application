@@ -34,13 +34,13 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import cz.masci.springfx.service.CrudService;
-import cz.masci.springfx.service.EditControllerService;
 import cz.masci.springfx.data.Modifiable;
 import cz.masci.springfx.exception.CrudException;
 import cz.masci.springfx.utility.StyleChangingRowFactory;
 import java.util.List;
 import javafx.collections.FXCollections;
 import cz.masci.springfx.service.ObservableListMap;
+import cz.masci.springfx.service.EditDialogControllerService;
 
 /**
  * Abstract controller for master-detail view.
@@ -66,7 +66,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   private final FxWeaver fxWeaver;
   private final CrudService<T> itemService;
   private final String itemKey;
-  private final Class<? extends EditControllerService<T>> editControllerClass;
+  private final Class<? extends EditDialogControllerService<T>> editControllerClass;
   private ObservableListMap observableListMap;
 
   @FXML
@@ -87,7 +87,7 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   public void onNewItem(ActionEvent event) {
     log.debug("New item action occured");
 
-    FxControllerAndView<? extends EditControllerService<T>, DialogPane> editor = fxWeaver.load(editControllerClass);
+    FxControllerAndView<? extends EditDialogControllerService<T>, DialogPane> editor = fxWeaver.load(editControllerClass);
     Dialog<T> dialog = new Dialog<>();
     dialog.setTitle("New Item");
     dialog.setDialogPane(editor.getView().get());
