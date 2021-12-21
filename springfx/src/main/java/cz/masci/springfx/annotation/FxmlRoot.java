@@ -25,7 +25,9 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.core.annotation.AliasFor;
 
 /**
- *
+ * Annotated class is defined as root fxml tag also with controller.
+ * It is used as root and controller when loading from fxml.
+ * 
  * @author Daniel
  */
 @Target(ElementType.TYPE)

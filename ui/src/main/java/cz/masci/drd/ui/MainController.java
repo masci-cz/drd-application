@@ -16,6 +16,7 @@
  */
 package cz.masci.drd.ui;
 
+import cz.masci.drd.ui.adventure.AdventureController;
 import cz.masci.drd.ui.monster.MonsterController;
 import cz.masci.springfx.annotation.FxmlController;
 import javafx.fxml.FXML;
@@ -45,11 +46,18 @@ public class MainController {
   private Tab tabMonsters;
 
   @FXML
+  private Tab tabAdventures;
+  
+  @FXML
   public void initialize() {
     log.info("initialize");
 
     FxControllerAndView<MonsterController, BorderPane> monsterView = fxWeaver.load(MonsterController.class);
 
     tabMonsters.setContent(monsterView.getView().get());
+    
+    FxControllerAndView<AdventureController, BorderPane> adventureView = fxWeaver.load(AdventureController.class);
+    
+    tabAdventures.setContent(adventureView.getView().get());
   }
 }

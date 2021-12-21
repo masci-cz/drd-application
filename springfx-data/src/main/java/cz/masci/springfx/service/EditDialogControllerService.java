@@ -28,7 +28,7 @@ import javafx.util.Callback;
  * 
  * @param <T> Edited item type
  */
-public interface EditControllerService<T extends Modifiable> {
+public interface EditDialogControllerService<T extends Modifiable> {
   
   /**
    * Returns converter from {@link javafx.scene.control.ButtonType} to edited item type.
