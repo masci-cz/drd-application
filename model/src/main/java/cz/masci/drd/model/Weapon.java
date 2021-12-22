@@ -14,20 +14,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
+package cz.masci.drd.model;
 
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.drd.model.Monster;
-import org.mapstruct.Mapper;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
  * @author Daniel
  */
-@Mapper(componentModel = "spring")
-public interface MonsterMapper {
-
-  MonsterDTO mapToDto(Monster entity);
-
-  Monster mapToEntity(MonsterDTO monster);
+@Entity
+@Table(name = "WEAPON")
+@Data
+public class Weapon {
+  
+  @Id
+  @GeneratedValue(generator = "native")
+  @GenericGenerator(name = "native", strategy = "native")
+  @Column(name = "WEAPON_ID", nullable = false, updatable = false)
+  private Long id;
+  
+  /**
+   * Weapon name
+   */
+  private String name;
+  /**
+   * Weapon offense number
+   */
+  private Integer strength;
+  /**
+   * Weapon attack number
+   */
+  private Integer damage;
+  
 }

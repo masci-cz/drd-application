@@ -16,18 +16,12 @@
  */
 package cz.masci.drd.service;
 
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.drd.model.Monster;
-import org.mapstruct.Mapper;
+import cz.masci.drd.dto.WeaponDTO;
+import cz.masci.springfx.service.CrudService;
 
 /**
  *
  * @author Daniel
  */
-@Mapper(componentModel = "spring")
-public interface MonsterMapper {
-
-  MonsterDTO mapToDto(Monster entity);
-
-  Monster mapToEntity(MonsterDTO monster);
+public interface WeaponService extends CrudService<WeaponDTO> {
 }

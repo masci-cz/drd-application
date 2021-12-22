@@ -36,4 +36,8 @@ public class TestConstants {
   public static final String MONSTER_NAME = "Monster name";
   
   public static final String ADVENTURE_NAME = "Adventure name";
+  
+  public static final String WEAPON_NAME = "Weapon name";
+  public static final int WEAPON_STRENGTH = 11;
+  public static final int WEAPON_DAMAGE = -5;
 }

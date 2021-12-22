@@ -14,20 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service;
+package cz.masci.drd.persistence;
 
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.drd.model.Monster;
-import org.mapstruct.Mapper;
+import cz.masci.drd.model.Weapon;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Daniel
  */
-@Mapper(componentModel = "spring")
-public interface MonsterMapper {
-
-  MonsterDTO mapToDto(Monster entity);
-
-  Monster mapToEntity(MonsterDTO monster);
+public interface WeaponRepository extends JpaRepository<Weapon, Long> {
 }
