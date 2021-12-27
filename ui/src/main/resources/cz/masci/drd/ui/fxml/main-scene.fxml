@@ -6,5 +6,6 @@
    <tabs>
       <Tab fx:id="tabAdventures" closable="false" text="Dobrodružství" />
       <Tab fx:id="tabMonsters" closable="false" text="Příšery" />
+      <Tab fx:id="tabWeapons" text="Zbraně" />
    </tabs>
 </TabPane>

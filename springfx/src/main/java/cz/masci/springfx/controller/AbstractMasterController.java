@@ -213,7 +213,9 @@ public abstract class AbstractMasterController<T extends Modifiable> {
   public <E extends AbstractDetailController<T>> void setDetailController(Class<E> detailController) {
     FxControllerAndView<E, Node> detailView = fxWeaver.load(detailController);
 
-    borderPane.setCenter(detailView.getView().get());
+    borderPane.setCenter(detailView.getView().orElseThrow(
+        () -> new RuntimeException("There is no view defined for controller " + detailController))
+    );
     detailView.getController().setItemKey(itemKey);
 
     tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

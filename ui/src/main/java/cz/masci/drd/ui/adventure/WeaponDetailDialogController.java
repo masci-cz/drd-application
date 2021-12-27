@@ -16,20 +16,20 @@
  */
 package cz.masci.drd.ui.adventure;
 
-import cz.masci.drd.dto.AdventureDTO;
-import cz.masci.drd.ui.adventure.control.AdventureDetailControl;
+import cz.masci.drd.dto.WeaponDTO;
+import cz.masci.drd.ui.adventure.control.WeaponDetailControl;
 import cz.masci.springfx.annotation.FxmlController;
+import cz.masci.springfx.service.EditDialogControllerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.util.Callback;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-import cz.masci.springfx.service.EditDialogControllerService;
 
 /**
  * FXML Controller class
@@ -37,17 +37,16 @@ import cz.masci.springfx.service.EditDialogControllerService;
  * @author Daniel
  */
 @Component
-@Slf4j
 @Getter
-@FxmlView("fxml/adventure-detail-dialog.fxml")
+@FxmlView("fxml/weapon-detail-dialog.fxml")
 @FxmlController
-public class AdventureDetailDialogController implements EditDialogControllerService<AdventureDTO> {
+public class WeaponDetailDialogController implements EditDialogControllerService<WeaponDTO> {
 
   @FXML
   private DialogPane dialog;
 
   @FXML
-  private AdventureDetailControl editor;
+  private WeaponDetailControl editor;
 
   /**
    * Initializes the controller class.
@@ -63,16 +62,24 @@ public class AdventureDetailDialogController implements EditDialogControllerServ
   }
 
   @Override
-  public Callback<ButtonType, AdventureDTO> getResultConverter() {
+  public Callback<ButtonType, WeaponDTO> getResultConverter() {
     return (buttonType) -> {
       if (ButtonType.OK.equals(buttonType) && !editor.isInvalid()) {
-        var adventure = new AdventureDTO();
+        var weapon = new WeaponDTO();
 
-        adventure.setName(editor.getName());
-
-        return adventure;
+        try {
+          weapon.setName(editor.getName());
+          weapon.setStrength(Integer.parseInt(editor.getStrength()));
+          weapon.setDamage(Integer.parseInt(editor.getDamage()));
+        } catch (NumberFormatException numberFormatException) {
+          Alert alert = new Alert(Alert.AlertType.ERROR, "Chyba konverze");
+          alert.showAndWait();
+          return null;
+        }
+        
+        return weapon;
       }
-      
+
       return null;
     };
   }
