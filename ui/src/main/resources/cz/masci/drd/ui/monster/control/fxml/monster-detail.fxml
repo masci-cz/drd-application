@@ -6,7 +6,7 @@
 
 <fx:root id="GridPane" hgap="5.0" prefHeight="400.0" prefWidth="600.0" type="GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <Label text="Jméno nestvůry" />
-  <TextField fx:id="name" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+  <TextField fx:id="name" GridPane.columnIndex="1" />
   <Label text="Životaschopnost" GridPane.rowIndex="1" />
   <TextField fx:id="viability" GridPane.columnIndex="1" GridPane.rowIndex="1" />
   <Label text="Útočné číslo" GridPane.rowIndex="2" />

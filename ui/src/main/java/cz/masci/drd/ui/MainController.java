@@ -17,9 +17,11 @@
 package cz.masci.drd.ui;
 
 import cz.masci.drd.ui.adventure.AdventureController;
+import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.monster.MonsterController;
 import cz.masci.springfx.annotation.FxmlController;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +51,9 @@ public class MainController {
   private Tab tabAdventures;
   
   @FXML
+  private Tab tabWeapons;
+  
+  @FXML
   public void initialize() {
     log.info("initialize");
 
@@ -59,5 +64,9 @@ public class MainController {
     FxControllerAndView<AdventureController, BorderPane> adventureView = fxWeaver.load(AdventureController.class);
     
     tabAdventures.setContent(adventureView.getView().get());
+    
+    FxControllerAndView<WeaponController, Node> weaponView = fxWeaver.load(WeaponController.class);
+    
+    tabWeapons.setContent(weaponView.getView().get());
   }
 }

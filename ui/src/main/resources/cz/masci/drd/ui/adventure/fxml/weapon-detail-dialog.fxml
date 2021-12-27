@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import impl.org.controlsfx.skin.*?>
+
+<DialogPane fx:id="dialog" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <content>
+    <DecorationPane>
+      <cz.masci.drd.ui.adventure.control.WeaponDetailControl fx:id="editor" />
+    </DecorationPane>
+  </content>
+  <buttonTypes>
+    <ButtonType fx:constant="OK" />
+    <ButtonType fx:constant="CANCEL" />
+  </buttonTypes>
+</DialogPane>
