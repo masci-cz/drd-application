@@ -18,8 +18,6 @@ package cz.masci.drd.persistence;
 
 import cz.masci.drd.model.Adventure;
 import cz.masci.drd.model.Room;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.flywaydb.test.annotation.FlywayTest;
@@ -36,59 +34,37 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 @DataJpaTest
 @Transactional
 @FlywayTest(locationsForMigrate = {Migrations.TEST_MIGRATIONS, Migrations.TEST_DATA})
-public class AdventureRepositoryTest {
+public class RoomRepositoryTest {
 
   @Autowired
   private TestEntityManager entityManager;
 
   @Autowired
-  private AdventureRepository adventureRepository;
-
-  private static Long adventureId;
+  private RoomRepository roomRepository;
 
   @Test
-  public void findById() {
+  void saveAndFind() {
     Adventure adventure = entityManager.persist(createAdventureEntity());
-
-    Optional<Adventure> foundAdventure = adventureRepository.findById(adventure.getId());
-
-    assertTrue(foundAdventure.isPresent());
+    Room room = entityManager.persist(createRoomEntity(adventure));
+    
+    Optional<Room> foundRoom = roomRepository.findById(room.getId());
+    
+    assertTrue(foundRoom.isPresent());
   }
-
-  @Test
-  void findById_rooms() {
-    var adventure = createAdventureEntity();
-    adventure.setRooms(new ArrayList(List.of(createRoomEntity(adventure), createRoomEntity(adventure))));
-    entityManager.persist(adventure);
-
-    Optional<Adventure> foundAdventure = adventureRepository.findById(adventure.getId());
-
-    assertTrue(foundAdventure.isPresent());
-
-    adventure.getRooms().add(createRoomEntity(adventure));
-    adventure.setName("New adventure name");
-    entityManager.persist(adventure);
-
-    foundAdventure = adventureRepository.findById(adventure.getId());
-
-    assertTrue(foundAdventure.isPresent());
-    assertEquals("New adventure name", foundAdventure.get().getName());
-    assertEquals(3, foundAdventure.get().getRooms().size());
-  }
-
+  
   private Adventure createAdventureEntity() {
     var adventure = new Adventure();
     adventure.setName("Adventure name");
-
+    
     return adventure;
   }
-
+  
   private Room createRoomEntity(Adventure adventure) {
     var room = new Room();
     room.setName("Room name");
     room.setAdventure(adventure);
-
+    
     return room;
   }
-
+  
 }

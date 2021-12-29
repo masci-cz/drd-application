@@ -16,13 +16,12 @@
  */
 package cz.masci.drd.model;
 
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -33,19 +32,21 @@ import org.hibernate.annotations.GenericGenerator;
  * @author Daniel
  */
 @Entity
-@Table(name = "ADVENTURE")
+@Table(name = "ROOM")
 @Data
-public class Adventure {
+public class Room {
 
   @Id
   @GeneratedValue(generator = "native")
   @GenericGenerator(name = "native", strategy = "native")
-  @Column(name = "ADVENTURE_ID", nullable = false, updatable = false)
+  @Column(name = "ROOM_ID", nullable = false, updatable = false)
   private Long id;
-  
+
   @NotNull
   private String name;
-
-  @OneToMany(mappedBy = "adventure", cascade = CascadeType.ALL)
-  private List<Room> rooms;
+  
+  @NotNull
+  @ManyToOne
+  @JoinColumn(name = "adventure_id", nullable = false)
+  private Adventure adventure;
 }
