@@ -18,78 +18,74 @@
 package cz.masci.drd.dto;
 
 import cz.masci.springfx.data.Modifiable;
-import java.util.List;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
 
 /**
  *
  * @author Daniel
  */
-public class AdventureDTO implements Modifiable {
+public class RoomDTO implements Modifiable {
 
   /**
-   * Adventure id
+   * Room id
    */
   private LongProperty idProperty;
   /**
-   * Adventure name
+   * Room name
    */
-  private StringProperty nameProperty;  
+  private StringProperty nameProperty;
   /**
-   * Rooms in adventure
+   * Adventure to which the room is associated
    */
-  private ListProperty<RoomDTO> roomsProperty;
-  
+  private ObjectProperty<AdventureDTO> adventureProperty;
+
   public final LongProperty idProperty() {
     if (idProperty == null) {
       idProperty = new SimpleLongProperty();
     }
     return idProperty;
   }
-  
+
   public Long getId() {
     return idProperty().get();
   }
-  
+
   public void setId(Long id) {
     idProperty().set(id);
   }
-  
+
   public final StringProperty nameProperty() {
     if (nameProperty == null) {
       nameProperty = new SimpleStringProperty();
     }
     return nameProperty;
   }
-  
+
   public String getName() {
     return nameProperty().get();
   }
-  
+
   public void setName(String name) {
     nameProperty().set(name);
   }
-  
-  public final ListProperty<RoomDTO> roomsProperty() {
-    if (roomsProperty == null) {
-      roomsProperty = new SimpleListProperty();
+
+  public final ObjectProperty<AdventureDTO> adventureProperty() {
+    if (adventureProperty == null) {
+      adventureProperty = new SimpleObjectProperty();
     }
-    return roomsProperty;
+    return adventureProperty;
   }
-  
-  public List<RoomDTO> getRooms() {
-    return roomsProperty().get();
+
+  public AdventureDTO getAdventure() {
+    return adventureProperty().get();
   }
-  
-  public void setRooms(List<RoomDTO> rooms) {
-    roomsProperty().set(FXCollections.observableArrayList(rooms));
+
+  public void setAdventure(AdventureDTO adventure) {
+    adventureProperty().set(adventure);
   }
 }

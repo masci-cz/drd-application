@@ -18,11 +18,15 @@ package cz.masci.drd.service.impl;
 
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.dto.RoomDTO;
 import cz.masci.drd.dto.WeaponDTO;
 import cz.masci.drd.model.Adventure;
 import cz.masci.drd.model.Monster;
+import cz.masci.drd.model.Room;
 import cz.masci.drd.model.Weapon;
 import static cz.masci.drd.service.impl.TestConstants.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -73,9 +77,23 @@ public class TestUtils {
       return adventure;
     }
     
+    public static Adventure createAdventureEntity(Room room) {
+      var adventure = createAdventureEntity();
+      adventure.setRooms(new ArrayList(List.of(room)));
+      
+      return adventure;
+    }
+    
     public static AdventureDTO createAdventure() {
       var adventure = new AdventureDTO();
       adventure.setName(ADVENTURE_NAME);
+      
+      return adventure;
+    }
+    
+    public static AdventureDTO createAdventure(RoomDTO room) {
+      var adventure = createAdventure();
+      adventure.setRooms(List.of(room));
       
       return adventure;
     }
@@ -98,5 +116,23 @@ public class TestUtils {
       weapon.setDamage(WEAPON_DAMAGE);
       
       return weapon;
+    }
+    
+    public static Room createRoomEntity() {
+      var room = new Room();
+      room.setId(LONG_ID);
+      room.setName(ROOM_NAME);
+      room.setAdventure(createAdventureEntity(room));
+
+      return room;
+    }
+    
+    public static RoomDTO createRoom() {
+      var room = new RoomDTO();
+      room.setId(LONG_ID);
+      room.setName(ROOM_NAME);
+      room.setAdventure(createAdventure(room));
+      
+      return room;
     }
 }
