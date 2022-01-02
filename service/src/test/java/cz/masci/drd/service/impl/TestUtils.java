@@ -77,23 +77,9 @@ public class TestUtils {
       return adventure;
     }
     
-    public static Adventure createAdventureEntity(Room room) {
-      var adventure = createAdventureEntity();
-      adventure.setRooms(new ArrayList(List.of(room)));
-      
-      return adventure;
-    }
-    
     public static AdventureDTO createAdventure() {
       var adventure = new AdventureDTO();
       adventure.setName(ADVENTURE_NAME);
-      
-      return adventure;
-    }
-    
-    public static AdventureDTO createAdventure(RoomDTO room) {
-      var adventure = createAdventure();
-      adventure.getRooms().add(room);
       
       return adventure;
     }
@@ -122,7 +108,7 @@ public class TestUtils {
       var room = new Room();
       room.setId(LONG_ID);
       room.setName(ROOM_NAME);
-      room.setAdventure(createAdventureEntity(room));
+      room.setAdventure(createAdventureEntity());
 
       return room;
     }
@@ -131,7 +117,7 @@ public class TestUtils {
       var room = new RoomDTO();
       room.setId(LONG_ID);
       room.setName(ROOM_NAME);
-      room.setAdventure(createAdventure(room));
+      room.setAdventure(createAdventure());
       
       return room;
     }

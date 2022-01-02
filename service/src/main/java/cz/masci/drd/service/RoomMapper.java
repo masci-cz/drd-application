@@ -19,7 +19,6 @@ package cz.masci.drd.service;
 import cz.masci.drd.dto.RoomDTO;
 import cz.masci.drd.model.Room;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  *
@@ -28,9 +27,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface RoomMapper {
 
-  @Mapping(target = "adventure.rooms", ignore = true)
   RoomDTO mapToDto(Room entity);
 
-  @Mapping(target = "adventure.rooms", ignore = true)
   Room mapToEntity(RoomDTO room);
 }

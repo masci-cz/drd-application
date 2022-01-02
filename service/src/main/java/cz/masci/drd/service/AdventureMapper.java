@@ -17,14 +17,9 @@
 package cz.masci.drd.service;
 
 import cz.masci.drd.dto.AdventureDTO;
-import cz.masci.drd.dto.RoomDTO;
 import cz.masci.drd.model.Adventure;
-import cz.masci.drd.model.Room;
-import java.util.List;
-import java.util.stream.Collectors;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  *
@@ -36,17 +31,4 @@ public interface AdventureMapper {
   AdventureDTO mapToDto(Adventure entity);
 
   Adventure mapToEntity(AdventureDTO adventure);
-
-  RoomDTO roomToRoomDTO(Room room);
-
-  default ObservableList<RoomDTO> roomListToRoomDTOObservableList(List<Room> list) {
-    if (list == null) {
-      return null;
-    }
-
-    ObservableList<RoomDTO> observableList = FXCollections.observableArrayList();
-    observableList.addAll(list.stream().map(this::roomToRoomDTO).collect(Collectors.toList()));
-
-    return observableList;
-  }
 }

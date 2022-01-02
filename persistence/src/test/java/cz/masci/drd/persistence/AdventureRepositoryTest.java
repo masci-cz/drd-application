@@ -17,9 +17,6 @@
 package cz.masci.drd.persistence;
 
 import cz.masci.drd.model.Adventure;
-import cz.masci.drd.model.Room;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.flywaydb.test.annotation.FlywayTest;
@@ -58,14 +55,12 @@ public class AdventureRepositoryTest {
   @Test
   void findById_rooms() {
     var adventure = createAdventureEntity();
-    adventure.setRooms(new ArrayList(List.of(createRoomEntity(adventure), createRoomEntity(adventure))));
     entityManager.persist(adventure);
 
     Optional<Adventure> foundAdventure = adventureRepository.findById(adventure.getId());
 
     assertTrue(foundAdventure.isPresent());
 
-    adventure.getRooms().add(createRoomEntity(adventure));
     adventure.setName("New adventure name");
     entityManager.persist(adventure);
 
@@ -73,7 +68,6 @@ public class AdventureRepositoryTest {
 
     assertTrue(foundAdventure.isPresent());
     assertEquals("New adventure name", foundAdventure.get().getName());
-    assertEquals(3, foundAdventure.get().getRooms().size());
   }
 
   private Adventure createAdventureEntity() {
@@ -81,14 +75,6 @@ public class AdventureRepositoryTest {
     adventure.setName("Adventure name");
 
     return adventure;
-  }
-
-  private Room createRoomEntity(Adventure adventure) {
-    var room = new Room();
-    room.setName("Room name");
-    room.setAdventure(adventure);
-
-    return room;
   }
 
 }
