@@ -93,7 +93,7 @@ public class TestUtils {
     
     public static AdventureDTO createAdventure(RoomDTO room) {
       var adventure = createAdventure();
-      adventure.setRooms(List.of(room));
+      adventure.getRooms().add(room);
       
       return adventure;
     }

@@ -21,6 +21,8 @@ import cz.masci.springfx.data.Modifiable;
 import java.util.List;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.LongProperty;
+import javafx.beans.property.ReadOnlyListProperty;
+import javafx.beans.property.ReadOnlyListPropertyBase;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -46,7 +48,7 @@ public class AdventureDTO implements Modifiable {
   /**
    * Rooms in adventure
    */
-  private ListProperty<RoomDTO> roomsProperty;
+  private ReadOnlyListProperty<RoomDTO> roomsProperty;
   
   public final LongProperty idProperty() {
     if (idProperty == null) {
@@ -78,18 +80,15 @@ public class AdventureDTO implements Modifiable {
     nameProperty().set(name);
   }
   
-  public final ListProperty<RoomDTO> roomsProperty() {
+  public final ReadOnlyListProperty<RoomDTO> roomsProperty() {
     if (roomsProperty == null) {
-      roomsProperty = new SimpleListProperty();
+      roomsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());
     }
     return roomsProperty;
   }
   
-  public List<RoomDTO> getRooms() {
+  public ObservableList<RoomDTO> getRooms() {
     return roomsProperty().get();
   }
   
-  public void setRooms(List<RoomDTO> rooms) {
-    roomsProperty().set(FXCollections.observableArrayList(rooms));
-  }
 }
