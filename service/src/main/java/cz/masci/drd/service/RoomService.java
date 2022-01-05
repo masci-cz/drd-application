@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2022 Daniel
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.persistence;
+package cz.masci.drd.service;
 
-import cz.masci.drd.model.Room;
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import cz.masci.drd.dto.AdventureDTO;
+import cz.masci.drd.dto.RoomDTO;
+import cz.masci.springfx.service.CrudService;
+import javafx.beans.property.ObjectProperty;
 
 /**
  *
  * @author Daniel
  */
-public interface RoomRepository extends JpaRepository<Room, Long> {
-  List<Room> findAllByAdventureId(Long id);
+public interface RoomService extends CrudService<RoomDTO> {
+
+  void setAdventure(AdventureDTO adventure);
+  AdventureDTO getAdventure();
+  ObjectProperty<AdventureDTO> adventureProperty();
 }

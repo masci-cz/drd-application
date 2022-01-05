@@ -41,8 +41,6 @@ public class AdventureRepositoryTest {
   @Autowired
   private AdventureRepository adventureRepository;
 
-  private static Long adventureId;
-
   @Test
   public void findById() {
     Adventure adventure = entityManager.persist(createAdventureEntity());
@@ -60,14 +58,6 @@ public class AdventureRepositoryTest {
     Optional<Adventure> foundAdventure = adventureRepository.findById(adventure.getId());
 
     assertTrue(foundAdventure.isPresent());
-
-    adventure.setName("New adventure name");
-    entityManager.persist(adventure);
-
-    foundAdventure = adventureRepository.findById(adventure.getId());
-
-    assertTrue(foundAdventure.isPresent());
-    assertEquals("New adventure name", foundAdventure.get().getName());
   }
 
   private Adventure createAdventureEntity() {

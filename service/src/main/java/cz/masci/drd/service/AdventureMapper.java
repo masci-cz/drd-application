@@ -19,7 +19,6 @@ package cz.masci.drd.service;
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.model.Adventure;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  *

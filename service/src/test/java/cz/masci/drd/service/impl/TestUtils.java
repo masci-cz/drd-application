@@ -25,8 +25,6 @@ import cz.masci.drd.model.Monster;
 import cz.masci.drd.model.Room;
 import cz.masci.drd.model.Weapon;
 import static cz.masci.drd.service.impl.TestConstants.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -79,6 +77,7 @@ public class TestUtils {
     
     public static AdventureDTO createAdventure() {
       var adventure = new AdventureDTO();
+      adventure.setId(LONG_ID);
       adventure.setName(ADVENTURE_NAME);
       
       return adventure;
@@ -105,19 +104,31 @@ public class TestUtils {
     }
     
     public static Room createRoomEntity() {
-      var room = new Room();
-      room.setId(LONG_ID);
-      room.setName(ROOM_NAME);
+      var room = createRoomEntityWithoutAdventure();
       room.setAdventure(createAdventureEntity());
 
       return room;
     }
     
+    public static Room createRoomEntityWithoutAdventure() {
+      var room = new Room();
+      room.setId(LONG_ID);
+      room.setName(ROOM_NAME);
+
+      return room;
+    }
+    
     public static RoomDTO createRoom() {
+      var room = createRoomWithoutAdventure();
+      room.setAdventure(createAdventure());
+      
+      return room;
+    }
+    
+    public static RoomDTO createRoomWithoutAdventure() {
       var room = new RoomDTO();
       room.setId(LONG_ID);
       room.setName(ROOM_NAME);
-      room.setAdventure(createAdventure());
       
       return room;
     }

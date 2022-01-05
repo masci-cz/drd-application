@@ -18,8 +18,10 @@ package cz.masci.drd.persistence;
 
 import cz.masci.drd.model.Adventure;
 import cz.masci.drd.model.Room;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,7 +45,7 @@ public class RoomRepositoryTest {
   private RoomRepository roomRepository;
 
   @Test
-  void saveAndFind() {
+  void findById() {
     Adventure adventure = entityManager.persist(createAdventureEntity());
     Room room = entityManager.persist(createRoomEntity(adventure));
     
@@ -51,6 +53,20 @@ public class RoomRepositoryTest {
     
     assertTrue(foundRoom.isPresent());
   }
+  
+  @Test
+  void findByAdventure() {
+    Adventure adventure = entityManager.persist(createAdventureEntity());
+    Room room1 = entityManager.persist(createRoomEntity(adventure));
+    Room room2 = entityManager.persist(createRoomEntity(adventure));
+    
+    List<Room> rooms = roomRepository.findAllByAdventureId(adventure.getId());
+    
+    assertThat(rooms)
+        .hasSize(2)
+        .containsExactly(room1, room2);
+  }
+  
   
   private Adventure createAdventureEntity() {
     var adventure = new Adventure();
