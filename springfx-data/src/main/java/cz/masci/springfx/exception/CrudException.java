@@ -29,6 +29,10 @@ public class CrudException extends Exception {
     super(message, cause);
   }
 
+  public CrudException(String message) {
+    super(message);
+  }
+  
   public static final CrudException createReadException(Throwable throwable) {
     return new CrudException(READ_EXCEPTION_TEXT, throwable);
   }

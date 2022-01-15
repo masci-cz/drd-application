@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2022 Daniel
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,32 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.model;
+package cz.masci.drd.service;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import cz.masci.drd.dto.RoomDTO;
+import cz.masci.drd.model.Room;
+import org.mapstruct.Mapper;
 
 /**
  *
  * @author Daniel
  */
-@Entity
-@Table(name = "ADVENTURE")
-@Data
-public class Adventure {
+@Mapper(componentModel = "spring")
+public interface RoomMapper {
 
-  @Id
-  @GeneratedValue(generator = "native")
-  @GenericGenerator(name = "native", strategy = "native")
-  @Column(name = "ADVENTURE_ID", nullable = false, updatable = false)
-  private Long id;
-  
-  @NotNull
-  private String name;
+  RoomDTO mapToDto(Room entity);
+
+  Room mapToEntity(RoomDTO room);
 }

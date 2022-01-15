@@ -14,32 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.model;
+package cz.masci.drd.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import cz.masci.drd.model.Room;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Daniel
  */
-@Entity
-@Table(name = "ADVENTURE")
-@Data
-public class Adventure {
-
-  @Id
-  @GeneratedValue(generator = "native")
-  @GenericGenerator(name = "native", strategy = "native")
-  @Column(name = "ADVENTURE_ID", nullable = false, updatable = false)
-  private Long id;
-  
-  @NotNull
-  private String name;
+public interface RoomRepository extends JpaRepository<Room, Long> {
+  List<Room> findAllByAdventureId(Long id);
 }

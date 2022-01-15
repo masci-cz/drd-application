@@ -40,4 +40,6 @@ public class TestConstants {
   public static final String WEAPON_NAME = "Weapon name";
   public static final int WEAPON_STRENGTH = 11;
   public static final int WEAPON_DAMAGE = -5;
+  
+  public static final String ROOM_NAME = "Room name";
 }

@@ -26,8 +26,8 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface AdventureMapper {
-  
+
   AdventureDTO mapToDto(Adventure entity);
-  
+
   Adventure mapToEntity(AdventureDTO adventure);
 }
