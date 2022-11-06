@@ -32,28 +32,14 @@
       <artifactId>javafx-weaver-spring-boot-starter</artifactId>
     </dependency>
     
-    <!-- open jfx: win -->
+    <!-- open jfx -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <classifier>win</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
-      <classifier>win</classifier>
-    </dependency>
-    
-    <!-- open jfx: linux -->
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <classifier>linux</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-graphics</artifactId>
-      <classifier>linux</classifier>
     </dependency>
   </dependencies>
 </project>

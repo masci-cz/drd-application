@@ -43,14 +43,8 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <classifier>win</classifier>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <classifier>linux</classifier>
-        </dependency>
-                
+
         <!-- masci.cz dependencies -->
         <dependency>
             <groupId>cz.masci.drd</groupId>
