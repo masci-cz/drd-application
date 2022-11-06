@@ -1,207 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.1</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>cz.masci.drd</groupId>
-  <artifactId>drd-application</artifactId>
-  <packaging>pom</packaging>
-  <version>${revision}</version>
-  <name>DrD: * Parent *</name>
-    
-  <modules>
-    <module>app</module>
-    <module>database</module>
-    <module>dto</module>
-    <module>model</module>
-    <module>persistence</module>
-    <module>service</module>
-    <module>ui</module>
-    <module>springfx</module>
-    <module>springfx-data</module>
-  </modules>
-    
-  <properties>
-    <revision>0.0.1-SNAPSHOT</revision>
-    <java.version>16</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.masci.drd</groupId>
+    <artifactId>drd-application</artifactId>
+    <packaging>pom</packaging>
+    <version>${revision}</version>
+    <name>DrD: * Parent *</name>
 
-    <!-- plugin versions -->        
-    <resolve.parent.version.plugin.version>0.8</resolve.parent.version.plugin.version>
-    <jreleaser.version>0.5.0</jreleaser.version>
+    <modules>
+        <module>app</module>
+        <module>database</module>
+        <module>dto</module>
+        <module>model</module>
+        <module>persistence</module>
+        <module>service</module>
+        <module>ui</module>
+        <module>springfx</module>
+        <module>springfx-data</module>
+    </modules>
 
-    <!-- dependency versions -->
-    <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-    <flyway.version>7.0.0</flyway.version>
-    <javafx.weaver.version>1.3.0</javafx.weaver.version>
-    <javafx.version>17.0.0.1</javafx.version>
-    <controlsfx.version>11.1.0</controlsfx.version>
-  </properties>
-    
-  <dependencyManagement>
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <java.version>16</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- plugin versions -->
+        <resolve.parent.version.plugin.version>0.8</resolve.parent.version.plugin.version>
+        <jreleaser.version>1.3.1</jreleaser.version>
+
+        <!-- dependency versions -->
+        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+        <flyway.version>9.7.0</flyway.version>
+        <flyway.spring5.test.version>7.0.0</flyway.spring5.test.version>
+        <javafx.weaver.version>1.3.0</javafx.weaver.version>
+        <javafx.version>17.0.2</javafx.version>
+        <controlsfx.version>11.1.2</controlsfx.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- cz.masci dependencies -->
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>database</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>dto</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>model</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>persistence</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>service</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>ui</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cz.masci.springfx</groupId>
+                <artifactId>master-view-editor</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.springfx</groupId>
+                <artifactId>springfx-data</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- mapstruct dependencies -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.rgielen</groupId>
+                <artifactId>javafx-weaver-spring-boot-starter</artifactId>
+                <version>${javafx.weaver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-controls</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>win</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-fxml</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>win</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-base</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>win</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-graphics</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>win</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-controls</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>linux</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-fxml</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>linux</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-base</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>linux</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-graphics</artifactId>
+                <version>${javafx.version}</version>
+                <classifier>linux</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.controlsfx</groupId>
+                <artifactId>controlsfx</artifactId>
+                <version>${controlsfx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.flywaydb.flyway-test-extensions</groupId>
+                <artifactId>flyway-spring5-test</artifactId>
+                <version>${flyway.spring5.test.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-      <!-- cz.masci dependencies -->
-      <dependency>
-        <groupId>cz.masci.drd</groupId>
-        <artifactId>database</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      <dependency>
-        <groupId>cz.masci.drd</groupId>
-        <artifactId>dto</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      <dependency>
-        <groupId>cz.masci.drd</groupId>
-        <artifactId>model</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      <dependency>
-        <groupId>cz.masci.drd</groupId>
-        <artifactId>persistence</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      <dependency>
-        <groupId>cz.masci.drd</groupId>
-        <artifactId>service</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      <dependency>
-        <groupId>cz.masci.drd</groupId>
-        <artifactId>ui</artifactId>
-        <version>${revision}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>cz.masci.springfx</groupId>
-        <artifactId>master-view-editor</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      <dependency>
-        <groupId>cz.masci.springfx</groupId>
-        <artifactId>springfx-data</artifactId>
-        <version>${revision}</version>
-      </dependency>
-      
-      <!-- mapstruct dependencies -->
-      <dependency>
-        <groupId>org.mapstruct</groupId>
-        <artifactId>mapstruct</artifactId>
-        <version>${org.mapstruct.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mapstruct</groupId>
-        <artifactId>mapstruct-processor</artifactId>
-        <version>${org.mapstruct.version}</version>
-      </dependency>
-            
-      <dependency>
-        <groupId>net.rgielen</groupId>
-        <artifactId>javafx-weaver-spring-boot-starter</artifactId>
-        <version>${javafx.weaver.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>win</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-fxml</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>win</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-base</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>win</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-graphics</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>win</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>linux</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-fxml</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>linux</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-base</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>linux</classifier>
-      </dependency>
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-graphics</artifactId>
-        <version>${javafx.version}</version>
-        <classifier>linux</classifier>
-      </dependency>
-            
-      <dependency>
-        <groupId>org.controlsfx</groupId>
-        <artifactId>controlsfx</artifactId>
-        <version>${controlsfx.version}</version>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.flywaydb.flyway-test-extensions</groupId>
-        <artifactId>flyway-spring5-test</artifactId>
-        <version>${flyway.version}</version>
-        <scope>test</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-  </dependencyManagement>
-    
-  <dependencies>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.hbakkum.maven.plugins</groupId>
-          <artifactId>resolve-parent-version-maven-plugin</artifactId>
-          <version>${resolve.parent.version.plugin.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-        
-    <plugins>
-      <plugin>
-        <groupId>com.hbakkum.maven.plugins</groupId>
-        <artifactId>resolve-parent-version-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>resolve-parent-version</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.hbakkum.maven.plugins</groupId>
+                    <artifactId>resolve-parent-version-maven-plugin</artifactId>
+                    <version>${resolve.parent.version.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>com.hbakkum.maven.plugins</groupId>
+                <artifactId>resolve-parent-version-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resolve-parent-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
