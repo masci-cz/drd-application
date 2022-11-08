@@ -11,6 +11,7 @@
   <groupId>cz.masci.springfx</groupId>
   <artifactId>springfx-data</artifactId>
   <version>${revision}</version>
+
   <name>Spring FX: Data</name>
   <description>Spring FX data and services</description>
     

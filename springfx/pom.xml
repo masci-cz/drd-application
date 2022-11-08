@@ -11,6 +11,7 @@
   <groupId>cz.masci.springfx</groupId>
   <artifactId>master-view-editor</artifactId>
   <version>${revision}</version>
+
   <name>Spring FX: Master View</name>
   <description>Spring FX modules</description>
     

@@ -10,11 +10,47 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>cz.masci.drd</groupId>
     <artifactId>drd-application</artifactId>
-    <packaging>pom</packaging>
     <version>${revision}</version>
+
+    <packaging>pom</packaging>
+
+    <!-- Project name, description and URL -->
     <name>DrD: * Parent *</name>
+    <description>Support application for Draci Doupe desktop game</description>
+    <url>https://github.com/masci-cz/drd-application/</url>
+    <inceptionYear>2022</inceptionYear>
+
+    <!-- License Information -->
+    <licenses>
+        <license>
+            <name>GNU GPL v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+        </license>
+    </licenses>
+
+    <!-- Developer Information-->
+    <developers>
+        <developer>
+            <name>Daniel Mašek</name>
+            <email>daniel@masci.cz</email>
+            <organization>MASCI-CZ</organization>
+            <organizationUrl>https://github.com/masci-cz</organizationUrl>
+            <roles>
+                <role>author</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- Source Code Management information -->
+    <scm>
+        <connection>scm:git:git://github.com/masci-cz/drd-application.git</connection>
+        <developerConnection>scm:git:https://github.com/masci-cz/drd-application.git</developerConnection>
+        <url>https://github.com/masci-cz/drd-application.git/tree/master</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <modules>
         <module>app</module>
@@ -30,7 +66,7 @@
 
     <properties>
         <revision>0.0.1-SNAPSHOT</revision>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- plugin versions -->
@@ -159,6 +195,19 @@
                     <groupId>com.hbakkum.maven.plugins</groupId>
                     <artifactId>resolve-parent-version-maven-plugin</artifactId>
                     <version>${resolve.parent.version.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jreleaser</groupId>
+                    <artifactId>jreleaser-maven-plugin</artifactId>
+                    <version>${jreleaser.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

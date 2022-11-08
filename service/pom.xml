@@ -8,9 +8,9 @@
         <version>${revision}</version>
     </parent>
     
-    <groupId>cz.masci.drd</groupId>
     <artifactId>service</artifactId>
     <version>${revision}</version>
+
     <name>DrD: Service</name>
     <description>DrD Service</description>
     
