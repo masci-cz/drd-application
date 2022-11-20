@@ -29,7 +29,7 @@ Run only assemble
   mvn clean package -Passemble -Drevision=1.0.0 -Djreleaser.dry.run=true
 ```
 
-Run
+Run release
 ```shell
   mvn clean deploy -Passemble -Prelease -Drevision=1.0.0 -Djreleaser.dry.run=true -Djreleaser.signing.mode=FILE
 ```

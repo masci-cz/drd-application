@@ -96,7 +96,6 @@
                 <configuration>
                     <finalName>${project.parent.artifactId}-${project.version}</finalName>
                     <mainClass>cz.masci.drd.app.SpringApplication</mainClass>
-                    <executable>true</executable>
                     <skip>false</skip>
                 </configuration>
                 <executions>
@@ -147,7 +146,7 @@
                                         </environment>
                                         <project>
                                             <java>
-                                                <mainClass>cz.masci.drd.app.SpringApplication</mainClass>
+                                                <mainClass>org.springframework.boot.loader.JarLauncher</mainClass>
                                             </java>
                                         </project>
                                         <assemble>
@@ -160,7 +159,6 @@
                                                     <mainJar>
                                                         <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}-exec.jar</path>
                                                     </mainJar>
-                                                    <templateDirectory>app/src/jreleaser/assemblers/drd-app-jlink/jlink</templateDirectory>
                                                     <moduleNames>
                                                         <moduleName>java.base</moduleName>
                                                         <moduleName>java.desktop</moduleName>
@@ -203,11 +201,6 @@
                                                         <console>true</console>
                                                         <menu>true</menu>
                                                     </windows>
-                                                    <launcher>
-                                                        <launchers>
-                                                            <launcher>drd=drd.properties</launcher>
-                                                        </launchers>
-                                                    </launcher>
                                                 </drd-app>
                                             </jpackage>
                                         </assemble>
@@ -237,7 +230,7 @@
                                     <jreleaser>
                                         <project>
                                             <java>
-                                                <mainClass>cz.masci.drd.app.SpringApplication</mainClass>
+                                                <mainClass>org.springframework.boot.loader.JarLauncher</mainClass>
                                             </java>
                                         </project>
                                         <checksum>
