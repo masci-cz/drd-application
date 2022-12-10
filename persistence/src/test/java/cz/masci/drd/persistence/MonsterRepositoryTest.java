@@ -16,12 +16,12 @@
  */
 package cz.masci.drd.persistence;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import cz.masci.drd.model.Monster;
 import java.util.Optional;
-import javax.transaction.Transactional;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -31,7 +31,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
  * @author Daniel
  */
 @DataJpaTest
-@Transactional
 @FlywayTest(locationsForMigrate = {Migrations.TEST_MIGRATIONS, Migrations.TEST_DATA})
 public class MonsterRepositoryTest {
 
