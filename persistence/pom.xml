@@ -8,9 +8,9 @@
         <version>${revision}</version>
     </parent>
     
-    <groupId>cz.masci.drd</groupId>
     <artifactId>persistence</artifactId>
     <version>${revision}</version>
+
     <name>DrD: Persistence</name>
     <description>DrD Persistence</description>
     
@@ -52,6 +52,11 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbytools</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

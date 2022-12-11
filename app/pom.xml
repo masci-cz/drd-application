@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>cz.masci.drd</groupId>
         <artifactId>drd-application</artifactId>
         <version>${revision}</version>
     </parent>
-    
-    <groupId>cz.masci.drd</groupId>
+
     <artifactId>app</artifactId>
     <version>${revision}</version>
+
     <name>DrD: Application</name>
     <description>DrD Application</description>
-        
+
     <properties>
+        <appName>drd-app</appName>
+        <jreleaser.signing.mode>MEMORY</jreleaser.signing.mode>
     </properties>
-        
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -32,10 +34,15 @@
             <artifactId>derby</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbytools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>net.rgielen</groupId>
             <artifactId>javafx-weaver-spring-boot-starter</artifactId>
@@ -43,14 +50,8 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <classifier>win</classifier>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <classifier>linux</classifier>
-        </dependency>
-                
+
         <!-- masci.cz dependencies -->
         <dependency>
             <groupId>cz.masci.drd</groupId>
@@ -68,7 +69,7 @@
             <groupId>cz.masci.drd</groupId>
             <artifactId>ui</artifactId>
         </dependency>
-        
+
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,7 +101,6 @@
                 <configuration>
                     <finalName>${project.parent.artifactId}-${project.version}</finalName>
                     <mainClass>cz.masci.drd.app.SpringApplication</mainClass>
-                    <executable>true</executable>
                     <skip>false</skip>
                 </configuration>
                 <executions>
@@ -123,38 +123,15 @@
                     <!-- This is an app, so we don't want to install it in the local Maven repository -->
                     <skip>true</skip>
                 </configuration>
-            </plugin>        
+            </plugin>
         </plugins>
     </build>
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>assemble</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.jreleaser</groupId>
-                        <artifactId>jdks-maven-plugin</artifactId>
-                        <version>${jreleaser.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>setup-jdks</goal>
-                                </goals>
-                                <configuration>
-                                    <jdks>
-                                        <jdk>
-                                            <name>adopt16Windows</name>
-                                            <platform>windows</platform>
-                                            <url>https://github.com/AdoptOpenJDK/openjdk16-binaries/releases/download/jdk-16.0.1%2B9/OpenJDK16U-jdk_x64_windows_hotspot_16.0.1_9.zip</url>
-                                            <checksum>0a91e179c4d34b5d905fd2945a21927a6acb798b4e8f2d528ece32c025bbcaff</checksum>
-                                        </jdk>
-                                    </jdks>
-                                </configuration>                                                        
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>org.jreleaser</groupId>
                         <artifactId>jreleaser-maven-plugin</artifactId>
@@ -163,21 +140,23 @@
                             <execution>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>config</goal>
                                     <goal>assemble</goal>
-                                    <goal>full-release</goal>
                                 </goals>
                                 <configuration>
                                     <jreleaser>
-                                        <release>
-                                            <github>
-                                                <tagName>${project.version}</tagName>
-                                                <releaseName>Release v${project.version}</releaseName>
-                                            </github>
-                                        </release>
+                                        <environment>
+                                            <properties>
+                                                <executableJarFile>${project.parent.artifactId}-${project.version}-exec.jar</executableJarFile>
+                                            </properties>
+                                        </environment>
+                                        <project>
+                                            <java>
+                                                <mainClass>org.springframework.boot.loader.JarLauncher</mainClass>
+                                            </java>
+                                        </project>
                                         <assemble>
                                             <jlink>
-                                                <drd-app>
+                                                <drd-app-jlink>
                                                     <active>RELEASE</active>
                                                     <imageName>${project.parent.artifactId}-${project.version}</imageName>
                                                     <executable>${project.parent.artifactId}</executable>
@@ -201,35 +180,81 @@
                                                         <moduleName>jdk.jfr</moduleName>
                                                         <moduleName>jdk.unsupported</moduleName>
                                                     </moduleNames>
-                                                    <targetJdks>
-                                                        <targetJdk>
-                                                            <path>{{ Env.JAVA_HOME }}</path>
-                                                            <platform>linux</platform>
-                                                        </targetJdk>
-                                                        <targetJdk>
-                                                            <path>${project.build.directory}/jdks/jdk-16.0.1+9</path>
-                                                            <platform>windows</platform>
-                                                        </targetJdk>
-                                                    </targetJdks>
-                                                </drd-app>
+                                                </drd-app-jlink>
                                             </jlink>
+                                            <jpackage>
+                                                <drd-app>
+                                                    <active>RELEASE</active>
+                                                    <jlink>drd-app-jlink</jlink>
+                                                    <mainJar>
+                                                        <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}-exec.jar</path>
+                                                    </mainJar>
+                                                    <applicationPackage>
+                                                        <appName>${appName}</appName>
+                                                        <vendor>MASCI</vendor>
+                                                        <appVersion>${project.parent.version}</appVersion>
+                                                    </applicationPackage>
+                                                    <linux>
+                                                        <types>deb,rpm</types>
+                                                        <maintainer>daniel@masci.cz</maintainer>
+                                                    </linux>
+                                                    <windows>
+                                                        <types>msi</types>
+                                                        <appName>${appName}</appName>
+                                                        <installDir>${appName}</installDir>
+                                                        <dirChooser>true</dirChooser>
+                                                        <console>true</console>
+                                                        <menu>true</menu>
+                                                    </windows>
+                                                </drd-app>
+                                            </jpackage>
                                         </assemble>
-                                        <distributions>
-                                            <drd-app>
-                                                <active>RELEASE</active>
-                                                <type>JLINK</type>
-                                                <artifacts>
-                                                    <artifact>
-                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${project.parent.artifactId}-${project.version}-linux.zip</path>
-                                                        <platform>linux</platform>
-                                                    </artifact>
-                                                    <artifact>
-                                                        <path>{{ assembleDirectory }}/{{ distributionName }}/jlink/${project.parent.artifactId}-${project.version}-windows.zip</path>
-                                                        <platform>windows</platform>
-                                                    </artifact>
-                                                </artifacts>
-                                            </drd-app>
-                                        </distributions>
+                                    </jreleaser>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jreleaser</groupId>
+                        <artifactId>jreleaser-maven-plugin</artifactId>
+                        <version>${jreleaser.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>release</goal>
+                                </goals>
+                                <configuration>
+                                    <jreleaser>
+                                        <project>
+                                            <java>
+                                                <mainClass>org.springframework.boot.loader.JarLauncher</mainClass>
+                                            </java>
+                                        </project>
+                                        <checksum>
+                                            <individual>true</individual>
+                                            <name>checksums_${os.name}</name>
+                                        </checksum>
+                                        <signing>
+                                            <active>RELEASE</active>
+                                            <mode>${jreleaser.signing.mode}</mode>
+                                        </signing>
+                                        <release>
+                                            <github>
+                                                <tagName>${project.version}</tagName>
+                                                <releaseName>Release v${project.version}</releaseName>
+                                                <update>
+                                                    <enabled>true</enabled>
+                                                </update>
+                                            </github>
+                                        </release>
                                     </jreleaser>
                                 </configuration>
                             </execution>
@@ -239,5 +264,5 @@
             </build>
         </profile>
     </profiles>
-    
+
 </project>

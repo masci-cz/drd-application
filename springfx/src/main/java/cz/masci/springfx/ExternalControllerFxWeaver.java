@@ -33,14 +33,13 @@ import net.rgielen.fxweaver.core.FxLoadException;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import net.rgielen.fxweaver.core.SimpleFxControllerAndView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Component;
 
 /**
- * Extending FxWeaver class to be able load fxml files only without controller
+ * Extending FxWeaver class to be able to load fxml files only without controller
  * specification fx:controller. It set FXMLLoader controller before loading fxml
  * file.
  *
@@ -53,7 +52,6 @@ public class ExternalControllerFxWeaver extends FxWeaver {
   private final Callback<Class<?>, Object> beanFactory;
   private final BuilderFactory builderFactory;
 
-  @Autowired
   public ExternalControllerFxWeaver(ConfigurableApplicationContext context) {
     super(context::getBean, context::close);
 

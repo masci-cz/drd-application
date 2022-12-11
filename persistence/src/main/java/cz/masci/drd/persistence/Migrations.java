@@ -16,13 +16,13 @@
  */
 package cz.masci.drd.persistence;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 /**
  *
  * @author Daniel
  */
-@ConfigurationProperties
+@ConfigurationPropertiesScan
 public class Migrations {
 
     static final String TEST_MIGRATIONS = "classpath:db/migration";

@@ -4,9 +4,18 @@ spring:
     web-application-type: none
 
   datasource:
-    url: jdbc:derby:directory:drd-db;create=true
+    url: jdbc:derby:drd-db;create=true
     username: drd
-    
+
 #  flyway:
 #    enabled: true
 #    locations: "classpath:db/migration"
+
+db:
+  folder:
+    home: ${DERBY_SYSTEM_HOME:${user.home}}
+    app: ".drd"
+
+logging:
+  level:
+    cz.masci.drd.listener: debug
