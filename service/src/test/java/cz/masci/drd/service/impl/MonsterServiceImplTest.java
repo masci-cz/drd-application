@@ -20,7 +20,7 @@ import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterMapper;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;

@@ -16,11 +16,10 @@
  */
 package cz.masci.drd.ui.adventure;
 
+import cz.masci.commons.springfx.controller.AbstractDetailController;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.ui.adventure.control.AdventureDetailControl;
-import cz.masci.springfx.annotation.FxmlController;
-import cz.masci.springfx.controller.AbstractDetailController;
-import cz.masci.springfx.service.ObservableListMap;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -41,10 +40,6 @@ public class AdventureDetailEditorController extends AbstractDetailController<Ad
 
   @FXML
   private AdventureDetailControl editor;
-
-  public AdventureDetailEditorController(ObservableListMap observableListMap) {
-    super(observableListMap);
-  }
 
   @Override
   protected List<ObservableValue<String>> initObservableValues() {

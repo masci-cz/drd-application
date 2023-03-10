@@ -16,10 +16,10 @@
  */
 package cz.masci.drd.ui;
 
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.adventure.AdventureController;
 import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.monster.MonsterController;
-import cz.masci.springfx.annotation.FxmlController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -58,15 +58,12 @@ public class MainController {
     log.info("initialize");
 
     FxControllerAndView<MonsterController, BorderPane> monsterView = fxWeaver.load(MonsterController.class);
+    monsterView.getView().ifPresent(tabMonsters::setContent);
 
-    tabMonsters.setContent(monsterView.getView().get());
-    
     FxControllerAndView<AdventureController, BorderPane> adventureView = fxWeaver.load(AdventureController.class);
-    
-    tabAdventures.setContent(adventureView.getView().get());
-    
+    adventureView.getView().ifPresent(tabAdventures::setContent);
+
     FxControllerAndView<WeaponController, Node> weaponView = fxWeaver.load(WeaponController.class);
-    
-    tabWeapons.setContent(weaponView.getView().get());
+    weaponView.getView().ifPresent(tabWeapons::setContent);
   }
 }

@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cz.masci.springfx.SpringFxAutoConfiguration

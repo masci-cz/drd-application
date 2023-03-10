@@ -22,7 +22,7 @@ import cz.masci.drd.model.Room;
 import cz.masci.drd.persistence.RoomRepository;
 import cz.masci.drd.service.RoomMapper;
 import cz.masci.drd.service.RoomService;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

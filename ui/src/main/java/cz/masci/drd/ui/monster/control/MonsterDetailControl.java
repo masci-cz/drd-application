@@ -16,7 +16,7 @@
  */
 package cz.masci.drd.ui.monster.control;
 
-import cz.masci.springfx.annotation.FxmlRoot;
+import cz.masci.commons.springfx.fxml.annotation.FxmlRoot;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;

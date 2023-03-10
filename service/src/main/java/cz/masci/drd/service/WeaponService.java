@@ -17,7 +17,7 @@
 package cz.masci.drd.service;
 
 import cz.masci.drd.dto.WeaponDTO;
-import cz.masci.springfx.service.CrudService;
+import cz.masci.commons.springfx.service.CrudService;
 
 /**
  *

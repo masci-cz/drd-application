@@ -16,10 +16,10 @@
  */
 package cz.masci.drd.ui.monster;
 
+import cz.masci.commons.springfx.controller.AbstractMasterController;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.service.MonsterService;
-import cz.masci.springfx.annotation.FxmlController;
-import cz.masci.springfx.controller.AbstractMasterController;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
   private TableColumn<MonsterDTO, String> description;
 
   public MonsterController(FxWeaver fxWeaver, MonsterService itemService) {
-    super(fxWeaver, itemService, MonsterDTO.class.getSimpleName(), MonsterDetailDialogController.class);
+    super(fxWeaver, itemService, MonsterDetailDialogController.class);
   }
 
   @Override
@@ -55,7 +55,7 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
     description.setPrefWidth(200.0);
     description.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-    addCollumns(name, description);
+    addColumns(name, description);
 
     setDetailController(MonsterDetailEditorController.class);
     setRowFactory("edited-row");

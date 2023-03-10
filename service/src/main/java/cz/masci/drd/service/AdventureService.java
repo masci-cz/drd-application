@@ -17,8 +17,8 @@
 package cz.masci.drd.service;
 
 import cz.masci.drd.dto.AdventureDTO;
-import cz.masci.springfx.exception.CrudException;
-import cz.masci.springfx.service.CrudService;
+import cz.masci.commons.springfx.exception.CrudException;
+import cz.masci.commons.springfx.service.CrudService;
 import java.util.Optional;
 
 /**

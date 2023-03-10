@@ -17,7 +17,7 @@
  */
 package cz.masci.drd.dto;
 
-import cz.masci.springfx.data.Modifiable;
+import cz.masci.commons.springfx.data.Modifiable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleIntegerProperty;

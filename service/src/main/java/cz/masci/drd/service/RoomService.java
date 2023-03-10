@@ -18,7 +18,7 @@ package cz.masci.drd.service;
 
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.dto.RoomDTO;
-import cz.masci.springfx.service.CrudService;
+import cz.masci.commons.springfx.service.CrudService;
 import javafx.beans.property.ObjectProperty;
 
 /**
