@@ -19,8 +19,8 @@
     
     <dependencies>
         <dependency>
-            <groupId>cz.masci.springfx</groupId>
-            <artifactId>springfx-data</artifactId>
+            <groupId>cz.masci.commons</groupId>
+            <artifactId>commons-springfx-data</artifactId>
         </dependency>
     </dependencies>
 </project>

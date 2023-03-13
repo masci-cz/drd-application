@@ -21,7 +21,7 @@ import cz.masci.drd.model.Adventure;
 import cz.masci.drd.persistence.AdventureRepository;
 import cz.masci.drd.service.AdventureMapper;
 import cz.masci.drd.service.AdventureService;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

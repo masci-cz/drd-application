@@ -21,7 +21,7 @@ import cz.masci.drd.dto.RoomDTO;
 import cz.masci.drd.model.Room;
 import cz.masci.drd.persistence.RoomRepository;
 import cz.masci.drd.service.RoomMapper;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;

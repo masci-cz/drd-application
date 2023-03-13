@@ -21,7 +21,7 @@ import cz.masci.drd.model.Weapon;
 import cz.masci.drd.persistence.WeaponRepository;
 import cz.masci.drd.service.WeaponMapper;
 import cz.masci.drd.service.WeaponService;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

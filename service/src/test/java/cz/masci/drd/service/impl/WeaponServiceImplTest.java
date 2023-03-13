@@ -20,7 +20,7 @@ import cz.masci.drd.dto.WeaponDTO;
 import cz.masci.drd.model.Weapon;
 import cz.masci.drd.persistence.WeaponRepository;
 import cz.masci.drd.service.WeaponMapper;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;

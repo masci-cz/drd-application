@@ -16,15 +16,15 @@
  */
 package cz.masci.drd.ui.adventure;
 
+import cz.masci.commons.springfx.controller.AbstractMasterController;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.drd.dto.AdventureDTO;
-import cz.masci.springfx.annotation.FxmlController;
-import cz.masci.springfx.controller.AbstractMasterController;
-import cz.masci.springfx.service.CrudService;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  *
@@ -38,7 +38,7 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
   private TableColumn<AdventureDTO, String> name;
 
   public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
-    super(fxWeaver, itemService, AdventureDTO.class.getSimpleName(), AdventureDetailDialogController.class);
+    super(fxWeaver, itemService, AdventureDetailDialogController.class);
   }
   
   
@@ -48,7 +48,7 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
     name.setPrefWidth(250);
     name.setCellValueFactory(new PropertyValueFactory<>("name"));
     
-    addCollumns(name);
+    addColumns(name);
     
     setDetailController(AdventureDetailEditorController.class);
     setRowFactory("edited-row");

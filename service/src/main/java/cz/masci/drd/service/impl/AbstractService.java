@@ -16,8 +16,8 @@
  */
 package cz.masci.drd.service.impl;
 
-import cz.masci.springfx.data.Modifiable;
-import cz.masci.springfx.exception.CrudException;
+import cz.masci.commons.springfx.data.Modifiable;
+import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;

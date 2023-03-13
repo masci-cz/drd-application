@@ -16,11 +16,10 @@
  */
 package cz.masci.drd.ui.adventure;
 
+import cz.masci.commons.springfx.controller.AbstractDetailController;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.WeaponDTO;
 import cz.masci.drd.ui.adventure.control.WeaponDetailControl;
-import cz.masci.springfx.annotation.FxmlController;
-import cz.masci.springfx.controller.AbstractDetailController;
-import cz.masci.springfx.service.ObservableListMap;
 import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -40,10 +39,6 @@ public class WeaponDetailEditorController extends AbstractDetailController<Weapo
   @FXML
   private WeaponDetailControl editor;
 
-  public WeaponDetailEditorController(ObservableListMap observableListMap) {
-    super(observableListMap);
-  }
-  
   @Override
   protected List<ObservableValue<String>> initObservableValues() {
     return List.of(

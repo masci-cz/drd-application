@@ -16,10 +16,10 @@
  */
 package cz.masci.drd.ui.adventure;
 
+import cz.masci.commons.springfx.controller.AbstractMasterController;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.drd.dto.WeaponDTO;
-import cz.masci.springfx.annotation.FxmlController;
-import cz.masci.springfx.controller.AbstractMasterController;
-import cz.masci.springfx.service.CrudService;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -38,7 +38,7 @@ public class WeaponController extends AbstractMasterController<WeaponDTO> {
   private TableColumn<WeaponDTO, Integer> damage;
 
   public WeaponController(FxWeaver fxWeaver, CrudService<WeaponDTO> itemService) {
-    super(fxWeaver, itemService, WeaponDTO.class.getSimpleName(), WeaponDetailDialogController.class);
+    super(fxWeaver, itemService, WeaponDetailDialogController.class);
   }
 
   
@@ -56,7 +56,7 @@ public class WeaponController extends AbstractMasterController<WeaponDTO> {
     damage.setPrefWidth(100.0);
     damage.setCellValueFactory(new PropertyValueFactory<>("damage"));
     
-    addCollumns(name, strength, damage);
+    addColumns(name, strength, damage);
     
     setDetailController(WeaponDetailEditorController.class);
     setRowFactory("edited-row");
