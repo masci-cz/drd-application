@@ -63,6 +63,11 @@ public class BattleServiceImpl implements BattleService {
   }
 
   @Override
+  public void exitBattle() {
+    state = BattleState.NEW;
+  }
+
+  @Override
   public void startRound() throws BattleException {
     checkState(BattleState.PREPARATION, "start battle");
     // check all duellist has set some action
@@ -133,6 +138,17 @@ public class BattleServiceImpl implements BattleService {
     }
 
     group.setInitiative(value);
+  }
+
+  @Override
+  public Integer getGroupInitiative(String name) throws BattleException {
+    var group = groups.get(name);
+
+    if (group == null) {
+      throw new BattleException("Initiative can not be gotten on non existing group");
+    }
+
+    return group.getInitiative();
   }
 
   @Override

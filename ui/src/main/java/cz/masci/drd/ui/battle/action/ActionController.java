@@ -17,38 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto;
+package cz.masci.drd.ui.battle.action;
 
-import cz.masci.drd.dto.actions.Action;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Data;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
 
-@Data
-public class DuellistDTO {
-  /**
-   * Name of the duellist
-   */
-  String name;
-  /**
-   * Selected action for next round
-   */
-  Action selectedAction;
-  List<WeaponDTO> weapons = new ArrayList<>();
-  /**
-   * Original live count
-   */
-  int originalLive;
-  /**
-   * Current live count
-   */
-  int currentLive;
-  /**
-   * Defense number
-   */
-  int defense;
-  /**
-   * Temporal attribute for offense number
-   */
-  int attack;
+@Component
+@FxmlController
+@FxmlView("fxml/action.fxml")
+public class ActionController {
+  @FXML
+  public void setAction(ActionEvent event) {
+    // TODO: set duellist action
+  }
 }

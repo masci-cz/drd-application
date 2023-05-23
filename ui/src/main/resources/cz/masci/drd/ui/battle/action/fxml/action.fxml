@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+  ~ Copyright (c) 2023
+  ~
+  ~ This file is part of DrD.
+  ~
+  ~ DrD is free software: you can redistribute it and/or modify it under the
+  ~ terms of the GNU General Public License as published by the Free
+  ~  Software Foundation, either version 3 of the License, or (at your option)
+  ~   any later version.
+  ~
+  ~ DrD is distributed in the hope that it will be useful, but WITHOUT ANY
+  ~  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  ~   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
+  ~    License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+
+<HBox fillHeight="false" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox spacing="10.0">
+         <children>
+            <Label text="Skupina">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Bojovnik">
+               <VBox.margin>
+                  <Insets top="7.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Zbran">
+               <VBox.margin>
+                  <Insets top="7.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+         <children>
+            <ComboBox fx:id="group" prefWidth="150.0" />
+            <ComboBox fx:id="duellist" prefWidth="150.0" />
+            <ComboBox fx:id="weapon" prefWidth="150.0" />
+            <Button mnemonicParsing="false" onAction="#setAction" text="Nastavit akci" />
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</HBox>

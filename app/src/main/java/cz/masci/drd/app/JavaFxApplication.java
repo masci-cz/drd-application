@@ -17,6 +17,8 @@
 package cz.masci.drd.app;
 
 import cz.masci.drd.ui.MainController;
+import cz.masci.drd.ui.battle.BattleController;
+import cz.masci.drd.ui.battle.BattleNewController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -48,7 +50,8 @@ public class JavaFxApplication extends Application {
   public void start(Stage stage) throws Exception {
     System.out.println("JavaFxApplication - start");
     FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-    Parent root = fxWeaver.loadView(MainController.class);
+//    Parent root = fxWeaver.loadView(MainController.class);
+    Parent root = fxWeaver.loadView(BattleNewController.class);
     Scene scene = new Scene(root);
     scene.getStylesheets().add("table-detail.css");
     stage.setScene(scene);

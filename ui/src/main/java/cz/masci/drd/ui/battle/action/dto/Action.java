@@ -17,38 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto;
+package cz.masci.drd.ui.battle.action.dto;
 
-import cz.masci.drd.dto.actions.Action;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Data;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Data
-public class DuellistDTO {
-  /**
-   * Name of the duellist
-   */
-  String name;
-  /**
-   * Selected action for next round
-   */
-  Action selectedAction;
-  List<WeaponDTO> weapons = new ArrayList<>();
-  /**
-   * Original live count
-   */
-  int originalLive;
-  /**
-   * Current live count
-   */
-  int currentLive;
-  /**
-   * Defense number
-   */
-  int defense;
-  /**
-   * Temporal attribute for offense number
-   */
-  int attack;
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Action {
 }

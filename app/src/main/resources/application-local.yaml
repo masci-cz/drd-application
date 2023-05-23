@@ -1,2 +1,10 @@
 # override base configuration
 DERBY_SYSTEM_HOME: data
+
+logging:
+  level:
+    cz:
+      masci:
+        commons:
+          springfx:
+            autoconfigure: DEBUG

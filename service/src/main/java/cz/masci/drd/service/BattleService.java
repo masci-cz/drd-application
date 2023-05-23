@@ -44,6 +44,11 @@ public interface BattleService {
   void startBattle() throws BattleException;
 
   /**
+   * <p>Exit battle in any state</p>
+   */
+  void exitBattle();
+
+  /**
    * <p>Start next round</p>
    * <p>Checks the battle state and preparation for next step.</p>
    * <p><b>CONDITION:</b> Each group has to have set initiative and all duellists has to have assigned action</p>
@@ -85,6 +90,15 @@ public interface BattleService {
    * @throws BattleException Throws an error when the group doesn't exist and battle state is not {@link BattleState#PREPARATION}
    */
   void setGroupInitiative(String name, int value) throws BattleException;
+
+  /**
+   * <p>Get group initiative</p>
+   *
+   * @param name Group name
+   * @return Group initiative
+   * @throws BattleException Throws an error when the group doesn't exist and battle state is not {@link BattleState#PREPARATION}
+   */
+  Integer getGroupInitiative(String name) throws BattleException;
 
   /**
    * <p>Return duellist list for specified group</p>
