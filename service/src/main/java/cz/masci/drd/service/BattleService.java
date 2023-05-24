@@ -122,4 +122,6 @@ public interface BattleService {
    * @return Action list
    */
   Queue<Action> getActions();
+
+  void addGroupList(List<String> groupNames) throws BattleException;
 }

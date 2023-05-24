@@ -122,6 +122,13 @@ public class BattleServiceImpl implements BattleService {
   }
 
   @Override
+  public void addGroupList(List<String> groupNames) throws BattleException {
+    for (var name: groupNames) {
+      addGroup(name);
+    }
+  }
+
+  @Override
   public void removeGroup(String name) throws BattleException {
     checkState(BattleState.NEW, "remove group");
 
