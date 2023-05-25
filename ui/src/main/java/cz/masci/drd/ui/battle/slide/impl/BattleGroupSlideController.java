@@ -17,10 +17,14 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.control;
+package cz.masci.drd.ui.battle.slide.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import java.util.List;
+import cz.masci.drd.dto.BattleState;
+import cz.masci.drd.service.BattleService;
+import cz.masci.drd.service.exception.BattleException;
+import cz.masci.drd.ui.battle.slide.BattleSlideController;
+import cz.masci.drd.ui.util.slide.SlideService;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,17 +32,23 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import lombok.RequiredArgsConstructor;
+import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-@FxmlView("fxml/battle-group-editor.fxml")
+@FxmlView("fxml/battle-group-slide.fxml")
 @FxmlController
-public class BattleGroupEditor {
+@RequiredArgsConstructor
+public class BattleGroupSlideController implements BattleSlideController {
+
+  private final FxWeaver fxWeaver;
 
   @FXML
   private TextField txtName;
@@ -53,29 +63,69 @@ public class BattleGroupEditor {
 
   private final BooleanProperty filledNameProperty = new SimpleBooleanProperty();
   private final BooleanProperty selectedNameProperty = new SimpleBooleanProperty();
-  private final BooleanProperty validProperty = new SimpleBooleanProperty();
-//  private final ObservableList<String> groups = FXCollections.observableList(new ArrayList<>());
+  private final BooleanProperty validNextProperty = new SimpleBooleanProperty();
 
-  public BooleanProperty validProperty() {
-    return validProperty;
+  // region interface
+
+  @Override
+  public void onPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+    // For now do nothing
   }
 
+  @Override
+  public void onNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+    // don't create
+    if (battleService.getState() == null) {
+      battleService.createBattle();
+
+      try {
+        var groupList = lstGroups.getItems().stream().toList();
+        battleService.addGroupList(groupList);
+        groupList.forEach(name -> {
+          var battleDuellistEditorNodeFxControllerAndView = fxWeaver.load(BattleDuellistSlideController.class);
+          slideService.getControllerAndViewList().add(battleDuellistEditorNodeFxControllerAndView);
+        });
+      } catch (BattleException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  @Override
   public String getTitle() {
     return "Skupiny";
   }
 
-  public List<String> getGroupNames() {
-    return lstGroups.getItems().stream().toList();
+
+  @Override
+  public String getPrevTitle() {
+    return null;
   }
+
+  @Override
+  public String getNextTitle() {
+    return "Bojovníci";
+  }
+
+  @Override
+  public BooleanProperty validPrevProperty() {
+    return new SimpleBooleanProperty(false);
+  }
+
+  @Override
+  public BooleanProperty validNextProperty() {
+    return validNextProperty;
+  }
+
+  // endregion
+
+  // region FXML
 
   @FXML
   private void initialize() {
     btnAdd.setDisable(true);
     btnEdit.setDisable(true);
     btnDelete.setDisable(true);
-
-    // init list
-//    lstGroups.setItems(groups);
 
     // init listeners
     txtName.textProperty().addListener(nonEmptyStringChangeListener());
@@ -91,7 +141,6 @@ public class BattleGroupEditor {
   @FXML
   private void onAddGroup(ActionEvent event) {
     if (isFilledName()) {
-//      groups.add(txtName.getText());
       lstGroups.getItems().add(txtName.getText());
       txtName.setText(null);
       txtName.requestFocus();
@@ -102,7 +151,6 @@ public class BattleGroupEditor {
   private void onEditGroup(ActionEvent event) {
     if (isFilledName() && isSelectedName()) {
       var index = lstGroups.getSelectionModel().getSelectedIndex();
-//      groups.set(index, txtName.getText());
       lstGroups.getItems().set(index, txtName.getText());
       lstGroups.getSelectionModel().clearSelection();
     }
@@ -112,11 +160,14 @@ public class BattleGroupEditor {
   private void onDeleteGroup(ActionEvent event) {
     if (isSelectedName()) {
       var index = lstGroups.getSelectionModel().getSelectedIndex();
-//      groups.remove(index);
       lstGroups.getItems().remove(index);
       lstGroups.getSelectionModel().clearSelection();
     }
   }
+
+  // endregion
+
+  // region utils
 
   private ChangeListener<String> nonEmptyStringChangeListener() {
     return (observable, oldValue, newValue) ->
@@ -130,7 +181,7 @@ public class BattleGroupEditor {
 
   private ListChangeListener<String> groupListChangeListener() {
     return change ->
-        validProperty.setValue(change.getList().size() > 1);
+        validNextProperty.setValue(change.getList().size() > 1);
   }
 
   private boolean isFilledName() {
@@ -140,4 +191,6 @@ public class BattleGroupEditor {
   private boolean isSelectedName() {
     return selectedNameProperty.get();
   }
+
+  // endregion
 }

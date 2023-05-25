@@ -40,7 +40,7 @@
       <FlowPane hgap="10.0" prefHeight="23.0" prefWidth="600.0" VBox.vgrow="NEVER">
          <children>
             <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#onAddGroup" text="Přidat" />
-            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#onEditGroup" text="Změnit" />
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#onEditGroup" text="Upravit" />
             <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#onDeleteGroup" text="Smazat" />
          </children>
       </FlowPane>

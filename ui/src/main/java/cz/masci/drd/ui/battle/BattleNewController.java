@@ -21,13 +21,13 @@ package cz.masci.drd.ui.battle;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.service.BattleService;
-import cz.masci.drd.service.exception.BattleException;
-import cz.masci.drd.ui.battle.control.BattleDuellistEditor;
-import cz.masci.drd.ui.battle.control.BattleGroupEditor;
+import cz.masci.drd.ui.battle.slide.BattleSlideController;
+import cz.masci.drd.ui.battle.slide.impl.BattleGroupSlideController;
 import cz.masci.drd.ui.util.slide.SlideService;
 import javafx.beans.binding.BooleanExpression;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -45,8 +45,7 @@ public class BattleNewController {
 
   private final FxWeaver fxWeaver;
   private final BattleService battleService;
-  private SlideService slideService;
-  private BattleGroupEditor battleGroupEditor;
+  private SlideService<BattleSlideController, Node> slideService;
 
   @FXML
   private BorderPane mainPane;
@@ -66,42 +65,44 @@ public class BattleNewController {
     btnNext.setDisable(true);
 
     // load battle group editor
-    var battleGroupEditorLoader = fxWeaver.load(BattleGroupEditor.class);
-    var battleGroupEditorView = battleGroupEditorLoader.getView().orElseThrow();
-    centerPane.getChildren().add(battleGroupEditorView);
-
-    // init listeners
-    battleGroupEditor = battleGroupEditorLoader.getController();
-    btnNext.disableProperty().bind(BooleanExpression.booleanExpression(battleGroupEditor.validProperty()).not());
-
-    // init label
-    lblTitle.setText(battleGroupEditor.getTitle());
+    var battleGroupSlideControllerAndView = fxWeaver.load(BattleGroupSlideController.class);
 
     // init slide service
-    slideService = new SlideService(mainPane.widthProperty());
-    slideService.getNodeList().add(battleGroupEditorView);
+    slideService = new SlideService<>(mainPane.widthProperty(), centerPane);
+    slideService.getControllerAndViewList().add(battleGroupSlideControllerAndView);
+
+    // init controls
+    initControls();
   }
 
   @FXML
   private void onNext(Event event) {
-    battleService.createBattle();
-    try {
-      battleService.addGroupList(battleGroupEditor.getGroupNames());
-      battleGroupEditor.getGroupNames().forEach(name -> {
-        var battleDuellistEditorNodeFxControllerAndView = fxWeaver.load(BattleDuellistEditor.class);
-        var node = battleDuellistEditorNodeFxControllerAndView.getView().orElseThrow();
-        slideService.getNodeList().add(node);
-        centerPane.getChildren().add(node);
-      });
-
-      slideService.next();
-    } catch (BattleException e) {
-      throw new RuntimeException(e);
-    }
+      slideService.next(
+          ssPre -> slideService.getCurrentController().onNext(battleService, ssPre),
+          ssPost -> initControls()
+      );
   }
 
   @FXML
   private void onPrev(Event event) {
-    slideService.prev();
+    slideService.prev(
+        ssPre -> slideService.getCurrentController().onPrev(battleService, ssPre),
+        ssPost -> initControls()
+    );
+  }
+
+  private void initControls() {
+    var battleSlideController = slideService.getCurrentController();
+
+    btnPrev.setText(battleSlideController.getPrevTitle());
+    btnPrev.disableProperty().unbind();
+    btnPrev.disableProperty().bind(BooleanExpression.booleanExpression(battleSlideController.validPrevProperty()).not());
+    btnNext.setText(battleSlideController.getNextTitle());
+    btnNext.disableProperty().unbind();
+    btnNext.disableProperty().bind(BooleanExpression.booleanExpression(battleSlideController.validNextProperty()).not());
+
+    // init label
+    lblTitle.setText(battleSlideController.getTitle());
   }
 }
+

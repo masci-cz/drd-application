@@ -17,19 +17,15 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.control;
+package cz.masci.drd.ui.battle.slide;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import lombok.extern.slf4j.Slf4j;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import cz.masci.drd.service.BattleService;
+import cz.masci.drd.ui.util.slide.SlideService;
+import javafx.scene.Node;
 
-@Component
-@Scope("prototype")
-@FxmlView("fxml/battle-duellist-editor.fxml")
-@FxmlController
-@Slf4j
-public class BattleDuellistEditor {
+public interface BattleSlideController extends SlideController {
 
+  void onPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
+
+  void onNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
 }
