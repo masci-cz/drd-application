@@ -20,12 +20,17 @@
 package cz.masci.drd.ui.battle.slide.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
 import cz.masci.drd.ui.util.slide.SlideService;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.scene.Node;
+import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
@@ -35,8 +40,13 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @FxmlView("fxml/battle-duellist-slide.fxml")
 @FxmlController
+@Data
 @Slf4j
 public class BattleDuellistSlideController implements BattleSlideController {
+
+  @Getter
+  private BooleanProperty lastGroup = new SimpleBooleanProperty();
+  private GroupDTO group;
 
   @Override
   public void onPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
@@ -64,12 +74,20 @@ public class BattleDuellistSlideController implements BattleSlideController {
   }
 
   @Override
-  public BooleanProperty validPrevProperty() {
+  public ObservableBooleanValue validPrevProperty() {
     return new SimpleBooleanProperty(true);
   }
 
   @Override
-  public BooleanProperty validNextProperty() {
-    return new SimpleBooleanProperty(true);
+  public ObservableBooleanValue validNextProperty() {
+    return Bindings.not(lastGroup);
+  }
+
+  public boolean isLastGroup() {
+    return lastGroup.get();
+  }
+
+  public void setLastGroup(boolean value) {
+    lastGroup.set(value);
   }
 }

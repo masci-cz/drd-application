@@ -37,7 +37,7 @@
             <TextField fx:id="txtName" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <FlowPane hgap="10.0" prefHeight="23.0" prefWidth="600.0" VBox.vgrow="NEVER">
+      <FlowPane hgap="10.0" VBox.vgrow="NEVER">
          <children>
             <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#onAddGroup" text="Přidat" />
             <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#onEditGroup" text="Upravit" />

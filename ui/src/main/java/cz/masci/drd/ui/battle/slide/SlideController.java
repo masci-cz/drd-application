@@ -19,7 +19,7 @@
 
 package cz.masci.drd.ui.battle.slide;
 
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ObservableBooleanValue;
 
 public interface SlideController {
   /**
@@ -48,12 +48,12 @@ public interface SlideController {
    *
    * @return Valid property
    */
-  BooleanProperty validPrevProperty();
+  ObservableBooleanValue validPrevProperty();
 
   /**
    * Returns next valid property. It is <code>true</code> when the slide is valid, and it is possible move to the next slide.
    *
    * @return Valid property
    */
-  BooleanProperty validNextProperty();
+  ObservableBooleanValue validNextProperty();
 }

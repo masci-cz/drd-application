@@ -27,13 +27,13 @@
    <bottom>
       <AnchorPane prefHeight="37.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnPrev" onAction="#onPrev" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-            <Button fx:id="btnNext" onAction="#onNext" layoutX="134.0" layoutY="101.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <Button fx:id="btnPrev" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" onAction="#onPrev" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <Button fx:id="btnNext" layoutX="134.0" layoutY="101.0" mnemonicParsing="false" onAction="#onNext" prefHeight="25.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
          </children>
       </AnchorPane>
    </bottom>
     <center>
-        <AnchorPane fx:id="centerPane" BorderPane.alignment="CENTER"/>
+        <AnchorPane fx:id="centerPane" BorderPane.alignment="CENTER" />
     </center>
    <top>
       <Pane BorderPane.alignment="CENTER">

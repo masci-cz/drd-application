@@ -20,7 +20,7 @@
 package cz.masci.drd.ui.battle.slide.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.dto.BattleState;
+import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
@@ -29,6 +29,7 @@ import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,10 +82,14 @@ public class BattleGroupSlideController implements BattleSlideController {
       try {
         var groupList = lstGroups.getItems().stream().toList();
         battleService.addGroupList(groupList);
-        groupList.forEach(name -> {
+        for (int i = 0; i < groupList.size(); i++) {
+          var name = groupList.get(i);
           var battleDuellistEditorNodeFxControllerAndView = fxWeaver.load(BattleDuellistSlideController.class);
-          slideService.getControllerAndViewList().add(battleDuellistEditorNodeFxControllerAndView);
-        });
+          var battleDuellistSlideController = battleDuellistEditorNodeFxControllerAndView.getController();
+          battleDuellistSlideController.setGroup(new GroupDTO(name));
+          battleDuellistSlideController.setLastGroup(i == groupList.size() - 1);
+          slideService.getSlides().add(battleDuellistEditorNodeFxControllerAndView);
+        }
       } catch (BattleException e) {
         throw new RuntimeException(e);
       }
@@ -108,12 +113,12 @@ public class BattleGroupSlideController implements BattleSlideController {
   }
 
   @Override
-  public BooleanProperty validPrevProperty() {
+  public ObservableBooleanValue validPrevProperty() {
     return new SimpleBooleanProperty(false);
   }
 
   @Override
-  public BooleanProperty validNextProperty() {
+  public ObservableBooleanValue validNextProperty() {
     return validNextProperty;
   }
 

@@ -69,7 +69,7 @@ public class BattleNewController {
 
     // init slide service
     slideService = new SlideService<>(mainPane.widthProperty(), centerPane);
-    slideService.getControllerAndViewList().add(battleGroupSlideControllerAndView);
+    slideService.getSlides().add(battleGroupSlideControllerAndView);
 
     // init controls
     initControls();
@@ -77,7 +77,7 @@ public class BattleNewController {
 
   @FXML
   private void onNext(Event event) {
-      slideService.next(
+      slideService.slideForward(
           ssPre -> slideService.getCurrentController().onNext(battleService, ssPre),
           ssPost -> initControls()
       );
@@ -85,7 +85,7 @@ public class BattleNewController {
 
   @FXML
   private void onPrev(Event event) {
-    slideService.prev(
+    slideService.slideBackward(
         ssPre -> slideService.getCurrentController().onPrev(battleService, ssPre),
         ssPost -> initControls()
     );

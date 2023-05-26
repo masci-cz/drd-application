@@ -1,6 +1,7 @@
 package cz.masci.drd.ui.util.slide;
 
 import cz.masci.drd.ui.util.transition.TranslateTransitionBuilder;
+import java.util.Objects;
 import java.util.function.Consumer;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.FXCollections;
@@ -18,7 +19,7 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 @Slf4j
 public class SlideService<C, V extends Node> {
   @Getter
-  private final ObservableList<FxControllerAndView<? extends C, V>> controllerAndViewList = FXCollections.observableArrayList();
+  private final ObservableList<FxControllerAndView<? extends C, V>> slides = FXCollections.observableArrayList();
   private final Pane centerPane;
   private final ReadOnlyDoubleProperty widthProperty;
   private Integer currentIndex;
@@ -27,113 +28,45 @@ public class SlideService<C, V extends Node> {
     this.widthProperty = widthProperty;
     this.centerPane = centerPane;
     this.currentIndex = null;
-    controllerAndViewList.addListener(updateCurrentNode());
+    slides.addListener(updateCurrentSlide());
   }
 
-  public void prev(Consumer<SlideService<C, V>> preProcess, Consumer<SlideService<C, V>> postProcess) {
-    slide(SlideType.PREV, preProcess, postProcess);
-//    if (preProcess != null) {
-//      preProcess.accept(this);
-//    }
-//
-//    // Check currentIndex
-//    if (currentIndex == null || currentIndex == 0) {
-//      log.warn("Can't slide previous because it is already first node");
-//      return;
-//    }
-//    // Transform previous node to the left
-//    Node previousNode = nodeList.get(currentIndex - 1);
-//    previousNode.translateXProperty().set(-widthProperty.doubleValue());
-//    previousNode.setVisible(true);
-//    // Create translate transition for previous node from left to right
-//    var previousNodeTransition = TranslateTransitionBuilder.builder()
-//        .withByX(widthProperty.doubleValue())
-//        .withDuration(Duration.millis(500))
-//        .withNode(previousNode)
-//        .withOnFinishedHandler(event -> {
-//          if (postProcess != null) {
-//            postProcess.accept(this);
-//          }
-//        })
-//        .build();
-//    // Create translate transition for current node from left to right
-//    var currentNodeTransition = TranslateTransitionBuilder.builder()
-//        .withByX(widthProperty.doubleValue())
-//        .withDuration(Duration.millis(500))
-//        .withNode(currentNode)
-//        .withOnFinishedHandler(event -> {
-//          currentNode.setVisible(false);
-//          currentNode.translateXProperty().set(-widthProperty.doubleValue());
-//          currentNode = previousNode;
-//          currentIndex -= 1;
-//        })
-//        .build();
-//    previousNodeTransition.play();
-//    currentNodeTransition.play();
+  public void slideBackward(Consumer<SlideService<C, V>> doBefore, Consumer<SlideService<C, V>> doAfter) {
+    slide(currentIndex != null ? currentIndex - 1 : 0, doBefore, doAfter);
   }
 
-  public void next(Consumer<SlideService<C, V>> preProcess, Consumer<SlideService<C, V>> postProcess) {
-    slide(SlideType.NEXT, preProcess, postProcess);
-//    // Check currentIndex
-//    if (currentIndex == null || currentIndex == nodeList.size() - 1) {
-//      log.warn("Can't slide previous because it is already last node");
-//      return;
-//    }
-//    // Transform next node to the right
-//    Node nextNode = nodeList.get(currentIndex + 1);
-//    nextNode.translateXProperty().set(widthProperty.doubleValue());
-//    nextNode.setVisible(true);
-//    // Create translate transition for previous node from right to left
-//    var nextNodeTransition = TranslateTransitionBuilder.builder()
-//        .withByX(-widthProperty.doubleValue())
-//        .withDuration(Duration.millis(500))
-//        .withNode(nextNode)
-//        .build();
-//    // Create translate transition for current node from right to left
-//    var currentNodeTransition = TranslateTransitionBuilder.builder()
-//        .withByX(-widthProperty.doubleValue())
-//        .withDuration(Duration.millis(500))
-//        .withNode(currentNode)
-//        .withOnFinishedHandler(event -> {
-//          currentNode.setVisible(false);
-//          currentNode.translateXProperty().set(widthProperty.doubleValue());
-//          currentNode = nextNode;
-//          currentIndex += 1;
-//        })
-//        .build();
-//    nextNodeTransition.play();
-//    currentNodeTransition.play();
+  public void slideForward(Consumer<SlideService<C, V>> doBefore, Consumer<SlideService<C, V>> doAfter) {
+    slide(currentIndex != null ? currentIndex + 1 : 0, doBefore, doAfter);
   }
 
-  public void set(int index) {
-    // Based on current index transform from right to left when index > currentIndex and from left to right when index < currentIndex
+  public void slideToIndex(int index, Consumer<SlideService<C, V>> doBefore, Consumer<SlideService<C, V>> doAfter) {
+    slide(index, doBefore, doAfter);
   }
 
   public C getCurrentController() {
-    return currentIndex != null ? controllerAndViewList.get(currentIndex).getController() : null;
+    return currentIndex != null ? slides.get(currentIndex).getController() : null;
   }
 
-  private void slide(SlideType slideType, Consumer<SlideService<C, V>> preProcess, Consumer<SlideService<C, V>> postProcess) {
+  private void slide(int futureIndex, Consumer<SlideService<C, V>> preProcess, Consumer<SlideService<C, V>> postProcess) {
     if (preProcess != null) {
       preProcess.accept(this);
     }
 
     // Check currentIndex
-    if (!isValidStep(slideType)) {
-      log.warn("Can't slide because slide type {} is invalid", slideType);
-      return;
+    if (!isValidFutureIndex(futureIndex)) {
+      throw new IndexOutOfBoundsException(String.format("Can't slide because future index %d is out bounds or same as current index %d", futureIndex, currentIndex));
     }
 
-    var futureIndex = slideType.getFutureIndex(currentIndex);
+    var slideStep = mapFutureIndexToSlideFactor(futureIndex);
 
     // Create translate transition for future node based on SlideType
     Node futureNode = getView(futureIndex);
-    futureNode.translateXProperty().set(slideType.translateToStartPosition(widthProperty.doubleValue()));
+    futureNode.translateXProperty().set(slideStep.translateToStartPosition(widthProperty.doubleValue()));
     futureNode.setVisible(true);
     centerPane.getChildren().add(futureNode);
 
     var futureNodeTransition = TranslateTransitionBuilder.builder()
-        .withByX(slideType.translateToEndPosition(widthProperty.doubleValue()))
+        .withByX(slideStep.translateToEndPosition(widthProperty.doubleValue()))
         .withDuration(Duration.millis(500))
         .withNode(futureNode)
         .build();
@@ -142,12 +75,12 @@ public class SlideService<C, V extends Node> {
     Node currentNode = getCurrentView();
 
     var currentNodeTransition = TranslateTransitionBuilder.builder()
-        .withByX(slideType.translateToEndPosition(widthProperty.doubleValue()))
+        .withByX(slideStep.translateToEndPosition(widthProperty.doubleValue()))
         .withDuration(Duration.millis(500))
         .withNode(currentNode)
         .withOnFinishedHandler(event -> {
           currentNode.setVisible(false);
-          currentNode.translateXProperty().set(slideType.translateToEndPosition(widthProperty.doubleValue()));
+          currentNode.translateXProperty().set(slideStep.translateToEndPosition(widthProperty.doubleValue()));
           centerPane.getChildren().remove(currentNode);
 
           currentIndex = futureIndex;
@@ -168,7 +101,7 @@ public class SlideService<C, V extends Node> {
    *
    * @return ListChangeListener
    */
-  private ListChangeListener<? super FxControllerAndView<? extends C, V>> updateCurrentNode() {
+  private ListChangeListener<? super FxControllerAndView<? extends C, V>> updateCurrentSlide() {
     return change -> {
       while (change.next()) {
         if (change.wasAdded()) {
@@ -180,7 +113,7 @@ public class SlideService<C, V extends Node> {
             }
           }
         } else if (change.wasRemoved()) {
-          if (currentIndex != null && controllerAndViewList.size() == 0) {
+          if (currentIndex != null && slides.size() == 0) {
             currentIndex = null;
           }
         }
@@ -188,11 +121,17 @@ public class SlideService<C, V extends Node> {
     };
   }
 
-  private boolean isValidStep(SlideType slideType) {
-    return switch (slideType) {
-      case PREV -> currentIndex != null && currentIndex > 0;
-      case NEXT -> currentIndex != null && currentIndex < controllerAndViewList.size() - 1;
-    };
+  private boolean isValidFutureIndex(int futureIndex) {
+    return futureIndex >= 0
+        && futureIndex < slides.size()
+        && futureIndex != Objects.requireNonNullElse(currentIndex, -1);
+  }
+
+  private SlideFactor mapFutureIndexToSlideFactor(int futureIndex) {
+    if (currentIndex == null) {
+      return SlideFactor.NEXT;
+    }
+    return currentIndex.compareTo(futureIndex) > 0 ? SlideFactor.PREV : SlideFactor.NEXT;
   }
 
   private V getCurrentView() {
@@ -204,32 +143,27 @@ public class SlideService<C, V extends Node> {
       throw new RuntimeException("Can't get view for null index");
     }
 
-    if (index < 0 || index >= controllerAndViewList.size()) {
+    if (index < 0 || index >= slides.size()) {
       throw new IndexOutOfBoundsException("Can't get view for index: " + index);
     }
 
-    return controllerAndViewList.get(index).getView().orElseThrow();
+    return slides.get(index).getView().orElseThrow();
   }
 
   @RequiredArgsConstructor
   @Getter
-  private enum SlideType {
-    PREV(-1, 1.0),
-    NEXT(1, -1.0);
+  private enum SlideFactor {
+    PREV(1.0),
+    NEXT(-1.0);
 
-    private final int indexStep;
-    private final double positionMultiplier;
-
-    public int getFutureIndex(int index) {
-      return indexStep + index;
-    }
+    private final double factor;
 
     public double translateToEndPosition(double x) {
-      return positionMultiplier * x;
+      return factor * x;
     }
 
     public double translateToStartPosition(double x) {
-      return -1.0 * positionMultiplier * x;
+      return -1.0 * factor * x;
     }
   }
 }
