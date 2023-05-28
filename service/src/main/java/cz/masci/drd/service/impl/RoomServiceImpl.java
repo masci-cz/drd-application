@@ -20,7 +20,7 @@ import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.dto.RoomDTO;
 import cz.masci.drd.model.Room;
 import cz.masci.drd.persistence.RoomRepository;
-import cz.masci.drd.service.RoomMapper;
+import cz.masci.drd.service.mapper.RoomMapper;
 import cz.masci.drd.service.RoomService;
 import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;

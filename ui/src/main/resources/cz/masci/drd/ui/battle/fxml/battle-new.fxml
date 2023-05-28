@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <!--
   ~ Copyright (c) 2023
@@ -23,25 +24,28 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <AnchorPane prefHeight="37.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnPrev" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" onAction="#onPrev" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-            <Button fx:id="btnNext" layoutX="134.0" layoutY="101.0" mnemonicParsing="false" onAction="#onNext" prefHeight="25.0" prefWidth="52.0" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <Button fx:id="btnPrev" layoutX="14.0" layoutY="100.0" minHeight="25.0" minWidth="52.0" mnemonicParsing="false" onAction="#onPrev" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <Button fx:id="btnNext" layoutX="134.0" layoutY="101.0" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" onAction="#onNext" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
          </children>
       </AnchorPane>
    </bottom>
     <center>
-        <AnchorPane fx:id="centerPane" BorderPane.alignment="CENTER" />
+        <AnchorPane fx:id="centerPane" minHeight="100.0" minWidth="400.0" BorderPane.alignment="CENTER" />
     </center>
    <top>
       <Pane BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblTitle" text="Label">
+            <Label fx:id="lblTitle" text="Label" textFill="#0034d0">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                </padding>
+               <font>
+                  <Font name="Arial" size="24.0" />
+               </font>
             </Label>
          </children>
       </Pane>

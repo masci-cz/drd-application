@@ -19,7 +19,7 @@ package cz.masci.drd.service.impl;
 import cz.masci.drd.dto.WeaponDTO;
 import cz.masci.drd.model.Weapon;
 import cz.masci.drd.persistence.WeaponRepository;
-import cz.masci.drd.service.WeaponMapper;
+import cz.masci.drd.service.mapper.WeaponMapper;
 import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;

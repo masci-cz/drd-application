@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
+package cz.masci.drd.service.mapper;
 
-package cz.masci.drd.ui.battle.slide;
+import cz.masci.drd.dto.WeaponDTO;
+import cz.masci.drd.model.Weapon;
+import org.mapstruct.Mapper;
 
-import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.util.slide.SlideService;
-import javafx.scene.Node;
-
-public interface BattleSlideController extends SlideController {
-
-  void onBeforePrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
-  void onAfterPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
-
-  void onBeforeNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
-  void onAfterNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
+/**
+ *
+ * @author Daniel
+ */
+@Mapper(componentModel = "spring")
+public interface WeaponMapper {
+  
+  WeaponDTO mapToDto(Weapon entity);
+  
+  Weapon mapToEntity(WeaponDTO weapon);
 }

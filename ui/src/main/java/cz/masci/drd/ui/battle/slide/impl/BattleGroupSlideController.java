@@ -19,8 +19,9 @@
 
 package cz.masci.drd.ui.battle.slide.impl;
 
+import static cz.masci.drd.ui.util.PropertyUtility.FALSE_PROPERTY;
+
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
@@ -38,6 +39,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +49,8 @@ import org.springframework.stereotype.Component;
 @FxmlView("fxml/battle-group-slide.fxml")
 @FxmlController
 @RequiredArgsConstructor
-public class BattleGroupSlideController implements BattleSlideController {
+@Slf4j
+public class BattleGroupSlideController extends BasicBattleSlideController implements BattleSlideController {
 
   private final FxWeaver fxWeaver;
 
@@ -69,31 +72,27 @@ public class BattleGroupSlideController implements BattleSlideController {
   // region interface
 
   @Override
-  public void onPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
-    // For now do nothing
-  }
-
-  @Override
-  public void onNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onBeforeNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
     // don't create
-    if (battleService.getState() == null) {
-      battleService.createBattle();
-
-      try {
-        var groupList = lstGroups.getItems().stream().toList();
-        battleService.addGroupList(groupList);
-        for (int i = 0; i < groupList.size(); i++) {
-          var name = groupList.get(i);
-          var battleDuellistEditorNodeFxControllerAndView = fxWeaver.load(BattleDuellistSlideController.class);
-          var battleDuellistSlideController = battleDuellistEditorNodeFxControllerAndView.getController();
-          battleDuellistSlideController.setGroup(new GroupDTO(name));
-          battleDuellistSlideController.setLastGroup(i == groupList.size() - 1);
-          slideService.getSlides().add(battleDuellistEditorNodeFxControllerAndView);
-        }
-      } catch (BattleException e) {
-        throw new RuntimeException(e);
+    battleService.createBattle();
+    log.debug("Size of slides before: {}", slideService.getSlides().size());
+    try {
+      var groupList = lstGroups.getItems().stream().toList();
+      battleService.addGroupList(groupList);
+      for (int i = 0; i < groupList.size(); i++) {
+        var name = groupList.get(i);
+        var battleDuellistEditorNodeFxControllerAndView = fxWeaver.load(BattleDuellistSlideController.class);
+        var battleDuellistSlideController = battleDuellistEditorNodeFxControllerAndView.getController();
+        battleDuellistSlideController.setGroup(battleService.getGroup(name));
+        battleDuellistSlideController.setFirstGroup(i == 0);
+        battleDuellistSlideController.setLastGroup(i == groupList.size() - 1);
+        slideService.getSlides().add(battleDuellistEditorNodeFxControllerAndView);
       }
+      lstGroups.getItems().clear();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
     }
+    log.debug("Size of slides after: {}", slideService.getSlides().size());
   }
 
   @Override
@@ -114,7 +113,7 @@ public class BattleGroupSlideController implements BattleSlideController {
 
   @Override
   public ObservableBooleanValue validPrevProperty() {
-    return new SimpleBooleanProperty(false);
+    return FALSE_PROPERTY;
   }
 
   @Override

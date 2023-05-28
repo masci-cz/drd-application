@@ -17,17 +17,15 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide;
+package cz.masci.drd.ui.util;
 
-import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.util.slide.SlideService;
-import javafx.scene.Node;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import lombok.experimental.UtilityClass;
 
-public interface BattleSlideController extends SlideController {
+@UtilityClass
+public class PropertyUtility {
+  public static final BooleanProperty FALSE_PROPERTY = new SimpleBooleanProperty(false);
 
-  void onBeforePrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
-  void onAfterPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
-
-  void onBeforeNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
-  void onAfterNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService);
+  public static final BooleanProperty TRUE_PROPERTY = new SimpleBooleanProperty(true);
 }

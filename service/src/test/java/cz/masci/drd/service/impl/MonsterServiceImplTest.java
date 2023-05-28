@@ -19,7 +19,7 @@ package cz.masci.drd.service.impl;
 import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
-import cz.masci.drd.service.MonsterMapper;
+import cz.masci.drd.service.mapper.MonsterMapper;
 import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;

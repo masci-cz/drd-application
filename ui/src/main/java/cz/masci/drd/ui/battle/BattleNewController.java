@@ -73,21 +73,34 @@ public class BattleNewController {
 
     // init controls
     initControls();
+    initAnchors(battleGroupSlideControllerAndView.getView().orElse(null));
   }
 
   @FXML
   private void onNext(Event event) {
-      slideService.slideForward(
-          ssPre -> slideService.getCurrentController().onNext(battleService, ssPre),
-          ssPost -> initControls()
-      );
+    var currentController = slideService.getCurrentController();
+
+    slideService.slideForward(
+        () -> currentController.onBeforeNext(battleService, slideService),
+        this::initAnchors,
+        () -> {
+          currentController.onAfterNext(battleService, slideService);
+          initControls();
+        }
+    );
   }
 
   @FXML
   private void onPrev(Event event) {
+    var currentController = slideService.getCurrentController();
+
     slideService.slideBackward(
-        ssPre -> slideService.getCurrentController().onPrev(battleService, ssPre),
-        ssPost -> initControls()
+        () -> currentController.onBeforePrev(battleService, slideService),
+        this::initAnchors,
+        () -> {
+          currentController.onAfterPrev(battleService, slideService);
+          initControls();
+        }
     );
   }
 
@@ -103,6 +116,15 @@ public class BattleNewController {
 
     // init label
     lblTitle.setText(battleSlideController.getTitle());
+  }
+
+  private void initAnchors(Node node) {
+    if (node != null) {
+      AnchorPane.setTopAnchor(node, 10.0);
+      AnchorPane.setRightAnchor(node, 10.0);
+      AnchorPane.setBottomAnchor(node, 10.0);
+      AnchorPane.setLeftAnchor(node, 10.0);
+    }
   }
 }
 

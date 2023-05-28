@@ -21,6 +21,7 @@ package cz.masci.drd.service;
 
 import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.dto.DuellistDTO;
+import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.service.exception.BattleException;
 import java.util.List;
@@ -68,6 +69,14 @@ public interface BattleService {
   void endRound() throws BattleException;
 
   /**
+   * <p>Add group list to the battle</p>
+   *
+   * @param groupNames List of group names
+   * @throws BattleException Throws an error when battle state is not {@link BattleState#NEW}
+   */
+  void addGroupList(List<String> groupNames) throws BattleException;
+
+  /**
    * <p>Add group to the battle</p>
    *
    * @param name Group name
@@ -82,6 +91,21 @@ public interface BattleService {
    * @throws BattleException Throws an error when battle state is not {@link BattleState#NEW}
    */
   void removeGroup(String name) throws BattleException;
+
+  /**
+   * <p>Returns group by name</p>
+   *
+   * @param name Group name
+   * @return Group
+   */
+  GroupDTO getGroup(String name);
+
+  /**
+   * <p>Returns list of groups</p>
+   *
+   * @return List of group
+   */
+  List<GroupDTO> getGroups();
 
   /**
    * <p>Set group initiative</p>
@@ -123,5 +147,4 @@ public interface BattleService {
    */
   Queue<Action> getActions();
 
-  void addGroupList(List<String> groupNames) throws BattleException;
 }

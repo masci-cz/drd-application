@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.service.impl;
+package cz.masci.drd.service.mapper;
 
-import cz.masci.drd.service.WeaponMapperImpl;
 import static cz.masci.drd.service.impl.TestConstants.LONG_ID;
 import static cz.masci.drd.service.impl.TestConstants.WEAPON_DAMAGE;
 import static cz.masci.drd.service.impl.TestConstants.WEAPON_NAME;
@@ -24,8 +23,10 @@ import static cz.masci.drd.service.impl.TestConstants.WEAPON_STRENGTH;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.Test;
+
+import cz.masci.drd.service.impl.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *

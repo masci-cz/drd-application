@@ -31,25 +31,43 @@ public class SlideService<C, V extends Node> {
     slides.addListener(updateCurrentSlide());
   }
 
-  public void slideBackward(Consumer<SlideService<C, V>> doBefore, Consumer<SlideService<C, V>> doAfter) {
-    slide(currentIndex != null ? currentIndex - 1 : 0, doBefore, doAfter);
+  public void slideBackward(Runnable doBeforeSlide, Consumer<V> updateFutureView, Runnable doAfterSlide) {
+    slide(currentIndex != null ? currentIndex - 1 : 0, doBeforeSlide, updateFutureView, doAfterSlide);
   }
 
-  public void slideForward(Consumer<SlideService<C, V>> doBefore, Consumer<SlideService<C, V>> doAfter) {
-    slide(currentIndex != null ? currentIndex + 1 : 0, doBefore, doAfter);
+  public void slideForward(Runnable doBeforeSlide, Consumer<V> updateFutureView, Runnable doAfterSlide) {
+    slide(currentIndex != null ? currentIndex + 1 : 0, doBeforeSlide, updateFutureView, doAfterSlide);
   }
 
-  public void slideToIndex(int index, Consumer<SlideService<C, V>> doBefore, Consumer<SlideService<C, V>> doAfter) {
-    slide(index, doBefore, doAfter);
+  public void slideToIndex(int index, Runnable doBeforeSlide, Consumer<V> updateFutureView, Runnable doAfterSlide) {
+    slide(index, doBeforeSlide, updateFutureView, doAfterSlide);
   }
 
   public C getCurrentController() {
     return currentIndex != null ? slides.get(currentIndex).getController() : null;
   }
 
-  private void slide(int futureIndex, Consumer<SlideService<C, V>> preProcess, Consumer<SlideService<C, V>> postProcess) {
-    if (preProcess != null) {
-      preProcess.accept(this);
+  public V getCurrentView() {
+    return getView(currentIndex);
+  }
+
+  /**
+   * <p>Slide to the future index view.</p>
+   * <p>
+   *   It uses three methods to process during the transformation and at the end.<br>
+   *   First run the doBeforeSlide method.<br>
+   *   Second run the updateFutureView to update future view.<br>
+   *   Third run the doAfterSlide method.
+   * </p>
+   *
+   * @param futureIndex New view index to move to
+   * @param doBeforeSlide Method to run before sliding
+   * @param updateFutureView Method to run for future view
+   * @param doAfterSlide Method to run after sliding
+   */
+  private void slide(int futureIndex, Runnable doBeforeSlide, Consumer<V> updateFutureView, Runnable doAfterSlide) {
+    if (doBeforeSlide != null) {
+      doBeforeSlide.run();
     }
 
     // Check currentIndex
@@ -57,43 +75,46 @@ public class SlideService<C, V extends Node> {
       throw new IndexOutOfBoundsException(String.format("Can't slide because future index %d is out bounds or same as current index %d", futureIndex, currentIndex));
     }
 
-    var slideStep = mapFutureIndexToSlideFactor(futureIndex);
+    var slideFactor = mapFutureIndexToSlideFactor(futureIndex);
 
     // Create translate transition for future node based on SlideType
-    Node futureNode = getView(futureIndex);
-    futureNode.translateXProperty().set(slideStep.translateToStartPosition(widthProperty.doubleValue()));
+    V futureNode = getView(futureIndex);
+    futureNode.translateXProperty().set(slideFactor.translateToStartPosition(widthProperty.doubleValue()));
     futureNode.setVisible(true);
     centerPane.getChildren().add(futureNode);
+    if (updateFutureView != null) {
+      updateFutureView.accept(futureNode);
+    }
 
-    var futureNodeTransition = TranslateTransitionBuilder.builder()
-        .withByX(slideStep.translateToEndPosition(widthProperty.doubleValue()))
+    var futureViewTransition = TranslateTransitionBuilder.builder()
+        .withByX(slideFactor.translateToEndPosition(widthProperty.doubleValue()))
         .withDuration(Duration.millis(500))
         .withNode(futureNode)
         .build();
 
     // Create translate transition for current node based on SlideType
-    Node currentNode = getCurrentView();
+    V currentNode = getCurrentView();
 
-    var currentNodeTransition = TranslateTransitionBuilder.builder()
-        .withByX(slideStep.translateToEndPosition(widthProperty.doubleValue()))
+    var currentViewTransition = TranslateTransitionBuilder.builder()
+        .withByX(slideFactor.translateToEndPosition(widthProperty.doubleValue()))
         .withDuration(Duration.millis(500))
         .withNode(currentNode)
         .withOnFinishedHandler(event -> {
           currentNode.setVisible(false);
-          currentNode.translateXProperty().set(slideStep.translateToEndPosition(widthProperty.doubleValue()));
+          currentNode.translateXProperty().set(slideFactor.translateToEndPosition(widthProperty.doubleValue()));
           centerPane.getChildren().remove(currentNode);
 
           currentIndex = futureIndex;
 
-          if (postProcess != null) {
-            postProcess.accept(this);
+          if (doAfterSlide != null) {
+            doAfterSlide.run();
           }
         })
         .build();
 
     // start both transitions
-    futureNodeTransition.play();
-    currentNodeTransition.play();
+    futureViewTransition.play();
+    currentViewTransition.play();
   }
 
   /**
@@ -132,10 +153,6 @@ public class SlideService<C, V extends Node> {
       return SlideFactor.NEXT;
     }
     return currentIndex.compareTo(futureIndex) > 0 ? SlideFactor.PREV : SlideFactor.NEXT;
-  }
-
-  private V getCurrentView() {
-    return getView(currentIndex);
   }
 
   private V getView(Integer index) {

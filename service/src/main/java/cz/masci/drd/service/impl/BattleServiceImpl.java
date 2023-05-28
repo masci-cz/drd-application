@@ -46,9 +46,7 @@ public class BattleServiceImpl implements BattleService {
 
   @Override
   public void createBattle() {
-    state = BattleState.NEW;
-    groups.clear();
-    actionList.clear();
+    clearBattle();
   }
 
   @Override
@@ -64,7 +62,7 @@ public class BattleServiceImpl implements BattleService {
 
   @Override
   public void exitBattle() {
-    state = BattleState.NEW;
+    clearBattle();
   }
 
   @Override
@@ -115,7 +113,7 @@ public class BattleServiceImpl implements BattleService {
     }
 
     if (groups.containsKey(name)) {
-      throw new BattleException("This group already exists in the battle");
+      throw new BattleException(String.format("Group %s already exists in the battle", name));
     }
 
     groups.put(name, new GroupDTO(name));
@@ -133,6 +131,16 @@ public class BattleServiceImpl implements BattleService {
     checkState(BattleState.NEW, "remove group");
 
     groups.remove(name);
+  }
+
+  @Override
+  public GroupDTO getGroup(String name) {
+    return groups.get(name);
+  }
+
+  @Override
+  public List<GroupDTO> getGroups() {
+    return groups.values().stream().toList();
   }
 
   @Override
@@ -194,5 +202,12 @@ public class BattleServiceImpl implements BattleService {
   private void clearGroupInitiative(GroupDTO group) {
     group.setInitiative(null);
   }
+
+  private void clearBattle() {
+    state = BattleState.NEW;
+    groups.clear();
+    actionList.clear();
+  }
+
   // endregion
 }
