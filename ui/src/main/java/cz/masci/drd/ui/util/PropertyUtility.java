@@ -28,4 +28,8 @@ public class PropertyUtility {
   public static final BooleanProperty FALSE_PROPERTY = new SimpleBooleanProperty(false);
 
   public static final BooleanProperty TRUE_PROPERTY = new SimpleBooleanProperty(true);
+
+//  public static final ChangeListener<T> nonEmptyObjectChangeListener() {
+//
+//  }
 }

@@ -19,9 +19,8 @@
 
 package cz.masci.drd.ui.battle.slide.impl;
 
-import static cz.masci.drd.ui.util.PropertyUtility.TRUE_PROPERTY;
-
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
@@ -30,12 +29,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
-import lombok.Data;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -46,16 +56,35 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @FxmlView("fxml/battle-duellist-slide.fxml")
 @FxmlController
-@Data
 @Slf4j
 public class BattleDuellistSlideController extends BasicBattleSlideController implements BattleSlideController {
 
-  @Getter
-  private BooleanProperty lastGroup = new SimpleBooleanProperty();
-  @Getter
-  private BooleanProperty firstGroup = new SimpleBooleanProperty();
+  @FXML
+  private Button btnAdd;
+  @FXML
+  private Button btnEdit;
+  @FXML
+  private Button btnDelete;
+  @FXML
+  private TextField txtName;
+  @FXML
+  private TextField txtOffense;
+  @FXML
+  private TextField txtDefense;
+  @FXML
+  private TextField txtLive;
+  @FXML
+  private TableView<DuellistDTO> tblDuellist;
 
+  @Getter
+  private final BooleanProperty lastGroup = new SimpleBooleanProperty();
+  @Getter
+  private final BooleanProperty firstGroup = new SimpleBooleanProperty();
+
+  @Setter
   private GroupDTO group;
+
+  // region interface
 
   @Override
   public void onAfterPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
@@ -88,11 +117,6 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
   }
 
   @Override
-  public ObservableBooleanValue validPrevProperty() {
-    return TRUE_PROPERTY;
-  }
-
-  @Override
   public ObservableBooleanValue validNextProperty() {
     return Bindings.not(lastGroup);
   }
@@ -111,5 +135,123 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
 
   public void setFirstGroup(boolean value) {
     firstGroup.set(value);
+  }
+
+  // endregion
+
+  // region FX
+
+  @FXML
+  private void initialize() {
+    btnAdd.setDisable(true);
+    btnEdit.setDisable(true);
+    btnDelete.setDisable(true);
+
+    BooleanExpression filledForm = txtName.textProperty().isNotEmpty()
+        .and(txtOffense.textProperty().isNotEmpty())
+        .and(txtDefense.textProperty().isNotEmpty())
+        .and(txtLive.textProperty().isNotEmpty());
+    BooleanExpression selectedItem = tblDuellist.getSelectionModel().selectedItemProperty().isNotNull();
+
+    // init buttons disable property
+    btnAdd.disableProperty().bind(filledForm.not());
+    btnEdit.disableProperty().bind(selectedItem.and(filledForm).not());
+    btnDelete.disableProperty().bind(selectedItem.not());
+
+    // init table columns
+    TableColumn<DuellistDTO, String> colName = new TableColumn<>("Název");
+    colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    colName.setPrefWidth(200);
+    TableColumn<DuellistDTO, Integer> colOffense = new TableColumn<>("Útočné číslo");
+    colOffense.setCellValueFactory(new PropertyValueFactory<>("attack"));
+    TableColumn<DuellistDTO, Integer> colDefense = new TableColumn<>("Obranné číslo");
+    colDefense.setCellValueFactory(new PropertyValueFactory<>("defense"));
+    TableColumn<DuellistDTO, Integer> colLive = new TableColumn<>("Životy");
+    colLive.setCellValueFactory(new PropertyValueFactory<>("originalLive"));
+
+    tblDuellist.getColumns().addAll(colName, colOffense, colDefense, colLive);
+  }
+
+  @FXML
+  private void onAddDuellist() {
+    var duellist = new DuellistDTO();
+    updateDuellist(duellist);
+
+    if (!tblDuellist.getItems().contains(duellist)) {
+      tblDuellist.getItems().add(duellist);
+    }
+  }
+
+  @FXML
+  private void onEditDuellist() {
+    var duellist = tblDuellist.getSelectionModel().getSelectedItem();
+    var index = tblDuellist.getSelectionModel().getSelectedIndex();
+    updateDuellist(duellist);
+    tblDuellist.getItems().set(index, duellist);
+  }
+
+  @FXML
+  private void onDeleteDuellist() {
+    var duellist = tblDuellist.getSelectionModel().getSelectedItem();
+    tblDuellist.getItems().remove(duellist);
+  }
+
+  private void updateDuellist(DuellistDTO duellist) {
+    duellist.setName(txtName.getText());
+    duellist.setAttack(Integer.parseInt(txtOffense.getText()));
+    duellist.setDefense(Integer.parseInt(txtDefense.getText()));
+    duellist.setOriginalLive(Integer.parseInt(txtLive.getText()));
+  }
+
+  public static final class Duellist {
+    private final StringProperty name = new SimpleStringProperty();
+    private final IntegerProperty offense = new SimpleIntegerProperty();
+    private final IntegerProperty defense = new SimpleIntegerProperty();
+    private final IntegerProperty live = new SimpleIntegerProperty();
+
+    public String getName() {
+      return name.getValue();
+    }
+
+    public void setName(String value) {
+      name.setValue(value);
+    }
+
+    public Integer getOffense() {
+      return offense.getValue();
+    }
+
+    public void setOffense(Integer value) {
+      offense.setValue(value);
+    }
+
+    public Integer getDefense() {
+      return defense.getValue();
+    }
+
+    public void setDefense(Integer value) {
+      defense.setValue(value);
+    }
+
+    public Integer getLive() {
+      return live.getValue();
+    }
+
+    public void setLive(Integer value) {
+      live.setValue(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || getClass() != o.getClass()) {
+        return false;
+      }
+      Duellist duellist = (Duellist) o;
+      return Objects.equals(getName(), duellist.getName()) && Objects.equals(getOffense(), duellist.getOffense()) && Objects.equals(getDefense(), duellist.getDefense()) && Objects.equals(getLive(), duellist.getLive());
+    }
+
   }
 }

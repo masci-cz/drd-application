@@ -26,12 +26,9 @@ import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
 import cz.masci.drd.ui.util.slide.SlideService;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -42,7 +39,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -64,10 +60,6 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
   private Button btnDelete;
   @FXML
   private ListView<String> lstGroups;
-
-  private final BooleanProperty filledNameProperty = new SimpleBooleanProperty();
-  private final BooleanProperty selectedNameProperty = new SimpleBooleanProperty();
-  private final BooleanProperty validNextProperty = new SimpleBooleanProperty();
 
   // region interface
 
@@ -100,7 +92,6 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
     return "Skupiny";
   }
 
-
   @Override
   public String getPrevTitle() {
     return null;
@@ -118,12 +109,12 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
 
   @Override
   public ObservableBooleanValue validNextProperty() {
-    return validNextProperty;
+    return Bindings.size(lstGroups.getItems()).greaterThanOrEqualTo(2);
   }
 
   // endregion
 
-  // region FXML
+  // region FX
 
   @FXML
   private void initialize() {
@@ -131,70 +122,37 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
     btnEdit.setDisable(true);
     btnDelete.setDisable(true);
 
-    // init listeners
-    txtName.textProperty().addListener(nonEmptyStringChangeListener());
-    lstGroups.getSelectionModel().selectedItemProperty().addListener(selectedStringChangeListener());
-    lstGroups.getItems().addListener(groupListChangeListener());
-
     // init bindings
-    btnAdd.disableProperty().bind(BooleanExpression.booleanExpression(filledNameProperty).not());
-    btnEdit.disableProperty().bind(BooleanExpression.booleanExpression(selectedNameProperty).and(filledNameProperty).not());
-    btnDelete.disableProperty().bind(BooleanExpression.booleanExpression(selectedNameProperty).not());
+
+    BooleanExpression filledForm = txtName.textProperty().isNotEmpty();
+    BooleanExpression selectedItem = lstGroups.getSelectionModel().selectedItemProperty().isNotNull();
+
+    btnAdd.disableProperty().bind(filledForm.not());
+    btnEdit.disableProperty().bind(filledForm.and(selectedItem).not());
+    btnDelete.disableProperty().bind(selectedItem.not());
   }
 
   @FXML
-  private void onAddGroup(ActionEvent event) {
-    if (isFilledName()) {
-      lstGroups.getItems().add(txtName.getText());
-      txtName.setText(null);
-      txtName.requestFocus();
-    }
+  private void onAddGroup() {
+    lstGroups.getItems().add(txtName.getText());
+    txtName.setText(null);
+    txtName.requestFocus();
   }
 
   @FXML
-  private void onEditGroup(ActionEvent event) {
-    if (isFilledName() && isSelectedName()) {
-      var index = lstGroups.getSelectionModel().getSelectedIndex();
-      lstGroups.getItems().set(index, txtName.getText());
-      lstGroups.getSelectionModel().clearSelection();
-    }
+  private void onEditGroup() {
+    var index = lstGroups.getSelectionModel().getSelectedIndex();
+    lstGroups.getItems().set(index, txtName.getText());
+    lstGroups.getSelectionModel().clearSelection();
   }
 
   @FXML
-  private void onDeleteGroup(ActionEvent event) {
-    if (isSelectedName()) {
-      var index = lstGroups.getSelectionModel().getSelectedIndex();
-      lstGroups.getItems().remove(index);
-      lstGroups.getSelectionModel().clearSelection();
-    }
+  private void onDeleteGroup() {
+    var index = lstGroups.getSelectionModel().getSelectedIndex();
+    lstGroups.getItems().remove(index);
+    lstGroups.getSelectionModel().clearSelection();
   }
 
   // endregion
 
-  // region utils
-
-  private ChangeListener<String> nonEmptyStringChangeListener() {
-    return (observable, oldValue, newValue) ->
-      filledNameProperty.setValue(StringUtils.isNotBlank(newValue));
-  }
-
-  private ChangeListener<String> selectedStringChangeListener() {
-    return (observable, oldValue, newValue) ->
-      selectedNameProperty.setValue(newValue != null);
-  }
-
-  private ListChangeListener<String> groupListChangeListener() {
-    return change ->
-        validNextProperty.setValue(change.getList().size() > 1);
-  }
-
-  private boolean isFilledName() {
-    return filledNameProperty.get();
-  }
-
-  private boolean isSelectedName() {
-    return selectedNameProperty.get();
-  }
-
-  // endregion
 }
