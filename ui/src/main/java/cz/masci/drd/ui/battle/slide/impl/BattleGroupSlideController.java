@@ -29,7 +29,6 @@ import cz.masci.drd.ui.util.slide.SlideService;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.value.ObservableBooleanValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -134,16 +133,20 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
 
   @FXML
   private void onAddGroup() {
-    lstGroups.getItems().add(txtName.getText());
-    txtName.setText(null);
+    if (!lstGroups.getItems().contains(txtName.getText())) {
+      lstGroups.getItems().add(txtName.getText());
+      txtName.setText(null);
+    }
     txtName.requestFocus();
   }
 
   @FXML
   private void onEditGroup() {
-    var index = lstGroups.getSelectionModel().getSelectedIndex();
-    lstGroups.getItems().set(index, txtName.getText());
-    lstGroups.getSelectionModel().clearSelection();
+    if (!lstGroups.getItems().contains(txtName.getText())) {
+      var index = lstGroups.getSelectionModel().getSelectedIndex();
+      lstGroups.getItems().set(index, txtName.getText());
+      lstGroups.getSelectionModel().clearSelection();
+    }
   }
 
   @FXML

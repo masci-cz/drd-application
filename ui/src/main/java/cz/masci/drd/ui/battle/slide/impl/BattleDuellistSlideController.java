@@ -31,11 +31,7 @@ import java.util.Objects;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -118,7 +114,7 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
 
   @Override
   public ObservableBooleanValue validNextProperty() {
-    return Bindings.not(lastGroup);
+    return Bindings.not(lastGroup).and(Bindings.size(tblDuellist.getItems()).greaterThanOrEqualTo(1));
   }
 
   public boolean isLastGroup() {
@@ -177,7 +173,7 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
     var duellist = new DuellistDTO();
     updateDuellist(duellist);
 
-    if (!tblDuellist.getItems().contains(duellist)) {
+    if (tblDuellist.getItems().stream().map(DuellistDTO::getName).noneMatch(txtName.getText()::equals)) {
       tblDuellist.getItems().add(duellist);
     }
   }
@@ -186,8 +182,10 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
   private void onEditDuellist() {
     var duellist = tblDuellist.getSelectionModel().getSelectedItem();
     var index = tblDuellist.getSelectionModel().getSelectedIndex();
-    updateDuellist(duellist);
-    tblDuellist.getItems().set(index, duellist);
+    if (tblDuellist.getItems().stream().filter(item -> item != duellist).map(DuellistDTO::getName).noneMatch(txtName.getText()::equals)) {
+      updateDuellist(duellist);
+      tblDuellist.getItems().set(index, duellist);
+    }
   }
 
   @FXML
@@ -203,55 +201,4 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
     duellist.setOriginalLive(Integer.parseInt(txtLive.getText()));
   }
 
-  public static final class Duellist {
-    private final StringProperty name = new SimpleStringProperty();
-    private final IntegerProperty offense = new SimpleIntegerProperty();
-    private final IntegerProperty defense = new SimpleIntegerProperty();
-    private final IntegerProperty live = new SimpleIntegerProperty();
-
-    public String getName() {
-      return name.getValue();
-    }
-
-    public void setName(String value) {
-      name.setValue(value);
-    }
-
-    public Integer getOffense() {
-      return offense.getValue();
-    }
-
-    public void setOffense(Integer value) {
-      offense.setValue(value);
-    }
-
-    public Integer getDefense() {
-      return defense.getValue();
-    }
-
-    public void setDefense(Integer value) {
-      defense.setValue(value);
-    }
-
-    public Integer getLive() {
-      return live.getValue();
-    }
-
-    public void setLive(Integer value) {
-      live.setValue(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-        return false;
-      }
-      Duellist duellist = (Duellist) o;
-      return Objects.equals(getName(), duellist.getName()) && Objects.equals(getOffense(), duellist.getOffense()) && Objects.equals(getDefense(), duellist.getDefense()) && Objects.equals(getLive(), duellist.getLive());
-    }
-
-  }
 }

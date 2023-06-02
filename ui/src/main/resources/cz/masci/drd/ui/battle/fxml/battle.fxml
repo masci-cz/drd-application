@@ -32,7 +32,7 @@
             <ListView fx:id="duellistList" layoutY="113.0" prefHeight="147.0" prefWidth="300.0" />
          </children>
       </Pane>
-      <Pane fx:id="initPane" layoutX="315.0" layoutY="30.0" prefWidth="306.0">
+      <Pane fx:id="initPane" layoutX="315.0" layoutY="30.0" prefWidth="306.0" visible="false">
          <children>
             <Label layoutX="5.0" layoutY="4.0" text="Název" />
             <TextField fx:id="groupName" layoutX="88.0" prefHeight="25.0" prefWidth="216.0" />
@@ -49,7 +49,7 @@
             <Button layoutY="252.0" mnemonicParsing="false" onAction="#startBattle" text="Začít souboj" />
          </children>
       </Pane>
-      <Pane fx:id="roundPane" layoutX="306.0" layoutY="10.0" prefHeight="315.0" prefWidth="306.0" visible="false">
+      <Pane fx:id="roundPane" layoutX="306.0" layoutY="10.0" prefHeight="315.0" prefWidth="306.0">
          <children>
             <Label layoutX="8.0" layoutY="6.0" text="Souboj" />
             <Label layoutX="9.0" layoutY="31.0" text="Iniciativa" />

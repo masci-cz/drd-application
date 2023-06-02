@@ -29,7 +29,4 @@ public class PropertyUtility {
 
   public static final BooleanProperty TRUE_PROPERTY = new SimpleBooleanProperty(true);
 
-//  public static final ChangeListener<T> nonEmptyObjectChangeListener() {
-//
-//  }
 }
