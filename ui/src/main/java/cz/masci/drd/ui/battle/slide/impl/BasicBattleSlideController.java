@@ -24,28 +24,28 @@ import static cz.masci.drd.ui.util.PropertyUtility.TRUE_PROPERTY;
 
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
-import cz.masci.drd.ui.util.slide.SlideService;
+import cz.masci.drd.ui.util.slide.SlideQueueService;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.scene.Node;
 
 public class BasicBattleSlideController implements BattleSlideController {
   @Override
-  public void onBeforePrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onBeforePrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
 
   }
 
   @Override
-  public void onAfterPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onAfterPrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
 
   }
 
   @Override
-  public void onBeforeNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onBeforeNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
 
   }
 
   @Override
-  public void onAfterNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onAfterNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
 
   }
 

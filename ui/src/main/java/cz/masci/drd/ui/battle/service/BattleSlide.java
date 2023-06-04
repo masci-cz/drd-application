@@ -17,17 +17,15 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide;
+package cz.masci.drd.ui.battle.service;
 
-import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.util.slide.SlideQueueService;
+import cz.masci.drd.ui.battle.service.dto.BattleSlidePropertiesDTO;
 import javafx.scene.Node;
 
-public interface BattleSlideController extends SlideController {
+public interface BattleSlide<T> {
 
-  void onBeforePrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
-  void onAfterPrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
+  void initProperties(BattleSlidePropertiesDTO properties);
 
-  void onBeforeNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
-  void onAfterNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
+  T getController();
+  Node getView();
 }

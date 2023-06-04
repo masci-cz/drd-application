@@ -24,7 +24,7 @@ import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
-import cz.masci.drd.ui.util.slide.SlideService;
+import cz.masci.drd.ui.util.slide.SlideQueueService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +33,8 @@ import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableListValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -78,12 +80,13 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
   private final BooleanProperty firstGroup = new SimpleBooleanProperty();
 
   @Setter
+  @Getter
   private GroupDTO group;
 
   // region interface
 
   @Override
-  public void onAfterPrev(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onAfterPrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
     if (isFirstGroup()) {
       List<FxControllerAndView<?, ?>> slidesToRemove = new ArrayList<>();
       slideService.getSlides().forEach(nodeFxControllerAndView -> {
@@ -131,6 +134,10 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
 
   public void setFirstGroup(boolean value) {
     firstGroup.set(value);
+  }
+
+  public ObservableList<DuellistDTO> getDuellists() {
+    return tblDuellist.getItems();
   }
 
   // endregion

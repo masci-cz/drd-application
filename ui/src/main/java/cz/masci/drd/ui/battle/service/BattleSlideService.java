@@ -17,17 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide;
+package cz.masci.drd.ui.battle.service;
 
-import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.util.slide.SlideQueueService;
-import javafx.scene.Node;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.layout.Pane;
 
-public interface BattleSlideController extends SlideController {
+public interface BattleSlideService {
+  BooleanProperty prevDisableProperty();
+  StringProperty prevTextProperty();
+  BooleanProperty nextDisableProperty();
+  StringProperty nextTextProperty();
+  StringProperty titleProperty();
+  void slideBackward(Pane pane);
+  void slideForward(Pane pane);
 
-  void onBeforePrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
-  void onAfterPrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
-
-  void onBeforeNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
-  void onAfterNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService);
+  void init(Pane pane);
 }

@@ -16,9 +16,8 @@
  */
 package cz.masci.drd.app;
 
-import cz.masci.drd.ui.MainController;
-import cz.masci.drd.ui.battle.BattleController;
 import cz.masci.drd.ui.battle.BattleNewController;
+import cz.masci.drd.ui.battle.BattleOldController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;

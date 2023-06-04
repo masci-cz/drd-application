@@ -22,13 +22,16 @@ package cz.masci.drd.ui.battle.slide.impl;
 import static cz.masci.drd.ui.util.PropertyUtility.FALSE_PROPERTY;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.slide.BattleSlideController;
-import cz.masci.drd.ui.util.slide.SlideService;
+import cz.masci.drd.ui.util.slide.SlideQueueService;
+import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -63,7 +66,7 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
   // region interface
 
   @Override
-  public void onBeforeNext(BattleService battleService, SlideService<BattleSlideController, Node> slideService) {
+  public void onBeforeNext(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
     // don't create
     battleService.createBattle();
     log.debug("Size of slides before: {}", slideService.getSlides().size());
@@ -112,6 +115,10 @@ public class BattleGroupSlideController extends BasicBattleSlideController imple
   }
 
   // endregion
+
+  public ObservableList<String> getGroups() {
+    return lstGroups.getItems();
+  }
 
   // region FX
 
