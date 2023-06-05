@@ -1,6 +1,5 @@
 package cz.masci.drd.ui.util.slide;
 
-import cz.masci.drd.ui.util.transition.TranslateTransitionBuilder;
 import java.util.Objects;
 import java.util.function.Consumer;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -9,7 +8,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +22,10 @@ public class SlideQueueService<C, V extends Node> {
   @Getter
   private final ObservableList<FxControllerAndView<? extends C, V>> slides = FXCollections.observableArrayList();
   private final Pane centerPane;
-  private final ReadOnlyDoubleProperty widthProperty;
   private Integer currentIndex;
 
-  public SlideQueueService(SlideService slideService, @NonNull ReadOnlyDoubleProperty widthProperty, @NonNull Pane centerPane) {
+  public SlideQueueService(SlideService slideService, @NonNull Pane centerPane) {
     this.slideService = slideService;
-    this.widthProperty = widthProperty;
     this.centerPane = centerPane;
     this.currentIndex = null;
     slides.addListener(updateCurrentSlide());
@@ -146,20 +142,4 @@ public class SlideQueueService<C, V extends Node> {
     return slides.get(index).getView().orElseThrow();
   }
 
-  @RequiredArgsConstructor
-  @Getter
-  private enum SlideFactor {
-    PREV(1.0),
-    NEXT(-1.0);
-
-    private final double factor;
-
-    public double translateToEndPosition(double x) {
-      return factor * x;
-    }
-
-    public double translateToStartPosition(double x) {
-      return -1.0 * factor * x;
-    }
-  }
 }

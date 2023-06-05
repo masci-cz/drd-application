@@ -22,21 +22,9 @@ package cz.masci.drd.ui.battle.slide.impl;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
-import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.battle.slide.BattleSlideController;
-import cz.masci.drd.ui.util.slide.SlideQueueService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableListValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -45,7 +33,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -55,7 +42,7 @@ import org.springframework.stereotype.Component;
 @FxmlView("fxml/battle-duellist-slide.fxml")
 @FxmlController
 @Slf4j
-public class BattleDuellistSlideController extends BasicBattleSlideController implements BattleSlideController {
+public class BattleDuellistSlideController {
 
   @FXML
   private Button btnAdd;
@@ -74,75 +61,11 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
   @FXML
   private TableView<DuellistDTO> tblDuellist;
 
-  @Getter
-  private final BooleanProperty lastGroup = new SimpleBooleanProperty();
-  @Getter
-  private final BooleanProperty firstGroup = new SimpleBooleanProperty();
-
   @Setter
   @Getter
   private GroupDTO group;
 
-  // region interface
-
-  @Override
-  public void onAfterPrev(BattleService battleService, SlideQueueService<BattleSlideController, Node> slideService) {
-    if (isFirstGroup()) {
-      List<FxControllerAndView<?, ?>> slidesToRemove = new ArrayList<>();
-      slideService.getSlides().forEach(nodeFxControllerAndView -> {
-        var controller = nodeFxControllerAndView.getController();
-        if (controller instanceof BattleDuellistSlideController) {
-          slidesToRemove.add(nodeFxControllerAndView);
-        }
-      });
-      slidesToRemove.forEach(slide -> slideService.getSlides().remove(slide));
-      battleService.exitBattle();
-    }
-  }
-
-  @Override
-  public String getTitle() {
-    return "Bojovníci skupiny: " + Objects.requireNonNullElse(group, new GroupDTO("UNDEFINED")).getName();
-  }
-
-  @Override
-  public String getPrevTitle() {
-    return isFirstGroup() ? "Zrušit bitvu" : "Předchozí";
-  }
-
-  @Override
-  public String getNextTitle() {
-    return isLastGroup() ? "Spustit bitvu" : "Další";
-  }
-
-  @Override
-  public ObservableBooleanValue validNextProperty() {
-    return Bindings.not(lastGroup).and(Bindings.size(tblDuellist.getItems()).greaterThanOrEqualTo(1));
-  }
-
-  public boolean isLastGroup() {
-    return lastGroup.get();
-  }
-
-  public void setLastGroup(boolean value) {
-    lastGroup.set(value);
-  }
-
-  public boolean isFirstGroup() {
-    return firstGroup.get();
-  }
-
-  public void setFirstGroup(boolean value) {
-    firstGroup.set(value);
-  }
-
-  public ObservableList<DuellistDTO> getDuellists() {
-    return tblDuellist.getItems();
-  }
-
-  // endregion
-
-  // region FX
+  // region scene
 
   @FXML
   private void initialize() {
@@ -208,4 +131,13 @@ public class BattleDuellistSlideController extends BasicBattleSlideController im
     duellist.setOriginalLive(Integer.parseInt(txtLive.getText()));
   }
 
+  // endregion
+
+  // region others
+
+  public ObservableList<DuellistDTO> getDuellists() {
+    return tblDuellist.getItems();
+  }
+
+  // endregion
 }
