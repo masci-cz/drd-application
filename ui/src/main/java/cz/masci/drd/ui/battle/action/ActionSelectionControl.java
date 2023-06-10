@@ -17,20 +17,19 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.service;
+package cz.masci.drd.ui.battle.action;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.layout.Pane;
+import cz.masci.drd.service.BattleService;
+import javafx.scene.Node;
 
-public interface BattleSlideService {
-  BooleanProperty prevDisableProperty();
-  StringProperty prevTextProperty();
-  BooleanProperty nextDisableProperty();
-  StringProperty nextTextProperty();
-  StringProperty titleProperty();
-  void slideBackward(Pane pane);
-  void slideForward(Pane pane);
+public interface ActionSelectionControl {
 
-  void init(Pane pane);
+  /**
+   * Return control view
+   *
+   * @return Control view
+   */
+  Node getView();
+
+  void setBattleService(BattleService battleService);
 }

@@ -17,16 +17,15 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.dto;
+package cz.masci.drd.ui.battle.manager;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import javafx.scene.Node;
 
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Action {
+public interface BattleSlideManager<T> {
+
+  void initProperties(BattleSlidePropertiesDTO properties);
+
+  T getController();
+  Node getView();
 }

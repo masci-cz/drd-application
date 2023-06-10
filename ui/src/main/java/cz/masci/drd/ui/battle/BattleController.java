@@ -47,6 +47,7 @@ import org.springframework.stereotype.Component;
 @FxmlController
 @Slf4j
 @RequiredArgsConstructor
+@Deprecated
 public class BattleController {
 
   private final BattleService battleService;
@@ -79,7 +80,7 @@ public class BattleController {
 
   public void initialize() {
     // init action list
-    duellistAction.setItems(FXCollections.observableList(actionService.getActions()));
+//    duellistAction.setItems(FXCollections.observableList(actionService.getActions()));
     // init panes
     initPane.setVisible(true);
     roundPane.setVisible(false);

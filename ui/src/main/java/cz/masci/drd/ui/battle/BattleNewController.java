@@ -20,14 +20,16 @@
 package cz.masci.drd.ui.battle;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.ui.battle.service.BattleSlideService;
+import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -37,11 +39,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class BattleNewController {
 
-  private final BattleSlideService battleSlideService;
+  @Setter
+  private BattleFactory battleFactory;
 
   @FXML
   private BorderPane mainPane;
   @FXML
+  @Getter
   private AnchorPane centerPane;
   @FXML
   private Label lblTitle;
@@ -50,30 +54,29 @@ public class BattleNewController {
   @FXML
   private Button btnNext;
 
+  public void initControls(BattleSlidePropertiesDTO battleSlideProperties) {
+    btnPrev.disableProperty().bind(battleSlideProperties.getPrevDisableProperty());
+    btnPrev.textProperty().bind(battleSlideProperties.getPrevTextProperty());
+    btnNext.disableProperty().bind(battleSlideProperties.getNextDisableProperty());
+    btnNext.textProperty().bind(battleSlideProperties.getNextTextProperty());
+    lblTitle.textProperty().bind(battleSlideProperties.getTitleProperty());
+  }
 
   @FXML
   private void initialize() {
     btnPrev.setDisable(true);
     btnNext.setDisable(true);
 
-    // init controls
-    btnPrev.disableProperty().bind(battleSlideService.prevDisableProperty());
-    btnPrev.textProperty().bind(battleSlideService.prevTextProperty());
-    btnNext.disableProperty().bind(battleSlideService.nextDisableProperty());
-    btnNext.textProperty().bind(battleSlideService.nextTextProperty());
-    lblTitle.textProperty().bind(battleSlideService.titleProperty());
-
-    battleSlideService.init(centerPane);
+//    battleSlideService.init(centerPane);
   }
 
   @FXML
-  private void onPrev() {
-    battleSlideService.slideBackward(centerPane);
-  }
-
-  @FXML
-  private void onNext() {
-    battleSlideService.slideForward(centerPane);
+  private void slide(ActionEvent event) {
+    if (this.btnPrev.equals(event.getSource())) {
+      battleFactory.slideBackward(centerPane);
+    } else if (this.btnNext.equals(event.getSource())) {
+      battleFactory.slideForward(centerPane);
+    }
   }
 
 }

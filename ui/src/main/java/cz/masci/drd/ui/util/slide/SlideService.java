@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.util.slide;
 
+import cz.masci.drd.ui.util.slide.impl.SlideServiceImpl.SlideFactor;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
@@ -62,4 +63,6 @@ public interface SlideService {
    * @param onSlideFinished What should be processed after the slid is finished
    */
   void slideForward(Node currentNode, Node futureNode, Pane parentPane, Runnable onSlideFinished);
+
+  void slide(SlideFactor slideFactor, Node currentNode, Node futureNode, Pane parentPane, Runnable onSlideFinished);
 }

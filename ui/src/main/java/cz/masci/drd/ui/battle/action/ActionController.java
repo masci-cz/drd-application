@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlController
 @FxmlView("fxml/action.fxml")
+@Deprecated
 public class ActionController {
   @FXML
   public void setAction(ActionEvent event) {

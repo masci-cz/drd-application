@@ -17,8 +17,15 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.dto;
+package cz.masci.drd.ui.battle.action.impl;
 
-public class ActionDTO {
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
+
+@Component
+@FxmlView("fxml/close-combat-selection-action-control.fxml")
+@FxmlController
+public class CloseCombatSelectionActionControl {
 
 }

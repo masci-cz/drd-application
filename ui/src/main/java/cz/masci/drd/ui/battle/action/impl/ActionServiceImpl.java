@@ -19,34 +19,23 @@
 
 package cz.masci.drd.ui.battle.action.impl;
 
-import cz.masci.drd.ui.battle.action.ActionController;
 import cz.masci.drd.ui.battle.action.ActionService;
+import cz.masci.drd.ui.battle.action.ActionSelectionControl;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.Node;
-import net.rgielen.fxweaver.core.FxControllerAndView;
-import net.rgielen.fxweaver.core.FxWeaver;
+import lombok.Getter;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ActionServiceImpl implements ActionService {
 
-  private final List<FxControllerAndView<ActionController, Node>> actions = new ArrayList<>();
+  @Getter
+  private final List<ActionSelectionControl> actions = new ArrayList<>();
 
-//  public ActionServiceImpl(ListableBeanFactory beanFactory) {
-//    var loadedActions = Stream.of(beanFactory.getBeanNamesForAnnotation(Action.class))
-//        .map(beanName -> beanFactory.getBean(beanName, ActionDTO.class))
-//        .toList();
-//    actions.addAll(loadedActions);
-//  }
-
-  public ActionServiceImpl(FxWeaver fxWeaver) {
-    var fxControllerAndView = fxWeaver.load(ActionController.class);
-    actions.add(fxControllerAndView);
+  public ActionServiceImpl(ListableBeanFactory beanFactory) {
+    var loadedActions = beanFactory.getBeansOfType(ActionSelectionControl.class).values();
+    actions.addAll(loadedActions);
   }
 
-  @Override
-  public List<FxControllerAndView<ActionController, Node>> getActions() {
-    return this.actions;
-  }
 }

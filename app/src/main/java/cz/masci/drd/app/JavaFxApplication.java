@@ -16,6 +16,7 @@
  */
 package cz.masci.drd.app;
 
+import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.battle.BattleNewController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -47,13 +48,15 @@ public class JavaFxApplication extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     System.out.println("JavaFxApplication - start");
-    FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-//    Parent root = fxWeaver.loadView(MainController.class);
-    Parent root = fxWeaver.loadView(BattleNewController.class);
-    Scene scene = new Scene(root);
-    scene.getStylesheets().add("table-detail.css");
-    stage.setScene(scene);
-    stage.show();
+//    FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+////    Parent root = fxWeaver.loadView(MainController.class);
+//    Parent root = fxWeaver.loadView(BattleNewController.class);
+//    Scene scene = new Scene(root);
+//    scene.getStylesheets().add("table-detail.css");
+//    stage.setScene(scene);
+//    stage.show();
+    var battleFactory = applicationContext.getBean(BattleFactory.class);
+    battleFactory.show(stage);
   }
 
   @Override

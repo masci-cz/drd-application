@@ -40,7 +40,8 @@ public class SlideServiceImpl implements SlideService {
     slide(SlideFactor.NEXT, currentNode, futureNode, parentPane, onSlideFinished);
   }
 
-  private void slide(SlideFactor slideFactor, Node currentNode, Node futureNode, Pane parentPane, Runnable onSlideFinished) {
+  @Override
+  public void slide(SlideFactor slideFactor, Node currentNode, Node futureNode, Pane parentPane, Runnable onSlideFinished) {
     double parentPaneWidth = parentPane.getWidth();
 
     // Create translate transition for future node based on SlideType
@@ -78,7 +79,7 @@ public class SlideServiceImpl implements SlideService {
 
   @RequiredArgsConstructor
   @Getter
-  private enum SlideFactor {
+  public enum SlideFactor {
     PREV(1.0),
     NEXT(-1.0);
 

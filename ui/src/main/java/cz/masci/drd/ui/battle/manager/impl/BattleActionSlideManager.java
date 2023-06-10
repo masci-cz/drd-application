@@ -17,39 +17,39 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.service.impl;
+package cz.masci.drd.ui.battle.manager.impl;
 
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
-import cz.masci.drd.ui.battle.service.dto.BattleSlidePropertiesDTO;
-import cz.masci.drd.ui.battle.slide.impl.BattleDuellistSlideController;
-import javafx.beans.binding.Bindings;
+import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.slide.impl.BattleActionSlideController;
 import net.rgielen.fxweaver.core.FxWeaver;
 
-public class BattleDuellistSlide extends BaseBattleSlide<BattleDuellistSlideController> {
+public class BattleActionSlideManager extends BaseBattleSlideManager<BattleActionSlideController> {
 
   private final boolean firstItem;
   private final boolean lastItem;
+  private final String groupName;
 
-  public BattleDuellistSlide(FxWeaver fxWeaver, GroupDTO group, boolean firstItem, boolean lastItem) {
-    super(fxWeaver, BattleDuellistSlideController.class);
+  public BattleActionSlideManager(FxWeaver fxWeaver, GroupDTO group, DuellistDTO duellist, boolean firstItem, boolean lastItem) {
+    super(fxWeaver, BattleActionSlideController.class);
     this.firstItem = firstItem;
     this.lastItem = lastItem;
-    controller.setGroup(group);
+    this.groupName = group.getName();
   }
 
   @Override
   public void initProperties(BattleSlidePropertiesDTO properties) {
     properties.getPrevDisableProperty().set(false);
-    properties.getPrevTextProperty().set(firstItem ? "Zrušit bitvu" : "Předchozí");
+    properties.getPrevTextProperty().set(firstItem ? "Bojovnci" : "Předchozí");
     if (lastItem) {
       properties.getNextDisableProperty().unbind();
       properties.getNextDisableProperty().set(true);
     } else {
-      properties.getNextDisableProperty().bind(Bindings.size(controller.getDuellists()).lessThan(1));
+      properties.getNextDisableProperty().bind(controller.selectedAction().isNotNull());
     }
 
-    properties.getNextTextProperty().set(lastItem ? "Spustit bitvu" : "Další");
-    properties.getTitleProperty().set("Bojovníci skupiny " + controller.getGroup().getName());
-
+    properties.getNextTextProperty().set(lastItem ? "Iniciativa" : "Další");
+    properties.getTitleProperty().set("Bojovníci skupiny " + groupName);
   }
 }

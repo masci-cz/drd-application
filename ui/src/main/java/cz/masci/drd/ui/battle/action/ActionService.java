@@ -20,9 +20,7 @@
 package cz.masci.drd.ui.battle.action;
 
 import java.util.List;
-import javafx.scene.Node;
-import net.rgielen.fxweaver.core.FxControllerAndView;
 
 public interface ActionService {
-  List<FxControllerAndView<ActionController, Node>> getActions();
+  List<ActionSelectionControl> getActions();
 }

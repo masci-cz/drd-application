@@ -17,16 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.service.impl;
+package cz.masci.drd.ui.battle.manager.impl;
 
-import cz.masci.drd.ui.battle.service.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.impl.BattleGroupSlideController;
 import javafx.beans.binding.Bindings;
 import net.rgielen.fxweaver.core.FxWeaver;
 
-public class BattleGroupSlide extends BaseBattleSlide<BattleGroupSlideController> {
+public class BattleGroupSlideManager extends BaseBattleSlideManager<BattleGroupSlideController> {
 
-  public BattleGroupSlide(FxWeaver fxWeaver) {
+  public BattleGroupSlideManager(FxWeaver fxWeaver) {
     super(fxWeaver, BattleGroupSlideController.class);
   }
 

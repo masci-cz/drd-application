@@ -17,22 +17,22 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.service.impl;
+package cz.masci.drd.ui.battle.manager.impl;
 
-import cz.masci.drd.ui.battle.service.BattleSlide;
+import cz.masci.drd.ui.battle.manager.BattleSlideManager;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxWeaver;
 
-public abstract class BaseBattleSlide<T> implements BattleSlide<T> {
+public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T> {
 
   @Getter
   protected final T controller;
   @Getter
   protected final Node view;
 
-  public BaseBattleSlide(FxWeaver fxWeaver, Class<T> controllerClass) {
+  public BaseBattleSlideManager(FxWeaver fxWeaver, Class<T> controllerClass) {
     var fxControllerAndView = fxWeaver.load(controllerClass);
     controller = fxControllerAndView.getController();
     view = fxControllerAndView.getView().orElseThrow();
