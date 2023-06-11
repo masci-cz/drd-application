@@ -19,23 +19,31 @@
 
 package cz.masci.drd.ui.battle.action.impl;
 
-import cz.masci.drd.ui.battle.action.ActionService;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
-import java.util.ArrayList;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.DuellistDTO;
+import cz.masci.drd.ui.converter.DuellistStringConverter;
 import java.util.List;
-import lombok.Getter;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.stereotype.Service;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
 
-@Service
-public class ActionServiceImpl implements ActionService {
+@Component
+@FxmlView("fxml/close-combat-select-action-controller.fxml")
+@FxmlController
+public class CloseCombatSelectActionController {
 
-  @Getter
-  private final List<SelectActionControl> actions = new ArrayList<>();
+  @FXML
+  ComboBox<DuellistDTO> duellistBox;
 
-  public ActionServiceImpl(ListableBeanFactory beanFactory) {
-    var loadedActions = beanFactory.getBeansOfType(SelectActionControl.class).values();
-    actions.addAll(loadedActions);
+  @FXML
+  void initialize() {
+    duellistBox.setConverter(new DuellistStringConverter("Vyberte bojovníka"));
   }
+
+  public void initDuellists(List<DuellistDTO> duellists) {
+    duellistBox.getItems().addAll(duellists);
+  }
+
 
 }

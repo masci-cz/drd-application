@@ -17,10 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action;
+package cz.masci.drd.ui.converter;
 
-import java.util.List;
+import cz.masci.drd.ui.battle.action.SelectActionControl;
+import jakarta.validation.constraints.NotNull;
+import javafx.util.StringConverter;
 
-public interface ActionService {
-  List<SelectActionControl> getActions();
+public class ActionStringConverter extends SelectionStringConverter<SelectActionControl> {
+
+  public ActionStringConverter(String selectionText) {
+    super(selectionText);
+  }
+
+  @Override
+  protected String convert(@NotNull SelectActionControl object) {
+    return object.getName();
+  }
 }

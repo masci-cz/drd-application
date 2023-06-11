@@ -19,10 +19,12 @@
 
 package cz.masci.drd.ui.battle.action;
 
+import cz.masci.drd.dto.DuellistDTO;
+import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.service.BattleService;
 import javafx.scene.Node;
 
-public interface ActionSelectionControl {
+public interface SelectActionControl {
 
   /**
    * Return control view
@@ -31,5 +33,9 @@ public interface ActionSelectionControl {
    */
   Node getView();
 
-  void setBattleService(BattleService battleService);
+  void initAction(BattleService battleService, DuellistDTO duellist);
+
+  Action getAction();
+
+  String getName();
 }

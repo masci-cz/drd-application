@@ -17,15 +17,19 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.converter;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.stereotype.Component;
+import cz.masci.drd.dto.DuellistDTO;
+import jakarta.validation.constraints.NotNull;
 
-@Component
-@FxmlView("fxml/close-combat-selection-action-control.fxml")
-@FxmlController
-public class CloseCombatSelectionActionControl {
+public class DuellistStringConverter extends SelectionStringConverter<DuellistDTO> {
 
+  public DuellistStringConverter(String selectionText) {
+    super(selectionText);
+  }
+
+  @Override
+  protected String convert(@NotNull DuellistDTO object) {
+    return object.getName();
+  }
 }

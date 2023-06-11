@@ -105,6 +105,7 @@ public class BattleDuellistSlideController {
 
     if (tblDuellist.getItems().stream().map(DuellistDTO::getName).noneMatch(txtName.getText()::equals)) {
       tblDuellist.getItems().add(duellist);
+      group.getDuellists().add(duellist);
     }
   }
 
@@ -115,6 +116,7 @@ public class BattleDuellistSlideController {
     if (tblDuellist.getItems().stream().filter(item -> item != duellist).map(DuellistDTO::getName).noneMatch(txtName.getText()::equals)) {
       updateDuellist(duellist);
       tblDuellist.getItems().set(index, duellist);
+      group.getDuellists().set(index, duellist);
     }
   }
 
@@ -122,6 +124,7 @@ public class BattleDuellistSlideController {
   private void onDeleteDuellist() {
     var duellist = tblDuellist.getSelectionModel().getSelectedItem();
     tblDuellist.getItems().remove(duellist);
+    group.getDuellists().remove(duellist);
   }
 
   private void updateDuellist(DuellistDTO duellist) {

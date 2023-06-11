@@ -19,13 +19,12 @@
 
 package cz.masci.drd.ui.battle;
 
-import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.manager.BattleSlideManager;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.manager.impl.BaseBattleSlideManager;
-import cz.masci.drd.ui.battle.manager.impl.BattleActionSlideManager;
+import cz.masci.drd.ui.battle.manager.impl.BattleSelectActionSlideManager;
 import cz.masci.drd.ui.battle.manager.impl.BattleDuellistSlideManager;
 import cz.masci.drd.ui.battle.manager.impl.BattleGroupSlideManager;
 import cz.masci.drd.ui.util.slide.SlideService;
@@ -53,8 +52,8 @@ public class BattleFactory {
 
   private FxControllerAndView<BattleNewController, Parent> battleControllerAndView;
   private BattleGroupSlideManager battleGroupSlide;
-  private final List<BattleDuellistSlideManager> battleDuellistSlideList = new ArrayList<>();
-  private final List<BattleActionSlideManager> battleActionSelectionSlideList = new ArrayList<>();
+  private final List<BattleDuellistSlideManager> battleDuellistSlides = new ArrayList<>();
+  private final List<BattleSelectActionSlideManager> battleSelectActionSlides = new ArrayList<>();
 
   private BattleSlideManager<?> currentBattleSlideManager;
   private int index;
@@ -85,6 +84,7 @@ public class BattleFactory {
         // Nothing to do
       }
       case GROUP_DUELLISTS_SETUP -> slideDuellistSlide(SlideFactor.PREV, pane);
+      case SELECT_ACTION_SETUP -> slideActionSelectionSlide(SlideFactor.PREV, pane);
     }
   }
 
@@ -92,6 +92,7 @@ public class BattleFactory {
     switch (battleSlideState) {
       case GROUPS_SETUP -> slideGroupSlide(pane);
       case GROUP_DUELLISTS_SETUP -> slideDuellistSlide(SlideFactor.NEXT, pane);
+      case SELECT_ACTION_SETUP -> slideActionSelectionSlide(SlideFactor.NEXT, pane);
     }
   }
 
@@ -99,7 +100,7 @@ public class BattleFactory {
     initBattleDuellistSlides();
 
     index = 0;
-    var futureSlide = battleDuellistSlideList.get(index);
+    var futureSlide = battleDuellistSlides.get(index);
 
     slide(SlideFactor.NEXT, futureSlide, pane, () -> battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP);
   }
@@ -111,22 +112,40 @@ public class BattleFactory {
       index--;
     }
 
-    if (index == battleDuellistSlideList.size()) {
-      initBattleActionSlides();
+    if (index == battleDuellistSlides.size()) {
+      initBattleSelectActionSlides();
     }
 
-    var futureSlide = (index < 0) ? battleGroupSlide : (index == battleDuellistSlideList.size()) ? battleActionSelectionSlideList.get(0) : battleDuellistSlideList.get(index);
+    var futureSlide = (index < 0) ? battleGroupSlide : (index == battleDuellistSlides.size()) ? battleSelectActionSlides.get(0) : battleDuellistSlides.get(index);
 
     slide(slideFactor, futureSlide, pane, () -> {
       if (index < 0) {
         battleSlideState = BattleSlideState.GROUPS_SETUP;
-        battleDuellistSlideList.clear();
+        battleDuellistSlides.clear();
         index = 0;
         battleService.exitBattle();
       }
-      if (index == battleDuellistSlideList.size()) {
-        battleSlideState = BattleSlideState.DUELLISTS_SETUP;
+      if (index == battleDuellistSlides.size()) {
+        battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
         index = 0;
+      }
+    });
+  }
+
+  private void slideActionSelectionSlide(SlideFactor slideFactor, Pane pane) {
+    if (SlideFactor.NEXT.equals(slideFactor)) {
+      index++;
+    } else {
+      index--;
+    }
+
+    var futureSlide = (index < 0) ? battleDuellistSlides.get(battleDuellistSlides.size() - 1) : (index == battleSelectActionSlides.size()) ? null : battleSelectActionSlides.get(index);
+
+    slide(slideFactor, futureSlide, pane, () -> {
+      if (index < 0) {
+        battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP;
+        battleSelectActionSlides.clear();
+        index = battleDuellistSlides.size() - 1;
       }
     });
   }
@@ -163,7 +182,7 @@ public class BattleFactory {
       for (int i = 0; i < groupList.size(); i++) {
         var name = groupList.get(i);
         var battleDuellistSlide = new BattleDuellistSlideManager(fxWeaver, battleService.getGroup(name), i == 0, i == groupList.size() - 1);
-        battleDuellistSlideList.add(battleDuellistSlide);
+        battleDuellistSlides.add(battleDuellistSlide);
       }
       battleGroupSlideController.getGroups().clear();
     } catch (BattleException e) {
@@ -171,15 +190,21 @@ public class BattleFactory {
     }
   }
 
-  private void initBattleActionSlides() {
-    var group = battleService.getGroups().get(0);
-    var duellist = new DuellistDTO();
-    battleActionSelectionSlideList.add(new BattleActionSlideManager(fxWeaver, group, duellist, true, true));
+  private void initBattleSelectActionSlides() {
+    var lastGroupIndex = battleService.getGroups().size() - 1;
+    for (int groupIndex = 0; groupIndex < battleService.getGroups().size(); groupIndex++) {
+      var group = battleService.getGroups().get(groupIndex);
+      var lastDuellistIndex = battleService.getGroups().size() - 1;
+      for (int duellistIndex = 0; duellistIndex < group.getDuellists().size(); duellistIndex++) {
+        var duellist = group.getDuellists().get(duellistIndex);
+        battleSelectActionSlides.add(new BattleSelectActionSlideManager(fxWeaver, battleService, group, duellist, groupIndex == 0 && duellistIndex == 0, groupIndex == lastGroupIndex && duellistIndex == lastDuellistIndex));
+      }
+    }
   }
 
   private enum BattleSlideState {
     GROUPS_SETUP,
-    DUELLISTS_SETUP,
+    SELECT_ACTION_SETUP,
     GROUP_DUELLISTS_SETUP
   }
 }

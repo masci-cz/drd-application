@@ -262,8 +262,7 @@ class BattleServiceImplTest {
 
     assertEquals(BattleState.ROUND, battleService.getState());
 
-    assertThat(battleService.getActions())
-        .containsOnly(action3, action4, action1, action2);
+    assertThat(battleService.getActions()).containsOnly(action3, action4, action1, action2);
   }
 
   // endregion
@@ -413,19 +412,19 @@ class BattleServiceImplTest {
   private record SimpleAction(int order) implements Action {
 
     @Override
-      public boolean isPrepared() {
-        return true;
-      }
+    public boolean isPrepared() {
+      return true;
+    }
 
-      @Override
-      public ActionResult execute() {
-        return null;
-      }
+    @Override
+    public ActionResult execute() {
+      return null;
+    }
 
-      @Override
-      public int order() {
-        return order;
-      }
+    @Override
+    public int order() {
+      return order;
+    }
   }
 
   // endregion

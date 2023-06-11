@@ -21,35 +21,41 @@ package cz.masci.drd.ui.battle.manager.impl;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
+import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
-import cz.masci.drd.ui.battle.slide.impl.BattleActionSlideController;
+import cz.masci.drd.ui.battle.slide.impl.BattleSelectActionSlideController;
 import net.rgielen.fxweaver.core.FxWeaver;
 
-public class BattleActionSlideManager extends BaseBattleSlideManager<BattleActionSlideController> {
+public class BattleSelectActionSlideManager extends BaseBattleSlideManager<BattleSelectActionSlideController> {
 
   private final boolean firstItem;
   private final boolean lastItem;
   private final String groupName;
+  private final String duellistName;
 
-  public BattleActionSlideManager(FxWeaver fxWeaver, GroupDTO group, DuellistDTO duellist, boolean firstItem, boolean lastItem) {
-    super(fxWeaver, BattleActionSlideController.class);
+
+  public BattleSelectActionSlideManager(FxWeaver fxWeaver, BattleService battleService, GroupDTO group, DuellistDTO duellist, boolean firstItem, boolean lastItem) {
+    super(fxWeaver, BattleSelectActionSlideController.class);
     this.firstItem = firstItem;
     this.lastItem = lastItem;
     this.groupName = group.getName();
+    this.duellistName = duellist.getName();
+    controller.setDuellist(duellist);
+    controller.setBattleService(battleService);
   }
 
   @Override
   public void initProperties(BattleSlidePropertiesDTO properties) {
     properties.getPrevDisableProperty().set(false);
-    properties.getPrevTextProperty().set(firstItem ? "Bojovnci" : "Předchozí");
+    properties.getPrevTextProperty().set(firstItem ? "Bojovníci" : "Předchozí");
     if (lastItem) {
       properties.getNextDisableProperty().unbind();
       properties.getNextDisableProperty().set(true);
     } else {
-      properties.getNextDisableProperty().bind(controller.selectedAction().isNotNull());
+      properties.getNextDisableProperty().bind(controller.selectedAction().isNull());
     }
 
     properties.getNextTextProperty().set(lastItem ? "Iniciativa" : "Další");
-    properties.getTitleProperty().set("Bojovníci skupiny " + groupName);
+    properties.getTitleProperty().set(String.format("Vyberte akci pro bojovníka %s ze skupiny %s", duellistName, groupName));
   }
 }
