@@ -25,6 +25,7 @@ import cz.masci.drd.ui.converter.DuellistStringConverter;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
@@ -32,22 +33,24 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@FxmlView("fxml/close-combat-select-action.fxml")
+@FxmlView("fxml/magic-select-action.fxml")
 @FxmlController
-public class CloseCombatSelectActionController {
+public class MagicSelectActionController {
 
   @FXML
   @Getter
   ComboBox<DuellistDTO> duellistBox;
 
   @FXML
+  @Getter
+  TextField spellTxt;
+
+  @FXML
   void initialize() {
-    duellistBox.setConverter(new DuellistStringConverter("Vyberte obránce"));
+    duellistBox.setConverter(new DuellistStringConverter("Vyberte příjemce kouzla"));
   }
 
   public void initDuellists(List<DuellistDTO> duellists) {
     duellistBox.getItems().addAll(duellists);
   }
-
-
 }

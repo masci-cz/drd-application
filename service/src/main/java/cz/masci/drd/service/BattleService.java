@@ -133,6 +133,8 @@ public interface BattleService {
    */
   List<DuellistDTO> getGroupDuellists(String name) throws BattleException;
 
+  List<DuellistDTO> getAllDuellists();
+
   /**
    * Return current battle state.
    *

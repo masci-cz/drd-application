@@ -22,6 +22,7 @@ package cz.masci.drd.dto.actions;
 /**
  * Result of the processed action
  */
+@FunctionalInterface
 public interface ActionResult {
   String getMessage();
 }

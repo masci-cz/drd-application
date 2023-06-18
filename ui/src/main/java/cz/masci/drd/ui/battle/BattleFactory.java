@@ -21,6 +21,7 @@ package cz.masci.drd.ui.battle;
 
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
+import cz.masci.drd.ui.battle.action.ActionService;
 import cz.masci.drd.ui.battle.manager.BattleSlideManager;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.manager.impl.BaseBattleSlideManager;
@@ -46,6 +47,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BattleFactory {
   private final BattleService battleService;
+  private final ActionService actionService;
 
   private final SlideService slideService;
   private final FxWeaver fxWeaver;
@@ -124,8 +126,7 @@ public class BattleFactory {
         battleDuellistSlides.clear();
         index = 0;
         battleService.exitBattle();
-      }
-      if (index == battleDuellistSlides.size()) {
+      } else if (index == battleDuellistSlides.size()) {
         battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
         index = 0;
       }
@@ -197,7 +198,7 @@ public class BattleFactory {
       var lastDuellistIndex = battleService.getGroups().size() - 1;
       for (int duellistIndex = 0; duellistIndex < group.getDuellists().size(); duellistIndex++) {
         var duellist = group.getDuellists().get(duellistIndex);
-        battleSelectActionSlides.add(new BattleSelectActionSlideManager(fxWeaver, battleService, group, duellist, groupIndex == 0 && duellistIndex == 0, groupIndex == lastGroupIndex && duellistIndex == lastDuellistIndex));
+        battleSelectActionSlides.add(new BattleSelectActionSlideManager(fxWeaver, actionService, battleService, group, duellist, groupIndex == 0 && duellistIndex == 0, groupIndex == lastGroupIndex && duellistIndex == lastDuellistIndex));
       }
     }
   }

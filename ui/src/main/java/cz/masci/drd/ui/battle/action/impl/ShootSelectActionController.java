@@ -32,9 +32,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@FxmlView("fxml/close-combat-select-action.fxml")
+@FxmlView("fxml/shoot-select-action.fxml")
 @FxmlController
-public class CloseCombatSelectActionController {
+public class ShootSelectActionController {
 
   @FXML
   @Getter
@@ -48,6 +48,4 @@ public class CloseCombatSelectActionController {
   public void initDuellists(List<DuellistDTO> duellists) {
     duellistBox.getItems().addAll(duellists);
   }
-
-
 }

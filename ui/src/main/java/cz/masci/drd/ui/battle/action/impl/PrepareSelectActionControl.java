@@ -19,35 +19,42 @@
 
 package cz.masci.drd.ui.battle.action.impl;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.ui.converter.DuellistStringConverter;
+import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.dto.actions.PrepareAction;
+import cz.masci.drd.ui.battle.action.SelectActionControl;
 import java.util.List;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
-import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@FxmlView("fxml/close-combat-select-action.fxml")
-@FxmlController
-public class CloseCombatSelectActionController {
+public class PrepareSelectActionControl implements SelectActionControl {
 
-  @FXML
   @Getter
-  ComboBox<DuellistDTO> duellistBox;
+  private final Node view;
 
-  @FXML
-  void initialize() {
-    duellistBox.setConverter(new DuellistStringConverter("Vyberte obránce"));
+  private DuellistDTO actor;
+
+  public PrepareSelectActionControl() {
+    view = new Pane();
   }
 
-  public void initDuellists(List<DuellistDTO> duellists) {
-    duellistBox.getItems().addAll(duellists);
+  @Override
+  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
+    this.actor = actor;
   }
 
+  @Override
+  public String getName() {
+    return "Příprava";
+  }
 
+  @Override
+  public Action getAction() {
+    return new PrepareAction(actor);
+  }
 }

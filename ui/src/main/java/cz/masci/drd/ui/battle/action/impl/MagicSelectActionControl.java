@@ -21,51 +21,44 @@ package cz.masci.drd.ui.battle.action.impl;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.CombatAction;
+import cz.masci.drd.dto.actions.MagicAction;
 import cz.masci.drd.ui.battle.action.SelectActionControl;
-import cz.masci.drd.ui.util.PredicateUtils;
 import java.util.List;
 import javafx.scene.Node;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@Slf4j
-public class CloseCombatSelectActionControl implements SelectActionControl {
+public class MagicSelectActionControl implements SelectActionControl {
 
   @Getter
   private final Node view;
-  private final CloseCombatSelectActionController controller;
+  private final MagicSelectActionController controller;
 
   private DuellistDTO actor;
 
-  public CloseCombatSelectActionControl(FxWeaver fxWeaver) {
-    var fxControllerAndView = fxWeaver.load(CloseCombatSelectActionController.class);
+  public MagicSelectActionControl(FxWeaver fxWeaver) {
+    var fxControllerAndView = fxWeaver.load(MagicSelectActionController.class);
     controller = fxControllerAndView.getController();
     view = fxControllerAndView.getView().orElseThrow();
   }
 
   @Override
   public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
-    log.trace("Init select action control [{}]", this);
-    var duellistList = duellists.stream()
-        .filter(PredicateUtils.compose(DuellistDTO::getName, actor.getName()::equals).negate())
-        .toList();
-    controller.initDuellists(duellistList);
+    controller.initDuellists(duellists);
     this.actor = actor;
   }
 
   @Override
   public String getName() {
-    return "Útok na blízko";
+    return "Kouzlení";
   }
 
   @Override
   public Action getAction() {
-    return new CombatAction(actor, controller.getDuellistBox().getValue());
+    return new MagicAction(actor, controller.getDuellistBox().getValue(), controller.getSpellTxt().getText());
   }
 }

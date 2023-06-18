@@ -22,6 +22,7 @@ package cz.masci.drd.ui.battle.manager.impl;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
+import cz.masci.drd.ui.battle.action.ActionService;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.impl.BattleSelectActionSlideController;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -33,15 +34,14 @@ public class BattleSelectActionSlideManager extends BaseBattleSlideManager<Battl
   private final String groupName;
   private final String duellistName;
 
-
-  public BattleSelectActionSlideManager(FxWeaver fxWeaver, BattleService battleService, GroupDTO group, DuellistDTO duellist, boolean firstItem, boolean lastItem) {
+  public BattleSelectActionSlideManager(FxWeaver fxWeaver, ActionService actionService, BattleService battleService, GroupDTO group, DuellistDTO actor, boolean firstItem, boolean lastItem) {
     super(fxWeaver, BattleSelectActionSlideController.class);
     this.firstItem = firstItem;
     this.lastItem = lastItem;
     this.groupName = group.getName();
-    this.duellistName = duellist.getName();
-    controller.setDuellist(duellist);
-    controller.setBattleService(battleService);
+    this.duellistName = actor.getName();
+    var actionControls = actionService.getActions().stream().peek(action -> action.initAction(actor, battleService.getAllDuellists())).toList();
+    controller.initActions(actionControls);
   }
 
   @Override
@@ -56,6 +56,6 @@ public class BattleSelectActionSlideManager extends BaseBattleSlideManager<Battl
     }
 
     properties.getNextTextProperty().set(lastItem ? "Iniciativa" : "Další");
-    properties.getTitleProperty().set(String.format("Vyberte akci pro bojovníka %s ze skupiny %s", duellistName, groupName));
+    properties.getTitleProperty().set(String.format("<html>Vyberte akci pro bojovníka <b>%s</b> ze skupiny <b>%s</b></html>", duellistName, groupName));
   }
 }

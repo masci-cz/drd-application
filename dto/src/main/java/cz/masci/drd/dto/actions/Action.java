@@ -23,6 +23,7 @@ package cz.masci.drd.dto.actions;
  * Base action
  */
 public interface Action extends Comparable<Action> {
+
   boolean isPrepared();
   ActionResult execute();
   int order();

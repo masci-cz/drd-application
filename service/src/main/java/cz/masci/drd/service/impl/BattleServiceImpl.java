@@ -176,6 +176,11 @@ public class BattleServiceImpl implements BattleService {
   }
 
   @Override
+  public List<DuellistDTO> getAllDuellists() {
+    return groups.values().stream().flatMap(group -> group.getDuellists().stream()).toList();
+  }
+
+  @Override
   public Queue<Action> getActions() {
     return actionList;
   }

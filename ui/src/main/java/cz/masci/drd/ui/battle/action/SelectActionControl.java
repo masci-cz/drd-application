@@ -21,7 +21,7 @@ package cz.masci.drd.ui.battle.action;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.service.BattleService;
+import java.util.List;
 import javafx.scene.Node;
 
 public interface SelectActionControl {
@@ -33,7 +33,7 @@ public interface SelectActionControl {
    */
   Node getView();
 
-  void initAction(BattleService battleService, DuellistDTO duellist);
+  void initAction(DuellistDTO actor, List<DuellistDTO> duellists);
 
   Action getAction();
 

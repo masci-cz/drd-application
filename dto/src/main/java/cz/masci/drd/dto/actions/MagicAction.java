@@ -17,23 +17,39 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.dto.actions;
 
-import cz.masci.drd.ui.battle.action.ActionService;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
-import java.util.Collection;
+import cz.masci.drd.dto.DuellistDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
-public class ActionServiceImpl implements ActionService {
+public class MagicAction implements Action {
 
-  private final ListableBeanFactory beanFactory;
+  private final DuellistDTO attacker;
+  private final DuellistDTO defender;
+  private final String spell;
 
   @Override
-  public Collection<SelectActionControl> getActions() {
-    return beanFactory.getBeansOfType(SelectActionControl.class).values();
+  public boolean isPrepared() {
+    return true;
+  }
+
+  @Override
+  public ActionResult execute() {
+    return () -> {
+      StringBuilder result = new StringBuilder();
+      result.append(attacker.getName());
+      result.append(" sesílá kouzlo [");
+      result.append(spell);
+      result.append("] na ");
+      result.append(defender.getName());
+
+      return result.toString();
+    };
+  }
+
+  @Override
+  public int order() {
+    return 1;
   }
 }

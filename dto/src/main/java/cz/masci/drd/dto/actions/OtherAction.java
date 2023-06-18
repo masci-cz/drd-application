@@ -17,42 +17,30 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto;
+package cz.masci.drd.dto.actions;
 
-import cz.masci.drd.dto.actions.Action;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Data;
+import cz.masci.drd.dto.DuellistDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
-@Data
-public class DuellistDTO {
-  /**
-   * Name of the duellist
-   */
-  String name;
-  /**
-   * Selected action for next round
-   */
-  Action selectedAction;
-  List<WeaponDTO> weapons = new ArrayList<>();
-  /**
-   * Original live count
-   */
-  int originalLive;
-  /**
-   * Current live count
-   */
-  int currentLive;
-  /**
-   * Defense number
-   */
-  int defense;
-  /**
-   * Temporal attribute for offense number
-   */
-  int attack;
-  /**
-   * Temporal attribute for damage bonus
-   */
-  int damage;
+@RequiredArgsConstructor
+public class OtherAction implements Action {
+
+  private final DuellistDTO actor;
+  private final String other;
+
+  @Override
+  public boolean isPrepared() {
+    return StringUtils.hasLength(other);
+  }
+
+  @Override
+  public ActionResult execute() {
+    return () -> String.format("Bojovník %s provádí %s", actor.getName(), other);
+  }
+
+  @Override
+  public int order() {
+    return 6;
+  }
 }

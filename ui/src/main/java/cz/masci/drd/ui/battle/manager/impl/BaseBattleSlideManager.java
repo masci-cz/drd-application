@@ -23,8 +23,10 @@ import cz.masci.drd.ui.battle.manager.BattleSlideManager;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 
+@Slf4j
 public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T> {
 
   @Getter
@@ -37,6 +39,7 @@ public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T>
     controller = fxControllerAndView.getController();
     view = fxControllerAndView.getView().orElseThrow();
     initAnchors(view);
+    log.trace("Initialized battle slide manager [{}] with controller: [{}]", this, controller);
   }
 
   private void initAnchors(Node node) {

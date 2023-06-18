@@ -17,42 +17,26 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto;
+package cz.masci.drd.ui.util;
 
-import cz.masci.drd.dto.actions.Action;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Data;
+import static java.util.Objects.requireNonNull;
 
-@Data
-public class DuellistDTO {
+import java.util.function.Function;
+import java.util.function.Predicate;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class PredicateUtils {
+
   /**
-   * Name of the duellist
+   * Returns a composed predicate that for every {@code x} will return {@code predicate(function(x))}.
+   *
+   * <p>Use-case example: {@code compose(User::firstName, Objects::nonNull)}</p>
    */
-  String name;
-  /**
-   * Selected action for next round
-   */
-  Action selectedAction;
-  List<WeaponDTO> weapons = new ArrayList<>();
-  /**
-   * Original live count
-   */
-  int originalLive;
-  /**
-   * Current live count
-   */
-  int currentLive;
-  /**
-   * Defense number
-   */
-  int defense;
-  /**
-   * Temporal attribute for offense number
-   */
-  int attack;
-  /**
-   * Temporal attribute for damage bonus
-   */
-  int damage;
+  public static <T, V> Predicate<T> compose(Function<T, ? extends V> function, Predicate<? super V> predicate) {
+    requireNonNull(predicate);
+    requireNonNull(function);
+
+    return value -> predicate.test(function.apply(value));
+  }
 }

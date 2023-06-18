@@ -21,37 +21,34 @@ package cz.masci.drd.ui.battle.action.impl;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.CombatAction;
+import cz.masci.drd.dto.actions.ShootAction;
 import cz.masci.drd.ui.battle.action.SelectActionControl;
 import cz.masci.drd.ui.util.PredicateUtils;
 import java.util.List;
 import javafx.scene.Node;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@Slf4j
-public class CloseCombatSelectActionControl implements SelectActionControl {
+public class ShootSelectActionControl implements SelectActionControl {
 
   @Getter
   private final Node view;
-  private final CloseCombatSelectActionController controller;
+  private final ShootSelectActionController controller;
 
   private DuellistDTO actor;
 
-  public CloseCombatSelectActionControl(FxWeaver fxWeaver) {
-    var fxControllerAndView = fxWeaver.load(CloseCombatSelectActionController.class);
+  public ShootSelectActionControl(FxWeaver fxWeaver) {
+    var fxControllerAndView = fxWeaver.load(ShootSelectActionController.class);
     controller = fxControllerAndView.getController();
     view = fxControllerAndView.getView().orElseThrow();
   }
 
   @Override
   public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
-    log.trace("Init select action control [{}]", this);
     var duellistList = duellists.stream()
         .filter(PredicateUtils.compose(DuellistDTO::getName, actor.getName()::equals).negate())
         .toList();
@@ -61,11 +58,11 @@ public class CloseCombatSelectActionControl implements SelectActionControl {
 
   @Override
   public String getName() {
-    return "Útok na blízko";
+    return "Útok na dálku";
   }
 
   @Override
   public Action getAction() {
-    return new CombatAction(actor, controller.getDuellistBox().getValue());
+    return new ShootAction(actor, controller.getDuellistBox().getValue());
   }
 }
