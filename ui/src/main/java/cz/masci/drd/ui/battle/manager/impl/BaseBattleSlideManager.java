@@ -42,6 +42,11 @@ public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T>
     log.trace("Initialized battle slide manager [{}] with controller: [{}]", this, controller);
   }
 
+  @Override
+  public void doBeforeSlide() {
+    // nothing
+  }
+
   private void initAnchors(Node node) {
     if (node != null) {
       AnchorPane.setTopAnchor(node, 10.0);
@@ -50,6 +55,5 @@ public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T>
       AnchorPane.setLeftAnchor(node, 10.0);
     }
   }
-
 
 }

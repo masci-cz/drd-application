@@ -21,28 +21,35 @@ package cz.masci.drd.ui.battle.manager.impl;
 
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
-import cz.masci.drd.ui.battle.slide.impl.BattleDuellistSlideController;
+import cz.masci.drd.ui.battle.slide.impl.BattleInitiativeSlideController;
 import javafx.beans.binding.Bindings;
 import net.rgielen.fxweaver.core.FxWeaver;
 
-public class BattleDuellistSlideManager extends BaseBattleSlideManager<BattleDuellistSlideController> {
+public class BattleInitiativeSlideManager extends BaseBattleSlideManager<BattleInitiativeSlideController> {
 
   private final boolean firstItem;
   private final boolean lastItem;
+  private final GroupDTO group;
 
-  public BattleDuellistSlideManager(FxWeaver fxWeaver, GroupDTO group, boolean firstItem, boolean lastItem) {
-    super(fxWeaver, BattleDuellistSlideController.class);
+  public BattleInitiativeSlideManager(FxWeaver fxWeaver, GroupDTO group, boolean firstItem, boolean lastItem) {
+    super(fxWeaver, BattleInitiativeSlideController.class);
     this.firstItem = firstItem;
     this.lastItem = lastItem;
-    controller.setGroup(group);
+    this.group = group;
+  }
+
+  @Override
+  public void doBeforeSlide() {
+    super.doBeforeSlide();
+    group.setInitiative(controller.getInitiative());
   }
 
   @Override
   public void initProperties(BattleSlidePropertiesDTO properties) {
     properties.getPrevDisableProperty().set(false);
-    properties.getPrevTextProperty().set(firstItem ? "Zrušit bitvu" : "Předchozí");
-    properties.getNextDisableProperty().bind(Bindings.size(controller.getDuellists()).lessThan(1));
-    properties.getNextTextProperty().set(lastItem ? "Výběr akcí" : "Další");
-    properties.getTitleProperty().set("Bojovníci skupiny " + controller.getGroup().getName());
+    properties.getPrevTextProperty().set(firstItem ? "Výběr akcí" : "Předchozí");
+    properties.getNextDisableProperty().bind(Bindings.isNull(controller.initiativeProperty()));
+    properties.getNextTextProperty().set(lastItem ? "Spustit bitvu" : "Další");
+    properties.getTitleProperty().set("Iniciativa skupiny " + group.getName());
   }
 }

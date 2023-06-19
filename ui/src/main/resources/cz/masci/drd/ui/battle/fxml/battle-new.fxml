@@ -39,7 +39,7 @@
    <top>
       <Pane BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblTitle" text="Label" textFill="#0034d0">
+            <Label fx:id="lblTitle" text="Label" textFill="#0034d0" wrapText="true">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>

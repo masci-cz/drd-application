@@ -25,6 +25,7 @@ import javafx.scene.Node;
 public interface BattleSlideManager<T> {
 
   void initProperties(BattleSlidePropertiesDTO properties);
+  void doBeforeSlide();
 
   T getController();
   Node getView();
