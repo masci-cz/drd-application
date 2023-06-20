@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <!--
   ~ Copyright (c) 2023
   ~
   ~ This file is part of DrD.
   ~
-  ~ DrD is free software: you can redistribute it and/or modify it under the
+  ~ DrD is free software: you can redistribute it and/or modify it under the 
   ~ terms of the GNU General Public License as published by the Free
   ~  Software Foundation, either version 3 of the License, or (at your option)
   ~   any later version.
@@ -22,44 +24,30 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<AnchorPane prefHeight="400.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Pane layoutX="6.0" layoutY="14.0">
+<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <AnchorPane prefHeight="37.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Skupiny" />
-            <ListView fx:id="groupList" layoutY="17.0" prefHeight="72.0" prefWidth="300.0" />
-            <Label layoutX="1.0" layoutY="92.0" text="Bojovníci" />
-            <ListView fx:id="duellistList" layoutY="113.0" prefHeight="147.0" prefWidth="300.0" />
+            <Button fx:id="btnPrev" layoutX="14.0" layoutY="100.0" minHeight="25.0" minWidth="52.0" mnemonicParsing="false" onAction="#slide" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <Button fx:id="btnNext" layoutX="134.0" layoutY="101.0" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" onAction="#slide" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+    <center>
+        <AnchorPane fx:id="centerPane" minHeight="100.0" minWidth="400.0" BorderPane.alignment="CENTER" />
+    </center>
+   <top>
+      <Pane BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblTitle" text="Label" textFill="#0034d0" wrapText="true">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Arial" size="24.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <Pane fx:id="initPane" layoutX="315.0" layoutY="30.0" prefWidth="306.0" visible="false">
-         <children>
-            <Label layoutX="5.0" layoutY="4.0" text="Název" />
-            <TextField fx:id="groupName" layoutX="88.0" prefHeight="25.0" prefWidth="216.0" />
-            <Button layoutX="1.0" layoutY="47.0" mnemonicParsing="false" onAction="#addGroup" prefHeight="25.0" prefWidth="55.0" text="Přidat" />
-            <Label layoutX="5.0" layoutY="100.0" text="Název" />
-            <TextField fx:id="duellistName" layoutX="90.0" layoutY="96.0" prefHeight="25.0" prefWidth="216.0" />
-            <Label layoutX="5.0" layoutY="132.0" text="Útočné číslo" />
-            <TextField fx:id="duellistAttack" layoutX="90.0" layoutY="129.0" />
-            <Label layoutX="4.0" layoutY="165.0" text="Obranné číslo" />
-            <TextField fx:id="duellistDefense" layoutX="90.0" layoutY="162.0" />
-            <Label layoutX="5.0" layoutY="196.0" text="Životy" />
-            <TextField fx:id="duellistLive" layoutX="90.0" layoutY="194.0" />
-            <Button layoutX="1.0" layoutY="219.0" mnemonicParsing="false" onAction="#addDuellist" prefWidth="55.0" text="Přidat" />
-            <Button layoutY="252.0" mnemonicParsing="false" onAction="#startBattle" text="Začít souboj" />
-         </children>
-      </Pane>
-      <Pane fx:id="roundPane" layoutX="306.0" layoutY="10.0" prefHeight="315.0" prefWidth="306.0">
-         <children>
-            <Label layoutX="8.0" layoutY="6.0" text="Souboj" />
-            <Label layoutX="9.0" layoutY="31.0" text="Iniciativa" />
-            <TextField fx:id="groupInitiative" layoutX="69.0" layoutY="27.0" />
-            <Label layoutX="10.0" layoutY="120.0" text="Akce" />
-            <ComboBox fx:id="duellistAction" layoutX="69.0" layoutY="118.0" prefHeight="25.0" prefWidth="149.0" />
-            <Pane fx:id="actionPane" layoutY="150.0" prefHeight="115.0" prefWidth="306.0" />
-            <Button layoutX="238.0" layoutY="289.0" mnemonicParsing="false" onAction="#nextRound" text="Další kolo" />
-            <Button layoutX="2.0" layoutY="289.0" mnemonicParsing="false" onAction="#back" text="Zpět" />
-         </children>
-      </Pane>
-   </children>
-</AnchorPane>
+   </top>
+</BorderPane>

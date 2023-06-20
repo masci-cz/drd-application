@@ -17,25 +17,34 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action;
+package cz.masci.drd.ui.battle.action.control;
 
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.ui.battle.action.SelectAction;
 import java.util.List;
 import javafx.scene.Node;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-public interface SelectActionControl {
+@Slf4j
+public abstract class BaseSelectAction implements SelectAction {
 
-  /**
-   * Return control view
-   *
-   * @return Control view
-   */
-  Node getView();
+  @Getter
+  protected Node view;
 
-  void initAction(DuellistDTO actor, List<DuellistDTO> duellists);
+  protected DuellistDTO actor;
 
-  Action getAction();
+  public BaseSelectAction() {
 
-  String getName();
+  }
+
+  public BaseSelectAction(Node view) {
+    this.view = view;
+  }
+
+  @Override
+  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
+    log.trace("Init select action [{}]", this);
+    this.actor = actor;
+  }
 }

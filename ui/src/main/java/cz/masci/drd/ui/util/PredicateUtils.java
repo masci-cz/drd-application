@@ -21,6 +21,7 @@ package cz.masci.drd.ui.util;
 
 import static java.util.Objects.requireNonNull;
 
+import cz.masci.drd.dto.DuellistDTO;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import lombok.experimental.UtilityClass;
@@ -38,5 +39,9 @@ public class PredicateUtils {
     requireNonNull(function);
 
     return value -> predicate.test(function.apply(value));
+  }
+
+  public static <T> Predicate<T> alwaysTrue() {
+    return value -> true;
   }
 }

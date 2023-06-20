@@ -17,47 +17,45 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.control;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.OtherAction;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
+import cz.masci.drd.dto.actions.MagicAction;
+import cz.masci.drd.ui.battle.action.controller.MagicSelectActionController;
+import cz.masci.drd.ui.util.PredicateUtils;
 import java.util.List;
-import javafx.scene.Node;
-import lombok.Getter;
+import java.util.function.Predicate;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class OtherSelectActionControl implements SelectActionControl {
+public class MagicSelectAction extends MultipleDuellistSelectAction<MagicSelectActionController> {
 
-  @Getter
-  private final Node view;
-  private final OtherSelectActionController controller;
-
-  private DuellistDTO actor;
-
-  public OtherSelectActionControl(FxWeaver fxWeaver) {
-    var fxControllerAndView = fxWeaver.load(OtherSelectActionController.class);
-    controller = fxControllerAndView.getController();
-    view = fxControllerAndView.getView().orElseThrow();
+  public MagicSelectAction(FxWeaver fxWeaver) {
+    super(fxWeaver, MagicSelectActionController.class);
   }
 
   @Override
   public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
+    controller.initDuellists(duellists);
     this.actor = actor;
   }
 
   @Override
+  protected Predicate<DuellistDTO> getPredicate(DuellistDTO actor) {
+    return PredicateUtils.alwaysTrue();
+  }
+
+  @Override
   public String getName() {
-    return "Jiná akce";
+    return "Kouzlení";
   }
 
   @Override
   public Action getAction() {
-    return new OtherAction(actor, controller.getOtherTxt().getText());
+    return new MagicAction(actor, controller.getDuellistBox().getValue(), controller.getSpellTxt().getText());
   }
 }

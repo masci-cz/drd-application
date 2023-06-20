@@ -4,4 +4,4 @@ DERBY_SYSTEM_HOME: data
 logging:
   level:
     cz:
-      masci: DEBUG
+      masci: TRACE

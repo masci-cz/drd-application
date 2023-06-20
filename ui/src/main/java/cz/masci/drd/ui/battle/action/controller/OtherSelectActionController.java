@@ -17,19 +17,23 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.battle.action.controller;
 
-import cz.masci.drd.ui.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import lombok.Getter;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+@Component
+@Scope("prototype")
+@FxmlView("fxml/other-select-action.fxml")
+@FxmlController
+public class OtherSelectActionController {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
-  }
-
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
+  @FXML
+  @Getter
+  TextField otherTxt;
 }

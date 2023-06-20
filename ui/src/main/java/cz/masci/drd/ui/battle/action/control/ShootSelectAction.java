@@ -17,44 +17,38 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.control;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.PrepareAction;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
-import java.util.List;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import lombok.Getter;
+import cz.masci.drd.dto.actions.ShootAction;
+import cz.masci.drd.ui.battle.action.controller.ShootSelectActionController;
+import cz.masci.drd.ui.util.PredicateUtils;
+import java.util.function.Predicate;
+import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class WaitSelectActionControl implements SelectActionControl {
+public class ShootSelectAction extends MultipleDuellistSelectAction<ShootSelectActionController> {
 
-  @Getter
-  private final Node view;
-
-  private DuellistDTO actor;
-
-  public WaitSelectActionControl() {
-    view = new Pane();
+  public ShootSelectAction(FxWeaver fxWeaver) {
+    super(fxWeaver, ShootSelectActionController.class);
   }
 
   @Override
-  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
-    this.actor = actor;
+  protected Predicate<DuellistDTO> getPredicate(DuellistDTO actor) {
+    return PredicateUtils.compose(DuellistDTO::getName, actor.getName()::equals).negate();
   }
 
   @Override
   public String getName() {
-    return "Čekání";
+    return "Útok na dálku";
   }
 
   @Override
   public Action getAction() {
-    return new PrepareAction(actor);
+    return new ShootAction(actor, controller.getDuellistBox().getValue());
   }
 }

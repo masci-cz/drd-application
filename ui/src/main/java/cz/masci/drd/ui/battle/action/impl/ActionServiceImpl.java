@@ -20,20 +20,30 @@
 package cz.masci.drd.ui.battle.action.impl;
 
 import cz.masci.drd.ui.battle.action.ActionService;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
+import cz.masci.drd.ui.battle.action.SelectAction;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * This service is responsible for preparation of list of {@link SelectAction}.<br>
+ * Because the list is used on every {@link cz.masci.drd.ui.battle.slide.impl.BattleSelectActionSlideController} it always returns new list with
+ * new instances.
+ */
 @Service
 @RequiredArgsConstructor
 public class ActionServiceImpl implements ActionService {
 
   private final ListableBeanFactory beanFactory;
 
+  /**
+   * Always returns new list with new {@link SelectAction} instances.
+   *
+   * @return New list of SelectActionControl
+   */
   @Override
-  public Collection<SelectActionControl> getActions() {
-    return beanFactory.getBeansOfType(SelectActionControl.class).values();
+  public Collection<SelectAction> initSelectActionControls() {
+    return beanFactory.getBeansOfType(SelectAction.class).values();
   }
 }

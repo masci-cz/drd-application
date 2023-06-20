@@ -17,44 +17,35 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.controller;
 
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.PrepareAction;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
+import cz.masci.drd.ui.converter.DuellistStringConverter;
 import java.util.List;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import lombok.Getter;
+import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class PrepareSelectActionControl implements SelectActionControl {
+@FxmlView("fxml/shoot-select-action.fxml")
+@FxmlController
+public class ShootSelectActionController implements MultipleSelectActionController {
 
+  @FXML
   @Getter
-  private final Node view;
+  ComboBox<DuellistDTO> duellistBox;
 
-  private DuellistDTO actor;
-
-  public PrepareSelectActionControl() {
-    view = new Pane();
+  @FXML
+  void initialize() {
+    duellistBox.setConverter(new DuellistStringConverter("Vyberte obránce"));
   }
 
-  @Override
-  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
-    this.actor = actor;
-  }
-
-  @Override
-  public String getName() {
-    return "Příprava";
-  }
-
-  @Override
-  public Action getAction() {
-    return new PrepareAction(actor);
+  public void initDuellists(List<DuellistDTO> duellists) {
+    duellistBox.getItems().addAll(duellists);
   }
 }

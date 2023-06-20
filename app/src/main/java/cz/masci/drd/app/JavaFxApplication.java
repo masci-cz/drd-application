@@ -17,13 +17,9 @@
 package cz.masci.drd.app;
 
 import cz.masci.drd.ui.battle.BattleFactory;
-import cz.masci.drd.ui.battle.BattleNewController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 

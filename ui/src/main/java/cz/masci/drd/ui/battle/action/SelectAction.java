@@ -17,19 +17,25 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.battle.action;
 
-import cz.masci.drd.ui.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.dto.DuellistDTO;
+import cz.masci.drd.dto.actions.Action;
+import java.util.List;
+import javafx.scene.Node;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+public interface SelectAction {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
-  }
+  /**
+   * Return control view
+   *
+   * @return Control view
+   */
+  Node getView();
 
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
+  void initAction(DuellistDTO actor, List<DuellistDTO> duellists);
+
+  Action getAction();
+
+  String getName();
 }

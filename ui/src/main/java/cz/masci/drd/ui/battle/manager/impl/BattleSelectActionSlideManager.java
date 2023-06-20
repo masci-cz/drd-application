@@ -40,7 +40,7 @@ public class BattleSelectActionSlideManager extends BaseBattleSlideManager<Battl
     this.lastItem = lastItem;
     this.groupName = group.getName();
     this.duellist = duellist;
-    var actionControls = actionService.getActions().stream().peek(action -> action.initAction(duellist, battleService.getAllDuellists())).toList();
+    var actionControls = actionService.initSelectActionControls().stream().peek(action -> action.initAction(duellist, battleService.getAllDuellists())).toList();
     controller.initActions(actionControls);
   }
 

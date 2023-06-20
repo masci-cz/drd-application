@@ -20,7 +20,7 @@
 package cz.masci.drd.ui.battle.slide.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
+import cz.masci.drd.ui.battle.action.SelectAction;
 import cz.masci.drd.ui.converter.ActionStringConverter;
 import java.util.List;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -44,13 +44,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BattleSelectActionSlideController {
 
-  private final List<SelectActionControl> actionControls;
+  private final List<SelectAction> actionControls;
 
   @FXML
   private BorderPane pane;
 
   @FXML
-  private ChoiceBox<SelectActionControl> actionBox;
+  private ChoiceBox<SelectAction> actionBox;
 
   @FXML
   public void initialize() {
@@ -70,11 +70,11 @@ public class BattleSelectActionSlideController {
 
   }
 
-  public ReadOnlyObjectProperty<SelectActionControl> selectedAction() {
+  public ReadOnlyObjectProperty<SelectAction> selectedAction() {
     return actionBox.getSelectionModel().selectedItemProperty();
   }
 
-  public void initActions(List<SelectActionControl> actionControls) {
+  public void initActions(List<SelectAction> actionControls) {
     actionBox.setItems(FXCollections.observableList(actionControls));
   }
 

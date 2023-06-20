@@ -17,21 +17,12 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action;
+package cz.masci.drd.ui.battle.action.controller;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.stereotype.Component;
+import cz.masci.drd.dto.DuellistDTO;
+import java.util.List;
 
-@Component
-@FxmlController
-@FxmlView("fxml/action.fxml")
-@Deprecated
-public class ActionController {
-  @FXML
-  public void setAction(ActionEvent event) {
-    // TODO: set duellist action
-  }
+public interface MultipleSelectActionController {
+
+  void initDuellists(List<DuellistDTO> duellistList);
 }

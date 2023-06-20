@@ -17,48 +17,40 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.control;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.MagicAction;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
-import java.util.List;
-import javafx.scene.Node;
-import lombok.Getter;
+import cz.masci.drd.dto.actions.CombatAction;
+import cz.masci.drd.ui.battle.action.controller.CloseCombatSelectActionController;
+import cz.masci.drd.ui.util.PredicateUtils;
+import java.util.function.Predicate;
+import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class MagicSelectActionControl implements SelectActionControl {
+@Slf4j
+public class CloseCombatSelectAction extends MultipleDuellistSelectAction<CloseCombatSelectActionController> {
 
-  @Getter
-  private final Node view;
-  private final MagicSelectActionController controller;
-
-  private DuellistDTO actor;
-
-  public MagicSelectActionControl(FxWeaver fxWeaver) {
-    var fxControllerAndView = fxWeaver.load(MagicSelectActionController.class);
-    controller = fxControllerAndView.getController();
-    view = fxControllerAndView.getView().orElseThrow();
+  public CloseCombatSelectAction(FxWeaver fxWeaver) {
+    super(fxWeaver, CloseCombatSelectActionController.class);
   }
 
   @Override
-  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
-    controller.initDuellists(duellists);
-    this.actor = actor;
+  protected Predicate<DuellistDTO> getPredicate(DuellistDTO actor) {
+    return PredicateUtils.compose(DuellistDTO::getName, actor.getName()::equals).negate();
   }
 
   @Override
   public String getName() {
-    return "Kouzlení";
+    return "Útok na blízko";
   }
 
   @Override
   public Action getAction() {
-    return new MagicAction(actor, controller.getDuellistBox().getValue(), controller.getSpellTxt().getText());
+    return new CombatAction(actor, controller.getDuellistBox().getValue());
   }
 }

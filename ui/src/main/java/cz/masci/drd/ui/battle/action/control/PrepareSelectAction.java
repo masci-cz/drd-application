@@ -17,19 +17,29 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.battle.action.control;
 
-import cz.masci.drd.ui.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.dto.actions.PrepareAction;
+import javafx.scene.layout.Pane;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+@Component
+@Scope("prototype")
+public class PrepareSelectAction extends BaseSelectAction {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  public PrepareSelectAction() {
+    super(new Pane());
   }
 
   @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
+  public String getName() {
+    return "Příprava";
+  }
+
+  @Override
+  public Action getAction() {
+    return new PrepareAction(actor);
   }
 }

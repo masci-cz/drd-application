@@ -17,23 +17,21 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.control;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import lombok.Getter;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import net.rgielen.fxweaver.core.FxWeaver;
 
-@Component
-@Scope("prototype")
-@FxmlView("fxml/other-select-action.fxml")
-@FxmlController
-public class OtherSelectActionController {
+@Slf4j
+public abstract class SimpleSelectAction<T> extends BaseSelectAction {
 
-  @FXML
-  @Getter
-  TextField otherTxt;
+  protected final T controller;
+
+  public SimpleSelectAction(FxWeaver fxWeaver, Class<T> controllerClass) {
+    super();
+    var fxControllerAndView = fxWeaver.load(controllerClass);
+    controller = fxControllerAndView.getController();
+    view = fxControllerAndView.getView().orElseThrow();
+  }
+
 }

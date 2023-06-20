@@ -53,7 +53,7 @@ public class BattleFactory {
   private final SlideService slideService;
   private final FxWeaver fxWeaver;
 
-  private FxControllerAndView<BattleNewController, Parent> battleControllerAndView;
+  private FxControllerAndView<BattleController, Parent> battleControllerAndView;
   private BattleGroupSlideManager battleGroupSlide;
   private final List<BattleDuellistSlideManager> battleDuellistSlides = new ArrayList<>();
   private final List<BattleSelectActionSlideManager> battleSelectActionSlides = new ArrayList<>();
@@ -69,7 +69,7 @@ public class BattleFactory {
     battleService.createBattle();
 
     if (battleControllerAndView == null) {
-      battleControllerAndView = fxWeaver.load(BattleNewController.class);
+      battleControllerAndView = fxWeaver.load(BattleController.class);
     }
     // init controller
     var controller = battleControllerAndView.getController();

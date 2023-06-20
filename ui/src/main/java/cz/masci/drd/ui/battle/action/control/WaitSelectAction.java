@@ -17,35 +17,29 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.control;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.ui.converter.DuellistStringConverter;
-import java.util.List;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import lombok.Getter;
-import net.rgielen.fxweaver.core.FxmlView;
+import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.dto.actions.WaitAction;
+import javafx.scene.layout.Pane;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@FxmlView("fxml/shoot-select-action.fxml")
-@FxmlController
-public class ShootSelectActionController {
+public class WaitSelectAction extends BaseSelectAction {
 
-  @FXML
-  @Getter
-  ComboBox<DuellistDTO> duellistBox;
-
-  @FXML
-  void initialize() {
-    duellistBox.setConverter(new DuellistStringConverter("Vyberte obránce"));
+  public WaitSelectAction() {
+    super(new Pane());
   }
 
-  public void initDuellists(List<DuellistDTO> duellists) {
-    duellistBox.getItems().addAll(duellists);
+  @Override
+  public String getName() {
+    return "Čekání";
+  }
+
+  @Override
+  public Action getAction() {
+    return new WaitAction(actor);
   }
 }

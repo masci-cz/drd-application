@@ -22,5 +22,5 @@ package cz.masci.drd.ui.battle.action;
 import java.util.Collection;
 
 public interface ActionService {
-  Collection<SelectActionControl> getActions();
+  Collection<SelectAction> initSelectActionControls();
 }

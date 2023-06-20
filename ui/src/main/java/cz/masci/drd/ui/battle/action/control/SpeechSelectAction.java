@@ -17,35 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.impl;
+package cz.masci.drd.ui.battle.action.control;
 
-import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.PrepareAction;
-import cz.masci.drd.ui.battle.action.SelectActionControl;
-import java.util.List;
-import javafx.scene.Node;
+import cz.masci.drd.dto.actions.SpeechAction;
 import javafx.scene.layout.Pane;
-import lombok.Getter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class SpeechSelectActionControl implements SelectActionControl {
+public class SpeechSelectAction extends BaseSelectAction {
 
-  @Getter
-  private final Node view;
-
-  private DuellistDTO actor;
-
-  public SpeechSelectActionControl() {
-    view = new Pane();
-  }
-
-  @Override
-  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
-    this.actor = actor;
+  public SpeechSelectAction() {
+    super(new Pane());
   }
 
   @Override
@@ -55,6 +40,6 @@ public class SpeechSelectActionControl implements SelectActionControl {
 
   @Override
   public Action getAction() {
-    return new PrepareAction(actor);
+    return new SpeechAction(actor);
   }
 }
