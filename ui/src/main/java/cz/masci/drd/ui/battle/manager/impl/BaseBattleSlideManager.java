@@ -19,7 +19,7 @@
 
 package cz.masci.drd.ui.battle.manager.impl;
 
-import cz.masci.drd.ui.battle.manager.BattleSlideManager;
+import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 
 @Slf4j
-public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T> {
+public abstract class BaseBattleSlideManager<T> implements BattleSlide<T> {
 
   @Getter
   protected final T controller;
@@ -44,6 +44,11 @@ public abstract class BaseBattleSlideManager<T> implements BattleSlideManager<T>
 
   @Override
   public void doBeforeSlide() {
+    // nothing
+  }
+
+  @Override
+  public void clear() {
     // nothing
   }
 

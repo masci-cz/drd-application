@@ -20,12 +20,15 @@
 package cz.masci.drd.ui.battle.slide.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -37,10 +40,11 @@ import org.springframework.stereotype.Component;
 @FxmlController
 @RequiredArgsConstructor
 @Slf4j
-public class BattleGroupSlideController {
+public class BattleGroupSlideController implements BattleSlideController {
 
-  private final FxWeaver fxWeaver;
-
+  @FXML
+  @Getter
+  private VBox root;
   @FXML
   private TextField txtName;
   @FXML

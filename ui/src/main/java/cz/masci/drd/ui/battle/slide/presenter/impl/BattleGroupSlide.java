@@ -17,17 +17,33 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.manager.impl;
+package cz.masci.drd.ui.battle.slide.presenter.impl;
 
+import cz.masci.drd.service.BattleService;
+import cz.masci.drd.service.exception.BattleException;
+import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.impl.BattleGroupSlideController;
 import javafx.beans.binding.Bindings;
+import javafx.scene.Node;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
+import org.springframework.stereotype.Component;
 
-public class BattleGroupSlideManager extends BaseBattleSlideManager<BattleGroupSlideController> {
+@Component
+@Slf4j
+public class BattleGroupSlide implements BattleSlide<BattleGroupSlideController> {
 
-  public BattleGroupSlideManager(FxWeaver fxWeaver) {
-    super(fxWeaver, BattleGroupSlideController.class);
+  private final BattleService battleService;
+
+  @Getter
+  private final BattleGroupSlideController controller;
+
+  public BattleGroupSlide(FxWeaver fxWeaver, BattleService battleService) {
+    var fxControllerAndView = fxWeaver.load(BattleGroupSlideController.class);
+    controller = fxControllerAndView.getController();
+    this.battleService = battleService;
   }
 
   @Override
@@ -39,5 +55,26 @@ public class BattleGroupSlideManager extends BaseBattleSlideManager<BattleGroupS
     properties.getTitleProperty().set("Skupiny");
   }
 
+  @Override
+  public void doBeforeSlide() {
+    battleService.createBattle();
+    var groupList = controller.getGroups().stream().toList();
+    try {
+      battleService.addGroupList(groupList);
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void clear() {
+    controller.getGroups().clear();
+    battleService.exitBattle();
+  }
+
+  @Override
+  public Node getView() {
+    return controller.getRoot();
+  }
 
 }

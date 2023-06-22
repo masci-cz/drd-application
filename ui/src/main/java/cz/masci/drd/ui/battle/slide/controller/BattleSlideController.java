@@ -17,16 +17,10 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.manager;
+package cz.masci.drd.ui.battle.slide.controller;
 
-import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import javafx.scene.Node;
 
-public interface BattleSlideManager<T> {
-
-  void initProperties(BattleSlidePropertiesDTO properties);
-  void doBeforeSlide();
-
-  T getController();
-  Node getView();
+public interface BattleSlideController {
+  Node getRoot();
 }
