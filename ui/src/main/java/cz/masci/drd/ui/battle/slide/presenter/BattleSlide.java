@@ -33,10 +33,34 @@ public interface BattleSlide<T> {
   void doBeforeSlide();
 
   /**
-   * This method is called whenever the slide properties should be cleared.
+   * This method is called whenever the slide properties should be reset.
    */
-  void clear();
+  void reset();
+
+  /**
+   * Initiate slide based on battle service.
+   */
+  void init();
 
   T getController();
-  Node getView();
+  Node getCurrentView();
+  Node getPreviousView();
+  Node getNextView();
+
+  /**
+   * Move index to the previous slide. If there is no other slide it returns <code>false</code>
+   * otherwise returns <code>true</code>.
+   *
+   * @return <code>true</code> if there is new slide. Otherwise returns <code>false</code>
+   */
+  boolean hasPrevious();
+
+  /**
+   * Move index to the next slide. If there is no other slide it returns <code>false</code>
+   * otherwise returns <code>true</code>.
+   *
+   * @return <code>true</code> if there is new slide. Otherwise returns <code>false</code>
+   */
+  boolean hasNext();
+
 }

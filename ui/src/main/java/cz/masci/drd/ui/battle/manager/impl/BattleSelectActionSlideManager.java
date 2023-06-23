@@ -56,7 +56,7 @@ public class BattleSelectActionSlideManager extends BaseBattleSlideManager<Battl
     }
 
     properties.getNextTextProperty().set(lastItem ? "Iniciativa" : "Další");
-    properties.getTitleProperty().setValue(String.format("<html>Vyberte akci pro bojovníka <b>%s</b> ze skupiny <b>%s</b></html>", duellist.getName(), groupName));
+    properties.getTitleProperty().setValue(String.format("Vyberte akci pro bojovníka %s ze skupiny %s", duellist.getName(), groupName));
   }
 
   @Override

@@ -48,7 +48,37 @@ public abstract class BaseBattleSlideManager<T> implements BattleSlide<T> {
   }
 
   @Override
-  public void clear() {
+  public void reset() {
+    // nothing
+  }
+
+  @Override
+  public boolean hasPrevious() {
+    return false;
+  }
+
+  @Override
+  public boolean hasNext() {
+    return false;
+  }
+
+  @Override
+  public Node getCurrentView() {
+    return view;
+  }
+
+  @Override
+  public Node getPreviousView() {
+    return view;
+  }
+
+  @Override
+  public Node getNextView() {
+    return view;
+  }
+
+  @Override
+  public void init() {
     // nothing
   }
 

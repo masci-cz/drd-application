@@ -30,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BattleDuellistSlideController {
 
+  @FXML
+  @Getter
+  private VBox root;
   @FXML
   private Button btnAdd;
   @FXML

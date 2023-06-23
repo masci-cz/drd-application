@@ -21,9 +21,9 @@ package cz.masci.drd.ui.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
-import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.impl.BattleGroupSlideController;
+import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
 import lombok.Getter;
@@ -57,7 +57,6 @@ public class BattleGroupSlide implements BattleSlide<BattleGroupSlideController>
 
   @Override
   public void doBeforeSlide() {
-    battleService.createBattle();
     var groupList = controller.getGroups().stream().toList();
     try {
       battleService.addGroupList(groupList);
@@ -67,14 +66,38 @@ public class BattleGroupSlide implements BattleSlide<BattleGroupSlideController>
   }
 
   @Override
-  public void clear() {
+  public void reset() {
     controller.getGroups().clear();
     battleService.exitBattle();
   }
 
   @Override
-  public Node getView() {
+  public void init() {
+    battleService.createBattle();
+  }
+
+  @Override
+  public Node getCurrentView() {
     return controller.getRoot();
   }
 
+  @Override
+  public Node getPreviousView() {
+    return controller.getRoot();
+  }
+
+  @Override
+  public Node getNextView() {
+    return controller.getRoot();
+  }
+
+  @Override
+  public boolean hasPrevious() {
+    return false;
+  }
+
+  @Override
+  public boolean hasNext() {
+    return false;
+  }
 }
