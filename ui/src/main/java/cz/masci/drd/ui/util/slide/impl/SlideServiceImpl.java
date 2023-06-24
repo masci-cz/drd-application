@@ -19,6 +19,8 @@
 
 package cz.masci.drd.ui.util.slide.impl;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+
 import cz.masci.drd.ui.util.slide.SlideService;
 import cz.masci.drd.ui.util.transition.TranslateTransitionBuilder;
 import javafx.scene.Node;
@@ -42,6 +44,9 @@ public class SlideServiceImpl implements SlideService {
 
   @Override
   public void slide(SlideFactor slideFactor, Node currentNode, Node futureNode, Pane parentPane, Runnable onSlideFinished) {
+    assertNotNull(currentNode);
+    assertNotNull(futureNode);
+    
     double parentPaneWidth = parentPane.getWidth();
 
     // Create translate transition for future node based on SlideType

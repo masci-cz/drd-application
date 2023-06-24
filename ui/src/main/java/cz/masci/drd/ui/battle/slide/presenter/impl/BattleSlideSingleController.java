@@ -17,39 +17,52 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.manager.impl;
+package cz.masci.drd.ui.battle.slide.presenter.impl;
 
+import cz.masci.drd.service.BattleService;
+import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 
-@Slf4j
-public abstract class BaseBattleSlideManager<T> implements BattleSlide<T> {
+/**
+ * {@link cz.masci.drd.ui.battle.slide.presenter.BattleSlide} implementation displaying single step.
+ * <p>
+ * Only {@link BattleSlide#initProperties(BattleSlidePropertiesDTO)},
+ * {@link BattleSlide#doBeforeSlide()},
+ * {@link BattleSlide#init()},
+ * {@link BattleSlide#reset()}
+ * needs to be implemented in the child class.
+ * </p>
+ *
+ * @param <T> Class of the controller.
+ */
+public abstract class BattleSlideSingleController<T extends BattleSlideController> extends BaseBattleSlide<T> {
 
   @Getter
-  protected final T controller;
-  @Getter
-  protected final Node view;
+  protected T controller;
 
-  public BaseBattleSlideManager(FxWeaver fxWeaver, Class<T> controllerClass) {
+  public BattleSlideSingleController(FxWeaver fxWeaver, BattleService battleService, Class<T> controllerClass) {
+    super(battleService);
     var fxControllerAndView = fxWeaver.load(controllerClass);
     controller = fxControllerAndView.getController();
-    view = fxControllerAndView.getView().orElseThrow();
-    initAnchors(view);
-    log.trace("Initialized battle slide manager [{}] with controller: [{}]", this, controller);
   }
 
   @Override
-  public void doBeforeSlide() {
-    // nothing
+  public Node getCurrentView() {
+    return controller.getRoot();
   }
 
   @Override
-  public void reset() {
-    // nothing
+  public Node previousView() {
+    return getCurrentView();
+  }
+
+  @Override
+  public Node nextView() {
+    return getCurrentView();
   }
 
   @Override
@@ -60,35 +73,6 @@ public abstract class BaseBattleSlideManager<T> implements BattleSlide<T> {
   @Override
   public boolean hasNext() {
     return false;
-  }
-
-  @Override
-  public Node getCurrentView() {
-    return view;
-  }
-
-  @Override
-  public Node previousView() {
-    return view;
-  }
-
-  @Override
-  public Node nextView() {
-    return view;
-  }
-
-  @Override
-  public void init() {
-    // nothing
-  }
-
-  private void initAnchors(Node node) {
-    if (node != null) {
-      AnchorPane.setTopAnchor(node, 10.0);
-      AnchorPane.setRightAnchor(node, 10.0);
-      AnchorPane.setBottomAnchor(node, 10.0);
-      AnchorPane.setLeftAnchor(node, 10.0);
-    }
   }
 
 }

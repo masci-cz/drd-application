@@ -19,89 +19,44 @@
 
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
-import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
-import cz.masci.drd.ui.battle.slide.impl.BattleDuellistSlideController;
-import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
-import cz.masci.drd.ui.util.iterator.ObservableListIterator;
-import java.util.ArrayList;
+import cz.masci.drd.ui.battle.slide.controller.impl.BattleDuellistSlideController;
 import java.util.List;
-import java.util.Optional;
 import javafx.beans.binding.Bindings;
-import javafx.scene.Node;
-import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-public class BattleDuellistSlide implements BattleSlide<BattleDuellistSlideController> {
+public class BattleDuellistSlide extends BattleSlideMultipleControllers<BattleDuellistSlideController> {
 
-  private final FxWeaver fxWeaver;
-  private final BattleService battleService;
-
-  private final List<BattleDuellistSlideController> controllers = new ArrayList<>();
-  private ObservableListIterator<BattleDuellistSlideController> iterator;
+  public BattleDuellistSlide(FxWeaver fxWeaver, BattleService battleService) {
+    super(fxWeaver, battleService);
+  }
 
   @Override
   public void initProperties(BattleSlidePropertiesDTO properties) {
     properties.getPrevDisableProperty().set(false);
     properties.getPrevTextProperty().set(hasPrevious() ? "Předchozí" : "Zrušit bitvu");
-    properties.getNextDisableProperty().bind(Bindings.size(iterator.getCurrent().getDuellists()).lessThan(1));
+    properties.getNextDisableProperty().bind(Bindings.size(getController().getDuellists()).lessThan(1));
     properties.getNextTextProperty().set(hasNext() ? "Další" : "Výběr akcí");
-    properties.getTitleProperty().set("Bojovníci skupiny " + iterator.getCurrent().getGroup().getName());
+    properties.getTitleProperty().set("Bojovníci skupiny " + getController().getGroup().getName());
   }
 
   @Override
   public void doBeforeSlide() {
-    // Nothing
+    // Nothing to do
   }
 
   @Override
-  public void reset() {
-    controllers.clear();
-    iterator = null;
-  }
-
-  @Override
-  public void init() {
-    for (GroupDTO group : battleService.getGroups()) {
-      var controller = fxWeaver.loadController(BattleDuellistSlideController.class);
-      controller.setGroup(group);
-      controllers.add(controller);
-    }
-    iterator = new ObservableListIterator<>(controllers);
-  }
-
-  @Override
-  public BattleDuellistSlideController getController() {
-    return iterator.getCurrent();
-  }
-
-  @Override
-  public Node getCurrentView() {
-    return Optional.ofNullable(iterator.getCurrent()).map(BattleDuellistSlideController::getRoot).orElse(null);
-  }
-
-  @Override
-  public Node getPreviousView() {
-    return iterator.previous().getRoot();
-  }
-
-  @Override
-  public Node getNextView() {
-    return iterator.next().getRoot();
-  }
-
-  @Override
-  public boolean hasPrevious() {
-    return iterator.hasPrevious();
-  }
-
-  @Override
-  public boolean hasNext() {
-    return iterator.hasNext();
+  protected List<BattleDuellistSlideController> getControllers() {
+    return battleService.getGroups().stream()
+        .map(group -> {
+          var controller = fxWeaver.loadController(BattleDuellistSlideController.class);
+          controller.setGroup(group);
+          return controller;
+        })
+        .toList();
   }
 
 }

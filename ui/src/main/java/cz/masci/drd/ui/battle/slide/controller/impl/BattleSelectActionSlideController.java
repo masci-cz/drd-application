@@ -17,10 +17,12 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide.impl;
+package cz.masci.drd.ui.battle.slide.controller.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.battle.action.SelectAction;
+import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import cz.masci.drd.ui.converter.ActionStringConverter;
 import java.util.List;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -30,7 +32,9 @@ import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
@@ -42,15 +46,21 @@ import org.springframework.stereotype.Component;
 @FxmlController
 @RequiredArgsConstructor
 @Slf4j
-public class BattleSelectActionSlideController {
+public class BattleSelectActionSlideController implements BattleSlideController {
 
   private final List<SelectAction> actionControls;
 
   @FXML
-  private BorderPane pane;
-
+  @Getter
+  private BorderPane root;
   @FXML
   private ChoiceBox<SelectAction> actionBox;
+  @Getter
+  @Setter
+  private DuellistDTO duellist;
+  @Getter
+  @Setter
+  private String groupName;
 
   @FXML
   public void initialize() {
@@ -60,10 +70,9 @@ public class BattleSelectActionSlideController {
     actionBox.getSelectionModel().selectedItemProperty().addListener(
         (observable, oldValue, newValue) -> {
           if (newValue == null) {
-            pane.setCenter(null);
+            root.setCenter(null);
           } else {
-            pane.setCenter(newValue.getView());
-            initAnchors(newValue.getView());
+            root.setCenter(newValue.getView());
           }
         }
     );
@@ -78,12 +87,4 @@ public class BattleSelectActionSlideController {
     actionBox.setItems(FXCollections.observableList(actionControls));
   }
 
-  private void initAnchors(Node node) {
-    if (node != null) {
-      AnchorPane.setTopAnchor(node, 10.0);
-      AnchorPane.setRightAnchor(node, 10.0);
-      AnchorPane.setBottomAnchor(node, 10.0);
-      AnchorPane.setLeftAnchor(node, 10.0);
-    }
-  }
 }

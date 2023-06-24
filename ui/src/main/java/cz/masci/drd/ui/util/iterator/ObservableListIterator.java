@@ -43,11 +43,12 @@ public class ObservableListIterator<E> {
   private final ObjectProperty<E> currentProperty = new SimpleObjectProperty<>();
 
   public ObservableListIterator(List<E> list) {
-    iterator = list.listIterator();
+    iterator = list.listIterator(0);
     size = list.size();
 
     hasPreviousProperty = new SimpleBooleanProperty(iterator.hasPrevious());
     hasNextProperty = new SimpleBooleanProperty(iterator.hasNext());
+    currentProperty.set(iterator.next()); // set first value
 
     log.trace("init");
     log.trace("hasPrevious: {}", hasPreviousProperty.get());
@@ -79,7 +80,7 @@ public class ObservableListIterator<E> {
     log.trace("get element");
     if (hasPreviousOrNext.get()) {
       var future = previousOrNext.get();
-      if (future.equals(currentProperty.get())) {  // just secure check when this method is called again too fast
+      if (future.equals(currentProperty.get())) {
         currentProperty.set(previousOrNext.get());
       } else {
         currentProperty.set(future);
@@ -95,6 +96,8 @@ public class ObservableListIterator<E> {
     log.trace("hasPrevious: {}", hasPreviousProperty.get());
     log.trace("hasNext: {}", hasNextProperty.get());
     log.trace("current: {}", currentProperty.get());
+    log.trace("previousIndex: {}", iterator.previousIndex());
+    log.trace("nextIndex: {}", iterator.nextIndex());
 
     return currentProperty.get();
   }

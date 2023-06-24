@@ -20,14 +20,12 @@
 package cz.masci.drd.ui.battle;
 
 import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.battle.action.ActionService;
-import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.manager.impl.BattleInitiativeSlideManager;
-import cz.masci.drd.ui.battle.manager.impl.BattleSelectActionSlideManager;
-import cz.masci.drd.ui.battle.manager.impl.BattleDuellistSlideManager;
+import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleDuellistSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleGroupSlide;
+import cz.masci.drd.ui.battle.slide.presenter.impl.BattleSelectActionSlide;
 import cz.masci.drd.ui.util.slide.SlideService;
 import cz.masci.drd.ui.util.slide.impl.SlideServiceImpl.SlideFactor;
 import java.util.ArrayList;
@@ -48,7 +46,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BattleFactory {
   private final BattleService battleService;
-  private final ActionService actionService;
 
   private final SlideService slideService;
   private final FxWeaver fxWeaver;
@@ -56,8 +53,7 @@ public class BattleFactory {
   private FxControllerAndView<BattleController, Parent> battleControllerAndView;
   private final BattleGroupSlide battleGroupSlide;
   private final BattleDuellistSlide battleDuellistSlide;
-  private final List<BattleDuellistSlideManager> battleDuellistSlides = new ArrayList<>();
-  private final List<BattleSelectActionSlideManager> battleSelectActionSlides = new ArrayList<>();
+  private final BattleSelectActionSlide battleSelectActionSlide;
   private final List<BattleInitiativeSlideManager> battleInitiativeSlides = new ArrayList<>();
 
   private BattleSlide<?> currentBattleSlide;
@@ -127,9 +123,8 @@ public class BattleFactory {
       }
       case NEXT -> {
         if (!currentBattleSlide.hasNext()) {
-          initBattleSelectActionSlides();
-          index = 0;
-          futureSlide = battleSelectActionSlides.get(index);
+          futureSlide = battleSelectActionSlide;
+          futureSlide.init();
         }
       }
     }
@@ -137,36 +132,37 @@ public class BattleFactory {
     slide(slideFactor, futureSlide, pane, (current, future) -> {
       if (future instanceof BattleGroupSlide) {
         battleSlideState = BattleSlideState.GROUPS_SETUP;
-        current.reset();
       }
-      if (future instanceof BattleSelectActionSlideManager) {
+      if (future instanceof BattleSelectActionSlide) {
         battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
-        index = 0;
       }
     });
   }
 
   private void slideActionSelectionSlide(SlideFactor slideFactor, Pane pane) {
-    if (SlideFactor.NEXT.equals(slideFactor)) {
-      index++;
-    } else {
-      index--;
+    BattleSlide<?> futureSlide = currentBattleSlide;
+
+    switch (slideFactor) {
+      case PREV -> {
+        if (!currentBattleSlide.hasPrevious()) {
+          futureSlide = battleDuellistSlide;
+        }
+      }
+      case NEXT -> {
+        if (!currentBattleSlide.hasNext()) {
+          initBattleInitiativeActionSlides();
+          index = 0;
+          futureSlide = battleInitiativeSlides.get(index);
+        }
+      }
     }
 
-    if (index == battleSelectActionSlides.size()) {
-      initBattleInitiativeActionSlides();
-    }
-
-    var futureSlide = (index < 0) ? battleDuellistSlide : (index == battleSelectActionSlides.size()) ? battleInitiativeSlides.get(0) : battleSelectActionSlides.get(index);
-
-    slide(slideFactor, futureSlide, pane, () -> {
-      if (index < 0) {
+    slide(slideFactor, futureSlide, pane, (current, future) -> {
+      if (future instanceof BattleDuellistSlide) {
         battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP;
-        battleSelectActionSlides.clear();
-        index = battleDuellistSlides.size() - 1;
-      } else if (index == battleSelectActionSlides.size()) {
+      }
+      if (future instanceof BattleInitiativeSlideManager) {
         battleSlideState = BattleSlideState.INITIATIVE_SETUP;
-        index = 0;
       }
     });
   }
@@ -178,13 +174,12 @@ public class BattleFactory {
       index--;
     }
 
-    var futureSlide = (index < 0) ? battleSelectActionSlides.get(battleSelectActionSlides.size() - 1) : (index == battleInitiativeSlides.size()) ? null : battleInitiativeSlides.get(index);
+    var futureSlide = (index < 0) ? battleSelectActionSlide: (index == battleInitiativeSlides.size()) ? null : battleInitiativeSlides.get(index);
 
     slide(slideFactor, futureSlide, pane, () -> {
       if (index < 0) {
         battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
         battleInitiativeSlides.clear();
-        index = battleSelectActionSlides.size() - 1;
       }
     });
   }
@@ -204,7 +199,10 @@ public class BattleFactory {
 
   private void slide(SlideFactor slideFactor, BattleSlide<?> futureSlide, Pane pane, BiConsumer<BattleSlide<?>, BattleSlide<?>> onSlideFinished) {
     var currentNode = currentBattleSlide.getCurrentView();
-    var futureNode = SlideFactor.PREV.equals(slideFactor) ? futureSlide.getPreviousView() : futureSlide.getNextView();
+    var futureNode = futureSlide.equals(currentBattleSlide) ? (
+        SlideFactor.PREV.equals(slideFactor) ? futureSlide.previousView() : futureSlide.nextView()
+    ) : futureSlide.getCurrentView();
+//    var futureNode = SlideFactor.PREV.equals(slideFactor) ? futureSlide.previousView() : futureSlide.nextView();
 
     slideService.slide(slideFactor, currentNode, futureNode, pane, () -> {
       if (onSlideFinished != null) {
@@ -229,18 +227,6 @@ public class BattleFactory {
     index = 0;
   }
 
-  private void initBattleSelectActionSlides() {
-    var lastGroupIndex = battleService.getGroups().size() - 1;
-    for (int groupIndex = 0; groupIndex < battleService.getGroups().size(); groupIndex++) {
-      var group = battleService.getGroups().get(groupIndex);
-      var lastDuellistIndex = battleService.getGroups().size() - 1;
-      for (int duellistIndex = 0; duellistIndex < group.getDuellists().size(); duellistIndex++) {
-        var duellist = group.getDuellists().get(duellistIndex);
-        battleSelectActionSlides.add(new BattleSelectActionSlideManager(fxWeaver, actionService, battleService, group, duellist, groupIndex == 0 && duellistIndex == 0, groupIndex == lastGroupIndex && duellistIndex == lastDuellistIndex));
-      }
-    }
-  }
-
   private void initBattleInitiativeActionSlides() {
     var lastGroupIndex = battleService.getGroups().size() - 1;
     for (int groupIndex = 0; groupIndex < battleService.getGroups().size(); groupIndex++) {
@@ -251,13 +237,9 @@ public class BattleFactory {
   // endregion
 
   // region utils
-//  private <T> BattleSlideManager<T> getIndexedFutureSlide() {
-//    (index < 0) ? battleGroupSlide : (index == battleDuellistSlides.size()) ? battleSelectActionSlides.get(0) : battleDuellistSlides.get(index);
-//    (index < 0) ? battleDuellistSlides.get(battleDuellistSlides.size() - 1) : (index == battleSelectActionSlides.size()) ? battleInitiativeSlides.get(0) : battleSelectActionSlides.get(index);
-//    (index < 0) ? battleSelectActionSlides.get(battleSelectActionSlides.size() - 1) : (index == battleInitiativeSlides.size()) ? null : battleInitiativeSlides.get(index);
-//  }
 
   // endregion
+
   private enum BattleSlideState {
     GROUPS_SETUP,
     GROUP_DUELLISTS_SETUP,

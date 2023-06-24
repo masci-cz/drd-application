@@ -22,28 +22,18 @@ package cz.masci.drd.ui.battle.slide.presenter.impl;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
-import cz.masci.drd.ui.battle.slide.impl.BattleGroupSlideController;
-import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
+import cz.masci.drd.ui.battle.slide.controller.impl.BattleGroupSlideController;
 import javafx.beans.binding.Bindings;
-import javafx.scene.Node;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class BattleGroupSlide implements BattleSlide<BattleGroupSlideController> {
-
-  private final BattleService battleService;
-
-  @Getter
-  private final BattleGroupSlideController controller;
+public class BattleGroupSlide extends BattleSlideSingleController<BattleGroupSlideController> {
 
   public BattleGroupSlide(FxWeaver fxWeaver, BattleService battleService) {
-    var fxControllerAndView = fxWeaver.load(BattleGroupSlideController.class);
-    controller = fxControllerAndView.getController();
-    this.battleService = battleService;
+    super(fxWeaver, battleService, BattleGroupSlideController.class);
   }
 
   @Override
@@ -76,28 +66,4 @@ public class BattleGroupSlide implements BattleSlide<BattleGroupSlideController>
     battleService.createBattle();
   }
 
-  @Override
-  public Node getCurrentView() {
-    return controller.getRoot();
-  }
-
-  @Override
-  public Node getPreviousView() {
-    return controller.getRoot();
-  }
-
-  @Override
-  public Node getNextView() {
-    return controller.getRoot();
-  }
-
-  @Override
-  public boolean hasPrevious() {
-    return false;
-  }
-
-  @Override
-  public boolean hasNext() {
-    return false;
-  }
 }

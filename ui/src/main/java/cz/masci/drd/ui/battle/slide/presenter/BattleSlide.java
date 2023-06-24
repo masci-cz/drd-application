@@ -44,8 +44,8 @@ public interface BattleSlide<T> {
 
   T getController();
   Node getCurrentView();
-  Node getPreviousView();
-  Node getNextView();
+  Node previousView();
+  Node nextView();
 
   /**
    * Move index to the previous slide. If there is no other slide it returns <code>false</code>

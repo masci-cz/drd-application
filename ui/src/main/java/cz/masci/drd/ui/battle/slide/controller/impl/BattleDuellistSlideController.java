@@ -17,11 +17,12 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide.impl;
+package cz.masci.drd.ui.battle.slide.controller.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
+import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,7 +44,7 @@ import org.springframework.stereotype.Component;
 @FxmlView("fxml/battle-duellist-slide.fxml")
 @FxmlController
 @Slf4j
-public class BattleDuellistSlideController {
+public class BattleDuellistSlideController implements BattleSlideController {
 
   @FXML
   @Getter

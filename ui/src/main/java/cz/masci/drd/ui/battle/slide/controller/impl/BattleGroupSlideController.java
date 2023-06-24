@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide.impl;
+package cz.masci.drd.ui.battle.slide.controller.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;

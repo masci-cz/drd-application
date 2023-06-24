@@ -21,6 +21,7 @@ package cz.masci.drd.ui.battle.action.impl;
 
 import cz.masci.drd.ui.battle.action.ActionService;
 import cz.masci.drd.ui.battle.action.SelectAction;
+import cz.masci.drd.ui.battle.slide.controller.impl.BattleSelectActionSlideController;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ListableBeanFactory;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * This service is responsible for preparation of list of {@link SelectAction}.<br>
- * Because the list is used on every {@link cz.masci.drd.ui.battle.slide.impl.BattleSelectActionSlideController} it always returns new list with
+ * Because the list is used on every {@link BattleSelectActionSlideController} it always returns new list with
  * new instances.
  */
 @Service
