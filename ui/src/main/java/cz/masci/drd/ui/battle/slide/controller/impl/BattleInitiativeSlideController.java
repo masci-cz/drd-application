@@ -17,14 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.slide.impl;
+package cz.masci.drd.ui.battle.slide.controller.impl;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.GroupDTO;
+import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +39,15 @@ import org.springframework.stereotype.Component;
 @FxmlView("fxml/battle-initiative-slide.fxml")
 @FxmlController
 @Slf4j
-public class BattleInitiativeSlideController {
+public class BattleInitiativeSlideController implements BattleSlideController {
 
+  @Getter
+  @Setter
+  private GroupDTO group;
+
+  @FXML
+  @Getter
+  private GridPane root;
   @FXML
   private TextField initiativeTxt;
 
@@ -43,6 +56,6 @@ public class BattleInitiativeSlideController {
   }
 
   public Integer getInitiative() {
-    return Integer.parseInt(initiativeTxt.getText());
+    return StringUtils.isNotBlank(initiativeTxt.getText()) ? Integer.parseInt(initiativeTxt.getText()) : null;
   }
 }

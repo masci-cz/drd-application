@@ -84,6 +84,8 @@ public class ObservableListIterator<E> {
       var future = previousOrNext.get();
       if (future.equals(currentProperty.get())) {
         if (hasPreviousOrNext.get()) {
+          lastPreviousIndex = iterator.previousIndex();
+          lastNextIndex = iterator.nextIndex();
           currentProperty.set(previousOrNext.get());
         } else {
           currentProperty.set(null);

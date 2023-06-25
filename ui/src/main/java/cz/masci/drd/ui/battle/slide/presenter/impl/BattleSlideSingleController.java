@@ -20,7 +20,7 @@
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import javafx.scene.Node;

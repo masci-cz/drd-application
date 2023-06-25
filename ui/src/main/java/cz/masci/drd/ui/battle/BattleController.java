@@ -20,7 +20,7 @@
 package cz.masci.drd.ui.battle;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

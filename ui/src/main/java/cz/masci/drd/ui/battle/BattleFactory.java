@@ -19,22 +19,16 @@
 
 package cz.masci.drd.ui.battle;
 
-import cz.masci.drd.dto.BattleState;
-import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
-import cz.masci.drd.ui.battle.manager.impl.BattleInitiativeSlideManager;
+import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleDuellistSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleGroupSlide;
+import cz.masci.drd.ui.battle.slide.presenter.impl.BattleInitiativeSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleSelectActionSlide;
 import cz.masci.drd.ui.util.slide.SlideService;
 import cz.masci.drd.ui.util.slide.impl.SlideServiceImpl.SlideFactor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -49,8 +43,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class BattleFactory {
-  private final BattleService battleService;
-
   private final SlideService slideService;
   private final FxWeaver fxWeaver;
 
@@ -58,17 +50,14 @@ public class BattleFactory {
   private final BattleGroupSlide battleGroupSlide;
   private final BattleDuellistSlide battleDuellistSlide;
   private final BattleSelectActionSlide battleSelectActionSlide;
-  private final List<BattleInitiativeSlideManager> battleInitiativeSlides = new ArrayList<>();
+  private final BattleInitiativeSlide battleInitiativeSlide;
 
   private BattleSlide<?> currentBattleSlide;
-  private int index;
   private BattleSlideState battleSlideState;
   private final BattleSlidePropertiesDTO battleSlideProperties = new BattleSlidePropertiesDTO();
 
   // region show
   public void show(Stage stage) {
-    //    battleService.createBattle();
-
     if (battleControllerAndView == null) {
       battleControllerAndView = fxWeaver.load(BattleController.class);
     }
@@ -103,7 +92,11 @@ public class BattleFactory {
           battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP;
         }
       });
-      case INITIATIVE_SETUP -> slideInitiativeSlide(SlideFactor.PREV, pane);
+      case INITIATIVE_SETUP -> slide(SlideFactor.PREV, pane, () -> battleSelectActionSlide, futureSlide -> {
+        if (futureSlide instanceof BattleSelectActionSlide) {
+          battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
+        }
+      });
     }
   }
 
@@ -116,50 +109,13 @@ public class BattleFactory {
           battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
         }
       });
-      case SELECT_ACTION_SETUP -> slide(SlideFactor.NEXT, pane, () -> {
-        initBattleInitiativeActionSlides();
-        index = 0;
-        return battleInitiativeSlides.get(index);
-      }, futureSlide -> {
-        if (futureSlide instanceof BattleInitiativeSlideManager) {
+      case SELECT_ACTION_SETUP -> slide(SlideFactor.NEXT, pane, () -> battleInitiativeSlide, futureSlide -> {
+        if (futureSlide instanceof BattleInitiativeSlide) {
           battleSlideState = BattleSlideState.INITIATIVE_SETUP;
         }
       });
-      case INITIATIVE_SETUP -> slideInitiativeSlide(SlideFactor.NEXT, pane);
+      case INITIATIVE_SETUP -> slide(SlideFactor.NEXT, pane, () -> null, futureSlide -> {});
     }
-  }
-
-  private void slideInitiativeSlide(SlideFactor slideFactor, Pane pane) {
-    if (SlideFactor.NEXT.equals(slideFactor)) {
-      index++;
-    } else {
-      index--;
-    }
-
-    var futureSlide = (index < 0) ? battleSelectActionSlide : (index == battleInitiativeSlides.size()) ? null : battleInitiativeSlides.get(index);
-    if (futureSlide instanceof BattleSelectActionSlide) {
-      futureSlide.previousView();
-    }
-
-    slide(slideFactor, futureSlide, pane, () -> {
-      if (index < 0) {
-        battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
-        battleInitiativeSlides.clear();
-      }
-    });
-  }
-
-  private void slide(SlideFactor slideFactor, BattleSlide<?> futureSlide, Pane pane, Runnable onSlideFinished) {
-    var futureNode = futureSlide.getCurrentView();
-    var currentNode = currentBattleSlide.getCurrentView();
-
-    slideService.slide(slideFactor, currentNode, futureNode, pane, () -> {
-      currentBattleSlide = futureSlide;
-      if (onSlideFinished != null) {
-        onSlideFinished.run();
-      }
-      currentBattleSlide.initProperties(battleSlideProperties);
-    });
   }
 
   private void slide(SlideFactor slideFactor, Pane pane, Supplier<BattleSlide<?>> futureSlideSupplier, Consumer<BattleSlide<?>> onSlideFinished) {
@@ -191,30 +147,15 @@ public class BattleFactory {
     });
   }
 
-  // endregion
-
-  // region init slides
   private void initBattleGroupSlide(Pane pane) {
     // init view
-    battleGroupSlide.initProperties(battleSlideProperties);
     battleGroupSlide.init();
+    battleGroupSlide.initProperties(battleSlideProperties);
     pane.getChildren().add(battleGroupSlide.getCurrentView());
     // init state
     battleSlideState = BattleSlideState.GROUPS_SETUP;
     currentBattleSlide = battleGroupSlide;
-    index = 0;
   }
-
-  private void initBattleInitiativeActionSlides() {
-    var lastGroupIndex = battleService.getGroups().size() - 1;
-    for (int groupIndex = 0; groupIndex < battleService.getGroups().size(); groupIndex++) {
-      var group = battleService.getGroups().get(groupIndex);
-      battleInitiativeSlides.add(new BattleInitiativeSlideManager(fxWeaver, group, groupIndex == 0, groupIndex == lastGroupIndex));
-    }
-  }
-  // endregion
-
-  // region utils
 
   // endregion
 

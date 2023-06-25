@@ -20,7 +20,7 @@
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.controller.impl.BattleDuellistSlideController;
 import java.util.List;
 import javafx.beans.binding.Bindings;

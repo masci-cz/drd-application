@@ -49,18 +49,18 @@ import org.springframework.stereotype.Component;
 public class BattleSelectActionSlideController implements BattleSlideController {
 
   private final List<SelectAction> actionControls;
-
-  @FXML
-  @Getter
-  private BorderPane root;
-  @FXML
-  private ChoiceBox<SelectAction> actionBox;
   @Getter
   @Setter
   private DuellistDTO duellist;
   @Getter
   @Setter
   private String groupName;
+
+  @FXML
+  @Getter
+  private BorderPane root;
+  @FXML
+  private ChoiceBox<SelectAction> actionBox;
 
   @FXML
   public void initialize() {

@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.manager.dto;
+package cz.masci.drd.ui.battle.dto;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

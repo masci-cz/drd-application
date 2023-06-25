@@ -22,7 +22,7 @@ package cz.masci.drd.ui.battle.slide.presenter.impl;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.action.ActionService;
 import cz.masci.drd.ui.battle.action.SelectAction;
-import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.controller.impl.BattleSelectActionSlideController;
 import java.util.List;
 import java.util.Optional;

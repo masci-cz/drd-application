@@ -79,30 +79,21 @@ class ObservableListIteratorTest {
   void getHasPreviousProperty_afterInit() {
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
   void getHasNextProperty_afterInit() {
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
   void getCurrentProperty_afterInit() {
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertNull(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertNull(result.get()));
   }
   // endregion
 
@@ -152,10 +143,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
@@ -163,10 +151,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -174,10 +159,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertEquals(FIRST, result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertEquals(FIRST, result.get()));
   }
   // endregion
 
@@ -233,10 +215,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -245,10 +224,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -257,10 +233,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertEquals(MIDDLE, result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertEquals(MIDDLE, result.get()));
   }
   // endregion
 
@@ -322,10 +295,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -335,10 +305,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
@@ -348,10 +315,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertEquals(LAST, result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertEquals(LAST, result.get()));
   }
   // endregion
 
@@ -419,10 +383,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -433,10 +394,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
@@ -447,10 +405,7 @@ class ObservableListIteratorTest {
     observableListIterator.next();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertNull(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertNull(result.get()));
   }
   // endregion
 
@@ -524,10 +479,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -539,10 +491,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
@@ -554,10 +503,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertEquals(LAST, result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertEquals(LAST, result.get()));
   }
   // endregion
 
@@ -637,10 +583,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -653,10 +596,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -669,10 +609,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertEquals(MIDDLE, result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertEquals(MIDDLE, result.get()));
   }
   // endregion
 
@@ -758,10 +695,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
@@ -775,10 +709,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -792,10 +723,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertEquals(FIRST, result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertEquals(FIRST, result.get()));
   }
   // endregion
 
@@ -887,10 +815,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasPreviousProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertFalse(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertFalse(result.get()));
   }
 
   @Test
@@ -905,10 +830,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getHasNextProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertTrue(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertTrue(result.get()));
   }
 
   @Test
@@ -923,10 +845,7 @@ class ObservableListIteratorTest {
     observableListIterator.previous();
     var result = observableListIterator.getCurrentProperty();
 
-    assertAll(
-        () -> assertNotNull(result),
-        () -> assertNull(result.get())
-    );
+    assertAll(() -> assertNotNull(result), () -> assertNull(result.get()));
   }
   // endregion
 
@@ -983,5 +902,32 @@ class ObservableListIteratorTest {
     assertEquals(FIRST, observableListIterator.getCurrent());
   }
 
-  private record TestItem(String name) {};
+  @Test
+  void two_items() {
+    ObservableListIterator<TestItem> iterator = new ObservableListIterator<>(new ArrayList<>(List.of(FIRST, LAST)));
+
+    assertAll(
+        () -> assertNull(iterator.getCurrent()),
+        () -> assertEquals(FIRST, iterator.next()),
+        () -> assertFalse(iterator.hasPrevious()),
+        () -> assertTrue(iterator.hasNext()),
+
+        () -> assertEquals(LAST, iterator.next()),
+        () -> assertTrue(iterator.hasPrevious()),
+        () -> assertFalse(iterator.hasNext()),
+
+        () -> assertEquals(FIRST, iterator.previous()),
+        () -> assertFalse(iterator.hasPrevious()),
+        () -> assertTrue(iterator.hasNext()),
+
+        () -> assertEquals(LAST, iterator.next()),
+        () -> assertTrue(iterator.hasPrevious()),
+        () -> assertFalse(iterator.hasNext())
+    );
+  }
+
+  private record TestItem(String name) {
+  }
+
+  ;
 }
