@@ -26,6 +26,7 @@ import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.util.iterator.ObservableListIterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import javafx.scene.Node;
 import net.rgielen.fxweaver.core.FxWeaver;
 
@@ -67,17 +68,17 @@ public abstract class BattleSlideMultipleControllers<T extends BattleSlideContro
 
   @Override
   public Node getCurrentView() {
-    return Optional.ofNullable(iterator.getCurrent()).map(T::getRoot).orElse(null);
+    return getRootOrNull(ObservableListIterator::getCurrent);
   }
 
   @Override
   public Node previousView() {
-    return iterator.previous().getRoot();
+    return getRootOrNull(ObservableListIterator::previous);
   }
 
   @Override
   public Node nextView() {
-    return iterator.next().getRoot();
+    return getRootOrNull(ObservableListIterator::next);
   }
 
   @Override
@@ -90,4 +91,7 @@ public abstract class BattleSlideMultipleControllers<T extends BattleSlideContro
     return iterator.hasNext();
   }
 
+  private Node getRootOrNull(Function<ObservableListIterator<T>, T> controller) {
+    return Optional.ofNullable(controller.apply(iterator)).map(T::getRoot).orElse(null);
+  }
 }

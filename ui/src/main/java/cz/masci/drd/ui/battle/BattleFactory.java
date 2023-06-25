@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.battle;
 
+import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.manager.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.manager.impl.BattleInitiativeSlideManager;
@@ -31,6 +32,9 @@ import cz.masci.drd.ui.util.slide.impl.SlideServiceImpl.SlideFactor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -63,7 +67,7 @@ public class BattleFactory {
 
   // region show
   public void show(Stage stage) {
-//    battleService.createBattle();
+    //    battleService.createBattle();
 
     if (battleControllerAndView == null) {
       battleControllerAndView = fxWeaver.load(BattleController.class);
@@ -88,8 +92,17 @@ public class BattleFactory {
       case GROUPS_SETUP -> {
         // Nothing to do
       }
-      case GROUP_DUELLISTS_SETUP -> slideDuellistSlide(SlideFactor.PREV, pane);
-      case SELECT_ACTION_SETUP -> slideActionSelectionSlide(SlideFactor.PREV, pane);
+      case GROUP_DUELLISTS_SETUP -> slide(SlideFactor.PREV, pane, () -> battleGroupSlide, futureSlide -> {
+        if (futureSlide instanceof BattleGroupSlide) {
+          futureSlide.reset();
+          battleSlideState = BattleSlideState.GROUPS_SETUP;
+        }
+      });
+      case SELECT_ACTION_SETUP -> slide(SlideFactor.PREV, pane, () -> battleDuellistSlide, futureSlide -> {
+        if (futureSlide instanceof BattleDuellistSlide) {
+          battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP;
+        }
+      });
       case INITIATIVE_SETUP -> slideInitiativeSlide(SlideFactor.PREV, pane);
     }
   }
@@ -97,74 +110,23 @@ public class BattleFactory {
   public void slideForward(Pane pane) {
     currentBattleSlide.doBeforeSlide();
     switch (battleSlideState) {
-      case GROUPS_SETUP -> slideGroupSlide(pane);
-      case GROUP_DUELLISTS_SETUP -> slideDuellistSlide(SlideFactor.NEXT, pane);
-      case SELECT_ACTION_SETUP -> slideActionSelectionSlide(SlideFactor.NEXT, pane);
+      case GROUPS_SETUP -> slide(SlideFactor.NEXT, pane, () -> battleDuellistSlide, futureSlide -> battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP);
+      case GROUP_DUELLISTS_SETUP -> slide(SlideFactor.NEXT, pane, () -> battleSelectActionSlide, futureSlide -> {
+        if (futureSlide instanceof BattleSelectActionSlide) {
+          battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
+        }
+      });
+      case SELECT_ACTION_SETUP -> slide(SlideFactor.NEXT, pane, () -> {
+        initBattleInitiativeActionSlides();
+        index = 0;
+        return battleInitiativeSlides.get(index);
+      }, futureSlide -> {
+        if (futureSlide instanceof BattleInitiativeSlideManager) {
+          battleSlideState = BattleSlideState.INITIATIVE_SETUP;
+        }
+      });
       case INITIATIVE_SETUP -> slideInitiativeSlide(SlideFactor.NEXT, pane);
     }
-  }
-
-  private void slideGroupSlide(Pane pane) {
-    var futureSlide = battleDuellistSlide;
-    futureSlide.init();
-
-    slide(SlideFactor.NEXT, futureSlide, pane, (current, future) -> battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP);
-  }
-
-  private void slideDuellistSlide(SlideFactor slideFactor, Pane pane) {
-    BattleSlide<?> futureSlide = currentBattleSlide;
-
-    switch (slideFactor) {
-      case PREV -> {
-        if (!currentBattleSlide.hasPrevious()) {
-          futureSlide = battleGroupSlide;
-          futureSlide.reset();
-        }
-      }
-      case NEXT -> {
-        if (!currentBattleSlide.hasNext()) {
-          futureSlide = battleSelectActionSlide;
-          futureSlide.init();
-        }
-      }
-    }
-
-    slide(slideFactor, futureSlide, pane, (current, future) -> {
-      if (future instanceof BattleGroupSlide) {
-        battleSlideState = BattleSlideState.GROUPS_SETUP;
-      }
-      if (future instanceof BattleSelectActionSlide) {
-        battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
-      }
-    });
-  }
-
-  private void slideActionSelectionSlide(SlideFactor slideFactor, Pane pane) {
-    BattleSlide<?> futureSlide = currentBattleSlide;
-
-    switch (slideFactor) {
-      case PREV -> {
-        if (!currentBattleSlide.hasPrevious()) {
-          futureSlide = battleDuellistSlide;
-        }
-      }
-      case NEXT -> {
-        if (!currentBattleSlide.hasNext()) {
-          initBattleInitiativeActionSlides();
-          index = 0;
-          futureSlide = battleInitiativeSlides.get(index);
-        }
-      }
-    }
-
-    slide(slideFactor, futureSlide, pane, (current, future) -> {
-      if (future instanceof BattleDuellistSlide) {
-        battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP;
-      }
-      if (future instanceof BattleInitiativeSlideManager) {
-        battleSlideState = BattleSlideState.INITIATIVE_SETUP;
-      }
-    });
   }
 
   private void slideInitiativeSlide(SlideFactor slideFactor, Pane pane) {
@@ -174,7 +136,10 @@ public class BattleFactory {
       index--;
     }
 
-    var futureSlide = (index < 0) ? battleSelectActionSlide: (index == battleInitiativeSlides.size()) ? null : battleInitiativeSlides.get(index);
+    var futureSlide = (index < 0) ? battleSelectActionSlide : (index == battleInitiativeSlides.size()) ? null : battleInitiativeSlides.get(index);
+    if (futureSlide instanceof BattleSelectActionSlide) {
+      futureSlide.previousView();
+    }
 
     slide(slideFactor, futureSlide, pane, () -> {
       if (index < 0) {
@@ -197,16 +162,29 @@ public class BattleFactory {
     });
   }
 
-  private void slide(SlideFactor slideFactor, BattleSlide<?> futureSlide, Pane pane, BiConsumer<BattleSlide<?>, BattleSlide<?>> onSlideFinished) {
+  private void slide(SlideFactor slideFactor, Pane pane, Supplier<BattleSlide<?>> futureSlideSupplier, Consumer<BattleSlide<?>> onSlideFinished) {
     var currentNode = currentBattleSlide.getCurrentView();
-    var futureNode = futureSlide.equals(currentBattleSlide) ? (
-        SlideFactor.PREV.equals(slideFactor) ? futureSlide.previousView() : futureSlide.nextView()
-    ) : futureSlide.getCurrentView();
-//    var futureNode = SlideFactor.PREV.equals(slideFactor) ? futureSlide.previousView() : futureSlide.nextView();
+    var futureNode = switch (slideFactor) {
+      case PREV -> currentBattleSlide.previousView();
+      case NEXT -> currentBattleSlide.nextView();
+    };
+
+    var futureSlide = (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious())) ? futureSlideSupplier.get() :
+        currentBattleSlide;
+
+    if (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious())) {
+      switch (slideFactor) {
+        case PREV -> futureNode = futureSlide.previousView();
+        case NEXT -> {
+          futureSlide.init();
+          futureNode = futureSlide.nextView();
+        }
+      };
+    }
 
     slideService.slide(slideFactor, currentNode, futureNode, pane, () -> {
       if (onSlideFinished != null) {
-        onSlideFinished.accept(currentBattleSlide, futureSlide);
+        onSlideFinished.accept(futureSlide);
       }
       currentBattleSlide = futureSlide;
       currentBattleSlide.initProperties(battleSlideProperties);
@@ -231,7 +209,7 @@ public class BattleFactory {
     var lastGroupIndex = battleService.getGroups().size() - 1;
     for (int groupIndex = 0; groupIndex < battleService.getGroups().size(); groupIndex++) {
       var group = battleService.getGroups().get(groupIndex);
-        battleInitiativeSlides.add(new BattleInitiativeSlideManager(fxWeaver, group, groupIndex == 0, groupIndex == lastGroupIndex));
+      battleInitiativeSlides.add(new BattleInitiativeSlideManager(fxWeaver, group, groupIndex == 0, groupIndex == lastGroupIndex));
     }
   }
   // endregion

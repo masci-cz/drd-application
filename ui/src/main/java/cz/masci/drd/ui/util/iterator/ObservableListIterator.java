@@ -48,7 +48,6 @@ public class ObservableListIterator<E> {
 
     hasPreviousProperty = new SimpleBooleanProperty(iterator.hasPrevious());
     hasNextProperty = new SimpleBooleanProperty(iterator.hasNext());
-    currentProperty.set(iterator.next()); // set first value
 
     log.trace("init");
     log.trace("hasPrevious: {}", hasPreviousProperty.get());
@@ -57,11 +56,11 @@ public class ObservableListIterator<E> {
   }
 
   public E previous() {
-    return get(hasPreviousProperty::get, iterator::previous);
+    return get(iterator::hasPrevious, iterator::previous);
   }
 
   public E next() {
-    return get(hasNextProperty::get, iterator::next);
+    return get(iterator::hasNext, iterator::next);
   }
 
   public boolean hasPrevious() {
@@ -77,11 +76,18 @@ public class ObservableListIterator<E> {
   }
 
   private E get(Supplier<Boolean> hasPreviousOrNext, Supplier<E> previousOrNext) {
+    var lastPreviousIndex = iterator.previousIndex();
+    var lastNextIndex = iterator.nextIndex();
+
     log.trace("get element");
     if (hasPreviousOrNext.get()) {
       var future = previousOrNext.get();
       if (future.equals(currentProperty.get())) {
-        currentProperty.set(previousOrNext.get());
+        if (hasPreviousOrNext.get()) {
+          currentProperty.set(previousOrNext.get());
+        } else {
+          currentProperty.set(null);
+        }
       } else {
         currentProperty.set(future);
       }
@@ -90,8 +96,8 @@ public class ObservableListIterator<E> {
     }
 
     // update hasPrevious and hasNext status
-    hasPreviousProperty.set(iterator.previousIndex() > 0);
-    hasNextProperty.set(iterator.nextIndex() < size);
+    hasPreviousProperty.set(Math.max(iterator.previousIndex(), lastPreviousIndex) > 0);
+    hasNextProperty.set(Math.max(iterator.nextIndex(), lastNextIndex) < size);
 
     log.trace("hasPrevious: {}", hasPreviousProperty.get());
     log.trace("hasNext: {}", hasNextProperty.get());
@@ -101,5 +107,4 @@ public class ObservableListIterator<E> {
 
     return currentProperty.get();
   }
-
 }
