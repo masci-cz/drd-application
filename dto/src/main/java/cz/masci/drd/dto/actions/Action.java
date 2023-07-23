@@ -22,10 +22,17 @@ package cz.masci.drd.dto.actions;
 /**
  * Base action
  */
-public interface Action extends Comparable<Action> {
+public interface Action<T extends ActionResult> extends Comparable<Action<T>> {
 
   boolean isPrepared();
-  ActionResult execute();
+
+  /**
+   * Returns null if the action was not executed yet. Otherwise, returns executed result.
+   *
+   * @return Null or executed result.
+   */
+  T getResult();
+  void execute();
   int order();
 
   default int compareTo(Action o) {

@@ -51,6 +51,13 @@ public abstract class BattleSlideMultipleControllers<T extends BattleSlideContro
 
   protected abstract List<T> getControllers();
 
+  /**
+   * This method could be overridden to run some initialization before the controllers list is got.
+   */
+  protected void preInit() {
+    // usually do nothing
+  }
+
   @Override
   public void reset() {
     iterator = null;
@@ -58,6 +65,7 @@ public abstract class BattleSlideMultipleControllers<T extends BattleSlideContro
 
   @Override
   public void init() {
+    preInit();
     iterator = new ObservableListIterator<>(getControllers());
   }
 
@@ -79,6 +87,16 @@ public abstract class BattleSlideMultipleControllers<T extends BattleSlideContro
   @Override
   public Node nextView() {
     return getRootOrNull(ObservableListIterator::next);
+  }
+
+  @Override
+  public Node previousInitView() {
+    return previousView();
+  }
+
+  @Override
+  public Node nextInitView() {
+    return nextView();
   }
 
   @Override

@@ -66,6 +66,16 @@ public abstract class BattleSlideSingleController<T extends BattleSlideControlle
   }
 
   @Override
+  public Node previousInitView() {
+    return getCurrentView();
+  }
+
+  @Override
+  public Node nextInitView() {
+    return getCurrentView();
+  }
+
+  @Override
   public boolean hasPrevious() {
     return false;
   }

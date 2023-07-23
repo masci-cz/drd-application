@@ -21,6 +21,7 @@ package cz.masci.drd.ui.battle;
 
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
+import cz.masci.drd.ui.battle.slide.presenter.impl.BattleActionSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleDuellistSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleGroupSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleInitiativeSlide;
@@ -51,6 +52,7 @@ public class BattleFactory {
   private final BattleDuellistSlide battleDuellistSlide;
   private final BattleSelectActionSlide battleSelectActionSlide;
   private final BattleInitiativeSlide battleInitiativeSlide;
+  private final BattleActionSlide battleActionSlide;
 
   private BattleSlide<?> currentBattleSlide;
   private BattleSlideState battleSlideState;
@@ -83,16 +85,30 @@ public class BattleFactory {
       }
       case GROUP_DUELLISTS_SETUP -> slide(SlideFactor.PREV, pane, () -> battleGroupSlide, futureSlide -> {
         if (futureSlide instanceof BattleGroupSlide) {
-          futureSlide.reset();
+          battleGroupSlide.reset();
           battleSlideState = BattleSlideState.GROUPS_SETUP;
         }
       });
       case SELECT_ACTION_SETUP -> slide(SlideFactor.PREV, pane, () -> battleDuellistSlide, futureSlide -> {
         if (futureSlide instanceof BattleDuellistSlide) {
+          battleSelectActionSlide.reset();
           battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP;
         }
       });
       case INITIATIVE_SETUP -> slide(SlideFactor.PREV, pane, () -> battleSelectActionSlide, futureSlide -> {
+        if (futureSlide instanceof BattleSelectActionSlide) {
+          battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
+        }
+      });
+      case COMBAT -> slide(SlideFactor.PREV, pane, () -> {
+        // reset round before slide
+        battleActionSlide.reset();
+        battleInitiativeSlide.reset();
+        battleSelectActionSlide.reset();
+        battleSelectActionSlide.init();
+
+        return battleSelectActionSlide;
+      }, futureSlide -> {
         if (futureSlide instanceof BattleSelectActionSlide) {
           battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
         }
@@ -114,26 +130,34 @@ public class BattleFactory {
           battleSlideState = BattleSlideState.INITIATIVE_SETUP;
         }
       });
-      case INITIATIVE_SETUP -> slide(SlideFactor.NEXT, pane, () -> null, futureSlide -> {});
+      case INITIATIVE_SETUP -> slide(SlideFactor.NEXT, pane, () -> battleActionSlide, futureSlide -> {
+        if (futureSlide instanceof BattleActionSlide) {
+          battleSlideState = BattleSlideState.COMBAT;
+        }
+      });
     }
   }
 
   private void slide(SlideFactor slideFactor, Pane pane, Supplier<BattleSlide<?>> futureSlideSupplier, Consumer<BattleSlide<?>> onSlideFinished) {
     var currentNode = currentBattleSlide.getCurrentView();
+    // get future node - could be null
     var futureNode = switch (slideFactor) {
       case PREV -> currentBattleSlide.previousView();
       case NEXT -> currentBattleSlide.nextView();
     };
 
-    var futureSlide = (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious())) ? futureSlideSupplier.get() :
-        currentBattleSlide;
+    // get future slide from supplier if there is no other slide in current presenter
+    var futureSlide = (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious()))
+        ? futureSlideSupplier.get()
+        : currentBattleSlide;
 
+    // do previous/next presenter initialization before slide
     if (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious())) {
       switch (slideFactor) {
-        case PREV -> futureNode = futureSlide.previousView();
+        case PREV -> futureNode = futureSlide.previousInitView();
         case NEXT -> {
           futureSlide.init();
-          futureNode = futureSlide.nextView();
+          futureNode = futureSlide.nextInitView();
         }
       };
     }
@@ -163,6 +187,7 @@ public class BattleFactory {
     GROUPS_SETUP,
     GROUP_DUELLISTS_SETUP,
     SELECT_ACTION_SETUP,
-    INITIATIVE_SETUP
+    INITIATIVE_SETUP,
+    COMBAT
   }
 }

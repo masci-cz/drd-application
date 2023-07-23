@@ -20,12 +20,14 @@
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
+import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.action.ActionService;
 import cz.masci.drd.ui.battle.action.SelectAction;
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.controller.impl.BattleSelectActionSlideController;
 import java.util.List;
 import java.util.Optional;
+import javafx.scene.Node;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +56,26 @@ public class BattleSelectActionSlide extends BattleSlideMultipleControllers<Batt
   }
 
   @Override
+  protected void preInit() {
+    super.preInit();
+    try {
+      battleService.startBattle();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void reset() {
+    super.reset();
+    try {
+      battleService.resetPreparation();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
   protected List<BattleSelectActionSlideController> getControllers() {
     return battleService.getGroups().stream()
         .flatMap(group ->
@@ -68,5 +90,10 @@ public class BattleSelectActionSlide extends BattleSlideMultipleControllers<Batt
                 })
         )
         .toList();
+  }
+
+  @Override
+  public Node previousInitView() {
+    return nextView();
   }
 }

@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -48,6 +49,8 @@ public class BattleController {
   @Getter
   private AnchorPane centerPane;
   @FXML
+  private Pane topPane;
+  @FXML
   private Label lblTitle;
   @FXML
   private Button btnPrev;
@@ -67,7 +70,7 @@ public class BattleController {
     btnPrev.setDisable(true);
     btnNext.setDisable(true);
 
-//    battleSlideService.init(centerPane);
+    topPane.prefHeightProperty().bind(lblTitle.heightProperty());
   }
 
   @FXML

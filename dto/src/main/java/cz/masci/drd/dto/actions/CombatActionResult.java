@@ -17,26 +17,11 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action;
+package cz.masci.drd.dto.actions;
 
-import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.ActionResult;
-import java.util.List;
-import javafx.scene.Node;
-
-public interface SelectAction {
-
-  /**
-   * Return control view
-   *
-   * @return Control view
-   */
-  Node getView();
-
-  void initAction(DuellistDTO actor, List<DuellistDTO> duellists);
-
-  Action<? extends ActionResult> getAction();
-
-  String getName();
+public record CombatActionResult(Integer attack, Integer defense, boolean success, Integer life) implements ActionResult {
+  @Override
+  public String getMessage() {
+    return null;
+  }
 }

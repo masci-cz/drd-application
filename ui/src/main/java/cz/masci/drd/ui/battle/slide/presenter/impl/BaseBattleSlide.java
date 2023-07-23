@@ -22,7 +22,6 @@ package cz.masci.drd.ui.battle.slide.presenter.impl;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.ui.battle.slide.presenter.BattleSlide;
 import lombok.RequiredArgsConstructor;
-import net.rgielen.fxweaver.core.FxWeaver;
 
 @RequiredArgsConstructor
 public abstract class BaseBattleSlide<T> implements BattleSlide<T> {

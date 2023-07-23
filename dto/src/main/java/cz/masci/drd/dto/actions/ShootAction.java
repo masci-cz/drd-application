@@ -22,17 +22,21 @@ package cz.masci.drd.dto.actions;
 import cz.masci.drd.dto.DuellistDTO;
 import java.util.Objects;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
-public class ShootAction implements Action {
+public class ShootAction implements Action<ActionResult> {
 
   private final DuellistDTO attacker;
   private final DuellistDTO defender;
 
   private Integer attackerDiceRoll;
   private Integer defenderDiceRoll;
+
+  @Getter
+  ActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -43,8 +47,8 @@ public class ShootAction implements Action {
   }
 
   @Override
-  public ActionResult execute() {
-    return () -> {
+  public void execute() {
+    result = () -> {
       StringBuilder result = new StringBuilder();
       result.append(attacker.getName());
       result.append(" střílí útočným číslem [");

@@ -20,12 +20,16 @@
 package cz.masci.drd.dto.actions;
 
 import cz.masci.drd.dto.DuellistDTO;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PrepareAction implements Action {
+public class PrepareAction implements Action<ActionResult> {
 
   private final DuellistDTO actor;
+
+  @Getter
+  private ActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -33,8 +37,8 @@ public class PrepareAction implements Action {
   }
 
   @Override
-  public ActionResult execute() {
-    return () -> String.format("Bojovník %s se připravuje", actor.getName());
+  public void execute() {
+    result = () -> String.format("Bojovník %s se připravuje", actor.getName());
   }
 
   @Override

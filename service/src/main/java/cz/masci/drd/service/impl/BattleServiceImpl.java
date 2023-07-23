@@ -23,6 +23,7 @@ import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.dto.actions.ActionResult;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import jakarta.validation.constraints.NotNull;
@@ -34,18 +35,22 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class BattleServiceImpl implements BattleService {
 
   private final Map<String, GroupDTO> groups = new LinkedHashMap<>();
-  private final Queue<Action> actionList = new ArrayDeque<>();
+  private final Queue<Action<? extends ActionResult>> actionList = new ArrayDeque<>();
   private BattleState state;
 
   @Override
   public void createBattle() {
+    log.info("Creating new battle");
+
     clearBattle();
   }
 
@@ -57,11 +62,24 @@ public class BattleServiceImpl implements BattleService {
       throw new BattleException("At least two battle groups with at least one duellist has to be set");
     }
 
+    log.info("Starting battle with {} groups", groups.size());
+
     state = BattleState.PREPARATION;
   }
 
   @Override
+  public void resetPreparation() throws BattleException {
+    checkState(BattleState.PREPARATION, "reset preparation");
+
+    log.info("Resetting battle preparation");
+
+    state = BattleState.NEW;
+  }
+
+  @Override
   public void exitBattle() {
+    log.info("Exiting battle");
+
     clearBattle();
   }
 
@@ -81,8 +99,22 @@ public class BattleServiceImpl implements BattleService {
     groups.values().stream().sorted().forEachOrdered(
         group -> actionList.addAll(group.getDuellists().stream().map(DuellistDTO::getSelectedAction).sorted().toList())
     );
+
+    log.info("Starting new round");
+
     // set new state
     state = BattleState.ROUND;
+  }
+
+  @Override
+  public void cancelRound() throws BattleException {
+    checkState(BattleState.ROUND, "cancel round");
+
+    log.info("Canceling round");
+
+    // clear group initiations and switch to PREPARATION battle state for the next round
+    groups.values().forEach(this::clearGroupInitiative);
+    state = BattleState.PREPARATION;
   }
 
   public void endRound() throws BattleException {
@@ -92,8 +124,11 @@ public class BattleServiceImpl implements BattleService {
       throw new BattleException("All duellists action has to be executed");
     }
 
+    log.info("Ending round");
+
     // clear group initiations and switch to PREPARATION battle state for the next round
     groups.values().forEach(this::clearGroupInitiative);
+    actionList.clear();
     state = BattleState.PREPARATION;
 
     // TODO: DMK clear all groups and actions and switch to null battle state when there is no duellist ready for battle
@@ -181,7 +216,7 @@ public class BattleServiceImpl implements BattleService {
   }
 
   @Override
-  public Queue<Action> getActions() {
+  public Queue<? extends Action<? extends ActionResult>> getActions() {
     return actionList;
   }
 

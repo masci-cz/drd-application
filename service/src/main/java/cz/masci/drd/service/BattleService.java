@@ -23,6 +23,7 @@ import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.dto.actions.ActionResult;
 import cz.masci.drd.service.exception.BattleException;
 import java.util.List;
 import java.util.Queue;
@@ -45,6 +46,13 @@ public interface BattleService {
   void startBattle() throws BattleException;
 
   /**
+   * <p>Reset the preparation state</p>
+   * <p>Checks the battle state and set the state to {@link BattleState#NEW}</p>
+   *
+   * @throws BattleException Throws an error when battle state is not {@link BattleState#PREPARATION}
+   */
+  void resetPreparation() throws BattleException;
+  /**
    * <p>Exit battle in any state</p>
    */
   void exitBattle();
@@ -60,8 +68,18 @@ public interface BattleService {
   void startRound() throws BattleException;
 
   /**
-   * <p>End round</p>
+   * <p>Cancel round</p>
    * <p>Checks the battle state.</p>
+   * <p>Sets battle state to {@link BattleState#PREPARATION} without checking all actions were executed</p>
+   *
+   * @throws BattleException Throws an error when battle state is not {@link BattleState#ROUND}
+   */
+  void cancelRound() throws BattleException;
+
+  /**
+   * <p>End round</p>
+   * <p>Checks the battle state and actions execution.</p>
+   * <p><b>CONDITION:</b> All actions have to be executed</p>
    * <p>Sets battle state to {@link BattleState#PREPARATION} or {@link BattleState#END} based on living duellists</p>
    *
    * @throws BattleException Throws an error when battle state is not {@link BattleState#ROUND}
@@ -147,6 +165,6 @@ public interface BattleService {
    *
    * @return Action list
    */
-  Queue<Action> getActions();
+  Queue<? extends Action<? extends ActionResult>> getActions();
 
 }

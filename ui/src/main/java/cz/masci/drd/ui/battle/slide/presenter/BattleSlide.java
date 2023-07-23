@@ -48,6 +48,15 @@ public interface BattleSlide<T> {
   Node nextView();
 
   /**
+   * It is used to get first initiate view.
+   *
+   * @return Returns init view based on slide type. Could be the first view or last view.
+   */
+  Node previousInitView();
+
+  Node nextInitView();
+
+  /**
    * Move index to the previous slide. If there is no other slide it returns <code>false</code>
    * otherwise returns <code>true</code>.
    *

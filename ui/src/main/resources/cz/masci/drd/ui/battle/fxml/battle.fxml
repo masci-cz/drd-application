@@ -24,9 +24,9 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
-      <AnchorPane prefHeight="37.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="37.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnPrev" layoutX="14.0" layoutY="100.0" minHeight="25.0" minWidth="52.0" mnemonicParsing="false" onAction="#slide" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
             <Button fx:id="btnNext" layoutX="134.0" layoutY="101.0" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" onAction="#slide" text="Button" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
@@ -37,9 +37,9 @@
         <AnchorPane fx:id="centerPane" minHeight="100.0" minWidth="400.0" BorderPane.alignment="CENTER" />
     </center>
    <top>
-      <Pane BorderPane.alignment="CENTER">
+      <Pane fx:id="topPane" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblTitle" text="Label" textFill="#0034d0" wrapText="true">
+            <Label fx:id="lblTitle" alignment="TOP_LEFT" prefWidth="600.0" text="Label" textFill="#0034d0" wrapText="true">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>

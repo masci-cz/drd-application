@@ -20,14 +20,18 @@
 package cz.masci.drd.dto.actions;
 
 import cz.masci.drd.dto.DuellistDTO;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MagicAction implements Action {
+public class MagicAction implements Action<ActionResult> {
 
   private final DuellistDTO attacker;
   private final DuellistDTO defender;
   private final String spell;
+
+  @Getter
+  private ActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -35,8 +39,8 @@ public class MagicAction implements Action {
   }
 
   @Override
-  public ActionResult execute() {
-    return () -> {
+  public void execute() {
+    result = () -> {
       StringBuilder result = new StringBuilder();
       result.append(attacker.getName());
       result.append(" sesílá kouzlo [");

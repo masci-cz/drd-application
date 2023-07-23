@@ -20,14 +20,18 @@
 package cz.masci.drd.dto.actions;
 
 import cz.masci.drd.dto.DuellistDTO;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
-public class OtherAction implements Action {
+public class OtherAction implements Action<ActionResult> {
 
   private final DuellistDTO actor;
   private final String other;
+
+  @Getter
+  private ActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -35,8 +39,8 @@ public class OtherAction implements Action {
   }
 
   @Override
-  public ActionResult execute() {
-    return () -> String.format("Bojovník %s provádí %s", actor.getName(), other);
+  public void execute() {
+    result = () -> String.format("Bojovník %s provádí %s", actor.getName(), other);
   }
 
   @Override

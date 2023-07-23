@@ -20,7 +20,6 @@
 package cz.masci.drd.ui.battle.action.control;
 
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.ui.battle.action.controller.CloseCombatSelectActionController;
 import cz.masci.drd.ui.util.PredicateUtils;
@@ -50,7 +49,7 @@ public class CloseCombatSelectAction extends MultipleDuellistSelectAction<CloseC
   }
 
   @Override
-  public Action getAction() {
+  public CombatAction getAction() {
     return new CombatAction(actor, controller.getDuellistBox().getValue());
   }
 }
