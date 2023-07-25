@@ -62,7 +62,7 @@ public class CombatAction implements Action<CombatActionResult> {
     int defense = defender.getDefense() + defenderDiceRoll;
     boolean success = attack > defense;
     int result = attack - defense + attacker.getDamage();
-    Integer life = success ? (result <= 0 ? 1 : attack) : null;
+    Integer life = success ? (result <= 0 ? 1 : result) : null;
     combatActionResult = new CombatActionResult(attack, defense, success, life);
     //    return () -> {
 //      StringBuilder result = new StringBuilder();

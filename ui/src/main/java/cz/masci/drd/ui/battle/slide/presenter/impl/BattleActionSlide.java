@@ -22,7 +22,7 @@ package cz.masci.drd.ui.battle.slide.presenter.impl;
 import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
-import cz.masci.drd.ui.battle.action.controller.CloseCombatController;
+import cz.masci.drd.ui.battle.action.controller.CloseCombatActionController;
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +30,7 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BattleActionSlide extends BattleSlideMultipleControllers<CloseCombatController> {
+public class BattleActionSlide extends BattleSlideMultipleControllers<CloseCombatActionController> {
 
 
   public BattleActionSlide(FxWeaver fxWeaver, BattleService battleService) {
@@ -52,7 +52,7 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
   }
 
   @Override
-  protected List<CloseCombatController> getControllers() {
+  protected List<CloseCombatActionController> getControllers() {
     try {
       battleService.startRound();
     } catch (BattleException e) {
@@ -61,7 +61,7 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
     return battleService.getActions().stream()
         .map(action -> {
           if (action instanceof CombatAction combatAction) {
-            var controller = fxWeaver.loadController(CloseCombatController.class);
+            var controller = fxWeaver.loadController(CloseCombatActionController.class);
             controller.initAction(combatAction);
             return controller;
           }

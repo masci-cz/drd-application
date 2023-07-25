@@ -20,9 +20,7 @@
 package cz.masci.drd.ui.battle.action.controller;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.CombatAction;
-import cz.masci.drd.dto.actions.CombatActionResult;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -45,7 +43,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @FxmlView("fxml/close-combat-action.fxml")
 @FxmlController
-public class CloseCombatController implements ChangeListener<String>, BattleSlideController {
+public class CloseCombatActionController implements ChangeListener<String>, BattleSlideController {
 
   @Getter
   private CombatAction action;
@@ -99,7 +97,8 @@ public class CloseCombatController implements ChangeListener<String>, BattleSlid
     defenseRoll.textProperty().addListener(this);
     defense.setText("");
     // combat result
-    defenseResult.textProperty().addListener((observable, oldValue, newValue) -> finishedProperty.set(StringUtils.isNotBlank(newValue) && action.getResult() != null && action.getResult().success()));
+    finishedProperty.bind(defenseDefended.visibleProperty().or(defenseNotDefended.visibleProperty()));
+//    defenseResult.textProperty().addListener((observable, oldValue, newValue) -> finishedProperty.set(StringUtils.isNotBlank(newValue) && action.getResult() != null && action.getResult().success()));
     // hide combat result
     defenseDefended.setVisible(false);
     defenseNotDefended.setVisible(false);
@@ -140,6 +139,6 @@ public class CloseCombatController implements ChangeListener<String>, BattleSlid
   }
 
   private void setIntegerValueOrNull(Supplier<String> source, Consumer<Integer> destination) {
-    destination.accept(source.get() == null ? null : Integer.parseInt(source.get()));
+    destination.accept(StringUtils.isBlank(source.get()) ? null : Integer.parseInt(source.get()));
   }
 }
