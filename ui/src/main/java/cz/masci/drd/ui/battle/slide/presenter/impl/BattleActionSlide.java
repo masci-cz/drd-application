@@ -19,11 +19,13 @@
 
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
+import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.action.controller.CloseCombatActionController;
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -42,13 +44,13 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
     properties.getPrevDisableProperty().set(hasPrevious());
     properties.getPrevTextProperty().set(hasPrevious() ? "" : "Zrušit kolo");
     properties.getNextDisableProperty().bind(getController().getFinishedProperty().not());
-    properties.getNextTextProperty().set(hasNext() ? "Další" : "Konec bitvy");
+    properties.getNextTextProperty().set(hasNext() ? "Další" : "Další kolo");
     properties.getTitleProperty().setValue(String.format("Proveďte akci pro bojovníka %s", getController().getAction().getAttacker().getName()));
   }
 
   @Override
   public void doBeforeSlide() {
-    // TODO: Decrease defenders current life
+    getController().applyAction();
   }
 
   @Override
@@ -58,17 +60,27 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }
-    return battleService.getActions().stream()
-        .map(action -> {
-          if (action instanceof CombatAction combatAction) {
-            var controller = fxWeaver.loadController(CloseCombatActionController.class);
-            controller.initAction(combatAction);
-            return controller;
-          }
-          return null;
-        })
-        .filter(Objects::nonNull)
-        .toList();
+    List<CloseCombatActionController> controllers = new ArrayList<>();
+    while (!battleService.getActions().isEmpty()) {
+      var action = battleService.getActions().poll();
+      if (action instanceof CombatAction combatAction) {
+        var controller = fxWeaver.loadController(CloseCombatActionController.class);
+        controller.initAction(combatAction);
+        controllers.add(controller);
+      }
+    }
+    return controllers;
+//    return battleService.getActions().stream()
+//        .map(action -> {
+//          if (action instanceof CombatAction combatAction) {
+//            var controller = fxWeaver.loadController(CloseCombatActionController.class);
+//            controller.initAction(combatAction);
+//            return controller;
+//          }
+//          return null;
+//        })
+//        .filter(Objects::nonNull)
+//        .toList();
   }
 
   @Override

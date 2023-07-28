@@ -21,11 +21,8 @@ package cz.masci.drd.dto.actions;
 
 import cz.masci.drd.dto.DuellistDTO;
 import java.util.Objects;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @RequiredArgsConstructor
 @Data
@@ -64,26 +61,6 @@ public class CombatAction implements Action<CombatActionResult> {
     int result = attack - defense + attacker.getDamage();
     Integer life = success ? (result <= 0 ? 1 : result) : null;
     combatActionResult = new CombatActionResult(attack, defense, success, life);
-    //    return () -> {
-//      StringBuilder result = new StringBuilder();
-//      result.append(attacker.getName());
-//      result.append(" útočí útočným číslem [");
-//      result.append(attackerDiceRoll);
-//      result.append("] na ");
-//      result.append(defender.getName());
-//      result.append(", který se brání obranným číslem [");
-//      result.append(defenderDiceRoll);
-//      result.append("].\n");
-//      if (attackerDiceRoll.compareTo(defenderDiceRoll) > 0) {
-//        result.append("Útočník zranil obránce za [");
-//        result.append(attackerDiceRoll - defenderDiceRoll + attacker.getDamage()); // TODO at least one life should be taken
-//        result.append("] životů,");
-//      } else {
-//        result.append("Obránce se útoku ubránil a nebyl zraněn.");
-//      }
-//
-//      return result.toString();
-//    };
   }
 
   @Override

@@ -29,6 +29,7 @@ import cz.masci.drd.service.exception.BattleException;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,8 +97,8 @@ public class BattleServiceImpl implements BattleService {
     }
     // order duellists based on initiative and action and fill the actionList for next round
     actionList.clear();
-    groups.values().stream().sorted().forEachOrdered(
-        group -> actionList.addAll(group.getDuellists().stream().map(DuellistDTO::getSelectedAction).sorted().toList())
+    groups.values().stream().sorted(Comparator.reverseOrder()).forEachOrdered(
+        group -> actionList.addAll(group.getDuellists().stream().map(DuellistDTO::getSelectedAction).sorted((o1, o2) -> Integer.compare(o2.order(), o1.order())).toList())
     );
 
     log.info("Starting new round");
@@ -250,4 +251,5 @@ public class BattleServiceImpl implements BattleService {
   }
 
   // endregion
+
 }

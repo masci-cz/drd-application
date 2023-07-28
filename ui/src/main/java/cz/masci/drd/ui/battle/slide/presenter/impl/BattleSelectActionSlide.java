@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
+import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.action.ActionService;
@@ -59,7 +60,10 @@ public class BattleSelectActionSlide extends BattleSlideMultipleControllers<Batt
   protected void preInit() {
     super.preInit();
     try {
-      battleService.startBattle();
+      switch (battleService.getState()) {
+        case NEW -> battleService.startBattle();
+        case ROUND -> battleService.endRound();
+      }
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }

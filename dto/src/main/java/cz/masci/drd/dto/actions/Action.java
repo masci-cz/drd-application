@@ -35,7 +35,7 @@ public interface Action<T extends ActionResult> extends Comparable<Action<T>> {
   void execute();
   int order();
 
-  default int compareTo(Action o) {
+  default int compareTo(Action<T> o) {
     return Integer.compare(order(), o.order());
   }
 }

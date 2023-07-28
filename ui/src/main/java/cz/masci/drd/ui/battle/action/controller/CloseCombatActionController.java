@@ -138,6 +138,16 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     }
   }
 
+  public void applyAction() {
+    var actionResult = action.getResult();
+    if (actionResult != null) {
+      if (actionResult.success()) {
+        int finalDefenseResult = Integer.parseInt(defenseResult.getText());
+        action.getDefender().setCurrentLive(action.getDefender().getCurrentLive() - finalDefenseResult);
+      }
+    }
+  }
+
   private void setIntegerValueOrNull(Supplier<String> source, Consumer<Integer> destination) {
     destination.accept(StringUtils.isBlank(source.get()) ? null : Integer.parseInt(source.get()));
   }

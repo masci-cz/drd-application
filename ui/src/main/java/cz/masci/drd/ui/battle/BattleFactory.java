@@ -120,7 +120,7 @@ public class BattleFactory {
     currentBattleSlide.doBeforeSlide();
     switch (battleSlideState) {
       case GROUPS_SETUP -> slide(SlideFactor.NEXT, pane, () -> battleDuellistSlide, futureSlide -> battleSlideState = BattleSlideState.GROUP_DUELLISTS_SETUP);
-      case GROUP_DUELLISTS_SETUP -> slide(SlideFactor.NEXT, pane, () -> battleSelectActionSlide, futureSlide -> {
+      case GROUP_DUELLISTS_SETUP, COMBAT -> slide(SlideFactor.NEXT, pane, () -> battleSelectActionSlide, futureSlide -> {
         if (futureSlide instanceof BattleSelectActionSlide) {
           battleSlideState = BattleSlideState.SELECT_ACTION_SETUP;
         }

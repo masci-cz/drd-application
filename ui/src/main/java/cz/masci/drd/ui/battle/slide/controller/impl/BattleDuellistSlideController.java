@@ -62,6 +62,8 @@ public class BattleDuellistSlideController implements BattleSlideController {
   @FXML
   private TextField txtDefense;
   @FXML
+  private TextField txtDamage;
+  @FXML
   private TextField txtLive;
   @FXML
   private TableView<DuellistDTO> tblDuellist;
@@ -81,6 +83,7 @@ public class BattleDuellistSlideController implements BattleSlideController {
     BooleanExpression filledForm = txtName.textProperty().isNotEmpty()
         .and(txtOffense.textProperty().isNotEmpty())
         .and(txtDefense.textProperty().isNotEmpty())
+        .and(txtDamage.textProperty().isNotEmpty())
         .and(txtLive.textProperty().isNotEmpty());
     BooleanExpression selectedItem = tblDuellist.getSelectionModel().selectedItemProperty().isNotNull();
 
@@ -97,10 +100,12 @@ public class BattleDuellistSlideController implements BattleSlideController {
     colOffense.setCellValueFactory(new PropertyValueFactory<>("attack"));
     TableColumn<DuellistDTO, Integer> colDefense = new TableColumn<>("Obranné číslo");
     colDefense.setCellValueFactory(new PropertyValueFactory<>("defense"));
+    TableColumn<DuellistDTO, Integer> colDamage = new TableColumn<>("Útočnost");
+    colDamage.setCellValueFactory(new PropertyValueFactory<>("damage"));
     TableColumn<DuellistDTO, Integer> colLive = new TableColumn<>("Životy");
     colLive.setCellValueFactory(new PropertyValueFactory<>("originalLive"));
 
-    tblDuellist.getColumns().addAll(colName, colOffense, colDefense, colLive);
+    tblDuellist.getColumns().addAll(colName, colOffense, colDefense, colDamage, colLive);
   }
 
   @FXML
@@ -136,6 +141,7 @@ public class BattleDuellistSlideController implements BattleSlideController {
     duellist.setName(txtName.getText());
     duellist.setAttack(Integer.parseInt(txtOffense.getText()));
     duellist.setDefense(Integer.parseInt(txtDefense.getText()));
+    duellist.setDamage(Integer.parseInt(txtDamage.getText()));
     duellist.setOriginalLive(Integer.parseInt(txtLive.getText()));
   }
 
