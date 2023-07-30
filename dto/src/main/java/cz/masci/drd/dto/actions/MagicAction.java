@@ -22,38 +22,44 @@ package cz.masci.drd.dto.actions;
 import cz.masci.drd.dto.DuellistDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
-public class MagicAction implements Action<ActionResult> {
+public class MagicAction implements Action<MagicActionResult> {
 
   private final DuellistDTO attacker;
   private final DuellistDTO defender;
   private final String spell;
 
   @Getter
-  private ActionResult result;
+  private MagicActionResult result;
 
   @Override
   public boolean isPrepared() {
-    return true;
+    return StringUtils.hasLength(spell);
   }
 
   @Override
   public void execute() {
-    result = () -> {
-      StringBuilder result = new StringBuilder();
-      result.append(attacker.getName());
-      result.append(" sesílá kouzlo [");
-      result.append(spell);
-      result.append("] na ");
-      result.append(defender.getName());
+    if (!isPrepared()) {
+      throw new RuntimeException("Action is not prepared");
+    }
 
-      return result.toString();
-    };
+    result = new MagicActionResult();
+//    result = () -> {
+//      StringBuilder result = new StringBuilder();
+//      result.append(attacker.getName());
+//      result.append(" sesílá kouzlo [");
+//      result.append(spell);
+//      result.append("] na ");
+//      result.append(defender.getName());
+//
+//      return result.toString();
+//    };
   }
 
   @Override
-  public int order() {
-    return 1;
+  public ActionType getActionType() {
+    return ActionType.MAGIC;
   }
 }

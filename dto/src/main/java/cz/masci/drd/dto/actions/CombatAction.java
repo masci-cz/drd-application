@@ -34,7 +34,7 @@ public class CombatAction implements Action<CombatActionResult> {
   private Integer attackerDiceRoll;
   private Integer defenderDiceRoll;
 
-  private CombatActionResult combatActionResult;
+  private CombatActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -42,11 +42,6 @@ public class CombatAction implements Action<CombatActionResult> {
         Objects.nonNull(attackerDiceRoll)
         &&
         Objects.nonNull(defenderDiceRoll);
-  }
-
-  @Override
-  public CombatActionResult getResult() {
-    return combatActionResult;
   }
 
   @Override
@@ -58,13 +53,13 @@ public class CombatAction implements Action<CombatActionResult> {
     int attack = attacker.getAttack() + attackerDiceRoll;
     int defense = defender.getDefense() + defenderDiceRoll;
     boolean success = attack > defense;
-    int result = attack - defense + attacker.getDamage();
-    Integer life = success ? (result <= 0 ? 1 : result) : null;
-    combatActionResult = new CombatActionResult(attack, defense, success, life);
+    int attackResult = attack - defense + attacker.getDamage();
+    Integer life = success ? (attackResult <= 0 ? 1 : attackResult) : null;
+    result = new CombatActionResult(attack, defense, success, life);
   }
 
   @Override
-  public int order() {
-    return 3;
+  public ActionType getActionType() {
+    return ActionType.CLOSE_COMBAT;
   }
 }

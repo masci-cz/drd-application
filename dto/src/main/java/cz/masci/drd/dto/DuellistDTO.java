@@ -20,7 +20,6 @@
 package cz.masci.drd.dto;
 
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.ActionResult;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
@@ -34,7 +33,7 @@ public class DuellistDTO {
   /**
    * Selected action for next round
    */
-  Action<? extends ActionResult> selectedAction;
+  Action<?> selectedAction;
   List<WeaponDTO> weapons = new ArrayList<>();
   /**
    * Original live count

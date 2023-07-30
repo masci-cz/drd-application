@@ -23,7 +23,6 @@ import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.ActionResult;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import jakarta.validation.constraints.NotNull;
@@ -45,7 +44,7 @@ import org.springframework.stereotype.Service;
 public class BattleServiceImpl implements BattleService {
 
   private final Map<String, GroupDTO> groups = new LinkedHashMap<>();
-  private final Queue<Action<? extends ActionResult>> actionList = new ArrayDeque<>();
+  private final Queue<Action<?>> actionList = new ArrayDeque<>();
   private BattleState state;
 
   @Override
@@ -98,7 +97,7 @@ public class BattleServiceImpl implements BattleService {
     // order duellists based on initiative and action and fill the actionList for next round
     actionList.clear();
     groups.values().stream().sorted(Comparator.reverseOrder()).forEachOrdered(
-        group -> actionList.addAll(group.getDuellists().stream().map(DuellistDTO::getSelectedAction).sorted((o1, o2) -> Integer.compare(o2.order(), o1.order())).toList())
+        group -> actionList.addAll(group.getDuellists().stream().map(DuellistDTO::getSelectedAction).sorted().toList())
     );
 
     log.info("Starting new round");
@@ -217,7 +216,7 @@ public class BattleServiceImpl implements BattleService {
   }
 
   @Override
-  public Queue<? extends Action<? extends ActionResult>> getActions() {
+  public Queue<Action<?>> getActions() {
     return actionList;
   }
 

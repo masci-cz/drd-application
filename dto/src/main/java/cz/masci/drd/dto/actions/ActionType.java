@@ -20,6 +20,7 @@
 package cz.masci.drd.dto.actions;
 
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -35,5 +36,6 @@ public enum ActionType {
 
   public static final List<ActionType> ACTION_TYPE_LIST = List.of(MAGIC, RANGE_COMBAT, CLOSE_COMBAT, SPEECH, PREPARATION, OTHER, WAIT, RUN_AWAY);
 
+  @Getter
   private final int order;
 }

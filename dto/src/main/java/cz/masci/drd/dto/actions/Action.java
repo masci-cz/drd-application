@@ -22,7 +22,7 @@ package cz.masci.drd.dto.actions;
 /**
  * Base action
  */
-public interface Action<T extends ActionResult> extends Comparable<Action<T>> {
+public interface Action<T> extends Comparable<Action<?>> {
 
   boolean isPrepared();
 
@@ -33,9 +33,9 @@ public interface Action<T extends ActionResult> extends Comparable<Action<T>> {
    */
   T getResult();
   void execute();
-  int order();
+  ActionType getActionType();
 
-  default int compareTo(Action<T> o) {
-    return Integer.compare(order(), o.order());
+  default int compareTo(Action<?> o) {
+    return Integer.compare(getActionType().getOrder(), o.getActionType().getOrder());
   }
 }

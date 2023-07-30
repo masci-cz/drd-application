@@ -24,12 +24,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PrepareAction implements Action<ActionResult> {
+public class PrepareAction implements Action<PrepareActionResult> {
 
   private final DuellistDTO actor;
 
   @Getter
-  private ActionResult result;
+  private PrepareActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -38,11 +38,13 @@ public class PrepareAction implements Action<ActionResult> {
 
   @Override
   public void execute() {
-    result = () -> String.format("Bojovník %s se připravuje", actor.getName());
+    result = new PrepareActionResult();
+//    result = () -> String.format("Bojovník %s se připravuje", actor.getName());
   }
 
+
   @Override
-  public int order() {
-    return 5;
+  public ActionType getActionType() {
+    return ActionType.PREPARATION;
   }
 }

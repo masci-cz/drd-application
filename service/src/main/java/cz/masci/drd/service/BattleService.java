@@ -23,7 +23,6 @@ import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.ActionResult;
 import cz.masci.drd.service.exception.BattleException;
 import java.util.List;
 import java.util.Queue;
@@ -165,6 +164,6 @@ public interface BattleService {
    *
    * @return Action list
    */
-  Queue<? extends Action<? extends ActionResult>> getActions();
+  Queue<Action<?>> getActions();
 
 }

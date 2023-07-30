@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
-public class ShootAction implements Action<ActionResult> {
+public class ShootAction implements Action<ShootActionResult> {
 
   private final DuellistDTO attacker;
   private final DuellistDTO defender;
@@ -36,7 +36,7 @@ public class ShootAction implements Action<ActionResult> {
   private Integer defenderDiceRoll;
 
   @Getter
-  ActionResult result;
+  ShootActionResult shootActionResult;
 
   @Override
   public boolean isPrepared() {
@@ -47,31 +47,46 @@ public class ShootAction implements Action<ActionResult> {
   }
 
   @Override
-  public void execute() {
-    result = () -> {
-      StringBuilder result = new StringBuilder();
-      result.append(attacker.getName());
-      result.append(" střílí útočným číslem [");
-      result.append(attackerDiceRoll);
-      result.append("] na ");
-      result.append(defender.getName());
-      result.append(", který se brání obranným číslem [");
-      result.append(defenderDiceRoll);
-      result.append("].\n");
-      if (attackerDiceRoll.compareTo(defenderDiceRoll) > 0) {
-        result.append("Útočník zranil obránce za [");
-        result.append(attackerDiceRoll - defenderDiceRoll + attacker.getDamage()); // TODO at least one life should be taken
-        result.append("] životů,");
-      } else {
-        result.append("Obránce se střelbě ubránil a nebyl zraněn.");
-      }
-
-      return result.toString();
-    };
+  public ShootActionResult getResult() {
+    return shootActionResult;
   }
 
   @Override
-  public int order() {
-    return 2;
+  public void execute() {
+    if (!isPrepared()) {
+      throw new RuntimeException("Action is not prepared");
+    }
+
+    int attack = attacker.getAttack() + attackerDiceRoll;
+    int defense = defender.getDefense() + defenderDiceRoll;
+    boolean success = attack > defense;
+    int result = attack - defense + attacker.getDamage();
+    Integer life = success ? (result <= 0 ? 1 : result) : null;
+    shootActionResult = new ShootActionResult(attack, defense, success, life);
+//    result = () -> {
+//      StringBuilder result = new StringBuilder();
+//      result.append(attacker.getName());
+//      result.append(" střílí útočným číslem [");
+//      result.append(attackerDiceRoll);
+//      result.append("] na ");
+//      result.append(defender.getName());
+//      result.append(", který se brání obranným číslem [");
+//      result.append(defenderDiceRoll);
+//      result.append("].\n");
+//      if (attackerDiceRoll.compareTo(defenderDiceRoll) > 0) {
+//        result.append("Útočník zranil obránce za [");
+//        result.append(attackerDiceRoll - defenderDiceRoll + attacker.getDamage()); // TODO at least one life should be taken
+//        result.append("] životů,");
+//      } else {
+//        result.append("Obránce se střelbě ubránil a nebyl zraněn.");
+//      }
+//
+//      return result.toString();
+//    };
+  }
+
+  @Override
+  public ActionType getActionType() {
+    return ActionType.RANGE_COMBAT;
   }
 }

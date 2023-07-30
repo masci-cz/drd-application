@@ -159,7 +159,7 @@ public class BattleFactory {
           futureSlide.init();
           futureNode = futureSlide.nextInitView();
         }
-      };
+      }
     }
 
     slideService.slide(slideFactor, currentNode, futureNode, pane, () -> {

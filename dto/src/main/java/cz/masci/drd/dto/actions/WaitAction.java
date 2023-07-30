@@ -24,12 +24,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class WaitAction implements Action<ActionResult> {
+public class WaitAction implements Action<WaitActionResult> {
 
   private final DuellistDTO actor;
 
   @Getter
-  private ActionResult result;
+  private WaitActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -38,11 +38,12 @@ public class WaitAction implements Action<ActionResult> {
 
   @Override
   public void execute() {
-    result = () -> String.format("Bojovník %s vyčkává", actor.getName());
+    result = new WaitActionResult();
+//    result = () -> String.format("Bojovník %s vyčkává", actor.getName());
   }
 
   @Override
-  public int order() {
-    return 7;
+  public ActionType getActionType() {
+    return ActionType.WAIT;
   }
 }

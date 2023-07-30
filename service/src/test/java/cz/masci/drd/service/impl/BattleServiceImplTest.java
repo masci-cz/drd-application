@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import cz.masci.drd.dto.BattleState;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
-import cz.masci.drd.dto.actions.ActionResult;
+import cz.masci.drd.dto.actions.ActionType;
 import cz.masci.drd.service.exception.BattleException;
 import org.junit.jupiter.api.Test;
 
@@ -219,8 +219,8 @@ class BattleServiceImplTest {
     battleService.startBattle();
 
     // prepare duellists
-    duellist1.setSelectedAction(new SimpleAction(2));
-    duellist2.setSelectedAction(new SimpleAction(1));
+    duellist1.setSelectedAction(new SimpleAction(ActionType.CLOSE_COMBAT));
+    duellist2.setSelectedAction(new SimpleAction(ActionType.RANGE_COMBAT));
 
     // check initiative
     assertThrows(BattleException.class, battleService::startRound);
@@ -243,10 +243,10 @@ class BattleServiceImplTest {
 
     battleService.startBattle();
     // prepare actions
-    var action1 = new SimpleAction(1);
-    var action2 = new SimpleAction(2);
-    var action3 = new SimpleAction(3);
-    var action4 = new SimpleAction(4);
+    var action1 = new SimpleAction(ActionType.MAGIC);
+    var action2 = new SimpleAction(ActionType.RANGE_COMBAT);
+    var action3 = new SimpleAction(ActionType.CLOSE_COMBAT);
+    var action4 = new SimpleAction(ActionType.SPEECH);
 
     // prepare duellists
     duellist4group2.setSelectedAction(action3);
@@ -292,10 +292,10 @@ class BattleServiceImplTest {
 
     battleService.startBattle();
     // prepare actions
-    var action1 = new SimpleAction(1);
-    var action2 = new SimpleAction(2);
-    var action3 = new SimpleAction(3);
-    var action4 = new SimpleAction(4);
+    var action1 = new SimpleAction(ActionType.MAGIC);
+    var action2 = new SimpleAction(ActionType.RANGE_COMBAT);
+    var action3 = new SimpleAction(ActionType.CLOSE_COMBAT);
+    var action4 = new SimpleAction(ActionType.SPEECH);
 
     // prepare duellists
     duellist4group2.setSelectedAction(action3);
@@ -329,10 +329,10 @@ class BattleServiceImplTest {
 
     battleService.startBattle();
     // prepare actions
-    var action1 = new SimpleAction(1);
-    var action2 = new SimpleAction(2);
-    var action3 = new SimpleAction(3);
-    var action4 = new SimpleAction(4);
+    var action1 = new SimpleAction(ActionType.MAGIC);
+    var action2 = new SimpleAction(ActionType.RANGE_COMBAT);
+    var action3 = new SimpleAction(ActionType.CLOSE_COMBAT);
+    var action4 = new SimpleAction(ActionType.SPEECH);
 
     // prepare duellists
     duellist4group2.setSelectedAction(action3);
@@ -341,8 +341,8 @@ class BattleServiceImplTest {
     duellist1group1.setSelectedAction(action2);
 
     // prepare initiative
-    battleService.setGroupInitiative(GROUP_1, 2);
-    battleService.setGroupInitiative(GROUP_2, 1);
+    battleService.setGroupInitiative(GROUP_2, 2);
+    battleService.setGroupInitiative(GROUP_1, 1);
 
     battleService.startRound();
 
@@ -376,10 +376,10 @@ class BattleServiceImplTest {
 
     battleService.startBattle();
     // prepare actions
-    var action1 = new SimpleAction(1);
-    var action2 = new SimpleAction(2);
-    var action3 = new SimpleAction(3);
-    var action4 = new SimpleAction(4);
+    var action1 = new SimpleAction(ActionType.MAGIC);
+    var action2 = new SimpleAction(ActionType.RANGE_COMBAT);
+    var action3 = new SimpleAction(ActionType.CLOSE_COMBAT);
+    var action4 = new SimpleAction(ActionType.SPEECH);
 
     // prepare duellists
     duellist4group2.setSelectedAction(action3);
@@ -388,8 +388,8 @@ class BattleServiceImplTest {
     duellist1group1.setSelectedAction(action2);
 
     // prepare initiative
-    battleService.setGroupInitiative(GROUP_1, 2);
-    battleService.setGroupInitiative(GROUP_2, 1);
+    battleService.setGroupInitiative(GROUP_2, 2);
+    battleService.setGroupInitiative(GROUP_1, 1);
 
     battleService.startRound();
 
@@ -409,7 +409,7 @@ class BattleServiceImplTest {
 
   // region utils
 
-  private record SimpleAction(int order) implements Action {
+  private record SimpleAction(ActionType actionType) implements Action<String> {
 
     @Override
     public boolean isPrepared() {
@@ -417,14 +417,20 @@ class BattleServiceImplTest {
     }
 
     @Override
-    public ActionResult execute() {
-      return null;
+    public String getResult() {
+      return "OK";
     }
 
     @Override
-    public int order() {
-      return order;
+    public void execute() {
+
     }
+
+    @Override
+    public ActionType getActionType() {
+      return actionType;
+    }
+
   }
 
   // endregion

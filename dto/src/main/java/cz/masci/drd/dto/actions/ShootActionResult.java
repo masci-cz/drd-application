@@ -19,5 +19,5 @@
 
 package cz.masci.drd.dto.actions;
 
-public record CombatActionResult(Integer attack, Integer defense, boolean success, Integer life) {
+public record ShootActionResult(Integer attack, Integer defense, boolean success, Integer life) {
 }

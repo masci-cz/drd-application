@@ -25,13 +25,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
-public class OtherAction implements Action<ActionResult> {
+public class OtherAction implements Action<OtherActionResult> {
 
   private final DuellistDTO actor;
   private final String other;
 
   @Getter
-  private ActionResult result;
+  private OtherActionResult result;
 
   @Override
   public boolean isPrepared() {
@@ -40,11 +40,12 @@ public class OtherAction implements Action<ActionResult> {
 
   @Override
   public void execute() {
-    result = () -> String.format("Bojovník %s provádí %s", actor.getName(), other);
+    result = new OtherActionResult();
+//    result = () -> String.format("Bojovník %s provádí %s", actor.getName(), other);
   }
 
   @Override
-  public int order() {
-    return 6;
+  public ActionType getActionType() {
+    return ActionType.OTHER;
   }
 }
