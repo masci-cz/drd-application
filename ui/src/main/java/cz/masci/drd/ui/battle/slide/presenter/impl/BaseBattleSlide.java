@@ -27,4 +27,14 @@ import lombok.RequiredArgsConstructor;
 public abstract class BaseBattleSlide<T> implements BattleSlide<T> {
 
   protected final BattleService battleService;
+
+  @Override
+  public void doBeforeSlide() {
+
+  }
+
+  @Override
+  public void doAfterSlide() {
+
+  }
 }

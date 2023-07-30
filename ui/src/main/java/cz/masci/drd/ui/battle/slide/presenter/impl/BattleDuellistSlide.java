@@ -45,11 +45,6 @@ public class BattleDuellistSlide extends BattleSlideMultipleControllers<BattleDu
   }
 
   @Override
-  public void doBeforeSlide() {
-    // Nothing to do
-  }
-
-  @Override
   protected List<BattleDuellistSlideController> getControllers() {
     return battleService.getGroups().stream()
         .map(group -> {

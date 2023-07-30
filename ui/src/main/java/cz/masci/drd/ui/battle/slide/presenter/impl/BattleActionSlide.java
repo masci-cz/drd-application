@@ -54,6 +54,11 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
   }
 
   @Override
+  public void doAfterSlide() {
+    getController().updateLifeDescription();
+  }
+
+  @Override
   protected List<CloseCombatActionController> getControllers() {
     try {
       battleService.startRound();

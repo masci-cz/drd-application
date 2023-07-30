@@ -20,6 +20,7 @@
 package cz.masci.drd.ui.battle.action.controller;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import java.util.function.Consumer;
@@ -79,6 +80,10 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
   private TextField defenseResult;
   @FXML
   private TextField defenseRoll;
+  @FXML
+  private Label lifeAttacker;
+  @FXML
+  private Label lifeDefender;
 
   @FXML
   void initialize() {
@@ -89,6 +94,7 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     attackRoll.setText("");
     attackRoll.textProperty().addListener(this);
     attack.setText("");
+    lifeAttacker.setText("");
     // defend part
     defenseAttacker.setText("");
     defenseDefender.setText("");
@@ -96,6 +102,7 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     defenseRoll.setText("");
     defenseRoll.textProperty().addListener(this);
     defense.setText("");
+    lifeDefender.setText("");
     // combat result
     finishedProperty.bind(defenseDefended.visibleProperty().or(defenseNotDefended.visibleProperty()));
 //    defenseResult.textProperty().addListener((observable, oldValue, newValue) -> finishedProperty.set(StringUtils.isNotBlank(newValue) && action.getResult() != null && action.getResult().success()));
@@ -111,8 +118,8 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     attackDefender.setText(action.getDefender().getName());
     baseAttack.setText(String.valueOf(action.getAttacker().getAttack()));
     // defend part
-    defenseAttacker.setText(action.getDefender().getName());
-    defenseDefender.setText(action.getAttacker().getName());
+    defenseAttacker.setText(action.getAttacker().getName());
+    defenseDefender.setText(action.getDefender().getName());
     baseDefense.setText(String.valueOf(action.getDefender().getDefense()));
   }
 
@@ -148,7 +155,16 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     }
   }
 
+  public void updateLifeDescription() {
+    lifeAttacker.setText(getLifeDescription(action.getAttacker()));
+    lifeDefender.setText(getLifeDescription(action.getDefender()));
+  }
+
   private void setIntegerValueOrNull(Supplier<String> source, Consumer<Integer> destination) {
     destination.accept(StringUtils.isBlank(source.get()) ? null : Integer.parseInt(source.get()));
+  }
+
+  private String getLifeDescription(DuellistDTO duellistDTO) {
+    return String.format("%d/%d", duellistDTO.getCurrentLive(), duellistDTO.getOriginalLive());
   }
 }

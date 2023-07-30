@@ -168,6 +168,7 @@ public class BattleFactory {
       }
       currentBattleSlide = futureSlide;
       currentBattleSlide.initProperties(battleSlideProperties);
+      currentBattleSlide.doAfterSlide();
     });
   }
 

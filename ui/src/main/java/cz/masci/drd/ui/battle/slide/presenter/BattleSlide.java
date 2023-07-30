@@ -32,6 +32,8 @@ public interface BattleSlide<T> {
    */
   void doBeforeSlide();
 
+  void doAfterSlide();
+
   /**
    * This method is called whenever the slide properties should be reset.
    */

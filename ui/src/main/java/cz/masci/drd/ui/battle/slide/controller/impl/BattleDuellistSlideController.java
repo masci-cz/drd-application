@@ -143,6 +143,7 @@ public class BattleDuellistSlideController implements BattleSlideController {
     duellist.setDefense(Integer.parseInt(txtDefense.getText()));
     duellist.setDamage(Integer.parseInt(txtDamage.getText()));
     duellist.setOriginalLive(Integer.parseInt(txtLive.getText()));
+    duellist.setCurrentLive(Integer.parseInt(txtLive.getText()));
   }
 
   // endregion
