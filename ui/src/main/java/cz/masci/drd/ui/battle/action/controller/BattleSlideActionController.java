@@ -17,7 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto.actions;
+package cz.masci.drd.ui.battle.action.controller;
 
-public record WaitActionResult() {
+import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
+import javafx.beans.property.BooleanProperty;
+
+public interface BattleSlideActionController extends BattleSlideController {
+  <T> Action<T> getAction();
+  BooleanProperty getFinishedProperty();
+  String getAttackerName();
+  void applyAction();
+  void updateLifeDescription();
 }

@@ -24,14 +24,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
-@RequiredArgsConstructor
-public class OtherAction implements Action<OtherActionResult> {
+public class OtherAction extends SingleActorAction {
 
-  private final DuellistDTO actor;
   private final String other;
 
-  @Getter
-  private OtherActionResult result;
+  public OtherAction(DuellistDTO actor, String other) {
+    super(actor);
+    this.other = other;
+  }
 
   @Override
   public boolean isPrepared() {
@@ -40,8 +40,7 @@ public class OtherAction implements Action<OtherActionResult> {
 
   @Override
   public void execute() {
-    result = new OtherActionResult();
-//    result = () -> String.format("Bojovník %s provádí %s", actor.getName(), other);
+    result = String.format("Bojovník %s provádí %s", actor.getName(), other);
   }
 
   @Override

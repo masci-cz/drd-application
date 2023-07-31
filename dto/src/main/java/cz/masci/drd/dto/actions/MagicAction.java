@@ -27,8 +27,11 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class MagicAction implements Action<MagicActionResult> {
 
+  @Getter
   private final DuellistDTO attacker;
+  @Getter
   private final DuellistDTO defender;
+  @Getter
   private final String spell;
 
   @Getter

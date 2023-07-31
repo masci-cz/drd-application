@@ -23,23 +23,15 @@ import cz.masci.drd.dto.DuellistDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class SpeechAction implements Action<SpeechActionResult> {
+public class SpeechAction extends SingleActorAction {
 
-  private final DuellistDTO actor;
-
-  @Getter
-  private SpeechActionResult result;
-
-  @Override
-  public boolean isPrepared() {
-    return true;
+  public SpeechAction(DuellistDTO actor) {
+    super(actor);
   }
 
   @Override
   public void execute() {
-    result = new SpeechActionResult();
-//    result = () -> String.format("Bojovník %s mluví", actor.getName());
+    result = String.format("Bojovník %s mluví", actor.getName());
   }
 
   @Override

@@ -23,23 +23,15 @@ import cz.masci.drd.dto.DuellistDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class WaitAction implements Action<WaitActionResult> {
+public class WaitAction extends SingleActorAction {
 
-  private final DuellistDTO actor;
-
-  @Getter
-  private WaitActionResult result;
-
-  @Override
-  public boolean isPrepared() {
-    return false;
+  public WaitAction(DuellistDTO actor) {
+    super(actor);
   }
 
   @Override
   public void execute() {
-    result = new WaitActionResult();
-//    result = () -> String.format("Bojovník %s vyčkává", actor.getName());
+    result = String.format("Bojovník %s vyčkává", actor.getName());
   }
 
   @Override

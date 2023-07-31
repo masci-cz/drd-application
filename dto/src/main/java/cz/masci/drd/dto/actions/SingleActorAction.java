@@ -19,5 +19,20 @@
 
 package cz.masci.drd.dto.actions;
 
-public record SpeechActionResult() {
+import cz.masci.drd.dto.DuellistDTO;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public abstract class SingleActorAction implements Action<String> {
+  @Getter
+  protected final DuellistDTO actor;
+
+  @Getter
+  protected String result;
+
+  @Override
+  public boolean isPrepared() {
+    return true;
+  }
 }

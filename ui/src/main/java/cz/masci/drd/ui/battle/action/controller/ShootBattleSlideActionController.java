@@ -22,7 +22,7 @@ package cz.masci.drd.ui.battle.action.controller;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.CombatAction;
-import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
+import cz.masci.drd.dto.actions.ShootAction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javafx.beans.property.BooleanProperty;
@@ -42,12 +42,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@FxmlView("fxml/close-combat-action.fxml")
+@FxmlView("fxml/shoot-action.fxml")
 @FxmlController
-public class CloseCombatActionController implements ChangeListener<String>, BattleSlideController {
+public class ShootBattleSlideActionController implements ChangeListener<String>, BattleSlideActionController {
 
   @Getter
-  private CombatAction action;
+  private ShootAction action;
   @Getter
   private final BooleanProperty finishedProperty = new SimpleBooleanProperty(false);
 
@@ -105,13 +105,12 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     lifeDefender.setText("");
     // combat result
     finishedProperty.bind(defenseDefended.visibleProperty().or(defenseNotDefended.visibleProperty()));
-//    defenseResult.textProperty().addListener((observable, oldValue, newValue) -> finishedProperty.set(StringUtils.isNotBlank(newValue) && action.getResult() != null && action.getResult().success()));
     // hide combat result
     defenseDefended.setVisible(false);
     defenseNotDefended.setVisible(false);
   }
 
-  public void initAction(CombatAction action) {
+  public void initAction(ShootAction action) {
     this.action = action;
     // attack part
     attackAttacker.setText(action.getAttacker().getName());
@@ -160,6 +159,9 @@ public class CloseCombatActionController implements ChangeListener<String>, Batt
     lifeDefender.setText(getLifeDescription(action.getDefender()));
   }
 
+  public String getAttackerName() {
+    return action != null ? action.getAttacker().getName() : "";
+  }
   private void setIntegerValueOrNull(Supplier<String> source, Consumer<Integer> destination) {
     destination.accept(StringUtils.isBlank(source.get()) ? null : Integer.parseInt(source.get()));
   }

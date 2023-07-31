@@ -23,14 +23,11 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<VBox prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox spacing="10.0">
          <children>
-            <Label text="Bojovník" />
-            <Label text="XYZ" />
-            <Label minWidth="-Infinity" text="provádí akci" />
-            <Label text="X" />
+            <Label fx:id="text" text="" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />

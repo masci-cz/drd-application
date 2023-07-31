@@ -21,18 +21,27 @@ package cz.masci.drd.ui.battle.slide.presenter.impl;
 
 import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.CombatAction;
+import cz.masci.drd.dto.actions.MagicAction;
+import cz.masci.drd.dto.actions.OtherAction;
+import cz.masci.drd.dto.actions.PrepareAction;
+import cz.masci.drd.dto.actions.ShootAction;
+import cz.masci.drd.dto.actions.SpeechAction;
+import cz.masci.drd.dto.actions.WaitAction;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
-import cz.masci.drd.ui.battle.action.controller.CloseCombatActionController;
+import cz.masci.drd.ui.battle.action.controller.BattleSlideActionController;
+import cz.masci.drd.ui.battle.action.controller.CloseCombatBattleSlideActionController;
+import cz.masci.drd.ui.battle.action.controller.MagicBattleSlideActionController;
+import cz.masci.drd.ui.battle.action.controller.ShootBattleSlideActionController;
+import cz.masci.drd.ui.battle.action.controller.SingleActorActionController;
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BattleActionSlide extends BattleSlideMultipleControllers<CloseCombatActionController> {
+public class BattleActionSlide extends BattleSlideMultipleControllers<BattleSlideActionController> {
 
 
   public BattleActionSlide(FxWeaver fxWeaver, BattleService battleService) {
@@ -45,7 +54,7 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
     properties.getPrevTextProperty().set(hasPrevious() ? "" : "Zrušit kolo");
     properties.getNextDisableProperty().bind(getController().getFinishedProperty().not());
     properties.getNextTextProperty().set(hasNext() ? "Další" : "Další kolo");
-    properties.getTitleProperty().setValue(String.format("Proveďte akci pro bojovníka %s", getController().getAction().getAttacker().getName()));
+    properties.getTitleProperty().setValue(String.format("Proveďte akci pro bojovníka %s", getController().getAttackerName()));
   }
 
   @Override
@@ -59,33 +68,52 @@ public class BattleActionSlide extends BattleSlideMultipleControllers<CloseComba
   }
 
   @Override
-  protected List<CloseCombatActionController> getControllers() {
+  protected List<BattleSlideActionController> getControllers() {
     try {
       battleService.startRound();
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }
-    List<CloseCombatActionController> controllers = new ArrayList<>();
+    List<BattleSlideActionController> controllers = new ArrayList<>();
     while (!battleService.getActions().isEmpty()) {
       var action = battleService.getActions().poll();
       if (action instanceof CombatAction combatAction) {
-        var controller = fxWeaver.loadController(CloseCombatActionController.class);
+        var controller = fxWeaver.loadController(CloseCombatBattleSlideActionController.class);
         controller.initAction(combatAction);
+        controllers.add(controller);
+      }
+      if (action instanceof ShootAction shootAction) {
+        var controller = fxWeaver.loadController(ShootBattleSlideActionController.class);
+        controller.initAction(shootAction);
+        controllers.add(controller);
+      }
+      if (action instanceof MagicAction magicAction) {
+        var controller = fxWeaver.loadController(MagicBattleSlideActionController.class);
+        controller.initAction(magicAction);
+        controllers.add(controller);
+      }
+      if (action instanceof OtherAction actionInstance) {
+        var controller = fxWeaver.loadController(SingleActorActionController.class);
+        controller.initAction(actionInstance);
+        controllers.add(controller);
+      }
+      if (action instanceof PrepareAction actionInstance) {
+        var controller = fxWeaver.loadController(SingleActorActionController.class);
+        controller.initAction(actionInstance);
+        controllers.add(controller);
+      }
+      if (action instanceof SpeechAction actionInstance) {
+        var controller = fxWeaver.loadController(SingleActorActionController.class);
+        controller.initAction(actionInstance);
+        controllers.add(controller);
+      }
+      if (action instanceof WaitAction actionInstance) {
+        var controller = fxWeaver.loadController(SingleActorActionController.class);
+        controller.initAction(actionInstance);
         controllers.add(controller);
       }
     }
     return controllers;
-//    return battleService.getActions().stream()
-//        .map(action -> {
-//          if (action instanceof CombatAction combatAction) {
-//            var controller = fxWeaver.loadController(CloseCombatActionController.class);
-//            controller.initAction(combatAction);
-//            return controller;
-//          }
-//          return null;
-//        })
-//        .filter(Objects::nonNull)
-//        .toList();
   }
 
   @Override
