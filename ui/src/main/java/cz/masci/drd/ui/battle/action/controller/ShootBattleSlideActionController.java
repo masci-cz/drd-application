@@ -134,8 +134,10 @@ public class ShootBattleSlideActionController implements ChangeListener<String>,
       if (actionResult.success()) {
         defenseResult.setText(String.valueOf(actionResult.life()));
         defenseNotDefended.setVisible(true);
+        defenseDefended.setVisible(false);
       } else {
         defenseDefended.setVisible(true);
+        defenseNotDefended.setVisible(false);
       }
     } else {
       defenseDefended.setVisible(false);

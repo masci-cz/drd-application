@@ -23,33 +23,33 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox spacing="10.0">
             <children>
-                <Label text="Bojovník"/>
-                <Label fx:id="attackAttacker" text="XYZ"/>
-                <Label minWidth="-Infinity" text="sesílá kouzlo"/>
-                <Label fx:id="spell" text="X"/>
-                <Label text="na bojovníka"/>
-                <Label fx:id="attackDefender" text="ZYX"/>
+                <Label text="Bojovník" />
+                <Label fx:id="attackAttacker" text="XYZ" HBox.hgrow="ALWAYS" />
+                <Label minWidth="-Infinity" text="sesílá kouzlo" />
+                <Label fx:id="spell" text="X" HBox.hgrow="ALWAYS" />
+                <Label text="na bojovníka" />
+                <Label fx:id="attackDefender" text="ZYX" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
-                <Insets bottom="10.0"/>
+                <Insets bottom="10.0" />
             </VBox.margin>
         </HBox>
         <HBox spacing="10.0">
-            <Label text="Bojovník byl zasažen za :"/>
-            <TextField fx:id="defenseResult" prefWidth="100.0" HBox.hgrow="NEVER"/>
-            <Label minWidth="-Infinity" text="životů"/>
-            <Label text="s počtem životů"/>
-            <Label fx:id="lifeDefender" text="5/6"/>
+            <Label text="Bojovník byl zasažen za :" />
+            <TextField fx:id="defenseResult" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <Label minWidth="-Infinity" text="životů" />
+            <Label text="s počtem životů" />
+            <Label fx:id="lifeDefender" text="5/6" />
             <VBox.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </VBox.margin>
         </HBox>
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
 </VBox>

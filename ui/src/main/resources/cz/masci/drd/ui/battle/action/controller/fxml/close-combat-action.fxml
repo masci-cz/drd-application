@@ -23,59 +23,58 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-
-<VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <HBox spacing="10.0">
-            <Label text="Bojovník"/>
-            <Label fx:id="attackAttacker" text="XYZ"/>
-            <Label minWidth="-Infinity" text="útočí na"/>
-            <Label fx:id="attackDefender" text="ZYX"/>
-            <Label text="útokem :"/>
-            <Label fx:id="baseAttack" text="X"/>
-            <Label text="+"/>
-            <TextField fx:id="attackRoll" prefWidth="100.0" HBox.hgrow="NEVER"/>
-            <Label text="="/>
-            <Label fx:id="attack" text="Z"/>
-            <Label text="s počtem životů"/>
-            <Label fx:id="lifeAttacker" text="5/6"/>
+        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+            <Label text="Bojovník" />
+            <Label fx:id="attackAttacker" text="XYZ" HBox.hgrow="ALWAYS" />
+            <Label minWidth="-Infinity" text="útočí na" />
+            <Label fx:id="attackDefender" text="ZYX" HBox.hgrow="ALWAYS" />
+            <Label text="útokem :" />
+            <Label fx:id="baseAttack" text="X" />
+            <Label text="+" />
+            <TextField fx:id="attackRoll" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <Label text="=" />
+            <Label fx:id="attack" text="Z" />
+            <Label text="s počtem životů" />
+            <Label fx:id="lifeAttacker" text="5/6" />
             <VBox.margin>
-                <Insets bottom="10.0"/>
+                <Insets bottom="10.0" />
             </VBox.margin>
         </HBox>
-        <HBox spacing="10.0">
-            <Label text="Bojovník"/>
-            <Label fx:id="defenseDefender" text="ZYX"/>
-            <Label minWidth="-Infinity" text="se brání útoku"/>
-            <Label fx:id="defenseAttacker" text="XYZ"/>
-            <Label text="obranou :"/>
-            <Label fx:id="baseDefense" text="M"/>
-            <Label text="+"/>
-            <TextField fx:id="defenseRoll" prefWidth="100.0" HBox.hgrow="NEVER"/>
-            <Label text="="/>
-            <Label fx:id="defense" text="O"/>
-            <Label text="s počtem životů"/>
-            <Label fx:id="lifeDefender" text="5/6"/>
+        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+            <Label text="Bojovník" />
+            <Label fx:id="defenseDefender" text="ZYX" HBox.hgrow="ALWAYS" />
+            <Label minWidth="-Infinity" text="se brání útoku" />
+            <Label fx:id="defenseAttacker" text="XYZ" HBox.hgrow="ALWAYS" />
+            <Label text="obranou :" />
+            <Label fx:id="baseDefense" text="M" />
+            <Label text="+" />
+            <TextField fx:id="defenseRoll" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <Label text="=" />
+            <Label fx:id="defense" text="O" />
+            <Label text="s počtem životů" />
+            <Label fx:id="lifeDefender" text="5/6" />
             <VBox.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </VBox.margin>
         </HBox>
         <HBox fx:id="defenseDefended">
-            <Label text="Obránce se ubránil"/>
+            <Label text="Obránce se ubránil" />
             <VBox.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </VBox.margin>
         </HBox>
         <HBox fx:id="defenseNotDefended" spacing="10.0">
-            <Label text="Obránce byl zasažen za :"/>
-            <TextField fx:id="defenseResult" prefWidth="100.0" HBox.hgrow="NEVER"/>
-            <Label minWidth="-Infinity" text="životů"/>
+            <Label text="Obránce byl zasažen za :" />
+            <TextField fx:id="defenseResult" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <Label minWidth="-Infinity" text="životů" />
             <VBox.margin>
-                <Insets bottom="10.0" top="10.0"/>
+                <Insets bottom="10.0" top="10.0" />
             </VBox.margin>
         </HBox>
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
 </VBox>
