@@ -19,7 +19,6 @@
 
 package cz.masci.drd.ui;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.adventure.AdventureController;
 import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.battle.BattleFactory;
@@ -42,7 +41,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView("fxml/home-screen.fxml")
-@FxmlController
 @RequiredArgsConstructor
 @Slf4j
 public class HomeScreen  {
