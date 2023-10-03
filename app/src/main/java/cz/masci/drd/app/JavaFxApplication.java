@@ -16,10 +16,13 @@
  */
 package cz.masci.drd.app;
 
-import cz.masci.drd.ui.battle.BattleFactory;
+import cz.masci.drd.ui.HomeScreen;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -42,17 +45,14 @@ public class JavaFxApplication extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
+  public void start(Stage stage) {
     System.out.println("JavaFxApplication - start");
-//    FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-////    Parent root = fxWeaver.loadView(MainController.class);
-//    Parent root = fxWeaver.loadView(BattleNewController.class);
-//    Scene scene = new Scene(root);
-//    scene.getStylesheets().add("table-detail.css");
-//    stage.setScene(scene);
-//    stage.show();
-    var battleFactory = applicationContext.getBean(BattleFactory.class);
-    battleFactory.show(stage);
+    FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+    Parent root = fxWeaver.loadView(HomeScreen.class);
+    Scene scene = new Scene(root);
+    scene.getStylesheets().add("table-detail.css");
+    stage.setScene(scene);
+    stage.show();
   }
 
   @Override

@@ -26,6 +26,7 @@ import cz.masci.drd.ui.battle.slide.presenter.impl.BattleDuellistSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleGroupSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleInitiativeSlide;
 import cz.masci.drd.ui.battle.slide.presenter.impl.BattleSelectActionSlide;
+import cz.masci.drd.ui.util.SceneProvider;
 import cz.masci.drd.ui.util.slide.SlideService;
 import cz.masci.drd.ui.util.slide.impl.SlideServiceImpl.SlideFactor;
 import java.util.function.Consumer;
@@ -33,7 +34,6 @@ import java.util.function.Supplier;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BattleFactory {
+public class BattleFactory implements SceneProvider {
   private final SlideService slideService;
   private final FxWeaver fxWeaver;
 
@@ -58,8 +58,9 @@ public class BattleFactory {
   private BattleSlideState battleSlideState;
   private final BattleSlidePropertiesDTO battleSlideProperties = new BattleSlidePropertiesDTO();
 
-  // region show
-  public void show(Stage stage) {
+  // region getScene
+  @Override
+  public Scene getScene() {
     if (battleControllerAndView == null) {
       battleControllerAndView = fxWeaver.load(BattleController.class);
     }
@@ -69,11 +70,9 @@ public class BattleFactory {
     controller.initControls(battleSlideProperties);
     // init 1.slide - battle group slide
     initBattleGroupSlide(controller.getCenterPane());
-    Parent root = battleControllerAndView.getView().orElseThrow();
-    Scene scene = new Scene(root);
-    stage.setScene(scene);
-    stage.show();
+    return new Scene(battleControllerAndView.getView().orElseThrow());
   }
+
   // endregion
 
   // region slides
@@ -147,9 +146,8 @@ public class BattleFactory {
     };
 
     // get future slide from supplier if there is no other slide in current presenter
-    var futureSlide = (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious()))
-        ? futureSlideSupplier.get()
-        : currentBattleSlide;
+    var futureSlide = (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious())) ? futureSlideSupplier.get() :
+        currentBattleSlide;
 
     // do previous/next presenter initialization before slide
     if (futureNode == null || (!currentBattleSlide.hasNext() && !currentBattleSlide.hasPrevious())) {
