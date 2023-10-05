@@ -19,7 +19,7 @@ package cz.masci.drd.service.impl;
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.model.Adventure;
 import cz.masci.drd.persistence.AdventureRepository;
-import cz.masci.drd.service.AdventureMapper;
+import cz.masci.drd.service.mapper.AdventureMapper;
 import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 import java.util.Optional;

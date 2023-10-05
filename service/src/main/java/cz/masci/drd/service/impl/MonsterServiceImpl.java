@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.MonsterService;
-import cz.masci.drd.service.MonsterMapper;
+import cz.masci.drd.service.mapper.MonsterMapper;
 import cz.masci.commons.springfx.exception.CrudException;
 import java.util.List;
 

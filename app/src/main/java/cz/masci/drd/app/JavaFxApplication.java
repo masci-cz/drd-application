@@ -16,12 +16,13 @@
  */
 package cz.masci.drd.app;
 
-import cz.masci.drd.ui.MainController;
+import cz.masci.drd.ui.HomeScreen;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -45,13 +46,15 @@ public class JavaFxApplication extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
+  public void start(Stage stage) {
     System.out.println("JavaFxApplication - start");
     FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-    Parent root = fxWeaver.loadView(MainController.class);
-    Scene scene = new Scene(root);
+    FxControllerAndView<HomeScreen, Parent> homeScreen = fxWeaver.load(HomeScreen.class);
+    Scene scene = new Scene(homeScreen.getView().orElseThrow());
     scene.getStylesheets().add("table-detail.css");
+    stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
+    stage.setOnCloseRequest(homeScreen.getController()::doOnCloseRequest);
     stage.show();
   }
 

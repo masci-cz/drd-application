@@ -16,6 +16,6 @@ db:
     home: ${DERBY_SYSTEM_HOME:${user.home}}
     app: ".drd"
 
-logging:
-  level:
-    cz.masci.drd.listener: debug
+#logging:
+#  level:
+#    cz.masci.drd.listener: debug
