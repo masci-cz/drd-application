@@ -47,7 +47,9 @@ public class BattleFactory implements SceneProvider {
   private final SlideService slideService;
   private final FxWeaver fxWeaver;
 
+  private Scene scene;
   private FxControllerAndView<BattleController, Parent> battleControllerAndView;
+
   private final BattleGroupSlide battleGroupSlide;
   private final BattleDuellistSlide battleDuellistSlide;
   private final BattleSelectActionSlide battleSelectActionSlide;
@@ -61,16 +63,21 @@ public class BattleFactory implements SceneProvider {
   // region getScene
   @Override
   public Scene getScene() {
-    if (battleControllerAndView == null) {
+    if (scene == null) {
       battleControllerAndView = fxWeaver.load(BattleController.class);
+      // init controller
+      var controller = battleControllerAndView.getController();
+      controller.setBattleFactory(this);
+      controller.initControls(battleSlideProperties);
+      // init 1.slide - battle group slide
+      initBattleGroupSlide(controller.getCenterPane());
+      scene = new Scene(battleControllerAndView.getView().orElseThrow());
+    } else {
+      // re-init 1.slide
+      resetToBattleGroupSlide();
     }
-    // init controller
-    var controller = battleControllerAndView.getController();
-    controller.setBattleFactory(this);
-    controller.initControls(battleSlideProperties);
-    // init 1.slide - battle group slide
-    initBattleGroupSlide(controller.getCenterPane());
-    return new Scene(battleControllerAndView.getView().orElseThrow());
+
+    return scene;
   }
 
   // endregion
@@ -172,12 +179,27 @@ public class BattleFactory implements SceneProvider {
 
   private void initBattleGroupSlide(Pane pane) {
     // init view
-    battleGroupSlide.init();
-    battleGroupSlide.initProperties(battleSlideProperties);
     pane.getChildren().add(battleGroupSlide.getCurrentView());
     // init state
+    battleGroupSlide.init();
+    battleGroupSlide.initProperties(battleSlideProperties);
     battleSlideState = BattleSlideState.GROUPS_SETUP;
     currentBattleSlide = battleGroupSlide;
+  }
+
+  private void resetToBattleGroupSlide() {
+    var parentPane = battleControllerAndView.getController().getCenterPane();
+    parentPane.getChildren().remove(currentBattleSlide.getCurrentView());
+    battleGroupSlide.reset();
+    battleGroupSlide.init();
+    battleGroupSlide.initProperties(battleSlideProperties);
+    parentPane.getChildren().add(battleGroupSlide.getCurrentView());
+
+    // reset current slide to battle group slide
+    battleSlideState = BattleSlideState.GROUPS_SETUP;
+    currentBattleSlide = battleGroupSlide;
+    currentBattleSlide.getCurrentView().setVisible(true);
+    currentBattleSlide.getCurrentView().setTranslateX(0.0);
   }
 
   // endregion
