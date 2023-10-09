@@ -16,12 +16,13 @@
  */
 package cz.masci.drd.ui.adventure;
 
-import cz.masci.commons.springfx.controller.AbstractMasterController;
+import cz.masci.commons.springfx.controller.AbstractMFXMasterController;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.drd.dto.AdventureDTO;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
+import io.github.palexdev.materialfx.controls.MFXTableColumn;
+import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
@@ -33,20 +34,17 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @FxmlController
-public class AdventureController extends AbstractMasterController<AdventureDTO> {
-
-  private TableColumn<AdventureDTO, String> name;
+public class AdventureController extends AbstractMFXMasterController<AdventureDTO> {
 
   public AdventureController(FxWeaver fxWeaver, CrudService<AdventureDTO> itemService) {
     super(fxWeaver, itemService, AdventureDetailDialogController.class);
   }
-  
-  
+
   @Override
   protected void init() {
-    name = new TableColumn<>("Název");
+    MFXTableColumn<AdventureDTO> name = new MFXTableColumn<>("Název");
     name.setPrefWidth(250);
-    name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    name.setRowCellFactory(createMFXTableRowCell(AdventureDTO::getName));
     
     addColumns(name);
     
@@ -54,4 +52,7 @@ public class AdventureController extends AbstractMasterController<AdventureDTO> 
     setRowFactory("edited-row");
   }
 
+  private <T> Function<T, MFXTableRowCell<T, ?>> createMFXTableRowCell(Function<T, ?> tableRowCellConverter) {
+    return tableRowType -> new MFXTableRowCell<>(tableRowCellConverter);
+  }
 }

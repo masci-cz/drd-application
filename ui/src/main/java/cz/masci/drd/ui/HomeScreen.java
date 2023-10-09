@@ -24,6 +24,8 @@ import cz.masci.drd.ui.adventure.AdventureController;
 import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.monster.MonsterController;
+import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
+import io.github.palexdev.materialfx.css.themes.Themes;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +85,7 @@ public class HomeScreen implements Initializable {
       var stage = stages.get(stageType);
       if (stage == null) {
         Scene scene = sceneSupplier.get();
+        MFXThemeManager.addOn(scene, Themes.DEFAULT, Themes.LEGACY);
         stage = new Stage();
         stage.setScene(scene);
         stage.setOnCloseRequest(windowEvent -> stages.remove(stageType));
