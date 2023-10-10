@@ -51,7 +51,6 @@ public class JavaFxApplication extends Application {
     FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
     FxControllerAndView<HomeScreen, Parent> homeScreen = fxWeaver.load(HomeScreen.class);
     Scene scene = new Scene(homeScreen.getView().orElseThrow());
-    scene.getStylesheets().add("table-detail.css");
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
     stage.setOnCloseRequest(homeScreen.getController()::doOnCloseRequest);
