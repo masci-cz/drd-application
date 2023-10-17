@@ -21,8 +21,8 @@ package cz.masci.drd.ui.battle.action.controller;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.dto.actions.ShootAction;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javafx.beans.property.BooleanProperty;
@@ -31,7 +31,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -61,7 +60,7 @@ public class ShootBattleSlideActionController implements ChangeListener<String>,
   @FXML
   private Label attackDefender;
   @FXML
-  private TextField attackRoll;
+  private MFXTextField attackRoll;
   @FXML
   private Label baseAttack;
   @FXML
@@ -77,9 +76,9 @@ public class ShootBattleSlideActionController implements ChangeListener<String>,
   @FXML
   private HBox defenseNotDefended;
   @FXML
-  private TextField defenseResult;
+  private MFXTextField defenseResult;
   @FXML
-  private TextField defenseRoll;
+  private MFXTextField defenseRoll;
   @FXML
   private Label lifeAttacker;
   @FXML

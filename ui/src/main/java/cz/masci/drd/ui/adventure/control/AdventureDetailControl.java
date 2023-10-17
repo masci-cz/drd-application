@@ -17,11 +17,11 @@
 package cz.masci.drd.ui.adventure.control;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlRoot;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 import org.springframework.context.annotation.Scope;
@@ -35,12 +35,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope("prototype")
 @FxmlRoot("fxml/adventure-detail.fxml")
-public class AdventureDetailControl extends GridPane {
+public class AdventureDetailControl extends VBox {
 
   private ValidationSupport validationSupport;
 
   @FXML
-  private TextField name;
+  private MFXTextField name;
 
   /**
    * Initializes the controller class.

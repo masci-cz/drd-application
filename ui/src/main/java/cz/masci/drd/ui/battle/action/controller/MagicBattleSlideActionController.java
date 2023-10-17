@@ -21,22 +21,15 @@ package cz.masci.drd.ui.battle.action.controller;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.dto.actions.MagicAction;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +54,7 @@ public class MagicBattleSlideActionController implements BattleSlideActionContro
   @FXML
   private Label spell;
   @FXML
-  private TextField defenseResult;
+  private MFXTextField defenseResult;
   @FXML
   private Label lifeDefender;
 

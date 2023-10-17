@@ -17,11 +17,11 @@
 package cz.masci.drd.ui.adventure.control;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlRoot;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 import org.springframework.context.annotation.Scope;
@@ -35,16 +35,16 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope(value = "prototype")
 @FxmlRoot("fxml/weapon-detail.fxml")
-public class WeaponDetailControl extends GridPane {
+public class WeaponDetailControl extends VBox {
 
   private ValidationSupport validationSupport;
 
   @FXML
-  private TextField name;
+  private MFXTextField name;
   @FXML
-  private TextField strength;
+  private MFXTextField strength;
   @FXML
-  private TextField damage;
+  private MFXTextField damage;
 
   public void initialize() {
     validationSupport = new ValidationSupport();

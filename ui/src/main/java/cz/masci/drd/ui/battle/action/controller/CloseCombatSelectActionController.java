@@ -34,10 +34,10 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @FxmlView("fxml/close-combat-select-action.fxml")
 @FxmlController
+@Getter
 public class CloseCombatSelectActionController implements MultipleSelectActionController {
 
   @FXML
-  @Getter
   ComboBox<DuellistDTO> duellistBox;
 
   @FXML

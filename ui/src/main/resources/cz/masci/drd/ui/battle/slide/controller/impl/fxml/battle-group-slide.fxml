@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <!--
   ~ Copyright (c) 2023
   ~
@@ -22,6 +19,16 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <VBox fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="400.0" spacing="5.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
         AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
 >
@@ -36,14 +43,14 @@
         </rowConstraints>
          <children>
             <Label text="Název" />
-            <TextField fx:id="txtName" GridPane.columnIndex="1" />
+            <MFXTextField fx:id="txtName" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <FlowPane hgap="10.0" VBox.vgrow="NEVER">
          <children>
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#onAddGroup" text="Přidat" />
-            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#onEditGroup" text="Upravit" />
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#onDeleteGroup" text="Smazat" />
+            <MFXButton fx:id="btnAdd" mnemonicParsing="false" onAction="#onAddGroup" text="Přidat" />
+            <MFXButton fx:id="btnEdit" mnemonicParsing="false" onAction="#onEditGroup" text="Upravit" />
+            <MFXButton fx:id="btnDelete" mnemonicParsing="false" onAction="#onDeleteGroup" text="Smazat" />
          </children>
       </FlowPane>
       <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" VBox.vgrow="ALWAYS">

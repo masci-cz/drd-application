@@ -17,23 +17,19 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.controller;
+.mfx-text-field {
+    -mfx-float-mode: BORDER;
+    -fx-padding: 0 6 0 6;
+}
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import javafx.fxml.FXML;
-import lombok.Getter;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+.mfx-text-field .floating-text {
+    -fx-text-fill: -mfx-main;
+}
 
-@Component
-@Scope("prototype")
-@FxmlView("fxml/other-select-action.fxml")
-@FxmlController
-public class OtherSelectActionController {
+.mfx-text-field:floating .floating-text {
+    -fx-text-fill: -mfx-main;
+}
 
-  @FXML
-  @Getter
-  MFXTextField otherTxt;
+.edited-row {
+    -fx-background-color: lawngreen;
 }

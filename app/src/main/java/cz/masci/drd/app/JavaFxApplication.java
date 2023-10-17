@@ -17,6 +17,8 @@
 package cz.masci.drd.app;
 
 import cz.masci.drd.ui.HomeScreen;
+import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
+import io.github.palexdev.materialfx.css.themes.Stylesheets;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -51,6 +53,7 @@ public class JavaFxApplication extends Application {
     FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
     FxControllerAndView<HomeScreen, Parent> homeScreen = fxWeaver.load(HomeScreen.class);
     Scene scene = new Scene(homeScreen.getView().orElseThrow());
+    MFXThemeManager.addOn(scene, Stylesheets.BUTTON);
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
     stage.setOnCloseRequest(homeScreen.getController()::doOnCloseRequest);

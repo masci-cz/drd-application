@@ -21,7 +21,6 @@ package cz.masci.drd.ui.util;
 
 import static java.util.Objects.requireNonNull;
 
-import cz.masci.drd.dto.DuellistDTO;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import lombok.experimental.UtilityClass;

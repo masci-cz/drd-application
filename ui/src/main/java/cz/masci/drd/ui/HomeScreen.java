@@ -25,7 +25,7 @@ import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.monster.MonsterController;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
-import io.github.palexdev.materialfx.css.themes.Themes;
+import io.github.palexdev.materialfx.css.themes.Stylesheets;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +57,8 @@ public class HomeScreen implements Initializable {
 
   private final ApplicationContext applicationContext;
   private final FxWeaver fxWeaver;
+  private final AppTheme appTheme;
+
   private final Map<StageType, Stage> stages = new HashMap<>();
 
   @FXML
@@ -85,7 +87,7 @@ public class HomeScreen implements Initializable {
       var stage = stages.get(stageType);
       if (stage == null) {
         Scene scene = sceneSupplier.get();
-        MFXThemeManager.addOn(scene, Themes.DEFAULT);
+        MFXThemeManager.addOn(scene, Stylesheets.TEXT_FIELD, Stylesheets.BUTTON, Stylesheets.TABLE_VIEW, appTheme);
         stage = new Stage();
         stage.setScene(scene);
         stage.setOnCloseRequest(windowEvent -> stages.remove(stageType));
@@ -106,7 +108,7 @@ public class HomeScreen implements Initializable {
   private <T> Supplier<Scene> getScene(Class<T> controllerClass) {
     return () -> {
       BorderPane view = fxWeaver.loadView(controllerClass);
-      return new Scene(view, 800, 600);
+      return new Scene(view, 800, 1000);
     };
   }
 

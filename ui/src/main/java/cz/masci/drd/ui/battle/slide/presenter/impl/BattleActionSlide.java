@@ -19,7 +19,6 @@
 
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
-import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.dto.actions.MagicAction;
 import cz.masci.drd.dto.actions.OtherAction;

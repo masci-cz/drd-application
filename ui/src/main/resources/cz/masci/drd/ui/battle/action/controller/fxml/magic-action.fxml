@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <!--
   ~ Copyright (c) 2023
   ~
@@ -23,6 +19,11 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox spacing="10.0">
@@ -40,7 +41,7 @@
         </HBox>
         <HBox spacing="10.0">
             <Label text="Bojovník byl zasažen za :" />
-            <TextField fx:id="defenseResult" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <MFXTextField fx:id="defenseResult" prefWidth="50.0" HBox.hgrow="NEVER" />
             <Label minWidth="-Infinity" text="životů" />
             <Label text="s počtem životů" />
             <Label fx:id="lifeDefender" text="5/6" />

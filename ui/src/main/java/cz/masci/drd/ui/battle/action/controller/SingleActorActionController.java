@@ -22,7 +22,6 @@ package cz.masci.drd.ui.battle.action.controller;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.SingleActorAction;
-import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;

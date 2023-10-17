@@ -1,48 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<fx:root id="GridPane" hgap="5.0" prefHeight="400.0" prefWidth="600.0" type="GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <Label text="Jméno nestvůry" />
-  <TextField fx:id="name" GridPane.columnIndex="1" />
-  <Label text="Životaschopnost" GridPane.rowIndex="1" />
-  <TextField fx:id="viability" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-  <Label text="Útočné číslo" GridPane.rowIndex="2" />
-  <TextField fx:id="attack" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-  <Label text="Obranné číslo" GridPane.rowIndex="3" />
-  <TextField fx:id="defence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-  <Label text="Odolnost" GridPane.rowIndex="4" />
-  <TextField fx:id="endurance" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-  <Label text="Velikost" GridPane.rowIndex="5" />
-  <TextField fx:id="dimension" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-  <Label text="Bojovnost" GridPane.rowIndex="6" />
-  <TextField fx:id="combativeness" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-  <Label text="Zranitelnost" GridPane.rowIndex="7" />
-  <TextField fx:id="vulnerability" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-  <Label text="Pohyblivost" GridPane.rowIndex="8" />
-  <TextField fx:id="moveability" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-  <Label text="Vytrvalost" GridPane.rowIndex="9" />
-  <TextField fx:id="stamina" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-  <Label text="Inteligence" GridPane.rowIndex="10" />
-  <TextField fx:id="intelligence" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-  <Label text="Přesvědčení" GridPane.rowIndex="11" />
-  <TextField fx:id="conviction" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-  <Label text="Poklady" GridPane.rowIndex="12" />
-  <TextField fx:id="treasure" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-  <Label text="Zkušenost" GridPane.rowIndex="13" />
-  <TextField fx:id="experience" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-  <Label text="Popis" GridPane.rowIndex="14" GridPane.valignment="TOP" />
-  <TextArea fx:id="description" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.vgrow="ALWAYS" />
-  <columnConstraints>
-    <ColumnConstraints minWidth="-Infinity" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints />
-  </rowConstraints>
-  <padding>
-    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-  </padding>
-
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<fx:root type="VBox" prefHeight="1200.0" prefWidth="600.0" spacing="7" xmlns="http://javafx.com/javafx/17"
+        xmlns:fx="http://javafx.com/fxml/1">
+    <MFXTextField fx:id="name" floatingText="Jméno nestvůry" maxWidth="Infinity"/>
+    <MFXTextField fx:id="viability" floatingText="Životaschopnost"/>
+    <MFXTextField fx:id="attack" floatingText="Útočné číslo"/>
+    <MFXTextField fx:id="defence" floatingText="Obranné číslo"/>
+    <MFXTextField fx:id="endurance" floatingText="Odolnost"/>
+    <MFXTextField fx:id="dimension" floatingText="Velikost"/>
+    <MFXTextField fx:id="combativeness" floatingText="Bojovnost"/>
+    <MFXTextField fx:id="vulnerability" floatingText="Zranitelnost"/>
+    <MFXTextField fx:id="moveability" floatingText="Pohyblivost"/>
+    <MFXTextField fx:id="stamina" floatingText="Vytrvalost"/>
+    <MFXTextField fx:id="intelligence" floatingText="Inteligence"/>
+    <MFXTextField fx:id="conviction" floatingText="Přesvědčení"/>
+    <MFXTextField fx:id="treasure" floatingText="Poklady"/>
+    <MFXTextField fx:id="experience" floatingText="Zkušenost"/>
+    <Label text="Popis"/>
+    <TextArea fx:id="description"  maxWidth="Infinity"/>
 </fx:root>

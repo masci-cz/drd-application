@@ -20,7 +20,6 @@
 package cz.masci.drd.ui.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
-import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
 import cz.masci.drd.ui.battle.slide.controller.impl.BattleInitiativeSlideController;
 import java.util.List;

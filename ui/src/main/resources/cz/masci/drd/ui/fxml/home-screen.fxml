@@ -19,7 +19,7 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<?import javafx.scene.control.Button?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -38,10 +38,10 @@
                 <RowConstraints minHeight="80" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Button fx:id="btnAdventures" maxWidth="Infinity" maxHeight="Infinity" text="Dobrodružství" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <Button fx:id="btnMonsters" maxWidth="Infinity" maxHeight="Infinity" text="Příšery" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                <Button fx:id="btnWeapons" maxWidth="Infinity" maxHeight="Infinity" text="Zbraně" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <Button fx:id="btnBattle" maxWidth="Infinity" maxHeight="Infinity" text="Bitva" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <MFXButton buttonType="RAISED" fx:id="btnAdventures" maxWidth="Infinity" maxHeight="Infinity" text="Dobrodružství" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <MFXButton buttonType="RAISED" fx:id="btnMonsters" maxWidth="Infinity" maxHeight="Infinity" text="Příšery" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <MFXButton buttonType="RAISED" fx:id="btnWeapons" maxWidth="Infinity" maxHeight="Infinity" text="Zbraně" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <MFXButton buttonType="RAISED" fx:id="btnBattle" maxWidth="Infinity" maxHeight="Infinity" text="Bitva" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
             </children>
         </GridPane>
     </children>

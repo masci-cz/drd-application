@@ -16,9 +16,10 @@
  */
 package cz.masci.drd.ui.adventure;
 
+import cz.masci.commons.springfx.fxml.annotation.FxmlController;
+import cz.masci.commons.springfx.service.EditDialogControllerService;
 import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.ui.adventure.control.AdventureDetailControl;
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,7 +30,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-import cz.masci.commons.springfx.service.EditDialogControllerService;
 
 /**
  * FXML Controller class
