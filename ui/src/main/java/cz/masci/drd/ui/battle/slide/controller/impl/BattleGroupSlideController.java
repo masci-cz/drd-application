@@ -22,11 +22,12 @@ package cz.masci.drd.ui.battle.slide.controller.impl;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import java.util.Optional;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +54,13 @@ public class BattleGroupSlideController implements BattleSlideController {
   @FXML
   private MFXButton btnDelete;
   @FXML
-  private ListView<String> lstGroups;
+  private MFXListView<String> lstGroups;
 
   // region scene
 
   @FXML
   private void initialize() {
+    lstGroups.getSelectionModel().setAllowsMultipleSelection(false);
     btnAdd.setDisable(true);
     btnEdit.setDisable(true);
     btnDelete.setDisable(true);
@@ -66,7 +68,7 @@ public class BattleGroupSlideController implements BattleSlideController {
     // init bindings
 
     BooleanExpression filledForm = txtName.textProperty().isNotEmpty();
-    BooleanExpression selectedItem = lstGroups.getSelectionModel().selectedItemProperty().isNotNull();
+    BooleanExpression selectedItem = lstGroups.getSelectionModel().selectionProperty().emptyProperty().not();
 
     btnAdd.disableProperty().bind(filledForm.not());
     btnEdit.disableProperty().bind(filledForm.and(selectedItem).not());
@@ -77,7 +79,7 @@ public class BattleGroupSlideController implements BattleSlideController {
   private void onAddGroup() {
     if (!lstGroups.getItems().contains(txtName.getText())) {
       lstGroups.getItems().add(txtName.getText());
-      txtName.setText(null);
+      txtName.setText("");
     }
     txtName.requestFocus();
   }
@@ -85,16 +87,18 @@ public class BattleGroupSlideController implements BattleSlideController {
   @FXML
   private void onEditGroup() {
     if (!lstGroups.getItems().contains(txtName.getText())) {
-      var index = lstGroups.getSelectionModel().getSelectedIndex();
-      lstGroups.getItems().set(index, txtName.getText());
-      lstGroups.getSelectionModel().clearSelection();
+      var selectedValueIndex = lstGroups.getItems().indexOf(lstGroups.getSelectionModel().getSelectedValue());
+      if (selectedValueIndex >= 0) {
+        lstGroups.getItems().set(selectedValueIndex, txtName.getText());
+        lstGroups.getSelectionModel().clearSelection();
+      }
     }
   }
 
   @FXML
   private void onDeleteGroup() {
-    var index = lstGroups.getSelectionModel().getSelectedIndex();
-    lstGroups.getItems().remove(index);
+    var selectedValue = Optional.ofNullable(lstGroups.getSelectionModel().getSelectedValue());
+    selectedValue.ifPresent(value -> lstGroups.getItems().remove(value));
     lstGroups.getSelectionModel().clearSelection();
   }
 

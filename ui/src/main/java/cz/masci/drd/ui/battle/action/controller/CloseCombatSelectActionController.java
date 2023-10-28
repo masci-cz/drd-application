@@ -22,9 +22,9 @@ package cz.masci.drd.ui.battle.action.controller;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.converter.DuellistStringConverter;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
@@ -38,7 +38,7 @@ import org.springframework.stereotype.Component;
 public class CloseCombatSelectActionController implements MultipleSelectActionController {
 
   @FXML
-  ComboBox<DuellistDTO> duellistBox;
+  MFXComboBox<DuellistDTO> duellistBox;
 
   @FXML
   void initialize() {
