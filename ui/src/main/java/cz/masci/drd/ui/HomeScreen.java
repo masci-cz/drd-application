@@ -87,7 +87,7 @@ public class HomeScreen implements Initializable {
       var stage = stages.get(stageType);
       if (stage == null) {
         Scene scene = sceneSupplier.get();
-        MFXThemeManager.addOn(scene, Stylesheets.TEXT_FIELD, Stylesheets.BUTTON, Stylesheets.TABLE_VIEW, Stylesheets.LIST_VIEW, Stylesheets.LIST_CELL, appTheme);
+        MFXThemeManager.addOn(scene, Stylesheets.TEXT_FIELD, Stylesheets.TABLE_VIEW, Stylesheets.LIST_VIEW, Stylesheets.LIST_CELL, appTheme);
         stage = new Stage();
         stage.setScene(scene);
         stage.setOnCloseRequest(windowEvent -> stages.remove(stageType));

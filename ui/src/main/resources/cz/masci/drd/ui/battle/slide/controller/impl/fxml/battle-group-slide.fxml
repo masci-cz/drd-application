@@ -30,19 +30,23 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.geometry.Insets?>
 <VBox fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="400.0" spacing="5.0"
         xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
         AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
 >
     <children>
         <VBox>
-            <MFXTextField fx:id="txtName" floatingText="Název"/>
+            <MFXTextField fx:id="txtName" floatingText="Název" minWidth="200"/>
         </VBox>
-        <FlowPane hgap="10.0" VBox.vgrow="NEVER">
+        <FlowPane hgap="15.0" VBox.vgrow="NEVER">
+            <padding>
+                <Insets top="10" bottom="10"/>
+            </padding>
             <children>
-                <MFXButton fx:id="btnAdd" mnemonicParsing="false" onAction="#onAddGroup" text="Přidat"/>
-                <MFXButton fx:id="btnEdit" mnemonicParsing="false" onAction="#onEditGroup" text="Upravit"/>
-                <MFXButton fx:id="btnDelete" mnemonicParsing="false" onAction="#onDeleteGroup" text="Smazat"/>
+                <MFXButton fx:id="btnAdd" styleClass="filled" mnemonicParsing="false" onAction="#onAddGroup" text="Přidat"/>
+                <MFXButton fx:id="btnEdit" styleClass="filledTonal" mnemonicParsing="false" onAction="#onEditGroup" text="Upravit"/>
+                <MFXButton fx:id="btnDelete" styleClass="filledTonal" mnemonicParsing="false" onAction="#onDeleteGroup" text="Smazat"/>
             </children>
         </FlowPane>
         <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" VBox.vgrow="ALWAYS">
