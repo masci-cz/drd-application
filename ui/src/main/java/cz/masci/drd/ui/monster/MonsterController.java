@@ -16,10 +16,12 @@
  */
 package cz.masci.drd.ui.monster;
 
-import cz.masci.commons.springfx.controller.AbstractMasterController;
+import cz.masci.commons.springfx.controller.AbstractMFXMasterController;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.service.MonsterService;
+import cz.masci.drd.ui.util.MFXTableRowCellFactory;
+import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @FxmlController
-public class MonsterController extends AbstractMasterController<MonsterDTO> {
-
-  private TableColumn<MonsterDTO, String> name;
-
-  private TableColumn<MonsterDTO, String> description;
+public class MonsterController extends AbstractMFXMasterController<MonsterDTO> {
 
   public MonsterController(FxWeaver fxWeaver, MonsterService itemService) {
     super(fxWeaver, itemService, MonsterDetailDialogController.class);
@@ -45,15 +43,13 @@ public class MonsterController extends AbstractMasterController<MonsterDTO> {
 
   @Override
   protected void init() {
-    log.debug("Init table view");
-
-    name = new TableColumn<>("Jméno");
+    MFXTableColumn<MonsterDTO> name = new MFXTableColumn<>("Jméno");
     name.setPrefWidth(100.0);
-    name.setCellValueFactory(new PropertyValueFactory<>("name"));
+    name.setRowCellFactory(new MFXTableRowCellFactory<>(MonsterDTO::getName));
 
-    description = new TableColumn<>("Popis");
+    MFXTableColumn<MonsterDTO> description = new MFXTableColumn<>("Popis");
     description.setPrefWidth(200.0);
-    description.setCellValueFactory(new PropertyValueFactory<>("description"));
+    description.setRowCellFactory(new MFXTableRowCellFactory<>(MonsterDTO::getDescription));
 
     addColumns(name, description);
 

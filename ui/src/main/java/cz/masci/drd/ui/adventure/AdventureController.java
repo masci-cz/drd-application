@@ -20,9 +20,8 @@ import cz.masci.commons.springfx.controller.AbstractMFXMasterController;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.drd.dto.AdventureDTO;
+import cz.masci.drd.ui.util.MFXTableRowCellFactory;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
-import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
-import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
@@ -44,7 +43,7 @@ public class AdventureController extends AbstractMFXMasterController<AdventureDT
   protected void init() {
     MFXTableColumn<AdventureDTO> name = new MFXTableColumn<>("Název");
     name.setPrefWidth(250);
-    name.setRowCellFactory(createMFXTableRowCell(AdventureDTO::getName));
+    name.setRowCellFactory(new MFXTableRowCellFactory<>(AdventureDTO::getName));
     
     addColumns(name);
     
@@ -52,7 +51,4 @@ public class AdventureController extends AbstractMFXMasterController<AdventureDT
     setRowFactory("edited-row");
   }
 
-  private <T> Function<T, MFXTableRowCell<T, ?>> createMFXTableRowCell(Function<T, ?> tableRowCellConverter) {
-    return tableRowType -> new MFXTableRowCell<>(tableRowCellConverter);
-  }
 }
