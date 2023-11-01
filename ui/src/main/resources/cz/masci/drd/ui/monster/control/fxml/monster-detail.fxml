@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
-<fx:root type="VBox" prefHeight="1200.0" prefWidth="600.0" spacing="7" xmlns="http://javafx.com/javafx/17"
+<fx:root type="VBox" spacing="10" prefHeight="1200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1">
     <MFXTextField fx:id="name" floatingText="Jméno nestvůry" maxWidth="Infinity"/>
     <MFXTextField fx:id="viability" floatingText="Životaschopnost"/>
