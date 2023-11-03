@@ -16,10 +16,13 @@
  */
 package cz.masci.drd.ui.adventure;
 
+import cz.masci.commons.springfx.controller.AbstractMFXMasterController;
 import cz.masci.commons.springfx.controller.AbstractMasterController;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.commons.springfx.service.CrudService;
 import cz.masci.drd.dto.WeaponDTO;
+import cz.masci.drd.ui.util.MFXTableRowCellFactory;
+import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -31,11 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @FxmlController
-public class WeaponController extends AbstractMasterController<WeaponDTO> {
-
-  private TableColumn<WeaponDTO, String> name;
-  private TableColumn<WeaponDTO, Integer> strength;
-  private TableColumn<WeaponDTO, Integer> damage;
+public class WeaponController extends AbstractMFXMasterController<WeaponDTO> {
 
   public WeaponController(FxWeaver fxWeaver, CrudService<WeaponDTO> itemService) {
     super(fxWeaver, itemService, WeaponDetailDialogController.class);
@@ -44,17 +43,17 @@ public class WeaponController extends AbstractMasterController<WeaponDTO> {
   
   @Override
   protected void init() {
-    name = new TableColumn<>("Název");
+    MFXTableColumn<WeaponDTO> name = new MFXTableColumn<>("Název");
     name.setPrefWidth(150.0);
-    name.setCellValueFactory(new PropertyValueFactory<>("name"));
-    
-    strength = new TableColumn<>("Útočné číslo");
+    name.setRowCellFactory(new MFXTableRowCellFactory<>(WeaponDTO::getName));
+
+    MFXTableColumn<WeaponDTO> strength = new MFXTableColumn<>("Útočné číslo");
     strength.setPrefWidth(100.0);
-    strength.setCellValueFactory(new PropertyValueFactory<>("strength"));
-    
-    damage = new TableColumn<>("Útočnost");
+    strength.setRowCellFactory(new MFXTableRowCellFactory<>(WeaponDTO::getStrength));
+
+    MFXTableColumn<WeaponDTO> damage = new MFXTableColumn<>("Útočnost");
     damage.setPrefWidth(100.0);
-    damage.setCellValueFactory(new PropertyValueFactory<>("damage"));
+    damage.setRowCellFactory(new MFXTableRowCellFactory<>(WeaponDTO::getDamage));
     
     addColumns(name, strength, damage);
     

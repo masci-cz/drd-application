@@ -16,10 +16,10 @@
  */
 package cz.masci.drd.ui.adventure;
 
-import cz.masci.drd.dto.WeaponDTO;
-import cz.masci.drd.ui.adventure.control.WeaponDetailControl;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.commons.springfx.service.EditDialogControllerService;
+import cz.masci.drd.dto.WeaponDTO;
+import cz.masci.drd.ui.adventure.control.WeaponDetailControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

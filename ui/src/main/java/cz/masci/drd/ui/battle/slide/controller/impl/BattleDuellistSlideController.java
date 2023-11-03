@@ -23,13 +23,13 @@ import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -50,21 +50,21 @@ public class BattleDuellistSlideController implements BattleSlideController {
   @Getter
   private VBox root;
   @FXML
-  private Button btnAdd;
+  private MFXButton btnAdd;
   @FXML
-  private Button btnEdit;
+  private MFXButton btnEdit;
   @FXML
-  private Button btnDelete;
+  private MFXButton btnDelete;
   @FXML
-  private TextField txtName;
+  private MFXTextField txtName;
   @FXML
-  private TextField txtOffense;
+  private MFXTextField txtOffense;
   @FXML
-  private TextField txtDefense;
+  private MFXTextField txtDefense;
   @FXML
-  private TextField txtDamage;
+  private MFXTextField txtDamage;
   @FXML
-  private TextField txtLive;
+  private MFXTextField txtLive;
   @FXML
   private TableView<DuellistDTO> tblDuellist;
 

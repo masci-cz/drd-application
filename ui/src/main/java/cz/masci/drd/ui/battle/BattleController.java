@@ -21,9 +21,9 @@ package cz.masci.drd.ui.battle;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.battle.dto.BattleSlidePropertiesDTO;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -53,9 +53,9 @@ public class BattleController {
   @FXML
   private Label lblTitle;
   @FXML
-  private Button btnPrev;
+  private MFXButton btnPrev;
   @FXML
-  private Button btnNext;
+  private MFXButton btnNext;
 
   public void initControls(BattleSlidePropertiesDTO battleSlideProperties) {
     btnPrev.disableProperty().bind(battleSlideProperties.getPrevDisableProperty());

@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <!--
   ~ Copyright (c) 2023
   ~
@@ -23,6 +19,11 @@
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
 
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox fx:id="root" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox spacing="10.0" VBox.vgrow="ALWAYS">
@@ -33,7 +34,7 @@
             <Label text="útokem :" />
             <Label fx:id="baseAttack" text="X" />
             <Label text="+" />
-            <TextField fx:id="attackRoll" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <MFXTextField fx:id="attackRoll" prefWidth="50.0" HBox.hgrow="NEVER" />
             <Label text="=" />
             <Label fx:id="attack" text="Z" />
             <Label text="s počtem životů" />
@@ -50,7 +51,7 @@
             <Label text="obranou :" />
             <Label fx:id="baseDefense" text="M" />
             <Label text="+" />
-            <TextField fx:id="defenseRoll" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <MFXTextField fx:id="defenseRoll" prefWidth="50.0" HBox.hgrow="NEVER" />
             <Label text="=" />
             <Label fx:id="defense" text="O" />
             <Label text="s počtem životů" />
@@ -67,7 +68,7 @@
         </HBox>
         <HBox fx:id="defenseNotDefended" spacing="10.0">
             <Label text="Obránce byl zasažen za :" />
-            <TextField fx:id="defenseResult" prefWidth="50.0" HBox.hgrow="NEVER" />
+            <MFXTextField fx:id="defenseResult" prefWidth="50.0" HBox.hgrow="NEVER" />
             <Label minWidth="-Infinity" text="životů" />
             <VBox.margin>
                 <Insets bottom="10.0" top="10.0" />

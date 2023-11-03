@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-
-
+<?import cz.masci.drd.ui.adventure.control.AdventureDetailControl?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <center>
-    <cz.masci.drd.ui.adventure.control.AdventureDetailControl fx:id="editor"/>
-  </center>
+    <center>
+        <cz.masci.drd.ui.adventure.control.AdventureDetailControl fx:id="editor">
+            <BorderPane.margin>
+                <Insets top="5.0" right="5.0" bottom="5.0"/>
+            </BorderPane.margin>
+        </cz.masci.drd.ui.adventure.control.AdventureDetailControl>
+    </center>
 </BorderPane>

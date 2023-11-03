@@ -22,9 +22,9 @@ package cz.masci.drd.ui.battle.slide.controller.impl;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.ui.battle.slide.controller.BattleSlideController;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,7 +49,7 @@ public class BattleInitiativeSlideController implements BattleSlideController {
   @Getter
   private GridPane root;
   @FXML
-  private TextField initiativeTxt;
+  private MFXTextField initiativeTxt;
 
   public ReadOnlyStringProperty initiativeProperty() {
     return initiativeTxt.textProperty();

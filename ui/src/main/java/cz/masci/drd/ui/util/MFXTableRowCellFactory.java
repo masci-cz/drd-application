@@ -19,28 +19,17 @@
 
 package cz.masci.drd.ui.util;
 
-import static java.util.Objects.requireNonNull;
-
+import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
 
-@UtilityClass
-public class PredicateUtils {
+@RequiredArgsConstructor
+public class MFXTableRowCellFactory<T> implements Function<T, MFXTableRowCell<T, ?>> {
 
-  /**
-   * Returns a composed predicate that for every {@code x} will return {@code predicate(function(x))}.
-   *
-   * <p>Use-case example: {@code compose(User::firstName, Objects::nonNull)}</p>
-   */
-  public static <T, V> Predicate<T> compose(Function<T, ? extends V> function, Predicate<? super V> predicate) {
-    requireNonNull(predicate);
-    requireNonNull(function);
+  private final Function<T, ?> tableRowTypeExtractor;
 
-    return value -> predicate.test(function.apply(value));
-  }
-
-  public static <T> Predicate<T> alwaysTrue() {
-    return value -> true;
+  @Override
+  public MFXTableRowCell<T, ?> apply(T t) {
+    return new MFXTableRowCell<>(tableRowTypeExtractor);
   }
 }

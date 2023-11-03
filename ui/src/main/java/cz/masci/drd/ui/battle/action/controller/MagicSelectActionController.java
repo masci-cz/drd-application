@@ -22,10 +22,10 @@ package cz.masci.drd.ui.battle.action.controller;
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.converter.DuellistStringConverter;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.annotation.Scope;
@@ -43,7 +43,7 @@ public class MagicSelectActionController implements MultipleSelectActionControll
 
   @FXML
   @Getter
-  TextField spellTxt;
+  MFXTextField spellTxt;
 
   @FXML
   void initialize() {

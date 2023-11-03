@@ -17,23 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.battle.action.controller;
+package cz.masci.drd.ui;
 
-import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import javafx.fxml.FXML;
-import lombok.Getter;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.context.annotation.Scope;
+import io.github.palexdev.materialfx.css.themes.Theme;
+import java.net.URL;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("prototype")
-@FxmlView("fxml/other-select-action.fxml")
-@FxmlController
-public class OtherSelectActionController {
+public class AppTheme implements Theme {
+  @Override
+  public String getTheme() {
+    return "app.css";
+  }
 
-  @FXML
-  @Getter
-  MFXTextField otherTxt;
+  @Override
+  public String loadTheme() {
+    return Optional.ofNullable(AppTheme.class.getResource(mfxBaseDir() + getTheme()))
+        .map(URL::toString)
+        .orElseThrow();
+  }
 }

@@ -17,17 +17,17 @@
 package cz.masci.drd.ui.monster.control;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlRoot;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -37,38 +37,38 @@ import org.controlsfx.validation.Validator;
 @Scope("prototype")
 @FxmlRoot("fxml/monster-detail.fxml")
 @Slf4j
-public class MonsterDetailControl extends GridPane {
+public class MonsterDetailControl extends VBox {
 
   private ValidationSupport validationSupport;
   
   @FXML
-  private TextField name;
+  private MFXTextField name;
   @FXML
-  private TextField viability;
+  private MFXTextField viability;
   @FXML
-  private TextField attack;
+  private MFXTextField attack;
   @FXML
-  private TextField defence;
+  private MFXTextField defence;
   @FXML
-  private TextField endurance;
+  private MFXTextField endurance;
   @FXML
-  private TextField dimension;
+  private MFXTextField dimension;
   @FXML
-  private TextField combativeness;
+  private MFXTextField combativeness;
   @FXML
-  private TextField vulnerability;
+  private MFXTextField vulnerability;
   @FXML
-  private TextField moveability;
+  private MFXTextField moveability;
   @FXML
-  private TextField stamina;
+  private MFXTextField stamina;
   @FXML
-  private TextField intelligence;
+  private MFXTextField intelligence;
   @FXML
-  private TextField conviction;
+  private MFXTextField conviction;
   @FXML
-  private TextField treasure;
+  private MFXTextField treasure;
   @FXML
-  private TextField experience;
+  private MFXTextField experience;
   @FXML
   private TextArea description;
 
