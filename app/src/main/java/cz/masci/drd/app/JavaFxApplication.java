@@ -16,10 +16,11 @@
  */
 package cz.masci.drd.app;
 
-import cz.masci.drd.ui.AppTheme;
+import cz.masci.drd.theme.DrDAppTheme;
 import cz.masci.drd.ui.HomeScreen;
-import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
-import io.github.palexdev.materialfx.css.themes.Stylesheets;
+import io.github.palexdev.materialfx.theming.JavaFXThemes;
+import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
+import io.github.palexdev.materialfx.theming.UserAgentBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -46,6 +47,18 @@ public class JavaFxApplication extends Application {
     this.applicationContext = new SpringApplicationBuilder()
             .sources(SpringApplication.class)
             .run(args);
+
+    UserAgentBuilder.builder()
+        .themes(JavaFXThemes.MODENA)
+        .themes(MaterialFXStylesheets.forAssemble(false))
+        .themes(DrDAppTheme.TOKENS)
+        .themes(DrDAppTheme.APP)
+        .themes(DrDAppTheme.TABLE_VIEW)
+        .setDeploy(true)
+        .setDebug(false)
+        .setResolveAssets(true)
+        .build()
+        .setGlobal();
   }
 
   @Override
@@ -54,8 +67,6 @@ public class JavaFxApplication extends Application {
     FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
     FxControllerAndView<HomeScreen, Parent> homeScreen = fxWeaver.load(HomeScreen.class);
     Scene scene = new Scene(homeScreen.getView().orElseThrow());
-    var appTheme = applicationContext.getBean(AppTheme.class);
-    MFXThemeManager.addOn(scene, Stylesheets.BUTTON, appTheme);
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
     stage.setOnCloseRequest(homeScreen.getController()::doOnCloseRequest);
