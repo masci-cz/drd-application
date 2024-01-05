@@ -60,6 +60,7 @@
         <module>persistence</module>
         <module>service</module>
         <module>ui</module>
+        <module>theme</module>
     </modules>
 
     <properties>
@@ -79,7 +80,7 @@
         <javafx.version>17.0.2</javafx.version>
         <controlsfx.version>11.1.2</controlsfx.version>
         <apache.lang.version>3.11</apache.lang.version>
-        <cz.masci.commons.springfx>0.0.15</cz.masci.commons.springfx>
+        <cz.masci.commons.springfx>0.0.19</cz.masci.commons.springfx>
     </properties>
 
     <dependencyManagement>
@@ -113,6 +114,11 @@
             <dependency>
                 <groupId>cz.masci.drd</groupId>
                 <artifactId>ui</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.masci.drd</groupId>
+                <artifactId>theme</artifactId>
                 <version>${revision}</version>
             </dependency>
 

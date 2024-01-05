@@ -69,6 +69,10 @@
             <groupId>cz.masci.drd</groupId>
             <artifactId>ui</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cz.masci.drd</groupId>
+            <artifactId>theme</artifactId>
+        </dependency>
 
         <!-- Tests -->
         <dependency>

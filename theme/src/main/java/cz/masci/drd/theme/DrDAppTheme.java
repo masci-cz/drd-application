@@ -17,24 +17,34 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui;
+package cz.masci.drd.theme;
 
-import io.github.palexdev.materialfx.css.themes.Theme;
+import io.github.palexdev.materialfx.theming.base.Theme;
 import java.net.URL;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
-public class AppTheme implements Theme {
+@RequiredArgsConstructor
+public enum DrDAppTheme implements Theme {
+
+  TABLE_VIEW("css/table-view.css"),
+  APP("css/app.css"),
+  TOKENS("css/tokens.css");
+
+  private final String path;
+
   @Override
-  public String getTheme() {
-    return "app.css";
+  public String path() {
+    return path;
   }
 
   @Override
-  public String loadTheme() {
-    return Optional.ofNullable(AppTheme.class.getResource(mfxBaseDir() + getTheme()))
-        .map(URL::toString)
-        .orElseThrow();
+  public URL get() {
+    return Optional.ofNullable(DrDAppTheme.class.getResource(path)).orElseThrow();
+  }
+
+  @Override
+  public String deployName() {
+    return "app";
   }
 }
