@@ -55,7 +55,7 @@ public class JavaFxApplication extends Application {
         .themes(DrDAppTheme.APP)
         .themes(DrDAppTheme.TABLE_VIEW)
         .setDeploy(true)
-        .setDebug(false)
+        .setDebug(true)
         .setResolveAssets(true)
         .build()
         .setGlobal();

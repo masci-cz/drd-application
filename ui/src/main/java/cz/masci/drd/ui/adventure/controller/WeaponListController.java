@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,16 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util;
+package cz.masci.drd.ui.adventure.controller;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import lombok.experimental.UtilityClass;
+import cz.masci.drd.ui.adventure.model.WeaponListModel;
+import cz.masci.drd.ui.adventure.view.WeaponListViewBuilder;
+import cz.masci.springfx.mvci.controller.ViewProvider;
+import javafx.scene.layout.Region;
 
-@UtilityClass
-public class PropertyUtility {
-  public static final BooleanProperty FALSE_PROPERTY = new SimpleBooleanProperty(false);
+public class WeaponListController implements ViewProvider<Region> {
 
-  public static final BooleanProperty TRUE_PROPERTY = new SimpleBooleanProperty(true);
+  private final WeaponListViewBuilder viewBuilder;
+
+  public WeaponListController(WeaponListModel viewModel) {
+    viewBuilder = new WeaponListViewBuilder(viewModel);
+  }
+
+  @Override
+  public Region getView() {
+    return viewBuilder.build();
+  }
 
 }

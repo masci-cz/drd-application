@@ -21,7 +21,7 @@ package cz.masci.drd.ui;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.adventure.AdventureController;
-import cz.masci.drd.ui.adventure.WeaponController;
+import cz.masci.drd.ui.adventure.controller.WeaponListDetailController;
 import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.monster.MonsterController;
 import java.net.URL;
@@ -71,7 +71,8 @@ public class HomeScreen implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     btnAdventures.setOnAction(btnAction(StageType.ADVENTURES, getScene(AdventureController.class)));
     btnMonsters.setOnAction(btnAction(StageType.MONSTERS, getScene(MonsterController.class)));
-    btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getScene(WeaponController.class)));
+//    btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getScene(WeaponController.class)));
+    btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getSceneForView()));
     btnBattle.setOnAction(btnAction(StageType.BATTLE, getSceneForBattleController()));
   }
 
@@ -105,6 +106,13 @@ public class HomeScreen implements Initializable {
     return () -> {
       BorderPane view = fxWeaver.loadView(controllerClass);
       return new Scene(view, 800, 1000);
+    };
+  }
+
+  private Supplier<Scene> getSceneForView() {
+    return () -> {
+      var controller = new WeaponListDetailController();
+      return new Scene(controller.getView(), 800, 1000);
     };
   }
 

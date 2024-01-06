@@ -25,10 +25,13 @@
             <groupId>cz.masci.commons</groupId>
             <artifactId>commons-springfx-mve</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cz.masci.commons</groupId>
             <artifactId>commons-springfx-fxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cz.masci.commons</groupId>
+            <artifactId>commons-springfx-mvci</artifactId>
         </dependency>
 
         <dependency>
