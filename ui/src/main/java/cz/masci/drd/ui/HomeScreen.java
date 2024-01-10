@@ -21,6 +21,7 @@ package cz.masci.drd.ui;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.adventure.AdventureController;
+import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.adventure.controller.WeaponListDetailController;
 import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.monster.MonsterController;
@@ -111,7 +112,7 @@ public class HomeScreen implements Initializable {
 
   private Supplier<Scene> getSceneForView() {
     return () -> {
-      var controller = new WeaponListDetailController();
+      var controller = applicationContext.getBean(WeaponListDetailController.class);
       return new Scene(controller.getView(), 800, 1000);
     };
   }

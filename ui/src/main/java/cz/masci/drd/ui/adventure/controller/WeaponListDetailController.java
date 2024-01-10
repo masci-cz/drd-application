@@ -19,48 +19,30 @@
 
 package cz.masci.drd.ui.adventure.controller;
 
-import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
+import cz.masci.drd.ui.adventure.interactor.WeaponInteractor;
 import cz.masci.drd.ui.adventure.model.WeaponListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.view.builder.ListDetailViewBuilder;
 import javafx.scene.layout.Region;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WeaponListDetailController implements ViewProvider<Region> {
 
   private final ListDetailViewBuilder viewBuilder;
-  private final WeaponListModel viewModel;
 
-  public WeaponListDetailController() {
-    viewModel = new WeaponListModel();
+  public WeaponListDetailController(WeaponInteractor interactor) {
+    WeaponListModel viewModel = new WeaponListModel();
     var listController = new WeaponListController(viewModel);
     var detailController = new WeaponDetailController(viewModel.selectedItemProperty());
+    var managerController = new WeaponManagerController(viewModel, interactor);
 
-    viewBuilder = new ListDetailViewBuilder(listController.getView(), detailController.getView(), null);
+    viewBuilder = new ListDetailViewBuilder(listController.getView(), detailController.getView(), managerController.getView());
   }
 
   @Override
   public Region getView() {
-    initFakeData();
     return viewBuilder.build();
   }
 
-  private void initFakeData() {
-    viewModel.getItems().add(createModel(0, "Tesak", "5", "2"));
-    viewModel.getItems().add(createModel(1, "Mec", "8", "0"));
-    viewModel.getItems().add(createModel(2, "Nuz", "2", "0"));
-    viewModel.getItems().add(createModel(3, "Savle", "4", "-1"));
-    viewModel.getItems().add(createModel(4, "Dyka", "3", "0"));
-  }
-
-  private WeaponDetailModel createModel(Integer id, String name, String strength, String damage) {
-    var result = new WeaponDetailModel();
-    result.setId(id);
-    result.setName(name);
-    result.setStrength(strength);
-    result.setDamage(damage);
-    result.rebaseline();
-
-    return result;
-
-  }
 }

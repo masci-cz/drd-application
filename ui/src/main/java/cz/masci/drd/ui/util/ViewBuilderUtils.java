@@ -35,6 +35,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import lombok.experimental.UtilityClass;
 
+// TODO Move to commons-springfx library
 @UtilityClass
 public class ViewBuilderUtils {
 
