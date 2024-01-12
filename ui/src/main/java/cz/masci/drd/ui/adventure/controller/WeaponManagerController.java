@@ -75,7 +75,7 @@ public class WeaponManagerController implements ViewProvider<Region> {
           log.debug("Saving item {}", item);
           var savedItem = interactor.save(item);
           ConcurrentUtils.runInFXThread(() -> {
-            if (item.getId() == 0) {
+            if (item.getId() <= 0) {
               item.setId(savedItem.getId());
             }
             item.rebaseline();

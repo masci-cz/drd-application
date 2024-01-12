@@ -22,7 +22,9 @@ package cz.masci.drd.ui.adventure.view;
 import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
 import cz.masci.drd.ui.adventure.model.WeaponListModel;
 import cz.masci.springfx.mvci.util.ListChangeListenerBuilder;
+import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
 import io.github.palexdev.materialfx.controls.MFXTableView;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
@@ -32,6 +34,8 @@ import java.util.function.Function;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Builder;
@@ -44,7 +48,16 @@ public class WeaponListViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    return new StackPane(buildTable());
+    return new StackPane(buildTable(), buildAddButton());
+  }
+
+  private Region buildAddButton() {
+    // TODO add new item in the list and select it and then focus detail view
+    var result = ButtonBuilder.builder().text("+").styleClass("filled").command(this::createWeapon).build(MFXButton::new);
+    StackPane.setAlignment(result, Pos.BOTTOM_RIGHT);
+    StackPane.setMargin(result, new Insets(30.0, 30.0, 80.0, 30.0));
+
+    return result;
   }
 
   private Region buildTable() {
@@ -93,4 +106,10 @@ public class WeaponListViewBuilder implements Builder<Region> {
         .build();
   }
 
+  private void createWeapon() {
+    var item = new WeaponDetailModel();
+    item.setId(-1);
+    item.setName("Nová zbraň");
+    viewModel.getItems().add(item);
+  }
 }
