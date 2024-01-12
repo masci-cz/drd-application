@@ -19,10 +19,10 @@
 
 package cz.masci.drd.ui.adventure.controller;
 
-import cz.masci.commons.springfx.exception.CrudException;
 import cz.masci.drd.ui.adventure.interactor.WeaponInteractor;
 import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
 import cz.masci.drd.ui.adventure.model.WeaponListModel;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.util.ConcurrentUtils;
 import cz.masci.drd.ui.util.dirty.DirtyModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
@@ -30,16 +30,21 @@ import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 import javafx.scene.layout.Region;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class WeaponManagerController implements ViewProvider<Region> {
   private final WeaponListModel viewModel;
+  private final StatusBarViewModel statusBarViewModel;
   private final WeaponInteractor interactor;
   private final CommandsViewBuilder viewBuilder;
 
-  public WeaponManagerController(WeaponListModel viewModel, WeaponInteractor interactor) {
+  public WeaponManagerController(WeaponListModel viewModel, StatusBarViewModel statusBarViewModel, WeaponInteractor interactor) {
     this.viewModel = viewModel;
+    this.statusBarViewModel = statusBarViewModel;
     this.interactor = interactor;
     viewBuilder = new CommandsViewBuilder(
         List.of(
@@ -52,7 +57,6 @@ public class WeaponManagerController implements ViewProvider<Region> {
 
   @Override
   public Region getView() {
-    load(() -> {});
     return viewBuilder.build();
   }
 
@@ -62,9 +66,13 @@ public class WeaponManagerController implements ViewProvider<Region> {
   }
 
   private void save(Runnable postGuiStuff) {
+    log.debug("Clicked save all weapons");
+    statusBarViewModel.clearMessage();
+    AtomicInteger savedCount = new AtomicInteger(0);
     ConcurrentUtils.startBackgroundTask(() -> {
       getDirtyItems().forEach(item -> {
         try {
+          log.debug("Saving item {}", item);
           var savedItem = interactor.save(item);
           ConcurrentUtils.runInFXThread(() -> {
             if (item.getId() == 0) {
@@ -72,19 +80,25 @@ public class WeaponManagerController implements ViewProvider<Region> {
             }
             item.rebaseline();
           });
-        } catch (CrudException e) {
-          // TODO set error message
+          savedCount.incrementAndGet();
+        } catch (Exception e) {
+          statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", item.getName(), e.getLocalizedMessage()));
         }
       });
       return null;
-    }, postGuiStuff);
+    }, () -> {
+      statusBarViewModel.setInfoMessage(String.format("Bylo uloženo %d záznamů", savedCount.get()));
+      postGuiStuff.run();
+    });
   }
 
   private void discard() {
+    statusBarViewModel.clearMessage();
     getDirtyItems().forEach(DirtyModel::reset);
+    statusBarViewModel.setInfoMessage("Byly zrušeny provedené změny");
   }
 
-  private List<WeaponDetailModel> getDirtyItems() {
-    return viewModel.getItems().stream().filter(DirtyModel::isDirty).collect(Collectors.toList());
+  private Stream<WeaponDetailModel> getDirtyItems() {
+    return viewModel.getItems().stream().filter(DirtyModel::isDirty);
   }
 }

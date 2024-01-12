@@ -21,28 +21,43 @@ package cz.masci.drd.ui.adventure.controller;
 
 import cz.masci.drd.ui.adventure.interactor.WeaponInteractor;
 import cz.masci.drd.ui.adventure.model.WeaponListModel;
+import cz.masci.drd.ui.common.controller.StatusBarController;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
+import cz.masci.drd.ui.common.view.ListDetailViewExtendedBuilder;
+import cz.masci.drd.ui.util.ConcurrentUtils;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import cz.masci.springfx.mvci.view.builder.ListDetailViewBuilder;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WeaponListDetailController implements ViewProvider<Region> {
 
-  private final ListDetailViewBuilder viewBuilder;
+  private final ListDetailViewExtendedBuilder viewBuilder;
+  private final WeaponListModel viewModel;
+  private final WeaponInteractor interactor;
 
   public WeaponListDetailController(WeaponInteractor interactor) {
-    WeaponListModel viewModel = new WeaponListModel();
+    this.interactor = interactor;
+    viewModel = new WeaponListModel();
+    var statusBarViewModel = new StatusBarViewModel();
+
     var listController = new WeaponListController(viewModel);
     var detailController = new WeaponDetailController(viewModel.selectedItemProperty());
-    var managerController = new WeaponManagerController(viewModel, interactor);
+    var managerController = new WeaponManagerController(viewModel, statusBarViewModel, interactor);
+    var statusBarController = new StatusBarController(statusBarViewModel);
 
-    viewBuilder = new ListDetailViewBuilder(listController.getView(), detailController.getView(), managerController.getView());
+    viewBuilder = new ListDetailViewExtendedBuilder(listController.getView(), detailController.getView(), managerController.getView(), statusBarController.getView());
   }
 
   @Override
   public Region getView() {
+    load();
     return viewBuilder.build();
+  }
+
+  private void load() {
+    viewModel.getItems().clear();
+    ConcurrentUtils.startBackgroundTask(interactor::list, items -> viewModel.getItems().setAll(items));
   }
 
 }

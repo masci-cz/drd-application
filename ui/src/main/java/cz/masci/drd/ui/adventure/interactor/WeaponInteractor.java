@@ -44,9 +44,7 @@ public class WeaponInteractor {
   public WeaponDetailModel save(WeaponDetailModel model) throws CrudException {
     var dto = weaponModelMapper.mapToDto(model);
     var savedDto = weaponService.save(dto);
-    var savedModel = weaponModelMapper.mapToModel(savedDto);
-    savedModel.rebaseline();
-    return savedModel;
+    return weaponModelMapper.mapToModel(savedDto);
   }
 
   public void delete(WeaponDetailModel model) throws CrudException {
