@@ -52,7 +52,6 @@ public class WeaponListViewBuilder implements Builder<Region> {
   }
 
   private Region buildAddButton() {
-    // TODO add new item in the list and select it and then focus detail view
     var result = ButtonBuilder.builder().text("+").styleClass("filled").command(this::createWeapon).build(MFXButton::new);
     StackPane.setAlignment(result, Pos.BOTTOM_RIGHT);
     StackPane.setMargin(result, new Insets(30.0, 30.0, 80.0, 30.0));
@@ -60,7 +59,7 @@ public class WeaponListViewBuilder implements Builder<Region> {
     return result;
   }
 
-  private Region buildTable() {
+  private MFXTableView<WeaponDetailModel> buildTable() {
     var result = new MFXTableView<>(viewModel.getItems());
     result.setMaxHeight(Double.MAX_VALUE);
 
@@ -78,6 +77,7 @@ public class WeaponListViewBuilder implements Builder<Region> {
         );
 
     viewModel.getItems().addListener(createItemPropertyChangeListener(result));
+    viewModel.setOnSelectItem(item -> result.getSelectionModel().selectItem(item));
 
     return result;
   }
@@ -111,5 +111,7 @@ public class WeaponListViewBuilder implements Builder<Region> {
     item.setId(-1);
     item.setName("Nová zbraň");
     viewModel.getItems().add(item);
+    viewModel.selectItem(item);
+    viewModel.requestFocusDetailView();
   }
 }

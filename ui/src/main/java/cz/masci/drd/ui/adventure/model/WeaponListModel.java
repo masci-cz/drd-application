@@ -20,6 +20,24 @@
 package cz.masci.drd.ui.adventure.model;
 
 import cz.masci.springfx.mvci.model.ListModel;
+import java.util.function.Consumer;
+import lombok.Setter;
 
+@Setter
 public class WeaponListModel extends ListModel<WeaponDetailModel> {
+
+  private Consumer<WeaponDetailModel> onSelectItem;
+  private Runnable onRequestFocusDetailView;
+
+  public void selectItem(WeaponDetailModel viewModel) {
+    if (onSelectItem != null) {
+      onSelectItem.accept(viewModel);
+    }
+  }
+
+  public void requestFocusDetailView() {
+    if (onRequestFocusDetailView != null) {
+      onRequestFocusDetailView.run();
+    }
+  }
 }

@@ -19,14 +19,13 @@
 
 package cz.masci.drd.ui.adventure.controller;
 
-import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
+import cz.masci.drd.ui.adventure.model.WeaponListModel;
 import cz.masci.drd.ui.adventure.view.WeaponDetailViewBuilder;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
-import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Region;
 
 public class WeaponDetailController extends SimpleController<Region, WeaponDetailViewBuilder> {
-  public WeaponDetailController(ObjectProperty<WeaponDetailModel> viewModelProperty) {
-    super(new WeaponDetailViewBuilder(viewModelProperty));
+  public WeaponDetailController(WeaponListModel viewModel) {
+    super(new WeaponDetailViewBuilder(viewModel));
   }
 }

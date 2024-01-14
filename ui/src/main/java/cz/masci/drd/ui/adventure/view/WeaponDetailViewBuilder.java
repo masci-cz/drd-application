@@ -20,6 +20,7 @@
 package cz.masci.drd.ui.adventure.view;
 
 import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
+import cz.masci.drd.ui.adventure.model.WeaponListModel;
 import cz.masci.drd.ui.util.ConstraintUtils;
 import cz.masci.drd.ui.util.PropertyUtils;
 import cz.masci.drd.ui.util.ViewBuilderUtils;
@@ -42,10 +43,12 @@ import org.apache.commons.lang3.tuple.Triple;
 @RequiredArgsConstructor
 public class WeaponDetailViewBuilder implements Builder<Region> {
 
-  private final ObjectProperty<WeaponDetailModel> viewModelProperty;
+  private final WeaponListModel viewModel;
 
   @Override
   public Region build() {
+    ObjectProperty<WeaponDetailModel> viewModelProperty = viewModel.selectedItemProperty();
+
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
     var nameConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), viewModelProperty, "Název");
     var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameConstraint);
@@ -67,6 +70,8 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
         Triple.of(damageTextField.textProperty(), WeaponDetailModel::damageProperty, "")
     );
     BindingUtils.bindNullableBidirectional(viewModelProperty, propertiesToBind);
+
+    viewModel.setOnRequestFocusDetailView(nameTextField::requestFocus);
 
     return VBoxBuilder.vBox()
         .setSpacing(5.0)

@@ -42,7 +42,7 @@ public class WeaponListDetailController implements ViewProvider<Region> {
     var statusBarViewModel = new StatusBarViewModel();
 
     var listController = new WeaponListController(viewModel);
-    var detailController = new WeaponDetailController(viewModel.selectedItemProperty());
+    var detailController = new WeaponDetailController(viewModel);
     var managerController = new WeaponManagerController(viewModel, statusBarViewModel, interactor);
     var statusBarController = new StatusBarController(statusBarViewModel);
 
