@@ -80,7 +80,7 @@
         <javafx.version>17.0.2</javafx.version>
         <controlsfx.version>11.1.2</controlsfx.version>
         <apache.lang.version>3.11</apache.lang.version>
-        <cz.masci.commons.springfx>0.0.20-SNAPSHOT</cz.masci.commons.springfx>
+        <cz.masci.commons.springfx>0.0.20</cz.masci.commons.springfx>
     </properties>
 
     <dependencyManagement>
@@ -238,4 +238,11 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>sonatype-public</id>
+            <name>Sonatype public repository</name>
+            <url>https://s01.oss.sonatype.org/content/groups/public</url>
+        </repository>
+    </repositories>
 </project>
