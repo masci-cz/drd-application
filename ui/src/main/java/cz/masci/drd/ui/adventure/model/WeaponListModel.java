@@ -29,13 +29,19 @@ public class WeaponListModel extends ListModel<WeaponDetailModel> {
   private Consumer<WeaponDetailModel> onSelectItem;
   private Runnable onRequestFocusDetailView;
 
-  public void selectItem(WeaponDetailModel viewModel) {
-    if (onSelectItem != null) {
-      onSelectItem.accept(viewModel);
-    }
+  public void removeItem(WeaponDetailModel viewModel) {
+    selectedItem.set(null);
+    items.remove(viewModel);
   }
 
-  public void requestFocusDetailView() {
+  public void createItem() {
+    var item = new WeaponDetailModel();
+    item.setId(-1);
+    item.setName("Nová zbraň");
+    items.add(item);
+    if (onSelectItem != null) {
+      onSelectItem.accept(item);
+    }
     if (onRequestFocusDetailView != null) {
       onRequestFocusDetailView.run();
     }

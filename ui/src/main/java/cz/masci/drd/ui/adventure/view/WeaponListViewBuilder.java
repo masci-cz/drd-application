@@ -52,7 +52,7 @@ public class WeaponListViewBuilder implements Builder<Region> {
   }
 
   private Region buildAddButton() {
-    var result = ButtonBuilder.builder().text("+").styleClass("filled").command(this::createWeapon).build(MFXButton::new);
+    var result = ButtonBuilder.builder().text("+").styleClass("filled").command(viewModel::createItem).build(MFXButton::new);
     StackPane.setAlignment(result, Pos.BOTTOM_RIGHT);
     StackPane.setMargin(result, new Insets(30.0, 30.0, 80.0, 30.0));
 
@@ -106,12 +106,4 @@ public class WeaponListViewBuilder implements Builder<Region> {
         .build();
   }
 
-  private void createWeapon() {
-    var item = new WeaponDetailModel();
-    item.setId(-1);
-    item.setName("Nová zbraň");
-    viewModel.getItems().add(item);
-    viewModel.selectItem(item);
-    viewModel.requestFocusDetailView();
-  }
 }
