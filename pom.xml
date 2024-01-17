@@ -237,12 +237,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>sonatype-public</id>
-            <name>Sonatype public repository</name>
-            <url>https://s01.oss.sonatype.org/content/groups/public</url>
-        </repository>
-    </repositories>
 </project>
