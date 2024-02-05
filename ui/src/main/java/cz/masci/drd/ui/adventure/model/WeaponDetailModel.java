@@ -19,18 +19,17 @@
 
 package cz.masci.drd.ui.adventure.model;
 
-import cz.masci.drd.ui.util.dirty.DirtyModel;
 import cz.masci.drd.ui.util.ConstraintUtils;
+import cz.masci.drd.ui.util.model.DetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
 import io.github.palexdev.materialfx.validation.MFXValidator;
-import io.github.palexdev.materialfx.validation.Validated;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
-public class WeaponDetailModel implements DirtyModel, Validated {
+public class WeaponDetailModel implements DetailModel<Long> {
   private final LongProperty id = new SimpleLongProperty();
   private final DirtyStringProperty name = new DirtyStringProperty("");
   private final DirtyStringProperty strength = new DirtyStringProperty("");
@@ -50,7 +49,8 @@ public class WeaponDetailModel implements DirtyModel, Validated {
   }
 
   // region Setters and Getters
-  public long getId() {
+  @Override
+  public Long getId() {
     return id.get();
   }
 
@@ -58,7 +58,8 @@ public class WeaponDetailModel implements DirtyModel, Validated {
     return id;
   }
 
-  public void setId(long id) {
+  @Override
+  public void setId(Long id) {
     this.id.set(id);
   }
 
@@ -99,4 +100,9 @@ public class WeaponDetailModel implements DirtyModel, Validated {
   }
 
   // endregion
+
+  @Override
+  public boolean isTransient() {
+    return getId() == null || getId() <= 0;
+  }
 }

@@ -19,24 +19,20 @@
 
 package cz.masci.drd.ui.adventure.model;
 
-import cz.masci.springfx.mvci.model.ListModel;
+import cz.masci.drd.ui.util.model.AbstractListModel;
 import java.util.function.Consumer;
 import lombok.Setter;
 
 @Setter
-public class WeaponListModel extends ListModel<WeaponDetailModel> {
-
+public class WeaponListModel extends AbstractListModel<WeaponDetailModel> {
+  // TODO add setOnChangeItemProperty property
+  // TODO add method changeItemProperty
   private Consumer<WeaponDetailModel> onSelectItem;
   private Runnable onRequestFocusDetailView;
 
-  public void removeItem(WeaponDetailModel viewModel) {
-    selectedItem.set(null);
-    items.remove(viewModel);
-  }
-
   public void createItem() {
     var item = new WeaponDetailModel();
-    item.setId(-1);
+    item.setId(-1L);
     item.setName("Nová zbraň");
     items.add(item);
     if (onSelectItem != null) {

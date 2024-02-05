@@ -22,6 +22,7 @@ package cz.masci.drd.ui.adventure.interactor;
 import cz.masci.commons.springfx.exception.CrudException;
 import cz.masci.drd.service.WeaponService;
 import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
+import cz.masci.drd.ui.util.interactor.CRUDInteractor;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class WeaponInteractor {
-
+public class WeaponInteractor implements CRUDInteractor<WeaponDetailModel> {
   private final WeaponService weaponService;
   private final WeaponModelMapper weaponModelMapper;
 

@@ -35,6 +35,7 @@ public class ConstraintUtils {
 
   public final static int ABILITY_SCORE_MIN = 0;
   public final static int ABILITY_SCORE_MAX = 21;
+  private final static String NUMBER_REGEX = "[-+]?\\d+";
 
   /**
    * Returns a constraint that validates whether the given StringProperty is not empty.
@@ -96,7 +97,7 @@ public class ConstraintUtils {
     return Builder.build()
         .setSeverity(Severity.ERROR)
         .setMessage(String.format("Pole %s musí být číslo", fieldName))
-        .setCondition(Bindings.createBooleanBinding(() -> property.get() != null && property.get().matches("\\d+"), property))
+        .setCondition(Bindings.createBooleanBinding(() -> property.get() != null && property.get().matches(NUMBER_REGEX), property))
         .get();
   }
 
@@ -117,7 +118,7 @@ public class ConstraintUtils {
     return Builder.build()
         .setSeverity(Severity.ERROR)
         .setMessage(String.format("Pole %s musí být číslo", fieldName))
-        .setCondition(nullableProperty.isNull().or(Bindings.createBooleanBinding(() -> property.get() != null && property.get().matches("[-+]?\\d+"), property)))
+        .setCondition(nullableProperty.isNull().or(Bindings.createBooleanBinding(() -> property.get() != null && property.get().matches(NUMBER_REGEX), property)))
         .get();
   }
 

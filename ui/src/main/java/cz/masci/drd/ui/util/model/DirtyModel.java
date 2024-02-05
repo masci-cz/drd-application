@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util.dirty;
+package cz.masci.drd.ui.util.model;
 
 import static java.util.Objects.requireNonNull;
 

@@ -69,13 +69,14 @@ public class WeaponListViewBuilder implements Builder<Region> {
 
     result.getTableColumns().addAll(List.of(nameColumn, strengthColumn, damageColumn));
     result.setTableRowFactory(data -> new DirtyMFXTableRow<>(result, data, "dirty-row"));
+    // TODO use EventStream to get selected property
     result.getSelectionModel().setAllowsMultipleSelection(false);
     result.getSelectionModel()
         .selectionProperty()
         .addListener(
             (MapChangeListener<? super Integer, ? super WeaponDetailModel>) (change) -> viewModel.selectedItemProperty().setValue(change.wasAdded() ? change.getValueAdded() : null)
         );
-
+    // TODO set onChangeItemProperty instead of adding listener
     viewModel.getItems().addListener(createItemPropertyChangeListener(result));
     viewModel.setOnSelectItem(item -> result.getSelectionModel().selectItem(item));
 

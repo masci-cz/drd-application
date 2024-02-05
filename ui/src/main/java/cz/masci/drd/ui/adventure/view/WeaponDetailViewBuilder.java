@@ -63,6 +63,7 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
     var damageIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(damageTextField.textProperty(), viewModelProperty, "Útočnost");
     var damageTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsEmptyConstraint, damageIsNumberConstraint);
 
+    // Use reactfx to bind nullable properties bidirectional
     List<Triple<StringProperty, Function<WeaponDetailModel, StringProperty>, String>> propertiesToBind = List.of(
         // textProperty -> model property -> default value
         Triple.of(nameTextField.textProperty(), WeaponDetailModel::nameProperty, ""),
