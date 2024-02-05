@@ -20,14 +20,26 @@
 package cz.masci.drd.ui.util.model;
 
 import cz.masci.springfx.mvci.model.dirty.DirtyListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import java.util.function.Consumer;
 import javafx.collections.ObservableList;
+import lombok.Setter;
+import org.reactfx.value.Var;
 
-public class AbstractListModel<E extends DetailModel<?>> implements ListModel<E> {
+public abstract class AbstractListModel<E extends DetailModel<?>> implements ListModel<E> {
   protected final DirtyListProperty<E> items = new DirtyListProperty<>();
+  protected final Var<E> selectedItem;
+  @Setter
+  protected Runnable onChangeItemProperty;
+  @Setter
+  private Consumer<E> onSelectItem;
+  @Setter
+  private Runnable onRequestFocusDetailView;
 
-  protected final ObjectProperty<E> selectedItem = new SimpleObjectProperty<>();
+  public AbstractListModel(E initialValue) {
+    selectedItem = Var.newSimpleVar(initialValue);
+  }
+
+  protected abstract E newItem();
 
   @Override
   public ObservableList<E> getItems() {
@@ -35,18 +47,40 @@ public class AbstractListModel<E extends DetailModel<?>> implements ListModel<E>
   }
 
   @Override
-  public E getSelectedItem() {
-    return selectedItem.getValue();
-  }
-
-  @Override
-  public ObjectProperty<E> selectedItemProperty() {
+  public Var<E> selectedItemProperty() {
     return selectedItem;
   }
 
   @Override
   public void remove(E item) {
-    selectedItem.set(null);
+    selectedItem.setValue(null);
     items.remove(item);
+  }
+
+  @Override
+  public void changeItemProperty() {
+    if (onChangeItemProperty != null) {
+      onChangeItemProperty.run();
+    }
+  }
+
+  public void createItem() {
+    var item = newItem();
+    items.add(item);
+    selectItem(item);
+    requestFocusDetailView();
+  }
+
+  @Override
+  public void selectItem(E item) {
+    if (onSelectItem != null) {
+      onSelectItem.accept(item);
+    }
+  }
+
+  public void requestFocusDetailView() {
+    if (onRequestFocusDetailView != null) {
+      onRequestFocusDetailView.run();
+    }
   }
 }

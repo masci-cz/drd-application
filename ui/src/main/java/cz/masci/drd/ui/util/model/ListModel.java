@@ -19,11 +19,12 @@
 
 package cz.masci.drd.ui.util.model;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
+import org.reactfx.value.Var;
 
-public interface ListModel<E extends DetailModel<?>> extends Removable<E> {
+public interface ListModel<E> extends Removable<E> {
   ObservableList<E> getItems();
-  E getSelectedItem();
-  ObjectProperty<E> selectedItemProperty();
+  Var<E> selectedItemProperty();
+  void changeItemProperty();
+  void selectItem(E item);
 }

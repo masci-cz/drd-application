@@ -21,7 +21,6 @@ package cz.masci.drd.ui.adventure.view;
 
 import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
 import cz.masci.drd.ui.adventure.model.WeaponListModel;
-import cz.masci.springfx.mvci.util.ListChangeListenerBuilder;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -31,15 +30,15 @@ import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
-import javafx.beans.value.ChangeListener;
-import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
+import javafx.collections.MapChangeListener.Change;
+import javafx.collections.ObservableMap;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
+import org.reactfx.EventStreams;
 
 @RequiredArgsConstructor
 public class WeaponListViewBuilder implements Builder<Region> {
@@ -69,15 +68,13 @@ public class WeaponListViewBuilder implements Builder<Region> {
 
     result.getTableColumns().addAll(List.of(nameColumn, strengthColumn, damageColumn));
     result.setTableRowFactory(data -> new DirtyMFXTableRow<>(result, data, "dirty-row"));
-    // TODO use EventStream to get selected property
     result.getSelectionModel().setAllowsMultipleSelection(false);
-    result.getSelectionModel()
-        .selectionProperty()
-        .addListener(
-            (MapChangeListener<? super Integer, ? super WeaponDetailModel>) (change) -> viewModel.selectedItemProperty().setValue(change.wasAdded() ? change.getValueAdded() : null)
-        );
-    // TODO set onChangeItemProperty instead of adding listener
-    viewModel.getItems().addListener(createItemPropertyChangeListener(result));
+    ObservableMap<Integer, WeaponDetailModel> selectionProperty = result.getSelectionModel().selectionProperty();
+    EventStreams.changesOf(selectionProperty)
+        .filter(Change::wasAdded)
+        .map(Change::getValueAdded)
+        .feedTo(viewModel.selectedItemProperty());
+    viewModel.setOnChangeItemProperty(result::update);
     viewModel.setOnSelectItem(item -> result.getSelectionModel().selectItem(item));
 
     return result;
@@ -88,23 +85,6 @@ public class WeaponListViewBuilder implements Builder<Region> {
     result.setRowCellFactory(item -> new MFXTableRowCell<>(extractor));
 
     return result;
-  }
-
-  private ListChangeListener<? super WeaponDetailModel> createItemPropertyChangeListener(MFXTableView<WeaponDetailModel> tableView) {
-    ChangeListener<? super String> itemPropertyListener = ((observable, oldValue, newValue) -> tableView.update());
-
-    return new ListChangeListenerBuilder<WeaponDetailModel>()
-        .onAdd(addItem -> {
-          addItem.nameProperty().addListener(itemPropertyListener);
-          addItem.strengthProperty().addListener(itemPropertyListener);
-          addItem.damageProperty().addListener(itemPropertyListener);
-        })
-        .onRemove(remItem -> {
-          remItem.nameProperty().removeListener(itemPropertyListener);
-          remItem.strengthProperty().removeListener(itemPropertyListener);
-          remItem.damageProperty().removeListener(itemPropertyListener);
-        })
-        .build();
   }
 
 }

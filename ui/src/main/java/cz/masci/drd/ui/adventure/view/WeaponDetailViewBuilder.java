@@ -24,21 +24,17 @@ import cz.masci.drd.ui.adventure.model.WeaponListModel;
 import cz.masci.drd.ui.util.ConstraintUtils;
 import cz.masci.drd.ui.util.PropertyUtils;
 import cz.masci.drd.ui.util.ViewBuilderUtils;
-import cz.masci.springfx.mvci.util.BindingUtils;
 import cz.masci.springfx.mvci.util.BuilderUtils;
 import io.github.palexdev.materialfx.builders.control.TextFieldBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.enums.FloatMode;
-import java.util.List;
-import java.util.function.Function;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Triple;
+import org.reactfx.value.Var;
 
 @RequiredArgsConstructor
 public class WeaponDetailViewBuilder implements Builder<Region> {
@@ -47,30 +43,43 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    ObjectProperty<WeaponDetailModel> viewModelProperty = viewModel.selectedItemProperty();
-
+    Var<WeaponDetailModel> selectedProperty = viewModel.selectedItemProperty();
+    // TODO update constraint to check nullable selected property for all text fields
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
-    var nameConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), viewModelProperty, "Název");
+    var nameConstraint = ConstraintUtils.isNotEmpty(nameTextField.textProperty(), "Název");
     var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameConstraint);
 
     var strengthTextField = createTextField("Útočné číslo", 250.0);
-    var strengthNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(strengthTextField.textProperty(), viewModelProperty, "Útočné číslo");
-    var strengthIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(strengthTextField.textProperty(), viewModelProperty, "Útočné číslo");
+    var strengthNotEmptyConstraint = ConstraintUtils.isNotEmpty(strengthTextField.textProperty(), "Útočné číslo");
+    var strengthIsNumberConstraint = ConstraintUtils.isNumber(strengthTextField.textProperty(), "Útočné číslo");
     var strengthTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(strengthTextField, PropertyUtils.not(strengthTextField.delegateFocusedProperty())::addListener, strengthNotEmptyConstraint, strengthIsNumberConstraint);
 
     var damageTextField = createTextField("Útočnost", 250.0);
-    var damageIsEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(damageTextField.textProperty(), viewModelProperty, "Útočnost");
-    var damageIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(damageTextField.textProperty(), viewModelProperty, "Útočnost");
+    var damageIsEmptyConstraint = ConstraintUtils.isNotEmpty(damageTextField.textProperty(), "Útočnost");
+    var damageIsNumberConstraint = ConstraintUtils.isNumber(damageTextField.textProperty(), "Útočnost");
     var damageTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsEmptyConstraint, damageIsNumberConstraint);
 
-    // Use reactfx to bind nullable properties bidirectional
-    List<Triple<StringProperty, Function<WeaponDetailModel, StringProperty>, String>> propertiesToBind = List.of(
-        // textProperty -> model property -> default value
-        Triple.of(nameTextField.textProperty(), WeaponDetailModel::nameProperty, ""),
-        Triple.of(strengthTextField.textProperty(), WeaponDetailModel::strengthProperty, ""),
-        Triple.of(damageTextField.textProperty(), WeaponDetailModel::damageProperty, "")
-    );
-    BindingUtils.bindNullableBidirectional(viewModelProperty, propertiesToBind);
+    // create nullable properties
+    Var<String> nameProperty = selectedProperty.selectVar(WeaponDetailModel::nameProperty);
+    Var<String> strengthProperty = selectedProperty.selectVar(WeaponDetailModel::strengthProperty);
+    Var<String> damageProperty = selectedProperty.selectVar(WeaponDetailModel::damageProperty);
+    // bind nullable properties to text fields
+    nameTextField.textProperty().bindBidirectional(nameProperty);
+    strengthTextField.textProperty().bindBidirectional(strengthProperty);
+    damageTextField.textProperty().bindBidirectional(damageProperty);
+    // listen to changes and update source
+    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.changeItemProperty();
+    nameProperty.observeChanges(changeListener);
+    strengthProperty.observeChanges(changeListener);
+    damageProperty.observeChanges(changeListener);
+
+//    List<Triple<StringProperty, Function<WeaponDetailModel, StringProperty>, String>> propertiesToBind = List.of(
+//        // textProperty -> model property -> default value
+//        Triple.of(nameTextField.textProperty(), WeaponDetailModel::nameProperty, ""),
+//        Triple.of(strengthTextField.textProperty(), WeaponDetailModel::strengthProperty, ""),
+//        Triple.of(damageTextField.textProperty(), WeaponDetailModel::damageProperty, "")
+//    );
+//    BindingUtils.bindNullableBidirectional(selectedItemProperty, propertiesToBind);
 
     viewModel.setOnRequestFocusDetailView(nameTextField::requestFocus);
 

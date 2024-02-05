@@ -28,6 +28,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -51,6 +52,23 @@ public class ConstraintUtils {
         .setSeverity(Severity.ERROR)
         .setMessage(String.format("Pole %s je povinné", fieldName))
         .setCondition(property.isNotEmpty())
+        .get();
+  }
+
+  /**
+   * Returns a constraint that validates whether the given StringProperty is not empty.
+   *
+   * @param property the StringProperty to validate
+   * @param fieldName the field name used in error message for the constraint
+   * @return a constraint that validates whether the given StringProperty is not empty
+   */
+  public static Constraint isNotEmptyAndConditionIsTrue(StringProperty property, ObservableBooleanValue condition, String fieldName) {
+    requireNonNull(property);
+
+    return Constraint.Builder.build()
+        .setSeverity(Severity.ERROR)
+        .setMessage(String.format("Pole %s je povinné", fieldName))
+        .setCondition(property.isNotEmpty().and(condition))
         .get();
   }
 

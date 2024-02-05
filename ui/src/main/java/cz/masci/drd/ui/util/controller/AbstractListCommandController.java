@@ -63,6 +63,7 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
   protected abstract String getItemDisplayInfo(T item);
 
   private void load(Runnable postGuiStuff) {
+    viewModel.selectItem(null);
     viewModel.getItems().clear();
     ConcurrentUtils.startBackgroundTask(interactor::list, postGuiStuff, viewModel.getItems()::setAll);
   }
