@@ -17,19 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.adventure.model;
+package cz.masci.drd.ui.util;
 
-import cz.masci.drd.ui.util.model.AbstractListModel;
-import lombok.Setter;
+import java.util.function.Function;
+import javafx.beans.property.Property;
+import lombok.experimental.UtilityClass;
+import org.reactfx.value.Var;
 
-@Setter
-public class WeaponListModel extends AbstractListModel<WeaponDetailModel> {
+@UtilityClass
+public class ReactFxUtils {
 
-  public WeaponDetailModel newItem() {
-    var item = new WeaponDetailModel();
-    item.setId(-1L);
-    item.setName("Nová zbraň");
-    return item;
+  public static  <T, U> Var<U> selectVarOrElseConst(Var<T> src, Function<T, Property<U>> property, U constValue) {
+    return src.flatMap(property)
+        .orElseConst(constValue)
+        .asVar(newValue -> src.ifPresent(srcProperty -> property.apply(srcProperty).setValue(newValue)));
   }
 
 }

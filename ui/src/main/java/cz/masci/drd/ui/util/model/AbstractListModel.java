@@ -27,17 +27,13 @@ import org.reactfx.value.Var;
 
 public abstract class AbstractListModel<E extends DetailModel<?>> implements ListModel<E> {
   protected final DirtyListProperty<E> items = new DirtyListProperty<>();
-  protected final Var<E> selectedItem;
+  protected final Var<E> selectedItem = Var.newSimpleVar(null);
   @Setter
   protected Runnable onChangeItemProperty;
   @Setter
   private Consumer<E> onSelectItem;
   @Setter
   private Runnable onRequestFocusDetailView;
-
-  public AbstractListModel(E initialValue) {
-    selectedItem = Var.newSimpleVar(initialValue);
-  }
 
   protected abstract E newItem();
 
