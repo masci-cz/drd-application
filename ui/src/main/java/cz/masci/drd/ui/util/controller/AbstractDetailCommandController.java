@@ -36,7 +36,7 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
 
   public AbstractDetailCommandController(ListModel<T> viewModel, StatusBarViewModel statusBarViewModel, CRUDInteractor<T> interactor) {
     this.viewModel = viewModel;
-    this.selectedItemProperty = Val.wrap(viewModel.selectedItemProperty());
+    this.selectedItemProperty = Val.wrap(viewModel.selectedElementProperty());
     this.statusBarViewModel = statusBarViewModel;
     this.interactor = interactor;
     this.viewBuilder =
@@ -76,7 +76,7 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
     if (!discardDisableProperty.get()) {
       selectedItemProperty.ifPresent(item -> {
         if (item.isTransient()) {
-          viewModel.remove(item);
+          viewModel.removeElement(item);
         } else {
           item.reset();
         }
@@ -119,7 +119,7 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
         try {
           log.debug("Deleting item {}", item);
           interactor.delete(item);
-          ConcurrentUtils.runInFXThread(() -> viewModel.remove(item));
+          ConcurrentUtils.runInFXThread(() -> viewModel.removeElement(item));
         } catch (Exception e) {
           statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při mazání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
         }

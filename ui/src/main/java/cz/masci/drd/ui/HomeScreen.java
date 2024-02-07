@@ -21,10 +21,10 @@ package cz.masci.drd.ui;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
 import cz.masci.drd.ui.adventure.AdventureController;
-import cz.masci.drd.ui.adventure.WeaponController;
 import cz.masci.drd.ui.adventure.controller.WeaponListDetailController;
 import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.monster.MonsterController;
+import cz.masci.springfx.mvci.controller.ViewProvider;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,8 +72,7 @@ public class HomeScreen implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     btnAdventures.setOnAction(btnAction(StageType.ADVENTURES, getScene(AdventureController.class)));
     btnMonsters.setOnAction(btnAction(StageType.MONSTERS, getScene(MonsterController.class)));
-//    btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getScene(WeaponController.class)));
-    btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getSceneForView()));
+    btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getSceneForView(WeaponListDetailController.class, 800, 600)));
     btnBattle.setOnAction(btnAction(StageType.BATTLE, getSceneForBattleController()));
   }
 
@@ -110,10 +109,10 @@ public class HomeScreen implements Initializable {
     };
   }
 
-  private Supplier<Scene> getSceneForView() {
+  private Supplier<Scene> getSceneForView(Class<? extends ViewProvider<?>> sceneClass, double width, double height) {
     return () -> {
-      var controller = applicationContext.getBean(WeaponListDetailController.class);
-      return new Scene(controller.getView(), 800, 1000);
+      var controller = applicationContext.getBean(sceneClass);
+      return new Scene(controller.getView(), width, height);
     };
   }
 

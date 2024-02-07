@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 public class WeaponListModel extends AbstractListModel<WeaponDetailModel> {
 
-  public WeaponDetailModel newItem() {
+  public WeaponDetailModel newElement() {
     var item = new WeaponDetailModel();
     item.setId(-1L);
     item.setName("Nová zbraň");

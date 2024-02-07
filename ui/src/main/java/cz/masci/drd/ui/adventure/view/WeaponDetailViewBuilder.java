@@ -45,7 +45,7 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    Var<WeaponDetailModel> selectedProperty = viewModel.selectedItemProperty();
+    Var<WeaponDetailModel> selectedProperty = viewModel.selectedElementProperty();
     // TODO update constraint to check nullable selected property for all text fields
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
     var nameConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
@@ -70,12 +70,12 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
     strengthTextField.textProperty().bindBidirectional(strengthProperty);
     damageTextField.textProperty().bindBidirectional(damageProperty);
     // listen to changes and update source
-    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.changeItemProperty();
+    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.updateElementsProperty();
     nameProperty.observeChanges(changeListener);
     strengthProperty.observeChanges(changeListener);
     damageProperty.observeChanges(changeListener);
 
-    viewModel.setOnRequestFocusDetailView(nameTextField::requestFocus);
+    viewModel.setOnFocusView(nameTextField::requestFocus);
 
     return VBoxBuilder.vBox()
         .setSpacing(5.0)

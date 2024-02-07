@@ -19,64 +19,71 @@
 
 package cz.masci.drd.ui.util.model;
 
+import cz.masci.drd.ui.util.model.lib.Focusable;
 import cz.masci.springfx.mvci.model.dirty.DirtyListProperty;
 import java.util.function.Consumer;
 import javafx.collections.ObservableList;
 import lombok.Setter;
 import org.reactfx.value.Var;
 
-public abstract class AbstractListModel<E extends DetailModel<?>> implements ListModel<E> {
-  protected final DirtyListProperty<E> items = new DirtyListProperty<>();
-  protected final Var<E> selectedItem = Var.newSimpleVar(null);
+public abstract class AbstractListModel<E extends DetailModel<?>> implements ListModel<E>, Focusable {
+  protected final DirtyListProperty<E> elements = new DirtyListProperty<>();
+  protected final Var<E> selectedElement = Var.newSimpleVar(null);
   @Setter
-  protected Runnable onChangeItemProperty;
+  protected Consumer<E> onSelectElement;
   @Setter
-  private Consumer<E> onSelectItem;
+  protected Runnable onUpdateElementsProperty;
   @Setter
-  private Runnable onRequestFocusDetailView;
+  protected Consumer<E> onRemoveElement;
+  @Setter
+  protected Runnable onFocusView;
 
-  protected abstract E newItem();
-
-  @Override
-  public ObservableList<E> getItems() {
-    return items.get();
-  }
-
-  @Override
-  public Var<E> selectedItemProperty() {
-    return selectedItem;
-  }
-
-  @Override
-  public void remove(E item) {
-    selectedItem.setValue(null);
-    items.remove(item);
-  }
-
-  @Override
-  public void changeItemProperty() {
-    if (onChangeItemProperty != null) {
-      onChangeItemProperty.run();
-    }
-  }
+  protected abstract E newElement();
 
   public void createItem() {
-    var item = newItem();
-    items.add(item);
-    selectItem(item);
-    requestFocusDetailView();
+    var element = newElement();
+    elements.add(element);
+    selectElement(element);
+    focusView();
   }
 
   @Override
-  public void selectItem(E item) {
-    if (onSelectItem != null) {
-      onSelectItem.accept(item);
+  public ObservableList<E> getElements() {
+    return elements.get();
+  }
+
+  @Override
+  public Var<E> selectedElementProperty() {
+    return selectedElement;
+  }
+
+  @Override
+  public void removeElement(E element) {
+    selectedElement.setValue(null);
+    elements.remove(element);
+    if (onRemoveElement != null) {
+      onRemoveElement.accept(element);
     }
   }
 
-  public void requestFocusDetailView() {
-    if (onRequestFocusDetailView != null) {
-      onRequestFocusDetailView.run();
+  @Override
+  public void updateElementsProperty() {
+    if (onUpdateElementsProperty != null) {
+      onUpdateElementsProperty.run();
+    }
+  }
+
+  @Override
+  public void selectElement(E item) {
+    if (onSelectElement != null) {
+      onSelectElement.accept(item);
+    }
+  }
+
+  @Override
+  public void focusView() {
+    if (onFocusView != null) {
+      onFocusView.run();
     }
   }
 }

@@ -60,8 +60,8 @@ public class WeaponListDetailController implements ViewProvider<Region> {
   }
 
   private void load() {
-    viewModel.getItems().clear();
-    ConcurrentUtils.startBackgroundTask(interactor::list, items -> viewModel.getItems().setAll(items));
+    viewModel.getElements().clear();
+    ConcurrentUtils.startBackgroundTask(interactor::list, items -> viewModel.getElements().setAll(items));
   }
 
 }

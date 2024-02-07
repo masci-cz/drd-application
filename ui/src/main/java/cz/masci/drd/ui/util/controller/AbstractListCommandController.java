@@ -29,6 +29,7 @@ import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -63,16 +64,16 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
   protected abstract String getItemDisplayInfo(T item);
 
   private void load(Runnable postGuiStuff) {
-    viewModel.selectItem(null);
-    viewModel.getItems().clear();
-    ConcurrentUtils.startBackgroundTask(interactor::list, postGuiStuff, viewModel.getItems()::setAll);
+    viewModel.selectElement(null);
+    viewModel.getElements().clear();
+    ConcurrentUtils.startBackgroundTask(interactor::list, postGuiStuff, viewModel.getElements()::setAll);
   }
 
   private void save(Runnable postGuiStuff) {
     statusBarViewModel.clearMessage();
     AtomicInteger savedCount = new AtomicInteger(0);
     ConcurrentUtils.startBackgroundTask(() -> {
-      getDirtyItems().forEach(item -> {
+      getDirtyElements().forEach(item -> {
         try {
           var savedItem = interactor.save(item);
           ConcurrentUtils.runInFXThread(() -> {
@@ -95,11 +96,19 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
 
   private void discard() {
     statusBarViewModel.clearMessage();
-    getDirtyItems().forEach(DirtyModel::reset);  // TODO remove transient records
+    var elementsToRemove = new ArrayList<T>();
+    getDirtyElements().forEach(element -> {
+      if (element.isTransient()) {
+        elementsToRemove.add(element);
+      } else {
+        element.reset();
+      }
+    });
+    elementsToRemove.forEach(viewModel::removeElement);
     statusBarViewModel.setInfoMessage("Byly zrušeny provedené změny");
   }
 
-  private Stream<T> getDirtyItems() {
-    return viewModel.getItems().stream().filter(DirtyModel::isDirty);
+  private Stream<T> getDirtyElements() {
+    return viewModel.getElements().stream().filter(DirtyModel::isDirty);
   }
 }

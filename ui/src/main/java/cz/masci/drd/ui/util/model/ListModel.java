@@ -19,12 +19,12 @@
 
 package cz.masci.drd.ui.util.model;
 
-import javafx.collections.ObservableList;
-import org.reactfx.value.Var;
+import cz.masci.drd.ui.util.model.lib.Removable;
+import cz.masci.drd.ui.util.model.lib.Selectable;
+import cz.masci.drd.ui.util.model.lib.Updatable;
 
-public interface ListModel<E> extends Removable<E> {
-  ObservableList<E> getItems();
-  Var<E> selectedItemProperty();
-  void changeItemProperty();
-  void selectItem(E item);
-}
+/**
+ * This list groups {@code Selectable}, {@code Updatable} and {@code Removable} interfaces
+ * @param <E>
+ */
+public interface ListModel<E> extends Selectable<E>, Updatable, Removable<E> {}

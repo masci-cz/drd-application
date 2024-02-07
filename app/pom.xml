@@ -98,12 +98,12 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.artifactId}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.parent.artifactId}-${project.version}</finalName>
                     <mainClass>cz.masci.drd.app.SpringApplication</mainClass>
                     <skip>false</skip>
                 </configuration>
@@ -114,7 +114,6 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <classifier>exec</classifier>
                             <outputDirectory>${project.build.directory}/dist</outputDirectory>
                         </configuration>
                     </execution>
@@ -150,7 +149,7 @@
                                     <jreleaser>
                                         <environment>
                                             <properties>
-                                                <executableJarFile>${project.parent.artifactId}-${project.version}-exec.jar</executableJarFile>
+                                                <executableJarFile>${project.parent.artifactId}-${project.version}.jar</executableJarFile>
                                             </properties>
                                         </environment>
                                         <project>
@@ -166,7 +165,7 @@
                                                     <executable>${project.parent.artifactId}</executable>
                                                     <exported>false</exported>
                                                     <mainJar>
-                                                        <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}-exec.jar</path>
+                                                        <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}.jar</path>
                                                     </mainJar>
                                                     <moduleNames>
                                                         <moduleName>java.base</moduleName>
@@ -191,7 +190,7 @@
                                                     <active>RELEASE</active>
                                                     <jlink>drd-app-jlink</jlink>
                                                     <mainJar>
-                                                        <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}-exec.jar</path>
+                                                        <path>${project.build.directory}/dist/${project.parent.artifactId}-${project.version}.jar</path>
                                                     </mainJar>
                                                     <applicationPackage>
                                                         <appName>${appName}</appName>

@@ -59,7 +59,7 @@ public class WeaponListViewBuilder implements Builder<Region> {
   }
 
   private MFXTableView<WeaponDetailModel> buildTable() {
-    var result = new MFXTableView<>(viewModel.getItems());
+    var result = new MFXTableView<>(viewModel.getElements());
     result.setMaxHeight(Double.MAX_VALUE);
 
     var nameColumn = createTableColumn("Název", WeaponDetailModel::getName);
@@ -73,9 +73,9 @@ public class WeaponListViewBuilder implements Builder<Region> {
     EventStreams.changesOf(selectionProperty)
         .filter(Change::wasAdded)
         .map(Change::getValueAdded)
-        .feedTo(viewModel.selectedItemProperty());
-    viewModel.setOnChangeItemProperty(result::update);
-    viewModel.setOnSelectItem(item -> result.getSelectionModel().selectItem(item));
+        .feedTo(viewModel.selectedElementProperty());
+    viewModel.setOnUpdateElementsProperty(result::update);
+    viewModel.setOnSelectElement(item -> result.getSelectionModel().selectItem(item));
 
     return result;
   }
