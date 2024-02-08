@@ -19,24 +19,10 @@
 
 package cz.masci.drd.ui.util.model;
 
-import cz.masci.drd.ui.util.model.lib.Focusable;
-import cz.masci.springfx.mvci.model.dirty.DirtyListProperty;
-import java.util.function.Consumer;
-import javafx.collections.ObservableList;
-import lombok.Setter;
-import org.reactfx.value.Var;
+import cz.masci.springfx.mvci.model.detail.DetailModel;
+import cz.masci.springfx.mvci.model.list.SimpleListModel;
 
-public abstract class AbstractListModel<E extends DetailModel<?>> implements ListModel<E>, Focusable {
-  protected final DirtyListProperty<E> elements = new DirtyListProperty<>();
-  protected final Var<E> selectedElement = Var.newSimpleVar(null);
-  @Setter
-  protected Consumer<E> onSelectElement;
-  @Setter
-  protected Runnable onUpdateElementsProperty;
-  @Setter
-  protected Consumer<E> onRemoveElement;
-  @Setter
-  protected Runnable onFocusView;
+public abstract class AbstractListModel<T, E extends DetailModel<T>> extends SimpleListModel<T, E> {
 
   protected abstract E newElement();
 
@@ -47,43 +33,4 @@ public abstract class AbstractListModel<E extends DetailModel<?>> implements Lis
     focusView();
   }
 
-  @Override
-  public ObservableList<E> getElements() {
-    return elements.get();
-  }
-
-  @Override
-  public Var<E> selectedElementProperty() {
-    return selectedElement;
-  }
-
-  @Override
-  public void removeElement(E element) {
-    selectedElement.setValue(null);
-    elements.remove(element);
-    if (onRemoveElement != null) {
-      onRemoveElement.accept(element);
-    }
-  }
-
-  @Override
-  public void updateElementsProperty() {
-    if (onUpdateElementsProperty != null) {
-      onUpdateElementsProperty.run();
-    }
-  }
-
-  @Override
-  public void selectElement(E item) {
-    if (onSelectElement != null) {
-      onSelectElement.accept(item);
-    }
-  }
-
-  @Override
-  public void focusView() {
-    if (onFocusView != null) {
-      onFocusView.run();
-    }
-  }
 }

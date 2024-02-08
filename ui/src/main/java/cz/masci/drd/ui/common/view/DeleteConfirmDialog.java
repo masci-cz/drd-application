@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util.view;
+package cz.masci.drd.ui.common.view;
 
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;

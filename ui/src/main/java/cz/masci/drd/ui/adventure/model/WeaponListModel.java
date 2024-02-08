@@ -23,7 +23,7 @@ import cz.masci.drd.ui.util.model.AbstractListModel;
 import lombok.Setter;
 
 @Setter
-public class WeaponListModel extends AbstractListModel<WeaponDetailModel> {
+public class WeaponListModel extends AbstractListModel<Long, WeaponDetailModel> {
 
   public WeaponDetailModel newElement() {
     var item = new WeaponDetailModel();

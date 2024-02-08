@@ -20,7 +20,7 @@
 package cz.masci.drd.ui.adventure.model;
 
 import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.drd.ui.util.model.DetailModel;
+import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
 import io.github.palexdev.materialfx.validation.MFXValidator;
 import javafx.beans.property.LongProperty;
