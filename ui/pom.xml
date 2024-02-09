@@ -25,15 +25,28 @@
             <groupId>cz.masci.commons</groupId>
             <artifactId>commons-springfx-mve</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cz.masci.commons</groupId>
             <artifactId>commons-springfx-fxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cz.masci.commons</groupId>
+            <artifactId>commons-springfx-mvci</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- test dependencies -->

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,16 +17,15 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util;
+package cz.masci.drd.ui.adventure.interactor;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import lombok.experimental.UtilityClass;
+import cz.masci.drd.dto.WeaponDTO;
+import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
+import org.mapstruct.Mapper;
 
-@UtilityClass
-public class PropertyUtility {
-  public static final BooleanProperty FALSE_PROPERTY = new SimpleBooleanProperty(false);
+@Mapper(componentModel = "spring")
+public interface WeaponModelMapper {
+  WeaponDetailModel mapToModel(WeaponDTO dto);
 
-  public static final BooleanProperty TRUE_PROPERTY = new SimpleBooleanProperty(true);
-
+  WeaponDTO mapToDto(WeaponDetailModel model);
 }
