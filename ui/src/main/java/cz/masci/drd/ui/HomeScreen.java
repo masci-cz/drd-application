@@ -20,7 +20,7 @@
 package cz.masci.drd.ui;
 
 import cz.masci.commons.springfx.fxml.annotation.FxmlController;
-import cz.masci.drd.ui.adventure.AdventureController;
+import cz.masci.drd.ui.adventure.controller.AdventureListDetailController;
 import cz.masci.drd.ui.adventure.controller.WeaponListDetailController;
 import cz.masci.drd.ui.battle.BattleFactory;
 import cz.masci.drd.ui.monster.MonsterController;
@@ -70,7 +70,7 @@ public class HomeScreen implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    btnAdventures.setOnAction(btnAction(StageType.ADVENTURES, getScene(AdventureController.class)));
+    btnAdventures.setOnAction(btnAction(StageType.ADVENTURES, getSceneForView(AdventureListDetailController.class, 800, 600)));
     btnMonsters.setOnAction(btnAction(StageType.MONSTERS, getScene(MonsterController.class)));
     btnWeapons.setOnAction(btnAction(StageType.WEAPONS, getSceneForView(WeaponListDetailController.class, 800, 600)));
     btnBattle.setOnAction(btnAction(StageType.BATTLE, getSceneForBattleController()));

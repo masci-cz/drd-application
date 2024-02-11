@@ -17,17 +17,14 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.adventure.controller;
+package cz.masci.drd.ui.adventure.interactor;
 
-import cz.masci.drd.ui.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.adventure.view.WeaponListViewBuilder;
-import cz.masci.springfx.mvci.controller.impl.SimpleController;
-import javafx.scene.layout.Region;
+import cz.masci.drd.dto.AdventureDTO;
+import cz.masci.drd.ui.adventure.model.AdventureDetailModel;
+import org.mapstruct.Mapper;
 
-public class WeaponListController extends SimpleController<Region, WeaponListViewBuilder> {
-
-  public WeaponListController(WeaponListModel viewModel) {
-    super(new WeaponListViewBuilder(viewModel));
-  }
-
+@Mapper(componentModel = "spring")
+public interface AdventureModelMapper {
+  AdventureDetailModel mapToModel(AdventureDTO dto);
+  AdventureDTO mapToDto(AdventureDetailModel model);
 }

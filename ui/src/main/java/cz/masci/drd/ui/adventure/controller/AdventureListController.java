@@ -19,15 +19,14 @@
 
 package cz.masci.drd.ui.adventure.controller;
 
-import cz.masci.drd.ui.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.adventure.view.WeaponListViewBuilder;
+import cz.masci.drd.ui.adventure.model.AdventureListModel;
+import cz.masci.drd.ui.adventure.view.AdventureListViewBuilder;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
 
-public class WeaponListController extends SimpleController<Region, WeaponListViewBuilder> {
+public class AdventureListController extends SimpleController<Region, AdventureListViewBuilder> {
 
-  public WeaponListController(WeaponListModel viewModel) {
-    super(new WeaponListViewBuilder(viewModel));
+  public AdventureListController(AdventureListModel viewModel) {
+    super(new AdventureListViewBuilder(viewModel));
   }
-
 }

@@ -22,43 +22,36 @@ package cz.masci.drd.ui.adventure.view;
 import static cz.masci.drd.ui.util.ViewBuilderUtils.buildAddButton;
 import static cz.masci.drd.ui.util.ViewBuilderUtils.initSelectionModel;
 
-import cz.masci.drd.ui.adventure.model.WeaponDetailModel;
-import cz.masci.drd.ui.adventure.model.WeaponListModel;
+import cz.masci.drd.ui.adventure.model.AdventureDetailModel;
+import cz.masci.drd.ui.adventure.model.AdventureListModel;
 import cz.masci.drd.ui.util.ViewBuilderUtils;
 import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
 import io.github.palexdev.materialfx.controls.MFXTableView;
-import java.util.List;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class WeaponListViewBuilder implements Builder<Region> {
+public class AdventureListViewBuilder implements Builder<Region> {
 
-  private final WeaponListModel viewModel;
+  private final AdventureListModel viewModel;
 
   @Override
   public Region build() {
-    return new StackPane(buildTable(), buildAddButton(viewModel));
-  }
-
-  private MFXTableView<WeaponDetailModel> buildTable() {
     var result = new MFXTableView<>(viewModel.getElements());
     result.setMaxHeight(Double.MAX_VALUE);
     result.setMaxWidth(Double.MAX_VALUE);
 
-    var nameColumn = ViewBuilderUtils.createTableColumn("Název", WeaponDetailModel::getName);
-    nameColumn.setPrefWidth(300);
-    var strengthColumn = ViewBuilderUtils.createTableColumn("Útočné číslo", WeaponDetailModel::getStrength);
-    var damageColumn = ViewBuilderUtils.createTableColumn("Útočnost", WeaponDetailModel::getDamage);
+    var nameColumn = ViewBuilderUtils.createTableColumn("Název", AdventureDetailModel::getName);
+    nameColumn.setPrefWidth(400);
 
-    result.getTableColumns().addAll(List.of(nameColumn, strengthColumn, damageColumn));
+    result.getTableColumns().add(nameColumn);
     result.setTableRowFactory(data -> new DirtyMFXTableRow<>(result, data, "dirty-row"));
     result.getSelectionModel().setAllowsMultipleSelection(false);
 
     initSelectionModel(result.getSelectionModel(), result::update, viewModel);
 
-    return result;
+    return new StackPane(result, buildAddButton(viewModel));
   }
 }

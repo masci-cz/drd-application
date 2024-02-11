@@ -19,8 +19,8 @@
 
 package cz.masci.drd.ui.adventure.controller;
 
-import cz.masci.drd.ui.adventure.interactor.WeaponInteractor;
-import cz.masci.drd.ui.adventure.model.WeaponListModel;
+import cz.masci.drd.ui.adventure.interactor.AdventureInteractor;
+import cz.masci.drd.ui.adventure.model.AdventureListModel;
 import cz.masci.drd.ui.common.controller.StatusBarController;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.util.ConcurrentUtils;
@@ -30,26 +30,26 @@ import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WeaponListDetailController implements ViewProvider<Region> {
+public class AdventureListDetailController implements ViewProvider<Region> {
 
   private final ListDetailViewBuilder viewBuilder;
-  private final WeaponListModel viewModel;
-  private final WeaponInteractor interactor;
+  private final AdventureListModel viewModel;
+  private final AdventureInteractor interactor;
 
-  public WeaponListDetailController(WeaponInteractor interactor) {
+  public AdventureListDetailController(AdventureInteractor interactor) {
     this.interactor = interactor;
-    viewModel = new WeaponListModel();
+    viewModel = new AdventureListModel();
     var statusBarViewModel = new StatusBarViewModel();
 
-    var listController = new WeaponListController(viewModel);
-    var detailController = new WeaponDetailController(viewModel, statusBarViewModel, interactor);
-    var managerController = new WeaponListCommandController(viewModel, statusBarViewModel, interactor);
+    var listController = new AdventureListController(viewModel);
+    var detailController = new AdventureDetailController(viewModel, statusBarViewModel, interactor);
+    var listCommandController = new AdventureListCommandController(viewModel, statusBarViewModel, interactor);
     var statusBarController = new StatusBarController(statusBarViewModel);
 
     viewBuilder = ListDetailViewBuilder.builder()
         .withCenter(listController.getView())
         .withRight(detailController.getView())
-        .withTop(managerController.getView())
+        .withTop(listCommandController.getView())
         .withBottom(statusBarController.getView());
   }
 
@@ -63,5 +63,4 @@ public class WeaponListDetailController implements ViewProvider<Region> {
     viewModel.getElements().clear();
     ConcurrentUtils.startBackgroundTask(interactor::list, items -> viewModel.getElements().setAll(items));
   }
-
 }

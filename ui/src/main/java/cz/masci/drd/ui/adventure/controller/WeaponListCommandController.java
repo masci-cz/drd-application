@@ -27,9 +27,9 @@ import cz.masci.drd.ui.util.controller.AbstractListCommandController;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class WeaponManagerController extends AbstractListCommandController<Long, WeaponDetailModel> {
+public class WeaponListCommandController extends AbstractListCommandController<Long, WeaponDetailModel> {
 
-  public WeaponManagerController(WeaponListModel viewModel, StatusBarViewModel statusBarViewModel, WeaponInteractor interactor) {
+  public WeaponListCommandController(WeaponListModel viewModel, StatusBarViewModel statusBarViewModel, WeaponInteractor interactor) {
     super(viewModel, statusBarViewModel, interactor);
   }
 
