@@ -17,17 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.adventure.controller;
+package cz.masci.drd.ui.adventure.model;
 
-import cz.masci.drd.ui.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.adventure.view.WeaponListViewBuilder;
-import cz.masci.springfx.mvci.controller.impl.SimpleController;
-import javafx.scene.layout.Region;
+import cz.masci.drd.ui.util.model.AbstractListModel;
 
-public class WeaponListController extends SimpleController<Region, WeaponListViewBuilder> {
-
-  public WeaponListController(WeaponListModel viewModel) {
-    super(new WeaponListViewBuilder(viewModel));
+public class AdventureListModel extends AbstractListModel<Long, AdventureDetailModel> {
+  @Override
+  protected AdventureDetailModel newElement() {
+    var element = new AdventureDetailModel();
+    element.setId(-1L);
+    element.setName("Nový příběh");
+    return element;
   }
-
 }

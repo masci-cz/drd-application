@@ -19,15 +19,20 @@
 
 package cz.masci.drd.ui.adventure.controller;
 
-import cz.masci.drd.ui.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.adventure.view.WeaponListViewBuilder;
-import cz.masci.springfx.mvci.controller.impl.SimpleController;
-import javafx.scene.layout.Region;
+import cz.masci.drd.ui.adventure.interactor.AdventureInteractor;
+import cz.masci.drd.ui.adventure.model.AdventureDetailModel;
+import cz.masci.drd.ui.adventure.model.AdventureListModel;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
+import cz.masci.drd.ui.util.controller.AbstractListCommandController;
 
-public class WeaponListController extends SimpleController<Region, WeaponListViewBuilder> {
+public class AdventureListCommandController extends AbstractListCommandController<Long, AdventureDetailModel> {
 
-  public WeaponListController(WeaponListModel viewModel) {
-    super(new WeaponListViewBuilder(viewModel));
+  public AdventureListCommandController(AdventureListModel viewModel, StatusBarViewModel statusBarViewModel, AdventureInteractor interactor) {
+    super(viewModel, statusBarViewModel, interactor);
   }
 
+  @Override
+  protected String getItemDisplayInfo(AdventureDetailModel item) {
+    return item.getName();
+  }
 }

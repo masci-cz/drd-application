@@ -18,93 +18,27 @@
 package cz.masci.drd.dto;
 
 import cz.masci.commons.springfx.data.Modifiable;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import lombok.Data;
 
 /**
- *
  * @author Daniel
  */
+@Data
 public class WeaponDTO implements Modifiable {
   /**
    * Id
    */
-  private LongProperty idProperty;
+  private Long id;
   /**
    * Weapon name
    */
-  private StringProperty nameProperty;
+  private String name;
   /**
    * Weapon strength - útočné číslo
    */
-  private IntegerProperty strengthProperty;
+  private Integer strength;
   /**
    * Weapon damage - útočnost
    */
-  private IntegerProperty damageProperty;
-  
-  public final LongProperty idProperty() {
-    if (idProperty == null) {
-      idProperty = new SimpleLongProperty();
-    }
-    return idProperty;
-  }
-  
-  public Long getId() {
-    return idProperty().get();
-  }
-  
-  public void setId(Long id) {
-    idProperty().set(id);
-  }
-  
-  public final StringProperty nameProperty() {
-    if (nameProperty == null) {
-      nameProperty = new SimpleStringProperty();
-    }
-    return nameProperty;
-  }
-  
-  public String getName() {
-    return nameProperty().get();
-  }
-  
-  public void setName(String name) {
-    nameProperty().set(name);
-  }
-
-  
-  public final IntegerProperty strengthProperty() {
-    if (strengthProperty == null) {
-      strengthProperty = new SimpleIntegerProperty();
-    }
-    return strengthProperty;
-  }
-  
-  public Integer getStrength() {
-    return strengthProperty().get();
-  }
-  
-  public void setStrength(Integer strength) {
-    strengthProperty().set(strength);
-  }
-  
-  public final IntegerProperty damageProperty() {
-    if (damageProperty == null) {
-      damageProperty = new SimpleIntegerProperty();
-    }
-    return damageProperty;
-  }
-  
-  public Integer getDamage() {
-    return damageProperty().get();
-  }
-  
-  public void setDamage(Integer damage) {
-    damageProperty().set(damage);
-  }
+  private Integer damage;
 }

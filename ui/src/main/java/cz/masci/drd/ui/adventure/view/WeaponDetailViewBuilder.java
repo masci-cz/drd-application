@@ -27,10 +27,7 @@ import cz.masci.drd.ui.util.ConstraintUtils;
 import cz.masci.drd.ui.util.PropertyUtils;
 import cz.masci.drd.ui.util.ViewBuilderUtils;
 import cz.masci.springfx.mvci.util.BuilderUtils;
-import io.github.palexdev.materialfx.builders.control.TextFieldBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.materialfx.enums.FloatMode;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
@@ -46,17 +43,17 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
   @Override
   public Region build() {
     Var<WeaponDetailModel> selectedProperty = viewModel.selectedElementProperty();
-    // TODO update constraint to check nullable selected property for all text fields
-    var nameTextField = createTextField("Název", Double.MAX_VALUE);
+
+    var nameTextField = ViewBuilderUtils.createTextField("Název", Double.MAX_VALUE);
     var nameConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
     var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameConstraint);
 
-    var strengthTextField = createTextField("Útočné číslo", 250.0);
+    var strengthTextField = ViewBuilderUtils.createTextField("Útočné číslo", 100.0);
     var strengthNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
     var strengthIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
     var strengthTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(strengthTextField, PropertyUtils.not(strengthTextField.delegateFocusedProperty())::addListener, strengthNotEmptyConstraint, strengthIsNumberConstraint);
 
-    var damageTextField = createTextField("Útočnost", 250.0);
+    var damageTextField = ViewBuilderUtils.createTextField("Útočnost", 100.0);
     var damageIsEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
     var damageIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
     var damageTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsEmptyConstraint, damageIsNumberConstraint);
@@ -78,25 +75,9 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
     viewModel.setOnFocusView(nameTextField::requestFocus);
 
     return VBoxBuilder.vBox()
-        .setSpacing(5.0)
+        .setSpacing(10.0)
         .addChildren(nameTextFieldWithValidation, strengthTextFieldWithValidation, damageTextFieldWithValidation)
-        .setPadding(new Insets(5.0))
+        .setPadding(new Insets(5.0, 5.0, 5.0, 10.0))
         .getNode();
   }
-
-  /**
-   * Creates and returns a MFXTextField with the specified floating text and max width.
-   *
-   * @param floatingText the floating text to be displayed in the text field
-   * @param maxWidth the max width used for display
-   * @return a new MFXTextField object with the specified floating text
-   */
-  public static MFXTextField createTextField(String floatingText, Double maxWidth) {
-    return TextFieldBuilder.textField()
-        .setFloatMode(FloatMode.BORDER)
-        .setFloatingText(floatingText)
-        .setMaxWidth(maxWidth)
-        .getNode();
-  }
-
 }

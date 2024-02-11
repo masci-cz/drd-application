@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * 
  */
 public abstract class AbstractService<E, T extends Modifiable> {
-
+// TODO Remove Modifiable after getting rid of MVE pattern
   protected Optional<T> get(Supplier<Optional<E>> entityLoader) throws CrudException {
     Optional<T> dto;
 

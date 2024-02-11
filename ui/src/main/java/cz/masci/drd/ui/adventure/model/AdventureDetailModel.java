@@ -25,27 +25,22 @@ import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
 import io.github.palexdev.materialfx.validation.MFXValidator;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
-public class WeaponDetailModel implements DetailModel<Long> {
+public class AdventureDetailModel implements DetailModel<Long> {
+
   private final LongProperty id = new SimpleLongProperty();
   private final DirtyStringProperty name = new DirtyStringProperty("");
-  private final DirtyStringProperty strength = new DirtyStringProperty("");
-  private final DirtyStringProperty damage = new DirtyStringProperty("");
+  // dirty and validator
   @Getter
   private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
   @Getter
   private final MFXValidator validator = new MFXValidator();
 
-  public WeaponDetailModel() {
-    composite.addAll(name, strength, damage);
-    validator.constraint(ConstraintUtils.isNotEmpty(name, "Název zbraně"));
-    validator.constraint(ConstraintUtils.isNotEmpty(strength, "Útočné číslo zbraně"));
-    validator.constraint(ConstraintUtils.isNumber(strength, "Útočné číslo zbraně"));
-    validator.constraint(ConstraintUtils.isNotEmpty(damage, "Útočnost zbraně"));
-    validator.constraint(ConstraintUtils.isNumber(damage, "Útočnost zbraně"));
+  public AdventureDetailModel() {
+    composite.add(name);
+    validator.constraint(ConstraintUtils.isNotEmpty(name, "Název"));
   }
 
   // region Setters and Getters
@@ -54,6 +49,7 @@ public class WeaponDetailModel implements DetailModel<Long> {
     return id.get();
   }
 
+  @Override
   public void setId(Long id) {
     this.id.set(id);
   }
@@ -62,38 +58,13 @@ public class WeaponDetailModel implements DetailModel<Long> {
     return name.get();
   }
 
-  public StringProperty nameProperty() {
+  public DirtyStringProperty nameProperty() {
     return name;
   }
 
   public void setName(String name) {
     this.name.set(name);
   }
-
-  public String getStrength() {
-    return strength.get();
-  }
-
-  public StringProperty strengthProperty() {
-    return strength;
-  }
-
-  public void setStrength(String strength) {
-    this.strength.set(strength);
-  }
-
-  public String getDamage() {
-    return damage.get();
-  }
-
-  public StringProperty damageProperty() {
-    return damage;
-  }
-
-  public void setDamage(String damage) {
-    this.damage.set(damage);
-  }
-
   // endregion
 
   @Override

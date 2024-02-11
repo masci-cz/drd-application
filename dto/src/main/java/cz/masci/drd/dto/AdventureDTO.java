@@ -18,54 +18,21 @@
 package cz.masci.drd.dto;
 
 import cz.masci.commons.springfx.data.Modifiable;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import lombok.Data;
 
 /**
  *
  * @author Daniel
  */
+@Data
 public class AdventureDTO implements Modifiable {
 
   /**
    * Adventure id
    */
-  private LongProperty idProperty;
+  private Long id;
   /**
    * Adventure name
    */
-  private StringProperty nameProperty;  
-  
-  public final LongProperty idProperty() {
-    if (idProperty == null) {
-      idProperty = new SimpleLongProperty();
-    }
-    return idProperty;
-  }
-  
-  public Long getId() {
-    return idProperty().get();
-  }
-  
-  public void setId(Long id) {
-    idProperty().set(id);
-  }
-  
-  public final StringProperty nameProperty() {
-    if (nameProperty == null) {
-      nameProperty = new SimpleStringProperty();
-    }
-    return nameProperty;
-  }
-  
-  public String getName() {
-    return nameProperty().get();
-  }
-  
-  public void setName(String name) {
-    nameProperty().set(name);
-  }
-    
+  private String name;
 }
