@@ -61,7 +61,8 @@ public class AdventureDetailViewBuilder implements Builder<Region> {
     return VBoxBuilder.vBox()
         .setSpacing(5.0)
         .addChildren(nameTextFieldWithValidation)
-        .setPadding(new Insets(5.0))
+        .setPadding(new Insets(5.0, 5.0, 5.0, 10.0))
+        .setPrefWidth(400.0)
         .getNode();
   }
 }

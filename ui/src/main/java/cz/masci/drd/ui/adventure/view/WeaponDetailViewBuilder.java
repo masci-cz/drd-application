@@ -48,12 +48,12 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
     var nameConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
     var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameConstraint);
 
-    var strengthTextField = ViewBuilderUtils.createTextField("Útočné číslo", 250.0);
+    var strengthTextField = ViewBuilderUtils.createTextField("Útočné číslo", 100.0);
     var strengthNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
     var strengthIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
     var strengthTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(strengthTextField, PropertyUtils.not(strengthTextField.delegateFocusedProperty())::addListener, strengthNotEmptyConstraint, strengthIsNumberConstraint);
 
-    var damageTextField = ViewBuilderUtils.createTextField("Útočnost", 250.0);
+    var damageTextField = ViewBuilderUtils.createTextField("Útočnost", 100.0);
     var damageIsEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
     var damageIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
     var damageTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsEmptyConstraint, damageIsNumberConstraint);
@@ -75,9 +75,9 @@ public class WeaponDetailViewBuilder implements Builder<Region> {
     viewModel.setOnFocusView(nameTextField::requestFocus);
 
     return VBoxBuilder.vBox()
-        .setSpacing(5.0)
+        .setSpacing(10.0)
         .addChildren(nameTextFieldWithValidation, strengthTextFieldWithValidation, damageTextFieldWithValidation)
-        .setPadding(new Insets(5.0))
+        .setPadding(new Insets(5.0, 5.0, 5.0, 10.0))
         .getNode();
   }
 }
