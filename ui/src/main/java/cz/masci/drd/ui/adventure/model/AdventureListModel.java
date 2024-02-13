@@ -25,7 +25,7 @@ public class AdventureListModel extends AbstractListModel<Long, AdventureDetailM
   @Override
   protected AdventureDetailModel newElement() {
     var element = new AdventureDetailModel();
-    element.setId(-1L);
+    element.setId(null);
     element.setName("Nový příběh");
     return element;
   }

@@ -23,14 +23,14 @@ import cz.masci.drd.ui.util.ConstraintUtils;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
 import io.github.palexdev.materialfx.validation.MFXValidator;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import lombok.Getter;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
 public class WeaponDetailModel implements DetailModel<Long> {
-  private final LongProperty id = new SimpleLongProperty();
+  private final ObjectProperty<Long> id = new SimpleObjectProperty<>();
   private final DirtyStringProperty name = new DirtyStringProperty("");
   private final DirtyStringProperty strength = new DirtyStringProperty("");
   private final DirtyStringProperty damage = new DirtyStringProperty("");

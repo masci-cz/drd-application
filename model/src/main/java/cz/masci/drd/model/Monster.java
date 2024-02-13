@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,30 +25,30 @@ public class Monster {
     @Column(name = "MONSTER_ID", nullable = false, updatable = false)
     private Long id;
 
-    @NotNull
+    @NotEmpty
     private String name;
-    @NotNull
+    @NotEmpty
     private String viability;
-    @NotNull
+    @NotEmpty
     private String attack;
-    @NotNull
+    @NotEmpty
     private String defence;
     @NotNull
     private Integer endurance;
-    @NotNull
+    @NotEmpty
     private String dimension;
     private Integer combativeness;
-    @NotNull
+    @NotEmpty
     private String vulnerability;
-    @NotNull
+    @NotEmpty
     private String moveability;
     private String stamina;
     @NotNull
     private Integer intelligence;
     private Integer conviction;
-    @NotNull
+    @NotEmpty
     private String treasure;
-    @NotNull
+    @NotEmpty
     private String experience;
     private String description;
 }

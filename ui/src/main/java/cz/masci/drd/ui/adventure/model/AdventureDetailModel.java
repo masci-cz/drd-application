@@ -23,14 +23,14 @@ import cz.masci.drd.ui.util.ConstraintUtils;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
 import io.github.palexdev.materialfx.validation.MFXValidator;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
 public class AdventureDetailModel implements DetailModel<Long> {
 
-  private final LongProperty id = new SimpleLongProperty();
+  private final ObjectProperty<Long> id = new SimpleObjectProperty<>();
   private final DirtyStringProperty name = new DirtyStringProperty("");
   // dirty and validator
   @Getter
