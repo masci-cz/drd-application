@@ -86,7 +86,7 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
 
   private void saveItem(Runnable postGuiStuff) {
     if (!saveDisableProperty.get()) {
-      log.debug("Clicked save weapon");
+      log.debug("Clicked save item");
       selectedItemProperty.ifPresent(item -> ConcurrentUtils.startBackgroundTask(() -> {
         try {
           log.debug("Saving item {}", item);
@@ -99,6 +99,7 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
           });
         } catch (Exception e) {
           statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
+          log.error("Error when saving item", e);
         }
         return null;
       }, () -> {

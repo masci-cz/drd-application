@@ -85,8 +85,6 @@ public class MonsterDetailViewBuilder implements Builder<Region> {
     var moveabilityTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(moveabilityTextField, PropertyUtils.not(moveabilityTextField.delegateFocusedProperty())::addListener, moveabilityIsNotEmptyConstraint);
 
     var staminaTextField = ViewBuilderUtils.createTextField("Vytrvalost", Double.MAX_VALUE);
-    var staminaIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(staminaTextField.textProperty(), selectedProperty, "Vytrvalost");
-    var staminaTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(staminaTextField, PropertyUtils.not(staminaTextField.delegateFocusedProperty())::addListener, staminaIsNotEmptyConstraint);
 
     var intelligenceTextField = ViewBuilderUtils.createTextField("Inteligence", Double.MAX_VALUE);
     var intelligenceIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(intelligenceTextField.textProperty(), selectedProperty, "Inteligence");
@@ -94,7 +92,7 @@ public class MonsterDetailViewBuilder implements Builder<Region> {
     var intelligenceTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(intelligenceTextField, PropertyUtils.not(intelligenceTextField.delegateFocusedProperty())::addListener, intelligenceIsNotEmptyConstraint, intelligenceIsNumberConstraint);
 
     var convictionTextField = ViewBuilderUtils.createTextField("Přesvědčení", Double.MAX_VALUE);
-    var convictionIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(convictionTextField.textProperty(), selectedProperty, "Přesvědčení");
+    var convictionIsNotEmptyConstraint = ConstraintUtils.isNumberOrEmptyWhenPropertyIsNotEmpty(convictionTextField.textProperty(), selectedProperty, "Přesvědčení");
     var convictionTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(convictionTextField, PropertyUtils.not(convictionTextField.delegateFocusedProperty())::addListener, convictionIsNotEmptyConstraint);
 
     var treasureTextField = ViewBuilderUtils.createTextField("Poklady", Double.MAX_VALUE);
@@ -106,8 +104,6 @@ public class MonsterDetailViewBuilder implements Builder<Region> {
     var experienceTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(experienceTextField, PropertyUtils.not(experienceTextField.delegateFocusedProperty())::addListener, experienceIsNotEmptyConstraint);
 
     var descriptionTextField = ViewBuilderUtils.createTextField("Popis", Double.MAX_VALUE);
-    var descriptionIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(descriptionTextField.textProperty(), selectedProperty, "Popis");
-    var descriptionTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(descriptionTextField, PropertyUtils.not(descriptionTextField.delegateFocusedProperty())::addListener, descriptionIsNotEmptyConstraint);
 
     // create nullable properties
     Var<String> nameProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::nameProperty, "");
@@ -193,10 +189,10 @@ public class MonsterDetailViewBuilder implements Builder<Region> {
     HBox.setHgrow(moveabilityTextFieldWithValidation, Priority.ALWAYS);
     var row5 = HBoxBuilder.hBox()
         .setSpacing(20.0)
-        .addChildren(staminaTextFieldWithValidation, intelligenceTextFieldWithValidation)
+        .addChildren(staminaTextField, intelligenceTextFieldWithValidation)
         .setMaxWidth(Double.MAX_VALUE)
         .getNode();
-    HBox.setHgrow(staminaTextFieldWithValidation, Priority.ALWAYS);
+    HBox.setHgrow(staminaTextField, Priority.ALWAYS);
     HBox.setHgrow(intelligenceTextFieldWithValidation, Priority.ALWAYS);
     var row6 = HBoxBuilder.hBox()
         .setSpacing(20.0)
@@ -208,7 +204,7 @@ public class MonsterDetailViewBuilder implements Builder<Region> {
 
     return VBoxBuilder.vBox()
         .setSpacing(10.0)
-        .addChildren(nameTextFieldWithValidation, row1, row2, row3, row4, row5, row6, experienceTextFieldWithValidation, descriptionTextFieldWithValidation)
+        .addChildren(nameTextFieldWithValidation, row1, row2, row3, row4, row5, row6, experienceTextFieldWithValidation, descriptionTextField)
         .setPadding(new Insets(5.0, 5.0, 5.0, 10.0))
         .getNode();
   }

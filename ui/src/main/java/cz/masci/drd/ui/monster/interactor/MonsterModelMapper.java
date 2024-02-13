@@ -21,12 +21,24 @@ package cz.masci.drd.ui.monster.interactor;
 
 import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.ui.monster.model.MonsterDetailModel;
+import org.apache.commons.lang3.StringUtils;
+import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface MonsterModelMapper {
 
   MonsterDetailModel mapToModel(MonsterDTO dto);
 
+  @Mapping(target = "combativeness", source = "combativeness", conditionQualifiedByName = "isNotBlank")
+  @Mapping(target = "conviction", source = "conviction", conditionQualifiedByName = "isNotBlank")
   MonsterDTO mapToDto(MonsterDetailModel model);
+
+  @Named("isNotBlank")
+  @Condition
+  default boolean isNotBlank(String value) {
+    return StringUtils.isNotBlank(value);
+  }
 }

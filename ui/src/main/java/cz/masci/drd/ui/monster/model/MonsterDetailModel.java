@@ -80,6 +80,7 @@ public class MonsterDetailModel implements DetailModel<Long> {
     validator.constraint(ConstraintUtils.isNotEmpty(vulnerability, "Zranitelnost"));
     validator.constraint(ConstraintUtils.isNotEmpty(moveability, "Pohyblivost"));
     validator.constraint(ConstraintUtils.isNumber(intelligence, "Inteligence"));
+    validator.constraint(ConstraintUtils.isNumberOrEmpty(conviction, "Inteligence"));
     validator.constraint(ConstraintUtils.isNotEmpty(treasure, "Poklady"));
     validator.constraint(ConstraintUtils.isNotEmpty(experience, "Zkušenost"));
   }
