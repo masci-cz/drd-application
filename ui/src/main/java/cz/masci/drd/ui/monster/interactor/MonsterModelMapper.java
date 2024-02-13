@@ -17,19 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.adventure.model;
+package cz.masci.drd.ui.monster.interactor;
 
-import cz.masci.drd.ui.util.model.AbstractListModel;
-import lombok.Setter;
+import cz.masci.drd.dto.MonsterDTO;
+import cz.masci.drd.ui.monster.model.MonsterDetailModel;
+import org.mapstruct.Mapper;
 
-@Setter
-public class WeaponListModel extends AbstractListModel<Long, WeaponDetailModel> {
+@Mapper(componentModel = "spring")
+public interface MonsterModelMapper {
 
-  public WeaponDetailModel newElement() {
-    var item = new WeaponDetailModel();
-    item.setId(null);
-    item.setName("Nová zbraň");
-    return item;
-  }
+  MonsterDetailModel mapToModel(MonsterDTO dto);
 
+  MonsterDTO mapToDto(MonsterDetailModel model);
 }

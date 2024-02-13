@@ -17,19 +17,17 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.adventure.model;
+package cz.masci.drd.ui.monster.controller;
 
-import cz.masci.drd.ui.util.model.AbstractListModel;
-import lombok.Setter;
+import cz.masci.drd.ui.monster.model.MonsterListModel;
+import cz.masci.drd.ui.monster.view.MonsterListViewBuilder;
+import cz.masci.springfx.mvci.controller.impl.SimpleController;
+import javafx.scene.layout.Region;
 
-@Setter
-public class WeaponListModel extends AbstractListModel<Long, WeaponDetailModel> {
+public class MonsterListController extends SimpleController<Region, MonsterListViewBuilder> {
 
-  public WeaponDetailModel newElement() {
-    var item = new WeaponDetailModel();
-    item.setId(null);
-    item.setName("Nová zbraň");
-    return item;
+  public MonsterListController(MonsterListModel viewModel) {
+    super(new MonsterListViewBuilder(viewModel));
   }
 
 }

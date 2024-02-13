@@ -17,19 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.adventure.model;
+package cz.masci.drd.ui.monster.model;
 
 import cz.masci.drd.ui.util.model.AbstractListModel;
-import lombok.Setter;
 
-@Setter
-public class WeaponListModel extends AbstractListModel<Long, WeaponDetailModel> {
-
-  public WeaponDetailModel newElement() {
-    var item = new WeaponDetailModel();
-    item.setId(null);
-    item.setName("Nová zbraň");
-    return item;
+public class MonsterListModel extends AbstractListModel<Long, MonsterDetailModel> {
+  @Override
+  protected MonsterDetailModel newElement() {
+    var element = new MonsterDetailModel();
+    element.setId(null);
+    element.setName("Nová příšera");
+    return element;
   }
-
 }

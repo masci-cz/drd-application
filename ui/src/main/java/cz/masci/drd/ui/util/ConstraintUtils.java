@@ -103,6 +103,23 @@ public class ConstraintUtils {
   }
 
   /**
+   * Returns a constraint that validates whether the given string property contains a number or is empty.
+   *
+   * @param stringProperty the string property to validate
+   * @param fieldName the field name used in the error message for the constraint
+   * @return a constraint that validates whether the given string property contains only a number
+   */
+  public static Constraint isNumberOrEmpty(StringProperty stringProperty, String fieldName) {
+    requireNonNull(stringProperty);
+
+    return Builder.build()
+        .setSeverity(Severity.ERROR)
+        .setMessage(String.format("Pole %s musí být číslo", fieldName))
+        .setCondition(Bindings.createBooleanBinding(() -> StringUtils.isBlank(stringProperty.get()) || stringProperty.get().matches(NUMBER_REGEX), stringProperty))
+        .get();
+  }
+
+  /**
    * Returns a constraint that validates whether the given string property is not empty or the nullable property is empty.
    *
    * @param stringProperty the string property to validate
@@ -140,6 +157,27 @@ public class ConstraintUtils {
         .setMessage(String.format("Pole %s musí být číslo", fieldName))
         .setCondition(Bindings.createBooleanBinding(() ->
             nullableProperty.isEmpty() || (stringProperty.get() != null && stringProperty.get().matches(NUMBER_REGEX)), nullableProperty, stringProperty)
+        )
+        .get();
+  }
+
+  /**
+   * Returns a constraint that validates whether the given string property contains only a number or the nullable property is empty.
+   *
+   * @param stringProperty the string property to validate
+   * @param nullableProperty the nullable property
+   * @param fieldName the field name used in the error message for the constraint
+   * @return a constraint that validates whether the given string property contains only a number
+   */
+  public static <T> Constraint isNumberOrEmptyWhenPropertyIsNotEmpty(StringProperty stringProperty, Var<T> nullableProperty, String fieldName) {
+    requireNonNull(nullableProperty);
+    requireNonNull(stringProperty);
+
+    return Builder.build()
+        .setSeverity(Severity.ERROR)
+        .setMessage(String.format("Pole %s musí být číslo", fieldName))
+        .setCondition(Bindings.createBooleanBinding(() ->
+            nullableProperty.isEmpty() || StringUtils.isBlank(stringProperty.get()) || stringProperty.get().matches(NUMBER_REGEX), nullableProperty, stringProperty)
         )
         .get();
   }
