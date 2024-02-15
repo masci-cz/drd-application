@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -88,33 +87,13 @@ public class ConcurrentUtils {
   public static <T> void startBackgroundTask(Callable<T> backgroundTask, Runnable postFetchGuiStuff, Consumer<T> onSucceeded, Runnable onFailed) {
     requireNonNull(backgroundTask);
 
-    Task<T> task = new Task<>() {
-      @Override
-      protected T call() throws Exception {
-        return backgroundTask.call();
-      }
-    };
-
-    task.setOnSucceeded(evt -> {
-      if (onSucceeded != null) {
-        onSucceeded.accept(task.getValue());
-      }
-      if (postFetchGuiStuff != null) {
-        postFetchGuiStuff.run();
-      }
-    });
-
-    task.setOnFailed(evt -> {
-      if (onFailed != null) {
-        onFailed.run();
-      }
-      if (postFetchGuiStuff != null) {
-        postFetchGuiStuff.run();
-      }
-    });
-
-    Thread thread = new Thread(task);
-    thread.start();
+    BackgroundTaskBuilder<T> builder = BackgroundTaskBuilder.builder();
+    builder
+        .task(backgroundTask)
+        .postGuiCall(postFetchGuiStuff)
+        .onFailed(task -> onFailed.run())
+        .onSucceeded(onSucceeded)
+        .start();
   }
 
   /**

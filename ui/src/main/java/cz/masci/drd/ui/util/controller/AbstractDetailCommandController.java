@@ -1,9 +1,10 @@
 package cz.masci.drd.ui.util.controller;
 
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
+import cz.masci.drd.ui.common.view.DeleteConfirmDialog;
+import cz.masci.drd.ui.util.BackgroundTaskBuilder;
 import cz.masci.drd.ui.util.ConcurrentUtils;
 import cz.masci.drd.ui.util.interactor.CRUDInteractor;
-import cz.masci.drd.ui.common.view.DeleteConfirmDialog;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.model.detail.DirtyModel;
@@ -87,25 +88,29 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
   private void saveItem(Runnable postGuiStuff) {
     if (!saveDisableProperty.get()) {
       log.debug("Clicked save item");
-      selectedItemProperty.ifPresent(item -> ConcurrentUtils.startBackgroundTask(() -> {
-        try {
-          log.debug("Saving item {}", item);
-          var savedItem = interactor.save(item);
-          ConcurrentUtils.runInFXThread(() -> {
-            if (item.isTransient()) {
-              item.setId(savedItem.getId());
-            }
-            item.rebaseline();
-          });
-        } catch (Exception e) {
-          statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
-          log.error("Error when saving item", e);
-        }
-        return null;
-      }, () -> {
-        statusBarViewModel.setInfoMessage("Záznam byl uložen");
-        postGuiStuff.run();
-      }));
+      selectedItemProperty.ifPresent(item -> {
+        BackgroundTaskBuilder<T> builder = BackgroundTaskBuilder.builder();
+        builder
+            .task(task -> {
+              log.debug("Saving item {}", item);
+              var savedItem = interactor.save(item);
+              ConcurrentUtils.runInFXThread(() -> {
+                if (item.isTransient()) {
+                  item.setId(savedItem.getId());
+                }
+                item.rebaseline();
+              });
+              return savedItem;
+            })
+            .onFailed(task -> {
+              var e = task.getException();
+              statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
+              log.error("Error when saving item", e);
+            })
+            .onSucceeded(savedItem -> statusBarViewModel.setInfoMessage(String.format("Záznam byl uložen %s", getItemDisplayInfo(savedItem))))
+            .postGuiCall(postGuiStuff)
+            .start();
+      });
     }
   }
 
