@@ -23,7 +23,7 @@ import cz.masci.drd.ui.common.controller.StatusBarController;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.monster.interactor.MonsterInteractor;
 import cz.masci.drd.ui.monster.model.MonsterListModel;
-import cz.masci.drd.ui.util.ConcurrentUtils;
+import cz.masci.drd.ui.util.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.view.builder.ListDetailViewBuilder;
 import javafx.scene.layout.Region;
@@ -61,7 +61,7 @@ public class MonsterListDetailController implements ViewProvider<Region> {
 
   private void load() {
     viewModel.getElements().clear();
-    ConcurrentUtils.startBackgroundTask(interactor::list, items -> viewModel.getElements().setAll(items));
+    BackgroundTaskBuilder.task(interactor::list).onSucceeded(viewModel.getElements()::setAll).start();
   }
 
 }

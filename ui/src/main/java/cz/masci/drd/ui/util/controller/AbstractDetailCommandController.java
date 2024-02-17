@@ -88,10 +88,9 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
   private void saveItem(Runnable postGuiStuff) {
     if (!saveDisableProperty.get()) {
       log.debug("Clicked save item");
-      selectedItemProperty.ifPresent(item -> {
-        BackgroundTaskBuilder<T> builder = BackgroundTaskBuilder.builder();
-        builder
-            .task(task -> {
+      selectedItemProperty.ifPresent(item ->
+        BackgroundTaskBuilder
+            .task(() -> {
               log.debug("Saving item {}", item);
               var savedItem = interactor.save(item);
               ConcurrentUtils.runInFXThread(() -> {
@@ -109,8 +108,8 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
             })
             .onSucceeded(savedItem -> statusBarViewModel.setInfoMessage(String.format("Záznam byl uložen %s", getItemDisplayInfo(savedItem))))
             .postGuiCall(postGuiStuff)
-            .start();
-      });
+            .start()
+      );
     }
   }
 
@@ -121,19 +120,17 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
 
   private void deleteItem(Runnable postGuiStuff) {
     if (!deleteDisableProperty.get()) {
-      selectedItemProperty.ifPresent(item -> ConcurrentUtils.startBackgroundTask(() -> {
-        try {
-          log.debug("Deleting item {}", item);
-          interactor.delete(item);
-          ConcurrentUtils.runInFXThread(() -> viewModel.removeElement(item));
-        } catch (Exception e) {
-          statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při mazání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
-        }
-        return null;
-      }, () -> {
-        statusBarViewModel.setInfoMessage("Záznam byl smazán");
-        postGuiStuff.run();
-      }));
+      selectedItemProperty.ifPresent(item -> BackgroundTaskBuilder
+          .task(() -> {
+            log.debug("Deleting item {}", getItemDisplayInfo(item));
+            interactor.delete(item);
+            ConcurrentUtils.runInFXThread(() -> viewModel.removeElement(item));
+            return item;
+          })
+          .onFailed(task -> statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při mazání %s : %s", getItemDisplayInfo(item), task.getException().getLocalizedMessage())))
+          .onSucceeded(deletedItem -> statusBarViewModel.setInfoMessage(String.format("Záznam byl smazán %s", getItemDisplayInfo(deletedItem))))
+          .postGuiCall(postGuiStuff)
+          .start());
     }
   }
 

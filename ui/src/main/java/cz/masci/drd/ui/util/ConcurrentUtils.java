@@ -19,82 +19,11 @@
 
 package cz.masci.drd.ui.util;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 import javafx.application.Platform;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ConcurrentUtils {
-
-  /**
-   * Starts a background task with the given supplier and post-fetch GUI action.
-   *
-   * @param backgroundTask  the supplier representing the background task to be executed
-   * @param postFetchGuiStuff  the runnable representing the action to be executed on the GUI thread after the background task completes
-   * @param <T>  the type of the background task result
-   */
-  public static <T> void startBackgroundTask(Callable<T> backgroundTask, Runnable postFetchGuiStuff) {
-    startBackgroundTask(backgroundTask, postFetchGuiStuff, null, null);
-  }
-
-  /**
-   * Starts a background task with the given supplier, post-fetch GUI action, and success action.
-   *
-   * @param backgroundTask  the supplier representing the background task to be executed
-   * @param postFetchGuiStuff  the runnable representing the action to be executed on the GUI thread after the background task completes
-   * @param onSucceeded  the consumer representing the action to be executed with the result of the background task
-   * @param <T>  the type of the background task result
-   */
-  public static <T> void startBackgroundTask(Callable<T> backgroundTask, Runnable postFetchGuiStuff, Consumer<T> onSucceeded) {
-    startBackgroundTask(backgroundTask, postFetchGuiStuff, onSucceeded, null);
-  }
-
-  /**
-   * Starts a background task with the given supplier and success action.
-   *
-   * @param backgroundTask  The supplier representing the background task to be executed.
-   * @param onSucceeded  The consumer representing the action to be executed with the result of the background task.
-   * @param <T>  The type of the background task result.
-   */
-  public static <T> void startBackgroundTask(Callable<T> backgroundTask, Consumer<T> onSucceeded) {
-    startBackgroundTask(backgroundTask, null, onSucceeded, null);
-  }
-
-  /**
-   * Starts a background task with the given supplier,  success action, and failure action.
-   *
-   * @param backgroundTask      the supplier representing the background task to be executed
-   * @param onSucceeded         the consumer representing the action to be executed with the result of the background task
-   * @param onFailed            the runnable representing the action to be executed if the background task fails
-   * @param <T>                 the type of the background task result
-   */
-  public static <T> void startBackgroundTask(Callable<T> backgroundTask, Consumer<T> onSucceeded, Runnable onFailed) {
-    startBackgroundTask(backgroundTask, null, onSucceeded, onFailed);
-  }
-
-  /**
-   * Starts a background task with the given supplier, post-fetch GUI action, success action, and failure action.
-   *
-   * @param backgroundTask  the supplier representing the background task to be executed
-   * @param postFetchGuiStuff  the runnable representing the action to be executed on the GUI thread after the background task completes
-   * @param onSucceeded  the consumer representing the action to be executed with the result of the background task
-   * @param onFailed  the runnable representing the action to be executed if the background task fails
-   * @param <T>  the type of the background task result
-   */
-  public static <T> void startBackgroundTask(Callable<T> backgroundTask, Runnable postFetchGuiStuff, Consumer<T> onSucceeded, Runnable onFailed) {
-    requireNonNull(backgroundTask);
-
-    BackgroundTaskBuilder<T> builder = BackgroundTaskBuilder.builder();
-    builder
-        .task(backgroundTask)
-        .postGuiCall(postFetchGuiStuff)
-        .onFailed(task -> onFailed.run())
-        .onSucceeded(onSucceeded)
-        .start();
-  }
 
   /**
    * Runs the given GUI-related code in the JavaFX Application Thread.

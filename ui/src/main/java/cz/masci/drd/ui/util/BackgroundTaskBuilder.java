@@ -24,6 +24,15 @@ import java.util.function.Consumer;
 import javafx.concurrent.Task;
 import org.apache.commons.lang3.function.FailableFunction;
 
+/**
+ * Starts a background task with the given supplier, post-fetch GUI action, success action, and failure action.
+ *
+ * the supplier representing the background task to be executed
+ * the runnable representing the action to be executed on the GUI thread after the background task completes
+ * the consumer representing the action to be executed with the result of the background task
+ * the runnable representing the action to be executed if the background task fails
+ * @param <T>  the type of the background task result
+ */
 public class BackgroundTaskBuilder<T> {
   private Callable<T> callableTask;
   private FailableFunction<Task<T>, T, ? extends Exception> functionalTask;
@@ -35,8 +44,21 @@ public class BackgroundTaskBuilder<T> {
   private Consumer<T> onSucceeded;
 
   private BackgroundTaskBuilder() {}
-  public static <T> BackgroundTaskBuilder<T> builder() {
-    return new BackgroundTaskBuilder<>();
+
+  private BackgroundTaskBuilder(Callable<T> callableTask) {
+    this.callableTask = callableTask;
+  }
+
+  private BackgroundTaskBuilder(FailableFunction<Task<T>, T, ? extends Exception> functionalTask) {
+    this.functionalTask = functionalTask;
+  }
+
+  public static <T> BackgroundTaskBuilder<T> task(Callable<T> callableTask) {
+    return new BackgroundTaskBuilder<>(callableTask);
+  }
+
+  public static <T> BackgroundTaskBuilder<T> task(FailableFunction<Task<T>, T, ? extends Exception> functionalTask) {
+    return new BackgroundTaskBuilder<>(functionalTask);
   }
 
   public void start() {
@@ -117,24 +139,6 @@ public class BackgroundTaskBuilder<T> {
         postGuiCall.run();
       }
     });
-  }
-
-  public BackgroundTaskBuilder<T> task(Callable<T> callableTask) {
-    if (functionalTask != null) {
-      functionalTask = null;
-    }
-    this.callableTask = callableTask;
-
-    return this;
-  }
-
-  public BackgroundTaskBuilder<T> task(FailableFunction<Task<T>, T, ? extends Exception> functionalTask) {
-    if (callableTask != null) {
-      callableTask = null;
-    }
-    this.functionalTask = functionalTask;
-
-    return this;
   }
 
   public BackgroundTaskBuilder<T> postGuiCall(Runnable postGuiCall) {
