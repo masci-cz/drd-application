@@ -20,6 +20,7 @@
 package cz.masci.drd.ui.util.controller;
 
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
+import cz.masci.drd.ui.util.BackgroundTaskBuilder;
 import cz.masci.drd.ui.util.ConcurrentUtils;
 import cz.masci.drd.ui.util.interactor.CRUDInteractor;
 import cz.masci.springfx.mvci.controller.ViewProvider;
@@ -66,32 +67,37 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
   private void load(Runnable postGuiStuff) {
     viewModel.selectElement(null);
     viewModel.getElements().clear();
-    ConcurrentUtils.startBackgroundTask(interactor::list, postGuiStuff, viewModel.getElements()::setAll);
+    BackgroundTaskBuilder
+        .task(interactor::list)
+        .postGuiCall(postGuiStuff)
+        .onSucceeded(viewModel.getElements()::setAll)
+        .start();
   }
 
   private void save(Runnable postGuiStuff) {
     statusBarViewModel.clearMessage();
     AtomicInteger savedCount = new AtomicInteger(0);
-    ConcurrentUtils.startBackgroundTask(() -> {
-      getDirtyElements().forEach(item -> {
-        try {
-          var savedItem = interactor.save(item);
-          ConcurrentUtils.runInFXThread(() -> {
-            if (item.isTransient()) {
-              item.setId(savedItem.getId());
+    BackgroundTaskBuilder
+        .task(() -> {
+          getDirtyElements().forEach(item -> {
+            try {
+              var savedItem = interactor.save(item);
+              ConcurrentUtils.runInFXThread(() -> {
+                if (item.isTransient()) {
+                  item.setId(savedItem.getId());
+                }
+                item.rebaseline();
+              });
+              savedCount.incrementAndGet();
+            } catch (Exception e) {
+              statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
             }
-            item.rebaseline();
           });
-          savedCount.incrementAndGet();
-        } catch (Exception e) {
-          statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
-        }
-      });
-      return null;
-    }, () -> {
-      statusBarViewModel.setInfoMessage(String.format("Bylo uloženo %d záznamů", savedCount.get()));
-      postGuiStuff.run();
-    });
+          return null;
+        })
+        .onSucceeded(unused -> statusBarViewModel.setInfoMessage(String.format("Bylo uloženo %d záznamů", savedCount.get())))
+        .postGuiCall(postGuiStuff)
+        .start();
   }
 
   private void discard() {
