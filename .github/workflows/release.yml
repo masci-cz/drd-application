@@ -61,7 +61,7 @@ jobs:
         JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
       run: |
         echo $JRELEASER_GPG_PUBLIC_KEY
-        mvn -B deploy -Passemble -Prelease "-Drevision=${{ needs.version.outputs.version}}" --file pom.xml
+        xvfb-run mvn -B deploy -Passemble -Prelease "-Drevision=${{ needs.version.outputs.version}}" --file pom.xml
 
     - name: Display JReleaser output
       run: |
