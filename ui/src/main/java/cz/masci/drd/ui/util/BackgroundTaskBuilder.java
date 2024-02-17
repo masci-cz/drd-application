@@ -25,12 +25,40 @@ import javafx.concurrent.Task;
 import org.apache.commons.lang3.function.FailableFunction;
 
 /**
- * Starts a background task with the given supplier, post-fetch GUI action, success action, and failure action.
+ * <pre>
+ *   This builder prepares {@link Task} with most events handlers.
+ * </pre>
  *
- * the supplier representing the background task to be executed
- * the runnable representing the action to be executed on the GUI thread after the background task completes
- * the consumer representing the action to be executed with the result of the background task
- * the runnable representing the action to be executed if the background task fails
+ * <h3>Basic usage</h3>
+ *
+ * <code>
+ *   <pre>
+ *     BackgroundTaskBuilder.task(() -> "Hello").start();
+ *   </pre>
+ * </code>
+ *
+ * <h3>All event handlers</h3>
+ *
+ * <code>
+ *   <pre>
+ *     BackgroundTaskBuilder
+ *        .task(() -> "Hello")
+ *        .onCancelled(task -> System.out.println("Task has been cancelled"))
+ *        .onFailed(task -> System.out.println("Task failed with an error: " + task.getException()))
+ *        .onRunning(task -> System.out.println("Task has been started"))
+ *        .onScheduled(task -> System.out.println("Task has been scheduled"))
+ *        .onSucceeded(taskResult -> System.out.println("Task ended with result: " + taskResult))
+ *        .postGuiCall(() -> System.out.println("This part is running in JavaFX thread"))
+ *        .start();
+ *   </pre>
+ * </code>
+ *
+ * <h3>Post GUI Call</h3>
+ *
+ * <pre>
+ *   <code>postGuiCall</code> is called when {@link Task} succeeded, cancelled or failed after appropriate onXXX method is called.
+ * </pre>
+ *
  * @param <T>  the type of the background task result
  */
 public class BackgroundTaskBuilder<T> {
@@ -42,8 +70,6 @@ public class BackgroundTaskBuilder<T> {
   private Consumer<Task<T>> onRunning;
   private Consumer<Task<T>> onScheduled;
   private Consumer<T> onSucceeded;
-
-  private BackgroundTaskBuilder() {}
 
   private BackgroundTaskBuilder(Callable<T> callableTask) {
     this.callableTask = callableTask;
