@@ -17,17 +17,14 @@
 package cz.masci.drd.app;
 
 import cz.masci.drd.theme.DrDAppTheme;
-import cz.masci.drd.ui.HomeScreen;
+import cz.masci.drd.ui.app.home.controller.HomeScreenController;
 import io.github.palexdev.materialfx.theming.JavaFXThemes;
 import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
 import io.github.palexdev.materialfx.theming.UserAgentBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import net.rgielen.fxweaver.core.FxControllerAndView;
-import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -41,7 +38,6 @@ public class JavaFxApplication extends Application {
 
   @Override
   public void init() {
-    System.out.println("JavaFxApplication - init");
     String[] args = getParameters().getRaw().toArray(new String[0]);
 
     this.applicationContext = new SpringApplicationBuilder()
@@ -63,19 +59,16 @@ public class JavaFxApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-    System.out.println("JavaFxApplication - start");
-    FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-    FxControllerAndView<HomeScreen, Parent> homeScreen = fxWeaver.load(HomeScreen.class);
-    Scene scene = new Scene(homeScreen.getView().orElseThrow());
+    var homeScreenController = applicationContext.getBean(HomeScreenController.class);
+    Scene scene = new Scene(homeScreenController.getView());
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
-    stage.setOnCloseRequest(homeScreen.getController()::doOnCloseRequest);
+    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
     stage.show();
   }
 
   @Override
   public void stop() {
-    System.out.println("JavaFxApplication - stop");
     this.applicationContext.close();
     Platform.exit();
   }

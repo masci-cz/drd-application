@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,20 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.common.model;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.springfx.mvci.model.detail.DetailModel;
+import cz.masci.springfx.mvci.model.list.SimpleListModel;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+public abstract class AbstractListModel<T, E extends DetailModel<T>> extends SimpleListModel<T, E> {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  protected abstract E newElement();
+
+  public void createItem() {
+    var element = newElement();
+    elements.add(element);
+    selectElement(element);
+    focusView();
   }
 
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
 }

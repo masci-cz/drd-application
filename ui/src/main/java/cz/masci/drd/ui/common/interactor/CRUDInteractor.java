@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,13 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.common.interactor;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.commons.springfx.exception.CrudException;
+import java.util.List;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
-
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
-  }
-
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
+public interface CRUDInteractor<T> {
+  List<T> list() throws CrudException;
+  T save(T item) throws CrudException;
+  void delete(T item) throws CrudException;
 }

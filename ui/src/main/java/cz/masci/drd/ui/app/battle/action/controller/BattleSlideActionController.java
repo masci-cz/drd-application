@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2023-2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.battle.action.controller;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.dto.actions.Action;
+import cz.masci.drd.ui.app.battle.slide.controller.BattleSlideController;
+import javafx.beans.property.BooleanProperty;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
-
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
-  }
-
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
+public interface BattleSlideActionController extends BattleSlideController {
+  <T> Action<T> getAction();
+  BooleanProperty getFinishedProperty();
+  String getAttackerName();
+  void applyAction();
+  void updateLifeDescription();
 }
