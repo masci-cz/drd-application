@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2023-2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,21 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.battle.action.control;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
+import net.rgielen.fxweaver.core.FxWeaver;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+@Slf4j
+public abstract class SimpleSelectAction<T> extends BaseSelectAction {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  protected final T controller;
+
+  public SimpleSelectAction(FxWeaver fxWeaver, Class<T> controllerClass) {
+    super();
+    var fxControllerAndView = fxWeaver.load(controllerClass);
+    controller = fxControllerAndView.getController();
+    view = fxControllerAndView.getView().orElseThrow();
   }
 
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
 }

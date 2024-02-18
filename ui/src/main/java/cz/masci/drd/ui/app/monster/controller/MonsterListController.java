@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,17 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.monster.controller;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.ui.app.monster.view.MonsterListViewBuilder;
+import cz.masci.drd.ui.app.monster.model.MonsterListModel;
+import cz.masci.springfx.mvci.controller.impl.SimpleController;
+import javafx.scene.layout.Region;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+public class MonsterListController extends SimpleController<Region, MonsterListViewBuilder> {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  public MonsterListController(MonsterListModel viewModel) {
+    super(new MonsterListViewBuilder(viewModel));
   }
 
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
 }

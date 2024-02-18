@@ -22,7 +22,7 @@ package cz.masci.drd.ui.util;
 import static cz.masci.springfx.mvci.util.BuilderUtils.INVALID_PSEUDO_CLASS;
 import static cz.masci.springfx.mvci.util.BuilderUtils.createValidationSupportingText;
 
-import cz.masci.drd.ui.util.model.AbstractListModel;
+import cz.masci.drd.ui.common.model.AbstractListModel;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import io.github.palexdev.materialfx.builders.control.TextFieldBuilder;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,17 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.adventure.controller;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.ui.app.adventure.model.WeaponListModel;
+import cz.masci.drd.ui.app.adventure.view.WeaponListViewBuilder;
+import cz.masci.springfx.mvci.controller.impl.SimpleController;
+import javafx.scene.layout.Region;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+public class WeaponListController extends SimpleController<Region, WeaponListViewBuilder> {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  public WeaponListController(WeaponListModel viewModel) {
+    super(new WeaponListViewBuilder(viewModel));
   }
 
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
 }

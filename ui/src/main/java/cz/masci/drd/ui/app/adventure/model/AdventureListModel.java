@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.adventure.model;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.ui.common.model.AbstractListModel;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
-
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
-  }
-
+public class AdventureListModel extends AbstractListModel<Long, AdventureDetailModel> {
   @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
+  protected AdventureDetailModel newElement() {
+    var element = new AdventureDetailModel();
+    element.setId(null);
+    element.setName("Nový příběh");
+    return element;
   }
 }

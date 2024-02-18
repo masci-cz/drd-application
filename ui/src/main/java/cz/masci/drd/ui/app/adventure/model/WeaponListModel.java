@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,19 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.adventure.model;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.ui.common.model.AbstractListModel;
+import lombok.Setter;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+@Setter
+public class WeaponListModel extends AbstractListModel<Long, WeaponDetailModel> {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  public WeaponDetailModel newElement() {
+    var item = new WeaponDetailModel();
+    item.setId(null);
+    item.setName("Nová zbraň");
+    return item;
   }
 
-  @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
-  }
 }

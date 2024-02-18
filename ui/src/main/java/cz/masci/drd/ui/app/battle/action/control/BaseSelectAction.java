@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2023-2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,34 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.battle.action.control;
 
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import javafx.scene.Node;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+@Slf4j
+public abstract class BaseSelectAction implements SelectAction {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  @Getter
+  protected Node view;
+
+  protected DuellistDTO actor;
+
+  public BaseSelectAction() {
+
+  }
+
+  public BaseSelectAction(Node view) {
+    this.view = view;
   }
 
   @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
+  public void initAction(DuellistDTO actor, List<DuellistDTO> duellists) {
+    log.trace("Init select action [{}]", this);
+    this.actor = actor;
   }
 }

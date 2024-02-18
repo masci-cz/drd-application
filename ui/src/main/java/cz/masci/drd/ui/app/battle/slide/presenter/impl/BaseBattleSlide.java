@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2023-2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.battle.slide.presenter.impl;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.service.BattleService;
+import cz.masci.drd.ui.app.battle.slide.presenter.BattleSlide;
+import lombok.RequiredArgsConstructor;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
+@RequiredArgsConstructor
+public abstract class BaseBattleSlide<T> implements BattleSlide<T> {
 
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
+  protected final BattleService battleService;
+
+  @Override
+  public void doBeforeSlide() {
+
   }
 
   @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
+  public void doAfterSlide() {
+
   }
 }

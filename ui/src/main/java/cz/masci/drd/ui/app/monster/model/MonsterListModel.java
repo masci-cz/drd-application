@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,19 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.converter;
+package cz.masci.drd.ui.app.monster.model;
 
-import cz.masci.drd.ui.app.battle.action.SelectAction;
-import jakarta.validation.constraints.NotNull;
+import cz.masci.drd.ui.common.model.AbstractListModel;
 
-public class ActionStringConverter extends SelectionStringConverter<SelectAction> {
-
-  public ActionStringConverter(String selectionText) {
-    super(selectionText);
-  }
-
+public class MonsterListModel extends AbstractListModel<Long, MonsterDetailModel> {
   @Override
-  protected String convert(@NotNull SelectAction object) {
-    return object.getName();
+  protected MonsterDetailModel newElement() {
+    var element = new MonsterDetailModel();
+    element.setId(null);
+    element.setName("Nová příšera");
+    return element;
   }
 }
