@@ -22,7 +22,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringApplication {
 
     public static void main(String[] args) {
-        System.out.println("SpringApplication - main");
         Application.launch(JavaFxApplication.class, args);
     }
 }

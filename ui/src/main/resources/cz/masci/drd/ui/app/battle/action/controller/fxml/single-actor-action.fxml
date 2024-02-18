@@ -27,7 +27,7 @@
    <children>
       <HBox spacing="10.0">
          <children>
-            <Label fx:id="text" text="" />
+            <Label fx:id="text" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
