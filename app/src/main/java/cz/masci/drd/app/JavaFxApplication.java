@@ -17,7 +17,7 @@
 package cz.masci.drd.app;
 
 import cz.masci.drd.theme.DrDAppTheme;
-import cz.masci.drd.ui.app.home.controller.HomeScreenController;
+import cz.masci.drd.ui.common.controller.WizardController;
 import io.github.palexdev.materialfx.theming.JavaFXThemes;
 import io.github.palexdev.materialfx.theming.MaterialFXStylesheets;
 import io.github.palexdev.materialfx.theming.UserAgentBuilder;
@@ -59,11 +59,12 @@ public class JavaFxApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-    var homeScreenController = applicationContext.getBean(HomeScreenController.class);
-    Scene scene = new Scene(homeScreenController.getView());
+//    var homeScreenController = applicationContext.getBean(HomeScreenController.class);
+    var homeScreenController = applicationContext.getBean(WizardController.class);
+    Scene scene = new Scene(homeScreenController.getView(), 800, 600);
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
-    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
+//    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
     stage.show();
   }
 
