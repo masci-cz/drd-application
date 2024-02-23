@@ -20,14 +20,42 @@
 package cz.masci.drd.ui.common.controller;
 
 import cz.masci.drd.ui.common.view.WizardViewBuilder;
-import cz.masci.springfx.mvci.controller.impl.SimpleController;
+import cz.masci.springfx.mvci.controller.ViewProvider;
+import java.util.Optional;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WizardController extends SimpleController<Region, WizardViewBuilder> {
+public class WizardController implements ViewProvider<Region> {
+
+  private final WizardViewBuilder builder;
+
+  private int counter = 1;
 
   public WizardController() {
-    super(new WizardViewBuilder());
+    builder = new WizardViewBuilder(this::getPrevView, this::getNextView, createView(counter));
   }
+
+  @Override
+  public Region getView() {
+    return builder.build();
+  }
+
+  private Optional<Region> getNextView() {
+    return counter >= 10 ? Optional.empty() : Optional.of(createView(++counter));
+  }
+
+  private Optional<Region> getPrevView() {
+    return counter <= 1 ? Optional.empty() : Optional.of(createView(--counter));
+  }
+
+  private Region createView(int number) {
+    var label = new Label(String.format("PANE %d", number));
+    label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    label.setAlignment(Pos.CENTER);
+    return label;
+  }
+
 }
