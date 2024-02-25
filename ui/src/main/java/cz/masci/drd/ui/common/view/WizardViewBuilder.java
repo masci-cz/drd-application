@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.common.view;
 
+import cz.masci.drd.ui.common.model.WizardViewModel;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import io.github.palexdev.materialfx.builders.layout.BorderPaneBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -31,24 +32,19 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Builder;
+import lombok.RequiredArgsConstructor;
 
-public class WizardViewBuilder implements Builder<Region> {
+@RequiredArgsConstructor
+public class WizardViewBuilder {
 
   private final Supplier<Optional<Region>> onPrevAction;
   private final Supplier<Optional<Region>> onNextAction;
-  private Region currentMainContent;
+  private final WizardViewModel viewModel;
 
-  public WizardViewBuilder(Supplier<Optional<Region>> onPrevAction, Supplier<Optional<Region>> onNextAction, Region currentMainContent) {
-    this.onPrevAction = onPrevAction;
-    this.onNextAction = onNextAction;
-    this.currentMainContent = currentMainContent;
-  }
-
-  @Override
-  public Region build() {
-    var title = new Text("TITLE");
+  public Region build(Region firstView) {
+    var title = new Text();
     title.setStyle("-fx-fill: WHITE");
+    title.textProperty().bind(viewModel.titleProperty());
     var top = new HBox();
     top.setAlignment(Pos.CENTER);
     top.setStyle("-fx-background-color: BLUE");
@@ -61,13 +57,15 @@ public class WizardViewBuilder implements Builder<Region> {
 
     var main = new AnchorPane();
     main.setStyle("-fx-background-color: YELLOW");
-    setMainView(main);
+    setMainView(main, firstView);
 
-    var prevBtn = ButtonBuilder.builder().text("PREVIOUS").styleClass("outlined").command(() -> onAction(main, onPrevAction)).build(MFXButton::new);
+    var prevBtn = ButtonBuilder.builder().text("PREVIOUS").styleClass("outlined").command(() -> onAction(main, onPrevAction)).disableExpression(viewModel.prevDisableProperty()).build(MFXButton::new);
+    prevBtn.textProperty().bind(viewModel.prevTextProperty());
     AnchorPane.setLeftAnchor(prevBtn, 10.0);
     AnchorPane.setBottomAnchor(prevBtn, 5.0);
     AnchorPane.setTopAnchor(prevBtn, 5.0);
-    var nextBtn = ButtonBuilder.builder().text("NEXT").styleClass("filled").command(() -> onAction(main, onNextAction)).build(MFXButton::new);
+    var nextBtn = ButtonBuilder.builder().text("NEXT").styleClass("filled").command(() -> onAction(main, onNextAction)).disableExpression(viewModel.nextDisableProperty()).build(MFXButton::new);
+    nextBtn.textProperty().bind(viewModel.nextTextProperty());
     AnchorPane.setRightAnchor(nextBtn, 10.0);
     AnchorPane.setBottomAnchor(nextBtn, 5.0);
     AnchorPane.setTopAnchor(nextBtn, 5.0);
@@ -84,17 +82,16 @@ public class WizardViewBuilder implements Builder<Region> {
 
   private void onAction(AnchorPane mainView, Supplier<Optional<Region>> regionSupplier) {
     regionSupplier.get().ifPresent(newView -> {
-      currentMainContent = newView;
-      setMainView(mainView);
+      setMainView(mainView, newView);
     });
   }
 
-  private void setMainView(AnchorPane mainView) {
-    AnchorPane.setTopAnchor(currentMainContent, 0.0);
-    AnchorPane.setRightAnchor(currentMainContent, 0.0);
-    AnchorPane.setBottomAnchor(currentMainContent, 0.0);
-    AnchorPane.setLeftAnchor(currentMainContent, 0.0);
+  private void setMainView(AnchorPane mainView, Region view) {
+    AnchorPane.setTopAnchor(view, 0.0);
+    AnchorPane.setRightAnchor(view, 0.0);
+    AnchorPane.setBottomAnchor(view, 0.0);
+    AnchorPane.setLeftAnchor(view, 0.0);
     mainView.getChildren().clear();
-    mainView.getChildren().add(currentMainContent);
+    mainView.getChildren().add(view);
   }
 }

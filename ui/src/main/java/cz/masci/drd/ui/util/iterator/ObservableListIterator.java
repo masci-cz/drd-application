@@ -75,18 +75,18 @@ public class ObservableListIterator<E> {
     return currentProperty.get();
   }
 
-  private E get(Supplier<Boolean> hasPreviousOrNext, Supplier<E> previousOrNext) {
+  private E get(Supplier<Boolean> hasFutureElement, Supplier<E> futureElement) {
     var lastPreviousIndex = iterator.previousIndex();
     var lastNextIndex = iterator.nextIndex();
 
     log.trace("get element");
-    if (hasPreviousOrNext.get()) {
-      var future = previousOrNext.get();
+    if (hasFutureElement.get()) {
+      var future = futureElement.get();
       if (future.equals(currentProperty.get())) {
-        if (hasPreviousOrNext.get()) {
+        if (hasFutureElement.get()) {
           lastPreviousIndex = iterator.previousIndex();
           lastNextIndex = iterator.nextIndex();
-          currentProperty.set(previousOrNext.get());
+          currentProperty.set(futureElement.get());
         } else {
           currentProperty.set(null);
         }
