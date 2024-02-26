@@ -19,11 +19,17 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
+import cz.masci.drd.ui.common.controller.battlewizard.view.BattleStepViewBuilder;
 import cz.masci.drd.ui.common.model.WizardViewModel;
 
 public class BattlePreparationController extends LeafStep {
 
   public BattlePreparationController(WizardViewModel wizardViewModel) {
-    super(wizardViewModel, "Preparation");
+    super(wizardViewModel, new BattleStepViewBuilder("Preparation"));
   }
+
+  // TODO
+  // Extend from MultiStep
+  // Create BattlePreparationGroupStepController and Builder with set number of groups
+  // Create BattlePreparationDuellistStepController and generate appropriate number of steps for each group
 }

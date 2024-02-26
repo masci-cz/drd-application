@@ -22,10 +22,16 @@ package cz.masci.drd.ui.common.controller.battlewizard.view;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
+import javafx.util.Builder;
+import lombok.RequiredArgsConstructor;
 
-public class BattleStepViewBuilder {
+@RequiredArgsConstructor
+public class BattleStepViewBuilder implements Builder<Region> {
 
-  public Region build(String text) {
+  private final String text;
+
+  @Override
+  public Region build() {
     var label = new Label(text);
     label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     label.setAlignment(Pos.CENTER);

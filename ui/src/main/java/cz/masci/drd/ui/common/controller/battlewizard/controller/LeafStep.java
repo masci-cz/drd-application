@@ -20,19 +20,18 @@
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
 import cz.masci.drd.ui.common.controller.WizardStep;
-import cz.masci.drd.ui.common.controller.battlewizard.view.BattleStepViewBuilder;
 import cz.masci.drd.ui.common.model.WizardViewModel;
 import javafx.scene.layout.Region;
+import javafx.util.Builder;
 
 public class LeafStep implements WizardStep {
 
   private final Region view;
   protected final WizardViewModel wizardViewModel;
 
-  public LeafStep(WizardViewModel wizardViewModel, String stepName) {
+  public LeafStep(WizardViewModel wizardViewModel, Builder<? extends Region> viewBuilder) {
     this.wizardViewModel = wizardViewModel;
-    var builder = new BattleStepViewBuilder();
-    view = builder.build(stepName);
+    view = viewBuilder.build();
   }
 
   @Override

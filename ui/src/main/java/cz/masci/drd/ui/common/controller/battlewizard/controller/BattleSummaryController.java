@@ -19,11 +19,12 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
+import cz.masci.drd.ui.common.controller.battlewizard.view.BattleStepViewBuilder;
 import cz.masci.drd.ui.common.model.WizardViewModel;
 
 public class BattleSummaryController extends LeafStep {
 
   public BattleSummaryController(WizardViewModel wizardViewModel) {
-    super(wizardViewModel, "Battle Summary");
+    super(wizardViewModel, new BattleStepViewBuilder("Battle Summary"));
   }
 }

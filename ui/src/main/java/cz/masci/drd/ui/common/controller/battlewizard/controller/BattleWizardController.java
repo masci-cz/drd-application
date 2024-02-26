@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 public class BattleWizardController extends MultiStep {
-
+  // TODO Think about refactoring to simple tests
   private final WizardViewModel battlePreparationWizardViewModel = new WizardViewModel();
   private final WizardViewModel battleDuellistSummaryWizardViewModel = new WizardViewModel();
   private final WizardViewModel battleWizardViewModel = new WizardViewModel();
@@ -48,6 +48,7 @@ public class BattleWizardController extends MultiStep {
   @Override
   public WizardStep next() {
     if (currentStep instanceof BattleSummaryController) {
+      // TODO reinit iterator with different starting position
       super.next();
       if (currentStep == null) {
         children.previous();
