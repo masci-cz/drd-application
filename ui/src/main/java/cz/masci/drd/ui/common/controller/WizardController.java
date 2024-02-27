@@ -53,7 +53,7 @@ public class WizardController implements ViewProvider<Region> {
   }
 
   private Optional<Region> getPrevView() {
-    var step = stepProvider.prev();
+    var step = stepProvider.previous();
     return Optional.ofNullable(step).map(WizardStep::getView);
   }
 

@@ -21,6 +21,7 @@ package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
 import cz.masci.drd.ui.common.controller.WizardStep;
 import cz.masci.drd.ui.common.model.WizardViewModel;
+import cz.masci.drd.ui.util.iterator.Iterable;
 import cz.masci.drd.ui.util.iterator.ObservableListIterator;
 import java.util.List;
 import java.util.function.Function;
@@ -48,27 +49,35 @@ public class MultiStep implements WizardStep {
 
   @Override
   public WizardStep next() {
-    return future(ObservableListIterator::next, WizardStep::next);
+    return future(Iterable::next);
   }
 
   @Override
-  public WizardStep prev() {
-    return future(ObservableListIterator::previous, WizardStep::prev);
+  public WizardStep previous() {
+    return future(Iterable::previous);
   }
 
-  private WizardStep future(Function<ObservableListIterator<? extends WizardStep>, WizardStep> childrenFutureStep, Function<WizardStep, WizardStep> futureStep) {
+  private WizardStep future(Function<Iterable<? extends WizardStep>, WizardStep> futureStep) {
     if (currentStep == null) { // if is not initiated
-      currentStep = childrenFutureStep.apply(children);
+      currentStep = futureStep.apply(children);
+      if (currentStep.hasChildren()) {
+        futureStep.apply(currentStep);  // currentStep has to stay one of the children in this class
+      }
     } else { // get next step
-      WizardStep newStep = currentStep;
       // if current step has children get his next child
       if (currentStep.hasChildren()) {
-        newStep = futureStep.apply(currentStep);
+        if (futureStep.apply(currentStep) == null) {
+          currentStep = futureStep.apply(children);
+          if (currentStep != null && currentStep.hasChildren()) {
+            futureStep.apply(currentStep);
+          }
+        }
+      } else {
+        currentStep = futureStep.apply(children);
+        if (currentStep != null && currentStep.hasChildren()) {
+          futureStep.apply(currentStep);
+        }
       }
-      if (newStep == null || newStep.equals(currentStep)) {
-        newStep = childrenFutureStep.apply(children);
-      }
-      currentStep = newStep;
     }
     updateWizardViewModel();
     return currentStep;

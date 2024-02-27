@@ -26,12 +26,20 @@ import javafx.util.Builder;
 
 public class LeafStep implements WizardStep {
 
-  private final Region view;
+  private Region view;
   protected final WizardViewModel wizardViewModel;
 
   public LeafStep(WizardViewModel wizardViewModel, Builder<? extends Region> viewBuilder) {
     this.wizardViewModel = wizardViewModel;
     view = viewBuilder.build();
+  }
+
+  public LeafStep(WizardViewModel wizardViewModel) {
+    this.wizardViewModel = wizardViewModel;
+  }
+
+  protected <T extends Region> void setView(T view) {
+    this.view = view;
   }
 
   @Override
@@ -40,7 +48,7 @@ public class LeafStep implements WizardStep {
   }
 
   @Override
-  public WizardStep prev() {
+  public WizardStep previous() {
     return this;
   }
 

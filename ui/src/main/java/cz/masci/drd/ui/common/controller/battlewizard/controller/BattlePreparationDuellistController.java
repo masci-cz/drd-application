@@ -17,12 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.common.controller;
+package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import cz.masci.drd.ui.util.iterator.Iterable;
-import javafx.scene.layout.Region;
+import cz.masci.drd.ui.common.model.WizardViewModel;
+import java.util.Arrays;
 
-public interface WizardStep extends Iterable<WizardStep> {
-  boolean hasChildren();
-  Region getView();
+public class BattlePreparationDuellistController extends MultiStep {
+
+  private final WizardViewModel childrenWizardViewModel = new WizardViewModel();
+
+  public BattlePreparationDuellistController(WizardViewModel wizardViewModel) {
+    super(wizardViewModel);
+    setChildren(
+        Arrays.asList(
+            new BattlePreparationDuellistChildController(childrenWizardViewModel, "Skupina 1"),
+            new BattlePreparationDuellistChildController(childrenWizardViewModel, "Skupina 2")
+        )
+    );
+  }
+
+
 }

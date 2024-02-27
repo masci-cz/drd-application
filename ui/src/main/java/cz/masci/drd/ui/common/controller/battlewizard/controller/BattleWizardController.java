@@ -69,34 +69,30 @@ public class BattleWizardController extends MultiStep {
     String title = "";
 
     if (currentStep instanceof BattlePreparationController) {
-      log.info("Current step: BattlePreparationController");
       prevText = battlePreparationWizardViewModel.getPrevText();
       prevDisable.or(battlePreparationWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.isBlank(battlePreparationWizardViewModel.getNextText()) ? "Přehled" : battlePreparationWizardViewModel.getNextText();
+      nextText = StringUtils.defaultIfBlank(battlePreparationWizardViewModel.getNextText(), "Přehled");
       nextDisable.or(battlePreparationWizardViewModel.nextDisableProperty());
       title = "Příprava";
     }
     if (currentStep instanceof BattleDuellistSummaryController) {
-      log.info("Current step: BattleDuellistSummaryController");
-      prevText = StringUtils.isBlank(battleDuellistSummaryWizardViewModel.getPrevText()) ? "Příprava" : battleDuellistSummaryWizardViewModel.getPrevText();
+      prevText = StringUtils.defaultIfBlank(battleDuellistSummaryWizardViewModel.getPrevText(), "Příprava");
       prevDisable.or(battleDuellistSummaryWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.isBlank(battleDuellistSummaryWizardViewModel.getNextText()) ? "Bitva" : battlePreparationWizardViewModel.getNextText();
+      nextText = StringUtils.defaultIfBlank(battleDuellistSummaryWizardViewModel.getNextText(), "Bitva");
       nextDisable.or(battleDuellistSummaryWizardViewModel.nextDisableProperty());
       title = "Souhrn bojovníků";
     }
     if (currentStep instanceof BattleController) {
-      log.info("Current step: BattleController");
-      prevText = StringUtils.isBlank(battleWizardViewModel.getPrevText()) ? "Ukončit bitvu" : battleWizardViewModel.getPrevText();
+      prevText = StringUtils.defaultIfBlank(battleWizardViewModel.getPrevText(), "Ukončit bitvu");
       prevDisable.or(battleWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.isBlank(battleWizardViewModel.getNextText()) ? "Konec kola" : battlePreparationWizardViewModel.getNextText();
+      nextText = StringUtils.defaultIfBlank(battleWizardViewModel.getNextText(), "Konec kola");
       nextDisable.or(battleWizardViewModel.nextDisableProperty());
       title = "Bitva";
     }
     if (currentStep instanceof BattleSummaryController) {
-      log.info("Current step: BattleSummaryController");
-      prevText = StringUtils.isBlank(battleSummaryWizardViewModel.getPrevText()) ? "Další kolo" : battleSummaryWizardViewModel.getPrevText();
+      prevText = StringUtils.defaultIfBlank(battleSummaryWizardViewModel.getPrevText(), "Další kolo");
       prevDisable.or(battlePreparationWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.isBlank(battleSummaryWizardViewModel.getNextText()) ? "Další kolo" : battlePreparationWizardViewModel.getNextText();
+      nextText = StringUtils.defaultIfBlank(battleSummaryWizardViewModel.getNextText(), "Další kolo");
       nextDisable.or(battleSummaryWizardViewModel.nextDisableProperty());
       title = "Souhrn kola";
     }

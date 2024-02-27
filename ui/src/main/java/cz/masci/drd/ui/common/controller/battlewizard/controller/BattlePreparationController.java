@@ -19,17 +19,45 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import cz.masci.drd.ui.common.controller.battlewizard.view.BattleStepViewBuilder;
 import cz.masci.drd.ui.common.model.WizardViewModel;
+import java.util.Arrays;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
-public class BattlePreparationController extends LeafStep {
+public class BattlePreparationController extends MultiStep {
+
+  private final WizardViewModel childrenWizardViewModel = new WizardViewModel();
 
   public BattlePreparationController(WizardViewModel wizardViewModel) {
-    super(wizardViewModel, new BattleStepViewBuilder("Preparation"));
+    super(wizardViewModel);
+    setChildren(
+        Arrays.asList(
+            new BattlePreparationGroupController(childrenWizardViewModel),
+            new BattlePreparationDuellistController(childrenWizardViewModel)
+        )
+    );
   }
 
-  // TODO
-  // Extend from MultiStep
-  // Create BattlePreparationGroupStepController and Builder with set number of groups
-  // Create BattlePreparationDuellistStepController and generate appropriate number of steps for each group
+  @Override
+  protected void updateWizardViewModel() {
+    String prevText = "Předchozí";
+    BooleanProperty prevDisable = new SimpleBooleanProperty(false);
+    String nextText = "Další";
+    BooleanProperty nextDisable = new SimpleBooleanProperty(false);
+    String title = "Preparation";
+
+    // TODO change view model based on current step
+    if (currentStep instanceof BattlePreparationGroupController) {
+    }
+
+    if (currentStep instanceof BattlePreparationDuellistController) {
+    }
+
+    wizardViewModel.setPrevText(prevText);
+    wizardViewModel.prevDisableProperty().bind(prevDisable);
+    wizardViewModel.setNextText(nextText);
+    wizardViewModel.nextDisableProperty().bind(nextDisable);
+    wizardViewModel.setTitle(title);
+  }
+
 }

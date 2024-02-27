@@ -17,12 +17,9 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.common.controller;
+package cz.masci.drd.ui.util.iterator;
 
-import cz.masci.drd.ui.util.iterator.Iterable;
-import javafx.scene.layout.Region;
-
-public interface WizardStep extends Iterable<WizardStep> {
-  boolean hasChildren();
-  Region getView();
+public interface Iterable<E> {
+  E next();
+  E previous();
 }

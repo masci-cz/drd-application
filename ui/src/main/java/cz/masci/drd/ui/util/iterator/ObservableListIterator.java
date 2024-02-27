@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ObservableListIterator<E> {
+public class ObservableListIterator<E> implements Iterable<E> {
 
   private final ListIterator<E> iterator;
   private final int size;
@@ -55,10 +55,12 @@ public class ObservableListIterator<E> {
     log.trace("current: {}", currentProperty.get());
   }
 
+  @Override
   public E previous() {
     return get(iterator::hasPrevious, iterator::previous);
   }
 
+  @Override
   public E next() {
     return get(iterator::hasNext, iterator::next);
   }
