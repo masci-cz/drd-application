@@ -26,5 +26,6 @@ public class BattlePreparationDuellistChildController extends LeafStep {
 
   public BattlePreparationDuellistChildController(WizardViewModel wizardViewModel, String groupName) {
     super(wizardViewModel, new BattleStepViewBuilder(groupName));
+    wizardViewModel.setTitle(groupName);
   }
 }

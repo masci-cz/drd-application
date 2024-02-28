@@ -36,11 +36,11 @@ public class MultiStep implements WizardStep {
   protected WizardStep currentStep;
 
   protected void updateWizardViewModel() {
-    wizardViewModel.setPrevText(children.hasPrevious() ? "Předchozí" : "První");
-    wizardViewModel.setPrevDisable(false);
-    wizardViewModel.setNextText(children.hasNext() ? "Další" : "Poslední");
-    wizardViewModel.setNextDisable(false);
-    wizardViewModel.setTitle("Wizard");
+//    wizardViewModel.setPrevText(children.hasPrevious() ? "Předchozí" : "První");
+//    wizardViewModel.setPrevDisable(false);
+//    wizardViewModel.setNextText(children.hasNext() ? "Další" : "Poslední");
+//    wizardViewModel.setNextDisable(false);
+//    wizardViewModel.setTitle("Wizard");
   }
 
   protected void setChildren(List<? extends WizardStep> children) {

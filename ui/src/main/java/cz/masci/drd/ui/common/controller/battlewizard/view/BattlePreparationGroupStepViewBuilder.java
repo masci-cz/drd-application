@@ -22,21 +22,23 @@ package cz.masci.drd.ui.common.controller.battlewizard.view;
 import cz.masci.drd.ui.util.ViewBuilderUtils;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import javafx.beans.property.StringProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
+import javafx.util.converter.NumberStringConverter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class BattlePreparationGroupStepViewBuilder implements Builder<Region> {
 
-  private final StringProperty groupCount;
+  private final IntegerProperty groupCount;
 
   @Override
   public Region build() {
     MFXTextField groupNumber = ViewBuilderUtils.createTextField("Počet skupin", Double.MAX_VALUE);
-    groupNumber.textProperty().bindBidirectional(groupCount);
+    Bindings.bindBidirectional(groupNumber.textProperty(), groupCount, new NumberStringConverter());
     return VBoxBuilder.vBox()
                            .setAlignment(Pos.CENTER)
                            .addChildren(groupNumber)

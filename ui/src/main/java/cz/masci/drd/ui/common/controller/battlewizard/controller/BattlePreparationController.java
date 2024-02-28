@@ -40,24 +40,29 @@ public class BattlePreparationController extends MultiStep {
 
   @Override
   protected void updateWizardViewModel() {
-    String prevText = "Předchozí";
-    BooleanProperty prevDisable = new SimpleBooleanProperty(false);
-    String nextText = "Další";
-    BooleanProperty nextDisable = new SimpleBooleanProperty(false);
-    String title = "Preparation";
-
-    // TODO change view model based on current step
-    if (currentStep instanceof BattlePreparationGroupController) {
-    }
-
-    if (currentStep instanceof BattlePreparationDuellistController) {
-    }
-
-    wizardViewModel.setPrevText(prevText);
-    wizardViewModel.prevDisableProperty().bind(prevDisable);
-    wizardViewModel.setNextText(nextText);
-    wizardViewModel.nextDisableProperty().bind(nextDisable);
-    wizardViewModel.setTitle(title);
+//    String prevText = "Předchozí";
+//    BooleanProperty prevDisable = new SimpleBooleanProperty(false);
+//    String nextText = "Další";
+//    BooleanProperty nextDisable = new SimpleBooleanProperty(false);
+//
+//    // TODO change view model based on current step
+//    if (currentStep instanceof BattlePreparationGroupController) {
+//      prevText = "";
+//      nextText = "Další";
+//      nextDisable = childrenWizardViewModel.nextDisableProperty();
+//    }
+//
+//    if (currentStep instanceof BattlePreparationDuellistController) {
+//      prevText = "Předchozí";
+//      nextText = childrenWizardViewModel.getNextText();
+//      nextDisable = new SimpleBooleanProperty(false);
+//    }
+//
+//    wizardViewModel.setPrevText(prevText);
+//    wizardViewModel.prevDisableProperty().bind(prevDisable);
+//    wizardViewModel.setNextText(nextText);
+//    wizardViewModel.nextDisableProperty().bind(nextDisable);
+//    wizardViewModel.setTitle("Preparation - " + childrenWizardViewModel.getNextText());
   }
 
 }

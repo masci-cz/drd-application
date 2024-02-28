@@ -22,6 +22,8 @@ package cz.masci.drd.ui.common.controller.battlewizard.controller;
 import cz.masci.drd.ui.common.controller.WizardStep;
 import cz.masci.drd.ui.common.model.WizardViewModel;
 import java.util.Arrays;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import lombok.extern.slf4j.Slf4j;
@@ -62,45 +64,50 @@ public class BattleWizardController extends MultiStep {
 
   @Override
   protected void updateWizardViewModel() {
-    String prevText = "";
-    BooleanProperty prevDisable = new SimpleBooleanProperty(!children.hasPrevious());
-    String nextText = "";
-    BooleanProperty nextDisable = new SimpleBooleanProperty(false);
-    String title = "";
-
-    if (currentStep instanceof BattlePreparationController) {
-      prevText = battlePreparationWizardViewModel.getPrevText();
-      prevDisable.or(battlePreparationWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.defaultIfBlank(battlePreparationWizardViewModel.getNextText(), "Přehled");
-      nextDisable.or(battlePreparationWizardViewModel.nextDisableProperty());
-      title = "Příprava";
-    }
-    if (currentStep instanceof BattleDuellistSummaryController) {
-      prevText = StringUtils.defaultIfBlank(battleDuellistSummaryWizardViewModel.getPrevText(), "Příprava");
-      prevDisable.or(battleDuellistSummaryWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.defaultIfBlank(battleDuellistSummaryWizardViewModel.getNextText(), "Bitva");
-      nextDisable.or(battleDuellistSummaryWizardViewModel.nextDisableProperty());
-      title = "Souhrn bojovníků";
-    }
-    if (currentStep instanceof BattleController) {
-      prevText = StringUtils.defaultIfBlank(battleWizardViewModel.getPrevText(), "Ukončit bitvu");
-      prevDisable.or(battleWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.defaultIfBlank(battleWizardViewModel.getNextText(), "Konec kola");
-      nextDisable.or(battleWizardViewModel.nextDisableProperty());
-      title = "Bitva";
-    }
-    if (currentStep instanceof BattleSummaryController) {
-      prevText = StringUtils.defaultIfBlank(battleSummaryWizardViewModel.getPrevText(), "Další kolo");
-      prevDisable.or(battlePreparationWizardViewModel.prevDisableProperty());
-      nextText = StringUtils.defaultIfBlank(battleSummaryWizardViewModel.getNextText(), "Další kolo");
-      nextDisable.or(battleSummaryWizardViewModel.nextDisableProperty());
-      title = "Souhrn kola";
-    }
-
-    wizardViewModel.setPrevText(prevText);
-    wizardViewModel.prevDisableProperty().bind(prevDisable);
-    wizardViewModel.setNextText(nextText);
-    wizardViewModel.nextDisableProperty().bind(nextDisable);
-    wizardViewModel.setTitle(title);
+//    String prevText = "";
+//    BooleanExpression prevDisable = new SimpleBooleanProperty(!children.hasPrevious());
+//    String nextText = "";
+//    BooleanExpression nextDisable = new SimpleBooleanProperty(false);
+//    String title = "";
+//
+//    if (currentStep instanceof BattlePreparationController) {
+//      prevText = battlePreparationWizardViewModel.getPrevText();
+//      prevDisable = prevDisable.or(battlePreparationWizardViewModel.prevDisableProperty());
+//      nextText = StringUtils.defaultIfBlank(battlePreparationWizardViewModel.getNextText(), "Přehled");
+//      nextDisable = nextDisable.or(battlePreparationWizardViewModel.nextDisableProperty());
+//      title = "Příprava";
+//    }
+//    if (currentStep instanceof BattleDuellistSummaryController) {
+//      prevText = StringUtils.defaultIfBlank(battleDuellistSummaryWizardViewModel.getPrevText(), "Příprava");
+//      prevDisable = prevDisable.or(battleDuellistSummaryWizardViewModel.prevDisableProperty());
+//      nextText = StringUtils.defaultIfBlank(battleDuellistSummaryWizardViewModel.getNextText(), "Bitva");
+//      nextDisable = nextDisable.or(battleDuellistSummaryWizardViewModel.nextDisableProperty());
+//      title = "Souhrn bojovníků";
+//    }
+//    if (currentStep instanceof BattleController) {
+//      prevText = StringUtils.defaultIfBlank(battleWizardViewModel.getPrevText(), "Ukončit bitvu");
+//      prevDisable = prevDisable.or(battleWizardViewModel.prevDisableProperty());
+//      nextText = StringUtils.defaultIfBlank(battleWizardViewModel.getNextText(), "Konec kola");
+//      nextDisable = nextDisable.or(battleWizardViewModel.nextDisableProperty());
+//      title = "Bitva";
+//    }
+//    if (currentStep instanceof BattleSummaryController) {
+//      prevText = StringUtils.defaultIfBlank(battleSummaryWizardViewModel.getPrevText(), "Další kolo");
+//      prevDisable = prevDisable.or(battlePreparationWizardViewModel.prevDisableProperty());
+//      nextText = StringUtils.defaultIfBlank(battleSummaryWizardViewModel.getNextText(), "Další kolo");
+//      nextDisable = nextDisable.or(battleSummaryWizardViewModel.nextDisableProperty());
+//      title = "Souhrn kola";
+//    }
+//
+//    wizardViewModel.setPrevText(prevText);
+//    wizardViewModel.prevDisableProperty().bind(prevDisable);
+//    wizardViewModel.setNextText(nextText);
+//    wizardViewModel.nextDisableProperty().bind(nextDisable);
+//    wizardViewModel.setTitle(title);
+        wizardViewModel.setPrevText("Previous");
+        wizardViewModel.prevDisableProperty().set(false);
+        wizardViewModel.setNextText("Next");
+        wizardViewModel.nextDisableProperty().set(false);
+        wizardViewModel.setTitle("Title");
   }
 }

@@ -36,5 +36,8 @@ public class BattlePreparationDuellistController extends MultiStep {
     );
   }
 
-
+  @Override
+  protected void updateWizardViewModel() {
+//    wizardViewModel.setTitle(childrenWizardViewModel.getTitle());
+  }
 }
