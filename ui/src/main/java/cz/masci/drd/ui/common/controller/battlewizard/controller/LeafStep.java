@@ -23,42 +23,45 @@ import cz.masci.drd.ui.common.controller.WizardStep;
 import cz.masci.drd.ui.common.model.WizardViewModel;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
+import lombok.NoArgsConstructor;
 
-public class LeafStep implements WizardStep {
+@NoArgsConstructor
+public class LeafStep extends WizardViewModel implements WizardStep {
 
+  private WizardStep current;
   private Region view;
-  protected final WizardViewModel wizardViewModel;
 
-  public LeafStep(WizardViewModel wizardViewModel, Builder<? extends Region> viewBuilder) {
-    this.wizardViewModel = wizardViewModel;
+  public LeafStep(Builder<? extends Region> viewBuilder) {
     view = viewBuilder.build();
-  }
-
-  public LeafStep(WizardViewModel wizardViewModel) {
-    this.wizardViewModel = wizardViewModel;
-  }
-
-  protected <T extends Region> void setView(T view) {
-    this.view = view;
   }
 
   @Override
   public WizardStep next() {
-    return this;
+    return doStep();
   }
 
   @Override
   public WizardStep previous() {
-    return this;
+    return doStep();
   }
 
   @Override
-  public boolean hasChildren() {
-    return false;
+  public WizardStep getCurrent() {
+    return current;
   }
 
   @Override
   public Region getView() {
     return view;
   }
+
+  protected <T extends Region> void setView(T view) {
+    this.view = view;
+  }
+
+  private WizardStep doStep() {
+    current = (current == null) ? this : null;
+    return current;
+  }
+
 }

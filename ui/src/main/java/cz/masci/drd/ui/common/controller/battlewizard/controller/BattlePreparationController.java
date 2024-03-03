@@ -19,50 +19,23 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import cz.masci.drd.ui.common.model.WizardViewModel;
 import java.util.Arrays;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 
-public class BattlePreparationController extends MultiStep {
+public class BattlePreparationController extends CompositeStep {
 
-  private final WizardViewModel childrenWizardViewModel = new WizardViewModel();
-
-  public BattlePreparationController(WizardViewModel wizardViewModel) {
-    super(wizardViewModel);
+  public BattlePreparationController() {
+    super();
     setChildren(
         Arrays.asList(
-            new BattlePreparationGroupController(childrenWizardViewModel),
-            new BattlePreparationDuellistController(childrenWizardViewModel)
+            new BattlePreparationGroupController(),
+            new BattlePreparationDuellistController()
         )
     );
   }
 
   @Override
-  protected void updateWizardViewModel() {
-//    String prevText = "Předchozí";
-//    BooleanProperty prevDisable = new SimpleBooleanProperty(false);
-//    String nextText = "Další";
-//    BooleanProperty nextDisable = new SimpleBooleanProperty(false);
-//
-//    // TODO change view model based on current step
-//    if (currentStep instanceof BattlePreparationGroupController) {
-//      prevText = "";
-//      nextText = "Další";
-//      nextDisable = childrenWizardViewModel.nextDisableProperty();
-//    }
-//
-//    if (currentStep instanceof BattlePreparationDuellistController) {
-//      prevText = "Předchozí";
-//      nextText = childrenWizardViewModel.getNextText();
-//      nextDisable = new SimpleBooleanProperty(false);
-//    }
-//
-//    wizardViewModel.setPrevText(prevText);
-//    wizardViewModel.prevDisableProperty().bind(prevDisable);
-//    wizardViewModel.setNextText(nextText);
-//    wizardViewModel.nextDisableProperty().bind(nextDisable);
-//    wizardViewModel.setTitle("Preparation - " + childrenWizardViewModel.getNextText());
+  public void updateTitle() {
+    currentStep.ifPresent(child -> setTitle("Preparation - " + child.getTitle()));
   }
 
 }

@@ -22,4 +22,5 @@ package cz.masci.drd.ui.util.iterator;
 public interface Iterable<E> {
   E next();
   E previous();
+  E getCurrent();
 }

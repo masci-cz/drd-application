@@ -37,7 +37,13 @@ public class WizardController implements ViewProvider<Region> {
   public WizardController() {
     var wizardViewModel = new WizardViewModel();
     builder = new WizardViewBuilder(this::getPrevView, this::getNextView, wizardViewModel);
-    stepProvider = new BattleWizardController(wizardViewModel);
+    stepProvider = new BattleWizardController();
+
+    wizardViewModel.titleProperty().bind(stepProvider.titleProperty());
+    wizardViewModel.nextTextProperty().bind(stepProvider.nextTextProperty());
+    wizardViewModel.prevTextProperty().bind(stepProvider.prevTextProperty());
+    wizardViewModel.nextDisableProperty().bind(stepProvider.nextDisableProperty());
+    wizardViewModel.prevDisableProperty().bind(stepProvider.prevDisableProperty());
   }
 
   @Override

@@ -73,6 +73,7 @@ public class ObservableListIterator<E> implements Iterable<E> {
     return hasNextProperty.get();
   }
 
+  @Override
   public E getCurrent() {
     return currentProperty.get();
   }

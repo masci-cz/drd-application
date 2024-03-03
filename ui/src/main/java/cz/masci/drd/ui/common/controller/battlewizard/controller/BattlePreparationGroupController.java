@@ -20,18 +20,16 @@
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
 import cz.masci.drd.ui.common.controller.battlewizard.view.BattlePreparationGroupStepViewBuilder;
-import cz.masci.drd.ui.common.model.WizardViewModel;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class BattlePreparationGroupController extends LeafStep {
 
-  public BattlePreparationGroupController(WizardViewModel wizardViewModel) {
-    super(wizardViewModel);
+  public BattlePreparationGroupController() {
     IntegerProperty groupCount = new SimpleIntegerProperty();
     setView(new BattlePreparationGroupStepViewBuilder(groupCount).build());
-    // TODO bind view model next disable property with groupCount is number and > 2
-//    wizardViewModel.nextDisableProperty().bind(groupCount.asObject().isNull().or(groupCount.lessThan(2)));
-//    wizardViewModel.setTitle("Skupiny");
+
+    nextDisableProperty().bind(groupCount.asObject().isNull().or(groupCount.lessThan(2)));
+    setTitle("Groups");
   }
 }

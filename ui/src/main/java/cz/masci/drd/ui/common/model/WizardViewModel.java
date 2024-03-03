@@ -24,72 +24,44 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class WizardViewModel {
+public class WizardViewModel implements WizardModel {
   private final BooleanProperty prevDisable = new SimpleBooleanProperty(false);
   private final BooleanProperty nextDisable = new SimpleBooleanProperty(false);
   private final StringProperty prevText = new SimpleStringProperty("");
   private final StringProperty nextText = new SimpleStringProperty("");
   private final StringProperty title = new SimpleStringProperty("");
+  private final BooleanProperty hasNext = new SimpleBooleanProperty(false);
+  private final BooleanProperty hasPrevious = new SimpleBooleanProperty(false);
 
-  // region getters and setters
-  public boolean isPrevDisable() {
-    return prevDisable.get();
-  }
-
+  // region properties
   public BooleanProperty prevDisableProperty() {
     return prevDisable;
-  }
-
-  public void setPrevDisable(boolean prevDisable) {
-    this.prevDisable.set(prevDisable);
-  }
-
-  public boolean isNextDisable() {
-    return nextDisable.get();
   }
 
   public BooleanProperty nextDisableProperty() {
     return nextDisable;
   }
 
-  public void setNextDisable(boolean nextDisable) {
-    this.nextDisable.set(nextDisable);
-  }
-
-  public String getPrevText() {
-    return prevText.get();
-  }
-
   public StringProperty prevTextProperty() {
     return prevText;
-  }
-
-  public void setPrevText(String prevText) {
-    this.prevText.set(prevText);
-  }
-
-  public String getNextText() {
-    return nextText.get();
   }
 
   public StringProperty nextTextProperty() {
     return nextText;
   }
 
-  public void setNextText(String nextText) {
-    this.nextText.set(nextText);
-  }
-
-  public String getTitle() {
-    return title.get();
-  }
-
   public StringProperty titleProperty() {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title.set(title);
+  @Override
+  public boolean hasNext() {
+    return false;
+  }
+
+  @Override
+  public boolean hasPrevious() {
+    return false;
   }
   // endregion
 }

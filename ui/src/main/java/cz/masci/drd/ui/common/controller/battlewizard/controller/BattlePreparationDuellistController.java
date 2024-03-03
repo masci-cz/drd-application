@@ -19,25 +19,16 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import cz.masci.drd.ui.common.model.WizardViewModel;
 import java.util.Arrays;
 
-public class BattlePreparationDuellistController extends MultiStep {
+public class BattlePreparationDuellistController extends CompositeStep {
 
-  private final WizardViewModel childrenWizardViewModel = new WizardViewModel();
-
-  public BattlePreparationDuellistController(WizardViewModel wizardViewModel) {
-    super(wizardViewModel);
+  public BattlePreparationDuellistController() {
     setChildren(
         Arrays.asList(
-            new BattlePreparationDuellistChildController(childrenWizardViewModel, "Skupina 1"),
-            new BattlePreparationDuellistChildController(childrenWizardViewModel, "Skupina 2")
+            new BattlePreparationDuellistChildController("Skupina 1"),
+            new BattlePreparationDuellistChildController("Skupina 2")
         )
     );
-  }
-
-  @Override
-  protected void updateWizardViewModel() {
-//    wizardViewModel.setTitle(childrenWizardViewModel.getTitle());
   }
 }

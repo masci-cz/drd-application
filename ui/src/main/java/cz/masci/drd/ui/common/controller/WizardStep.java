@@ -19,10 +19,10 @@
 
 package cz.masci.drd.ui.common.controller;
 
+import cz.masci.drd.ui.common.model.WizardModel;
 import cz.masci.drd.ui.util.iterator.Iterable;
 import javafx.scene.layout.Region;
 
-public interface WizardStep extends Iterable<WizardStep> {
-  boolean hasChildren();
+public interface WizardStep extends WizardModel, Iterable<WizardStep> {
   Region getView();
 }

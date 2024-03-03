@@ -20,12 +20,12 @@
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
 import cz.masci.drd.ui.common.controller.battlewizard.view.BattleStepViewBuilder;
-import cz.masci.drd.ui.common.model.WizardViewModel;
 
 public class BattlePreparationDuellistChildController extends LeafStep {
 
-  public BattlePreparationDuellistChildController(WizardViewModel wizardViewModel, String groupName) {
-    super(wizardViewModel, new BattleStepViewBuilder(groupName));
-    wizardViewModel.setTitle(groupName);
+  public BattlePreparationDuellistChildController(String groupName) {
+    super(new BattleStepViewBuilder(groupName));
+
+    setTitle(groupName);
   }
 }
