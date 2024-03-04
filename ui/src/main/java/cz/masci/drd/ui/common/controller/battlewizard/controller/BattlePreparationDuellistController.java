@@ -19,16 +19,25 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import javafx.beans.property.IntegerProperty;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class BattlePreparationDuellistController extends CompositeStep {
 
-  public BattlePreparationDuellistController() {
-    setChildren(
-        Arrays.asList(
-            new BattlePreparationDuellistChildController("Skupina 1"),
-            new BattlePreparationDuellistChildController("Skupina 2")
-        )
-    );
+  private final IntegerProperty groupCount;
+
+  @Override
+  protected void initBeforeFirstNext() {
+    super.initBeforeFirstNext();
+
+    var groups = IntStream.range(0, groupCount.get())
+                          .mapToObj(i -> String.format("Skupina %d", i + 1))
+                          .map(BattlePreparationDuellistChildController::new)
+                          .collect(Collectors.toList());
+
+    setChildren(groups);
   }
 }

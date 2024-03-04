@@ -21,12 +21,10 @@ package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
 import cz.masci.drd.ui.common.controller.battlewizard.view.BattlePreparationGroupStepViewBuilder;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 
 public class BattlePreparationGroupController extends LeafStep {
 
-  public BattlePreparationGroupController() {
-    IntegerProperty groupCount = new SimpleIntegerProperty();
+  public BattlePreparationGroupController(IntegerProperty groupCount) {
     setView(new BattlePreparationGroupStepViewBuilder(groupCount).build());
 
     nextDisableProperty().bind(groupCount.asObject().isNull().or(groupCount.lessThan(2)));

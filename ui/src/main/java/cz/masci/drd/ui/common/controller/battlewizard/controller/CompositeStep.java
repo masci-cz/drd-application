@@ -42,11 +42,17 @@ public class CompositeStep extends WizardViewModel implements WizardStep {
 
   @Override
   public WizardStep next() {
+    if (currentStep.isEmpty()) {
+      initBeforeFirstNext();
+    }
     return doStep(Iterable::next).getOrElse(null);
   }
 
   @Override
   public WizardStep previous() {
+    if (currentStep.isEmpty()) {
+      initBeforeFirstPrev();
+    }
     return doStep(Iterable::previous).getOrElse(null);
   }
 
@@ -88,19 +94,19 @@ public class CompositeStep extends WizardViewModel implements WizardStep {
     return currentStep;
   }
 
-  public void updateTitle() {
+  protected void updateTitle() {
     currentStep.ifPresent(child -> setTitle(child.getTitle()));
   }
 
-  public void updateNextText() {
+  protected void updateNextText() {
     setNextText("Další");
   }
 
-  public void updatePrevText() {
+  protected void updatePrevText() {
     setPrevText("Předchozí");
   }
 
-  public void updateNextDisable() {
+  protected void updateNextDisable() {
     if (nextDisableProperty().isBound()) {
       nextDisableProperty().unbind();
     }
@@ -112,7 +118,7 @@ public class CompositeStep extends WizardViewModel implements WizardStep {
     }
   }
 
-  public void updatePrevDisable() {
+  protected void updatePrevDisable() {
     if (prevDisableProperty().isBound()) {
       prevDisableProperty().unbind();
     }
@@ -123,4 +129,9 @@ public class CompositeStep extends WizardViewModel implements WizardStep {
       setPrevDisable(false);
     }
   }
+
+  protected void initBeforeFirstNext() {}
+
+  protected void initBeforeFirstPrev() {}
+
 }

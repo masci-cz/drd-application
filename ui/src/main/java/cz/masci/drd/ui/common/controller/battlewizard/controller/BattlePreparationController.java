@@ -20,15 +20,17 @@
 package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
 import java.util.Arrays;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class BattlePreparationController extends CompositeStep {
 
   public BattlePreparationController() {
-    super();
+    IntegerProperty groupCount = new SimpleIntegerProperty(0);
     setChildren(
         Arrays.asList(
-            new BattlePreparationGroupController(),
-            new BattlePreparationDuellistController()
+            new BattlePreparationGroupController(groupCount),
+            new BattlePreparationDuellistController(groupCount)
         )
     );
   }
