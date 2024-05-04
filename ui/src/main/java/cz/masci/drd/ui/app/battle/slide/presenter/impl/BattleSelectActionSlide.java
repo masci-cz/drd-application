@@ -21,10 +21,10 @@ package cz.masci.drd.ui.app.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
-import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleSelectActionSlideController;
 import cz.masci.drd.ui.app.battle.action.ActionService;
 import cz.masci.drd.ui.app.battle.action.SelectAction;
 import cz.masci.drd.ui.app.battle.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleSelectActionSlideController;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.Node;

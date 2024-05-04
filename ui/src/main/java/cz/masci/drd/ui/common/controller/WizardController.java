@@ -28,6 +28,7 @@ import java.util.Optional;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 public class WizardController implements ViewProvider<Region> {
 

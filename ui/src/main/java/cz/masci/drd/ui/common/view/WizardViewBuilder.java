@@ -81,9 +81,7 @@ public class WizardViewBuilder {
   }
 
   private void onAction(AnchorPane mainView, Supplier<Optional<Region>> regionSupplier) {
-    regionSupplier.get().ifPresent(newView -> {
-      setMainView(mainView, newView);
-    });
+    regionSupplier.get().ifPresent(newView -> setMainView(mainView, newView));
   }
 
   private void setMainView(AnchorPane mainView, Region view) {

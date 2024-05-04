@@ -18,9 +18,9 @@
   ~ You should have received a copy of the GNU General Public License
   ~  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
   -->
+
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
 <?import javafx.scene.layout.VBox?>
-
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <MFXComboBox fx:id="duellistBox" floatingText="Obránce" floatMode="BORDER" prefHeight="25.0" prefWidth="400.0"/>
 </VBox>

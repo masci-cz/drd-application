@@ -20,8 +20,8 @@
 package cz.masci.drd.ui.app.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
-import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleDuellistSlideController;
 import cz.masci.drd.ui.app.battle.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleDuellistSlideController;
 import java.util.List;
 import javafx.beans.binding.Bindings;
 import net.rgielen.fxweaver.core.FxWeaver;

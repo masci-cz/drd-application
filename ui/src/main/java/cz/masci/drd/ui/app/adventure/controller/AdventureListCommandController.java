@@ -22,8 +22,8 @@ package cz.masci.drd.ui.app.adventure.controller;
 import cz.masci.drd.ui.app.adventure.interactor.AdventureInteractor;
 import cz.masci.drd.ui.app.adventure.model.AdventureDetailModel;
 import cz.masci.drd.ui.app.adventure.model.AdventureListModel;
-import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.common.controller.AbstractListCommandController;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
 
 public class AdventureListCommandController extends AbstractListCommandController<Long, AdventureDetailModel> {
 

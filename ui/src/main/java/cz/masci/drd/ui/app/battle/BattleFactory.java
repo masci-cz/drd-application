@@ -24,8 +24,8 @@ import cz.masci.drd.ui.app.battle.slide.presenter.BattleSlide;
 import cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleActionSlide;
 import cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleDuellistSlide;
 import cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleGroupSlide;
-import cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleSelectActionSlide;
 import cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleInitiativeSlide;
+import cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleSelectActionSlide;
 import cz.masci.drd.ui.util.SceneProvider;
 import cz.masci.drd.ui.util.slide.SlideService;
 import cz.masci.drd.ui.util.slide.impl.SlideServiceImpl.SlideFactor;
@@ -40,6 +40,7 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 @RequiredArgsConstructor
 @Slf4j

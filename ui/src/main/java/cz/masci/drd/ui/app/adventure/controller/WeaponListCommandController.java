@@ -22,8 +22,8 @@ package cz.masci.drd.ui.app.adventure.controller;
 import cz.masci.drd.ui.app.adventure.interactor.WeaponInteractor;
 import cz.masci.drd.ui.app.adventure.model.WeaponDetailModel;
 import cz.masci.drd.ui.app.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.common.controller.AbstractListCommandController;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

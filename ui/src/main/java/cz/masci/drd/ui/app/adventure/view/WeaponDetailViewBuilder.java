@@ -19,58 +19,48 @@
 
 package cz.masci.drd.ui.app.adventure.view;
 
-import static cz.masci.drd.ui.util.ReactFxUtils.selectVarOrElseConst;
+import static cz.masci.springfx.mvci.util.BuilderUtils.enhanceValidatedNodeWithSupportingText;
+import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumberWhenPropertyIsNotEmpty;
 
 import cz.masci.drd.ui.app.adventure.model.WeaponDetailModel;
-import cz.masci.drd.ui.app.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.drd.ui.util.PropertyUtils;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
-import cz.masci.springfx.mvci.util.BuilderUtils;
+import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.util.property.PropertyUtils;
+import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import lombok.RequiredArgsConstructor;
 import org.reactfx.value.Var;
 
-@RequiredArgsConstructor
-public class WeaponDetailViewBuilder implements Builder<Region> {
+public class WeaponDetailViewBuilder extends DetailViewBuilder<WeaponDetailModel> implements Builder<Region> {
 
-  private final WeaponListModel viewModel;
+  public WeaponDetailViewBuilder(ListModel<WeaponDetailModel> viewModel) {
+    super(viewModel);
+  }
 
   @Override
   public Region build() {
     Var<WeaponDetailModel> selectedProperty = viewModel.selectedElementProperty();
 
-    var nameTextField = ViewBuilderUtils.createTextField("Název", Double.MAX_VALUE);
-    var nameisNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
-    var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameisNotEmptyConstraint);
+    var nameTextField = createTextField("Název", Double.MAX_VALUE);
+    var nameisNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
+    var nameTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameisNotEmptyConstraint);
 
-    var strengthTextField = ViewBuilderUtils.createTextField("Útočné číslo", 100.0);
-    var strengthIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
-    var strengthIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
-    var strengthTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(strengthTextField, PropertyUtils.not(strengthTextField.delegateFocusedProperty())::addListener, strengthIsNotEmptyConstraint, strengthIsNumberConstraint);
+    var strengthTextField = createTextField("Útočné číslo", 100.0);
+    var strengthIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
+    var strengthIsNumberConstraint = isNumberWhenPropertyIsNotEmpty(strengthTextField.textProperty(), selectedProperty, "Útočné číslo");
+    var strengthTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(strengthTextField, PropertyUtils.not(strengthTextField.delegateFocusedProperty())::addListener, strengthIsNotEmptyConstraint, strengthIsNumberConstraint);
 
-    var damageTextField = ViewBuilderUtils.createTextField("Útočnost", 100.0);
-    var damageIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
-    var damageIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
-    var damageTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsNotEmptyConstraint, damageIsNumberConstraint);
+    var damageTextField = createTextField("Útočnost", 100.0);
+    var damageIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
+    var damageIsNumberConstraint = isNumberWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty,  "Útočnost");
+    var damageTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsNotEmptyConstraint, damageIsNumberConstraint);
 
-    // create nullable properties
-    Var<String> nameProperty = selectVarOrElseConst(selectedProperty, WeaponDetailModel::nameProperty, "");
-    Var<String> strengthProperty = selectVarOrElseConst(selectedProperty, WeaponDetailModel::strengthProperty, "");
-    Var<String> damageProperty = selectVarOrElseConst(selectedProperty, WeaponDetailModel::damageProperty, "");
-    // bind nullable properties to text fields
-    nameTextField.textProperty().bindBidirectional(nameProperty);
-    strengthTextField.textProperty().bindBidirectional(strengthProperty);
-    damageTextField.textProperty().bindBidirectional(damageProperty);
-    // listen to changes and update source
-    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.updateElementsProperty();
-    nameProperty.observeChanges(changeListener);
-    strengthProperty.observeChanges(changeListener);
-    damageProperty.observeChanges(changeListener);
+    bindBidirectional(nameTextField.textProperty(), WeaponDetailModel::nameProperty);
+    bindBidirectional(strengthTextField.textProperty(), WeaponDetailModel::strengthProperty);
+    bindBidirectional(damageTextField.textProperty(), WeaponDetailModel::damageProperty);
 
     viewModel.setOnFocusView(nameTextField::requestFocus);
 

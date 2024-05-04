@@ -17,20 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util;
+package cz.masci.drd.ui.util.wizard.controller.step;
 
-import javafx.application.Platform;
-import lombok.experimental.UtilityClass;
+import javafx.beans.binding.BooleanExpression;
+import javafx.scene.layout.Region;
 
-@UtilityClass
-public class ConcurrentUtils {
+public interface Step {
+  // All these methods are calculated from bottom to top
+  Region view();
 
-  /**
-   * Runs the given GUI-related code in the JavaFX Application Thread.
-   *
-   * @param guiStuff the runnable representing the GUI-related code to be executed
-   */
-  public static void runInFXThread(Runnable guiStuff) {
-    Platform.runLater(guiStuff);
-  }
+  String title();
+
+  BooleanExpression valid();
+
+  String prevText();
+
+  String nextText();
+
+  BooleanExpression prevDisabled();
+
+  BooleanExpression nextDisabled();
 }

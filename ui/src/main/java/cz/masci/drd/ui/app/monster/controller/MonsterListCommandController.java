@@ -20,10 +20,10 @@
 package cz.masci.drd.ui.app.monster.controller;
 
 import cz.masci.drd.ui.app.monster.interactor.MonsterInteractor;
-import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.app.monster.model.MonsterDetailModel;
 import cz.masci.drd.ui.app.monster.model.MonsterListModel;
 import cz.masci.drd.ui.common.controller.AbstractListCommandController;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -19,18 +19,15 @@
 
 package cz.masci.drd.ui.app.monster.model;
 
-import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.springfx.mvci.model.detail.DetailModel;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmpty;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumber;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumberOrEmpty;
+
+import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import io.github.palexdev.materialfx.validation.MFXValidator;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import lombok.Getter;
-import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
-public class MonsterDetailModel implements DetailModel<Long> {
+public class MonsterDetailModel extends BaseDetailModel<Long> {
 
-  private final ObjectProperty<Long> id = new SimpleObjectProperty<>();
   /** Monster name - Jméno nestvůry */
   private final DirtyStringProperty name = new DirtyStringProperty("");
   /** Monster viability - Životaschopnost */
@@ -62,40 +59,26 @@ public class MonsterDetailModel implements DetailModel<Long> {
   /** Monster description - Popis */
   private final DirtyStringProperty description = new DirtyStringProperty("");
 
-  @Getter
-  private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
-  @Getter
-  private final MFXValidator validator = new MFXValidator();
-
   public MonsterDetailModel() {
-    composite.addAll(name, viability, attack, defence, endurance, dimension, combativeness, vulnerability, moveability,
-        stamina, intelligence, conviction, treasure, experience, description);
-    validator.constraint(ConstraintUtils.isNotEmpty(name, "Jméno"));
-    validator.constraint(ConstraintUtils.isNotEmpty(viability, "Životaschopnost"));
-    validator.constraint(ConstraintUtils.isNotEmpty(attack, "Útočné číslo"));
-    validator.constraint(ConstraintUtils.isNotEmpty(defence, "Obranné číslo"));
-    validator.constraint(ConstraintUtils.isNumber(endurance, "Odolnost"));
-    validator.constraint(ConstraintUtils.isNotEmpty(dimension, "Velikost"));
-    validator.constraint(ConstraintUtils.isNumberOrEmpty(combativeness, "Bojovnost"));
-    validator.constraint(ConstraintUtils.isNotEmpty(vulnerability, "Zranitelnost"));
-    validator.constraint(ConstraintUtils.isNotEmpty(moveability, "Pohyblivost"));
-    validator.constraint(ConstraintUtils.isNumber(intelligence, "Inteligence"));
-    validator.constraint(ConstraintUtils.isNumberOrEmpty(conviction, "Inteligence"));
-    validator.constraint(ConstraintUtils.isNotEmpty(treasure, "Poklady"));
-    validator.constraint(ConstraintUtils.isNotEmpty(experience, "Zkušenost"));
+    addComposites(name, viability, attack, defence, endurance, dimension, combativeness, vulnerability, moveability, stamina, intelligence, conviction, treasure, experience, description);
+    addConstraints(
+        isNotEmpty(name, "Jméno"),
+        isNotEmpty(viability, "Životaschopnost"),
+        isNotEmpty(attack, "Útočné číslo"),
+        isNotEmpty(defence, "Obranné číslo"),
+        isNumber(endurance, "Odolnost"),
+        isNotEmpty(dimension, "Velikost"),
+        isNumberOrEmpty(combativeness, "Bojovnost"),
+        isNotEmpty(vulnerability, "Zranitelnost"),
+        isNotEmpty(moveability, "Pohyblivost"),
+        isNumber(intelligence, "Inteligence"),
+        isNumberOrEmpty(conviction, "Inteligence"),
+        isNotEmpty(treasure, "Poklady"),
+        isNotEmpty(experience, "Zkušenost")
+    );
   }
 
   // region Setters and Getters
-  @Override
-  public Long getId() {
-    return id.get();
-  }
-
-  @Override
-  public void setId(Long id) {
-    this.id.set(id);
-  }
-
   public String getName() {
     return name.get();
   }

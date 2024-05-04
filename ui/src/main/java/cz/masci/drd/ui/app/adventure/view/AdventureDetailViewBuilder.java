@@ -19,41 +19,35 @@
 
 package cz.masci.drd.ui.app.adventure.view;
 
-import static cz.masci.drd.ui.util.ReactFxUtils.selectVarOrElseConst;
+import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty;
 
 import cz.masci.drd.ui.app.adventure.model.AdventureDetailModel;
-import cz.masci.drd.ui.app.adventure.model.AdventureListModel;
-import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.drd.ui.util.PropertyUtils;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
+import cz.masci.springfx.mvci.model.list.ListModel;
 import cz.masci.springfx.mvci.util.BuilderUtils;
+import cz.masci.springfx.mvci.util.property.PropertyUtils;
+import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import lombok.RequiredArgsConstructor;
 import org.reactfx.value.Var;
 
-@RequiredArgsConstructor
-public class AdventureDetailViewBuilder implements Builder<Region> {
+public class AdventureDetailViewBuilder extends DetailViewBuilder<AdventureDetailModel> implements Builder<Region> {
 
-  private final AdventureListModel viewModel;
+  public AdventureDetailViewBuilder(ListModel<AdventureDetailModel> viewModel) {
+    super(viewModel);
+  }
 
   @Override
   public Region build() {
     Var<AdventureDetailModel> selectedProperty = viewModel.selectedElementProperty();
     // create text fields with validation
-    var nameTextField = ViewBuilderUtils.createTextField("Název", Double.MAX_VALUE);
-    var nameConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
+    var nameTextField = createTextField("Název", Double.MAX_VALUE);
+    var nameConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
     var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameConstraint);
-    // create nullable properties
-    Var<String> nameProperty = selectVarOrElseConst(selectedProperty, AdventureDetailModel::nameProperty, "");
-    // bind nullable properties to text fields
-    nameTextField.textProperty().bindBidirectional(nameProperty);
-    // listen to changes and update source selected property
-    ChangeListener<String> changeListener = ((observable, oldValue, newValue) -> viewModel.updateElementsProperty());
-    nameProperty.observeChanges(changeListener);
+
+    bindBidirectional(nameTextField.textProperty(), AdventureDetailModel::nameProperty);
 
     // set on focus view
     viewModel.setOnFocusView(nameTextField::requestFocus);

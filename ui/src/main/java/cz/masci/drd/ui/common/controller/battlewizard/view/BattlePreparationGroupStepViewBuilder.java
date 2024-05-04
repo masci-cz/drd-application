@@ -19,7 +19,8 @@
 
 package cz.masci.drd.ui.common.controller.battlewizard.view;
 
-import cz.masci.drd.ui.util.ViewBuilderUtils;
+import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
+
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
@@ -37,7 +38,7 @@ public class BattlePreparationGroupStepViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    MFXTextField groupNumber = ViewBuilderUtils.createTextField("Počet skupin", Double.MAX_VALUE);
+    MFXTextField groupNumber = createTextField("Počet skupin", Double.MAX_VALUE);
     Bindings.bindBidirectional(groupNumber.textProperty(), groupCount, new NumberStringConverter());
     return VBoxBuilder.vBox()
                            .setAlignment(Pos.CENTER)
