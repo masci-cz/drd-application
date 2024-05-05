@@ -33,7 +33,13 @@ public class BattleInteractor {
   private final BattleService battleService;
 
   public List<BattleGroupDetailModel> list() {
-    return List.of();
+    return battleService.getGroups().stream().map(group -> {
+      var result = new BattleGroupDetailModel();
+      result.setName(group.getName());
+      result.setId(group.getName());
+      result.rebaseline();
+      return result;
+    }).toList();
   }
 
   public void addGroupList(final List<BattleGroupDetailModel> list) {

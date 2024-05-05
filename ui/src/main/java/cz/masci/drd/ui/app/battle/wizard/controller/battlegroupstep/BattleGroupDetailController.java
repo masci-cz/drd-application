@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.controller.battlegroupstep;
 
 import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
 
@@ -28,14 +28,14 @@ import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
-public class BattleGroupStepDetailController implements ViewProvider<Region> {
+public class BattleGroupDetailController implements ViewProvider<Region> {
 
   private final Builder<Region> builder;
 
-  public BattleGroupStepDetailController(BattleGroupListModel viewModel) {
+  public BattleGroupDetailController(BattleGroupListModel viewModel) {
     var detailViewBuilder = new BattleGroupDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);
-    var detailCommandController = new BattleGroupStepDetailCommandController(viewModel);
+    var detailCommandController = new BattleGroupDetailCommandController(viewModel);
 
     builder = createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
   }

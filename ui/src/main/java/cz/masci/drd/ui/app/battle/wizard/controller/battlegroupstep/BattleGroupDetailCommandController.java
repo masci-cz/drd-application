@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.controller.battlegroupstep;
 
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
@@ -29,13 +29,13 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.List;
 import javafx.scene.layout.Region;
 
-public class BattleGroupStepDetailCommandController implements ViewProvider<Region> {
+public class BattleGroupDetailCommandController implements ViewProvider<Region> {
 
   private final OperableDetailController<String, BattleGroupDetailModel> operableDetailController;
   private final CommandsViewBuilder viewBuilder;
 
 
-  public BattleGroupStepDetailCommandController(BattleGroupListModel viewModel) {
+  public BattleGroupDetailCommandController(BattleGroupListModel viewModel) {
     this.operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
     this.viewBuilder = new CommandsViewBuilder(
         List.of(

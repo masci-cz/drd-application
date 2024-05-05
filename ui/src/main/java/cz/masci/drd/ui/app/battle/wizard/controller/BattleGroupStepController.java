@@ -19,13 +19,17 @@
 
 package cz.masci.drd.ui.app.battle.wizard.controller;
 
+import cz.masci.drd.ui.app.battle.wizard.controller.battlegroupstep.BattleGroupDetailController;
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
 import cz.masci.drd.ui.app.battle.wizard.view.BattleGroupListViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanExpression;
 import javafx.scene.layout.Region;
 
 public class BattleGroupStepController extends TitleLeafStep {
@@ -42,7 +46,7 @@ public class BattleGroupStepController extends TitleLeafStep {
 
     var battleGroupListViewBuilder = new BattleGroupListViewBuilder(viewModel);
     var listController = new SimpleController<>(battleGroupListViewBuilder);
-    var detailController = new BattleGroupStepDetailController(viewModel);
+    var detailController = new BattleGroupDetailController(viewModel);
 
     viewBuilder = BorderPaneBuilder.builder()
         .withCenter(listController.getView())
@@ -60,6 +64,11 @@ public class BattleGroupStepController extends TitleLeafStep {
     if (isValid()) {
       interactor.addGroupList(viewModel.getElements());
     }
+  }
+
+  @Override
+  public BooleanExpression valid() {
+    return Bindings.size(viewModel.getElements().filtered(detailModel -> detailModel.isValid() && detailModel.isDirty())).greaterThanOrEqualTo(2);
   }
 
   private void load() {
