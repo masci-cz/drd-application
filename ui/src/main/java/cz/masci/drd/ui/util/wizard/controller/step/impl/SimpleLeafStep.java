@@ -19,28 +19,15 @@
 
 package cz.masci.drd.ui.util.wizard.controller.step.impl;
 
-import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
-import cz.masci.drd.ui.util.wizard.controller.step.LeafStep;
-import java.util.Optional;
 import javafx.scene.layout.Region;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@RequiredArgsConstructor
-public class SimpleLeafStep implements LeafStep {
+public class SimpleLeafStep extends TitleLeafStep {
 
-  @Getter
-  @Setter
-  private HierarchicalStep parent;
-  private final String title;
   private final Region view;
 
-  @Override
-  public String title() {
-    return Optional.ofNullable(getParent())
-                   .map(parent -> parent.title() == null || parent.title().isBlank() ? title : String.join(" - ", parent.title(), title))
-                   .orElse("N/A");
+  public SimpleLeafStep(String title, Region view) {
+    super(title);
+    this.view = view;
   }
 
   @Override

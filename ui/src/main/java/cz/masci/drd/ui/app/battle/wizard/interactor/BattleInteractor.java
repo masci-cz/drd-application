@@ -19,13 +19,28 @@
 
 package cz.masci.drd.ui.app.battle.wizard.interactor;
 
+import cz.masci.drd.service.BattleService;
+import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class BattleInteractor {
+
+  private final BattleService battleService;
+
   public List<BattleGroupDetailModel> list() {
     return List.of();
+  }
+
+  public void addGroupList(final List<BattleGroupDetailModel> list) {
+    try {
+      battleService.addGroupList(list.stream().map(BattleGroupDetailModel::getName).toList());
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -13,6 +13,8 @@ public class WizardController {
   private final CompositeStep root;
   private final WizardViewModel wizardViewModel;
 
+  private Step currentStep = null;
+
   public WizardController(CompositeStep root) {
     wizardViewModel = new WizardViewModel();
     builder = new WizardViewBuilder(this::getPrevView, this::getNextView, wizardViewModel);
@@ -20,21 +22,22 @@ public class WizardController {
   }
 
   public Region getView() {
-    Step step = root.next();
-    updateWizardViewModel(step);
-    return builder.build(step.view());
+    currentStep = root.next();
+    updateWizardViewModel(currentStep);
+    return builder.build(currentStep.view());
   }
 
   private Optional<Region> getNextView() {
-    Step step = root.next();
-    updateWizardViewModel(step);
-    return Optional.ofNullable(step.view());
+    currentStep.executeBeforeNext();
+    currentStep = root.next();
+    updateWizardViewModel(currentStep);
+    return Optional.ofNullable(currentStep.view());
   }
 
   private Optional<Region> getPrevView() {
-    Step step = root.prev();
-    updateWizardViewModel(step);
-    return Optional.ofNullable(step.view());
+    currentStep = root.prev();
+    updateWizardViewModel(currentStep);
+    return Optional.ofNullable(currentStep.view());
   }
 
   private void updateWizardViewModel(Step step) {

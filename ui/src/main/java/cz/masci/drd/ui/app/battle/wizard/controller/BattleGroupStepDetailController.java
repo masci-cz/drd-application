@@ -21,7 +21,6 @@ package cz.masci.drd.ui.app.battle.wizard.controller;
 
 import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
 
-import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
 import cz.masci.drd.ui.app.battle.wizard.view.BattleGroupDetailViewBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
@@ -33,10 +32,10 @@ public class BattleGroupStepDetailController implements ViewProvider<Region> {
 
   private final Builder<Region> builder;
 
-  public BattleGroupStepDetailController(BattleGroupListModel viewModel, BattleInteractor interactor) {
+  public BattleGroupStepDetailController(BattleGroupListModel viewModel) {
     var detailViewBuilder = new BattleGroupDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);
-    var detailCommandController = new BattleGroupStepDetailCommandController(viewModel, interactor);
+    var detailCommandController = new BattleGroupStepDetailCommandController(viewModel);
 
     builder = createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
   }

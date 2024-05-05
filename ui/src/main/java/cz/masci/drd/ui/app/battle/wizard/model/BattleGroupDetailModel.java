@@ -19,17 +19,20 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model;
 
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmpty;
+
 import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import cz.masci.springfx.mvci.util.constraint.ConstraintUtils;
 import javafx.beans.property.StringProperty;
+import lombok.ToString;
 
+@ToString
 public class BattleGroupDetailModel extends BaseDetailModel<String> {
   private final DirtyStringProperty name = new DirtyStringProperty("");
 
   public BattleGroupDetailModel() {
     addComposites(name);
-    addConstraints(ConstraintUtils.isNotEmpty(name, "Název"));
+    addConstraints(isNotEmpty(name, "Název"));
   }
 
   public String getName() {

@@ -19,7 +19,6 @@
 
 package cz.masci.drd.ui.app.battle.wizard.controller;
 
-import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
@@ -36,7 +35,7 @@ public class BattleGroupStepDetailCommandController implements ViewProvider<Regi
   private final CommandsViewBuilder viewBuilder;
 
 
-  public BattleGroupStepDetailCommandController(BattleGroupListModel viewModel, BattleInteractor interactor) {
+  public BattleGroupStepDetailCommandController(BattleGroupListModel viewModel) {
     this.operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
     this.viewBuilder = new CommandsViewBuilder(
         List.of(
@@ -62,10 +61,14 @@ public class BattleGroupStepDetailCommandController implements ViewProvider<Regi
           afterSave.accept(item);
         }
     );
+    // this must be called - otherwise the button disable status will not change
+    postGuiStuff.run();
   }
 
   private void deleteElement(Runnable postGuiStuff) {
     operableDetailController.remove((item, afterDelete) -> afterDelete.run());
+    // this must be called - otherwise the button disable status will not change
+    postGuiStuff.run();
   }
 
 }

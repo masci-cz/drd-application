@@ -42,7 +42,7 @@ public class BattleGroupStepController extends TitleLeafStep {
 
     var battleGroupListViewBuilder = new BattleGroupListViewBuilder(viewModel);
     var listController = new SimpleController<>(battleGroupListViewBuilder);
-    var detailController = new BattleGroupStepDetailController(viewModel, interactor);
+    var detailController = new BattleGroupStepDetailController(viewModel);
 
     viewBuilder = BorderPaneBuilder.builder()
         .withCenter(listController.getView())
@@ -53,6 +53,13 @@ public class BattleGroupStepController extends TitleLeafStep {
   public Region view() {
     load();
     return viewBuilder.build();
+  }
+
+  @Override
+  public void execute() {
+    if (isValid()) {
+      interactor.addGroupList(viewModel.getElements());
+    }
   }
 
   private void load() {
