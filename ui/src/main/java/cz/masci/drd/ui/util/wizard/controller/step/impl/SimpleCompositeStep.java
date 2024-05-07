@@ -21,7 +21,6 @@ package cz.masci.drd.ui.util.wizard.controller.step.impl;
 
 import cz.masci.drd.ui.util.wizard.controller.step.CompositeStep;
 import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
-import cz.masci.drd.ui.util.wizard.controller.step.Step;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.binding.BooleanExpression;
@@ -46,7 +45,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
   protected abstract String getNextText();
 
   @Override
-  public Step prev() {
+  public HierarchicalStep prev() {
     // is already first step
     if (currentIdx < 0) {
       doStep = false;
@@ -80,7 +79,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
   }
 
   @Override
-  public Step next() {
+  public HierarchicalStep next() {
     // is already last step
     if (currentIdx >= steps.size()) {
       doStep = false;
@@ -114,7 +113,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
   }
 
   @Override
-  public Step goToStep(int index) {
+  public HierarchicalStep goToStep(int index) {
     System.out.printf("Call goToStep(): %s, current idx: %d, new idx: %d\n", getClass(), currentIdx, index);
     if (!isValidIndex(index)) {
       return null;

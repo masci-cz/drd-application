@@ -23,11 +23,11 @@ import java.util.function.Function;
 import javafx.scene.layout.Region;
 
 public interface CompositeStep extends HierarchicalStep {
-  Step prev();
+  HierarchicalStep prev();
 
-  Step next();
+  HierarchicalStep next();
 
-  Step goToStep(int index);
+  HierarchicalStep goToStep(int index);
 
   void reset();
 

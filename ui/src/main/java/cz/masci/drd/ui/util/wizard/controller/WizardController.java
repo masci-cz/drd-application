@@ -1,7 +1,7 @@
 package cz.masci.drd.ui.util.wizard.controller;
 
 import cz.masci.drd.ui.util.wizard.controller.step.CompositeStep;
-import cz.masci.drd.ui.util.wizard.controller.step.Step;
+import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
 import cz.masci.drd.ui.util.wizard.model.WizardViewModel;
 import cz.masci.drd.ui.util.wizard.view.WizardViewBuilder;
 import java.util.Optional;
@@ -13,7 +13,7 @@ public class WizardController {
   private final CompositeStep root;
   private final WizardViewModel wizardViewModel;
 
-  private Step currentStep = null;
+  private HierarchicalStep currentStep = null;
 
   public WizardController(CompositeStep root) {
     wizardViewModel = new WizardViewModel();
@@ -41,7 +41,7 @@ public class WizardController {
     return Optional.ofNullable(currentStep.view());
   }
 
-  private void updateWizardViewModel(Step step) {
+  private void updateWizardViewModel(HierarchicalStep step) {
     wizardViewModel.titleProperty().set(step.title());
     wizardViewModel.prevTextProperty().set(step.prevText());
     if (wizardViewModel.prevDisableProperty().isBound()) {

@@ -31,6 +31,20 @@ public interface HierarchicalStep extends Step {
 
   HierarchicalStep getParent();
 
+  /**
+   * Retrieves the previous button text for the current step.
+   *
+   * @return The previous button text, or null if not available.
+   */
+  String prevText();
+
+  /**
+   * Retrieves the next button text for the current step.
+   *
+   * @return The next button text, or null if not available.
+   */
+  String nextText();
+
   @Override
   default BooleanExpression valid() {
     return Optional.ofNullable(getParent())
@@ -45,30 +59,45 @@ public interface HierarchicalStep extends Step {
                    .orElse(null);
   }
 
-  @Override
+  /**
+   * Retrieves the expression that determines whether the previous button should be disabled.
+   *
+   * @return The BooleanExpression that determines whether the previous button should be disabled.
+   */
   default BooleanExpression prevDisabled() {
     return Optional.ofNullable(getParent())
-                   .map(Step::prevDisabled)
+                   .map(HierarchicalStep::prevDisabled)
                    .map(parentPrevDisabled -> parentPrevDisabled.or(valid().not()))
                    .orElse(valid().not());
   }
 
-  @Override
+  /**
+   * Retrieves the expression that determines whether the next button should be disabled.
+   *
+   * @return The BooleanExpression that determines whether the next button should be disabled.
+   */
   default BooleanExpression nextDisabled() {
     return Optional.ofNullable(getParent())
-                   .map(Step::nextDisabled)
+                   .map(HierarchicalStep::nextDisabled)
                    .map(parentNextDisabled -> parentNextDisabled.or(valid().not()))
                    .orElse(valid().not());
   }
 
-  @Override
+  /**
+   * Executes any necessary logic before going to the previous step. This method is called before the navigation to the previous step is performed. Implement
+   * this method to perform any actions or validations that need to be done before proceeding to the previous step.
+   */
   default void executeBeforePrev() {
     Optional.ofNullable(getParent())
-        .ifPresent(Step::executeBeforePrev);
+            .ifPresent(HierarchicalStep::executeBeforePrev);
   }
 
-  @Override
+  /**
+   * Executes any necessary logic before moving to the next step. This method is called before the navigation to the next step is performed. Implement this
+   * method to perform any actions or validations that need to be done before proceeding to the next step.
+   */
   default void executeBeforeNext() {
-
+    Optional.ofNullable(getParent())
+            .ifPresent(HierarchicalStep::executeBeforeNext);
   }
 }
