@@ -23,6 +23,7 @@ import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmpty;
 
 import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
+import javafx.beans.Observable;
 import javafx.beans.property.StringProperty;
 import lombok.ToString;
 
@@ -45,5 +46,13 @@ public class BattleGroupDetailModel extends BaseDetailModel<String> {
 
   public void setName(String name) {
     this.name.set(name);
+  }
+
+  public static Observable[] asObservables(BattleGroupDetailModel model) {
+    return new Observable[] {
+        model.nameProperty(),
+        model.validProperty(),
+        model.isDirtyProperty()
+    };
   }
 }

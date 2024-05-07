@@ -24,7 +24,7 @@ import cz.masci.drd.ui.common.model.AbstractListModel;
 public class BattleGroupListModel extends AbstractListModel<String, BattleGroupDetailModel> {
 
   public BattleGroupListModel() {
-    super();
+    super(BattleGroupDetailModel::asObservables);
   }
 
   @Override
