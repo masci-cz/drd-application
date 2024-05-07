@@ -60,4 +60,15 @@ public interface HierarchicalStep extends Step {
                    .map(parentNextDisabled -> parentNextDisabled.or(valid().not()))
                    .orElse(valid().not());
   }
+
+  @Override
+  default void executeBeforePrev() {
+    Optional.ofNullable(getParent())
+        .ifPresent(Step::executeBeforePrev);
+  }
+
+  @Override
+  default void executeBeforeNext() {
+
+  }
 }

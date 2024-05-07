@@ -26,24 +26,16 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+// TODO make up exception handling propagate to user
 @RequiredArgsConstructor
 @Service
 public class BattleInteractor {
 
   private final BattleService battleService;
 
-  public List<BattleGroupDetailModel> list() {
-    return battleService.getGroups().stream().map(group -> {
-      var result = new BattleGroupDetailModel();
-      result.setName(group.getName());
-      result.setId(group.getName());
-      result.rebaseline();
-      return result;
-    }).toList();
-  }
-
-  public void addGroupList(final List<BattleGroupDetailModel> list) {
+  public void createBattle(final List<BattleGroupDetailModel> list) {
     try {
+      battleService.createBattle();
       battleService.addGroupList(list.stream().map(BattleGroupDetailModel::getName).toList());
     } catch (BattleException e) {
       throw new RuntimeException(e);

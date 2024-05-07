@@ -47,7 +47,6 @@ public abstract class SimpleCompositeStep implements CompositeStep {
 
   @Override
   public Step prev() {
-    System.out.printf("Call prev(): %s, idx: %d, doStep: %s, childIterator: %s\n", getClass(), currentIdx, doStep, currentChildIterator);
     // is already first step
     if (currentIdx < 0) {
       doStep = false;
@@ -82,7 +81,6 @@ public abstract class SimpleCompositeStep implements CompositeStep {
 
   @Override
   public Step next() {
-    System.out.printf("Call next(): %s, idx: %d, doStep: %s, childIterator: %s\n", getClass(), currentIdx, doStep, currentChildIterator);
     // is already last step
     if (currentIdx >= steps.size()) {
       doStep = false;

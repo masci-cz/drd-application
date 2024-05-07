@@ -41,12 +41,6 @@ public interface CompositeStep extends HierarchicalStep {
     return null;
   }
 
-  @Override
-  default void executeBeforePrev() {}
-
-  @Override
-  default void executeBeforeNext() {}
-
   default <R> R applyOnCompositeStepOr(HierarchicalStep step, Function<CompositeStep, R> iteratorStepFunction, R defaultValue) {
     return step instanceof CompositeStep compositeStep ? iteratorStepFunction.apply(compositeStep) : defaultValue;
   }

@@ -23,8 +23,6 @@ import java.util.Optional;
 
 public interface LeafStep extends HierarchicalStep {
 
-  void execute();
-
   default String prevText() {
     return Optional.ofNullable(getParent())
                    .map(HierarchicalStep::prevText)
@@ -35,14 +33,6 @@ public interface LeafStep extends HierarchicalStep {
     return Optional.ofNullable(getParent())
                    .map(HierarchicalStep::nextText)
                    .orElse(null);
-  }
-
-  default void executeBeforePrev() {
-    execute();
-  }
-
-  default void executeBeforeNext() {
-    execute();
   }
 
 }

@@ -35,6 +35,7 @@ public class WizardController {
   }
 
   private Optional<Region> getPrevView() {
+    currentStep.executeBeforePrev();
     currentStep = root.prev();
     updateWizardViewModel(currentStep);
     return Optional.ofNullable(currentStep.view());

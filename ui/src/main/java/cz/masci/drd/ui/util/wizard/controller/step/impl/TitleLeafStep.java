@@ -40,8 +40,4 @@ public abstract class TitleLeafStep implements LeafStep {
                    .map(parent -> parent.title() == null || parent.title().isBlank() ? title : String.join(" - ", parent.title(), title))
                    .orElse("N/A");
   }
-
-  @Override
-  public void execute() {
-  }
 }

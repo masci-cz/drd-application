@@ -26,8 +26,6 @@ import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
 import cz.masci.drd.ui.app.battle.wizard.view.BattleGroupListViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
-import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
-import cz.masci.springfx.mvci.util.builder.ListChangeListenerBuilder;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
@@ -48,16 +46,6 @@ public class BattleGroupStepController extends TitleLeafStep {
     this.interactor = interactor;
     viewModel = new BattleGroupListModel();
     filteredList = new FilteredList<>(viewModel.getElements(), detailModel -> detailModel.isValid() && !detailModel.isDirty());
-//    filteredList.predicateProperty().bind(Bindings.createObjectBinding(() -> item -> item.isValid() && !item.isDirty(), viewModel.getElements()));
-    Bindings.size(filteredList).addListener((observable, oldValue, newValue) -> System.out.println("Size changed to " + newValue));
-    viewModel.getElements().addListener(
-        new ListChangeListenerBuilder<BattleGroupDetailModel>()
-            .onUpdated(detailModel -> System.out.printf("Battle group list onUpdated: %s, valid = %s, dirty = %s\n", detailModel, detailModel.isValid(), detailModel.isDirty()))
-            .onAdd(detailModel -> System.out.printf("Battle group list onAdd: %s, valid = %s, dirty = %s\n", detailModel, detailModel.isValid(), detailModel.isDirty()))
-            .onPermutated(detailModel -> System.out.printf("Battle group list onPermutated: %s, valid = %s, dirty = %s\n", detailModel, detailModel.isValid(), detailModel.isDirty()))
-            .onRemove(detailModel -> System.out.printf("Battle group list onRemove: %s, valid = %s, dirty = %s\n", detailModel, detailModel.isValid(), detailModel.isDirty()))
-            .build()
-    );
 
     var battleGroupListViewBuilder = new BattleGroupListViewBuilder(viewModel);
     var listController = new SimpleController<>(battleGroupListViewBuilder);
@@ -70,15 +58,7 @@ public class BattleGroupStepController extends TitleLeafStep {
 
   @Override
   public Region view() {
-    load();
     return viewBuilder.build();
-  }
-
-  @Override
-  public void execute() {
-    if (isValid()) {
-      interactor.addGroupList(viewModel.getElements());
-    }
   }
 
   @Override
@@ -86,9 +66,22 @@ public class BattleGroupStepController extends TitleLeafStep {
     return Bindings.size(filteredList).greaterThanOrEqualTo(2);
   }
 
-  private void load() {
-    viewModel.getElements().clear();
-    BackgroundTaskBuilder.task(interactor::list).onSucceeded(viewModel.getElements()::setAll).start();
+  @Override
+  public void executeBeforePrev() {
+    execute();
+    super.executeBeforePrev();
+  }
+
+  @Override
+  public void executeBeforeNext() {
+    execute();
+    super.executeBeforeNext();
+  }
+
+  private void execute() {
+    if (isValid()) {
+      interactor.createBattle(viewModel.getElements());
+    }
   }
 
 }
