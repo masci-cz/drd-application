@@ -34,19 +34,30 @@ public class BattleRootStepController extends SimpleCompositeStep {
 
   public BattleRootStepController(BattleInteractor interactor) {
     addStep(new BattleGroupStepController(interactor));
-    addStep(new BattleDuellistStepController());
-    addStep(new BattleInitiativeStepController());
+    addStep(new BattleDuellistStepController(interactor));
     addStep(new BattleSelectActionStepController());
+    addStep(new BattleInitiativeStepController());
   }
 
   @Override
   protected String getPrevText() {
-    return "Předchozí";
+    return switch (getCurrentIdx()) {
+      case 1 -> "Zrušit bitvu";
+      case 2 -> "Bojovníci";
+      case 3 -> "Výběr akcí";
+      default -> "Předchozí";
+    };
   }
 
   @Override
   protected String getNextText() {
-    return "Další";
+    return switch (getCurrentIdx()) {
+      case 0 -> "Bojovníci";
+      case 1 -> "Výběr akcí";
+      case 2 -> "Iniciativa";
+      case 3 -> "Spustit bitvu";
+      default -> "Další";
+    };
   }
 
   @Override

@@ -19,10 +19,12 @@
 
 package cz.masci.drd.ui.app.battle.wizard.interactor;
 
+import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +42,9 @@ public class BattleInteractor {
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public Stream<GroupDTO> getGroups() {
+    return battleService.getGroups().stream();
   }
 }
