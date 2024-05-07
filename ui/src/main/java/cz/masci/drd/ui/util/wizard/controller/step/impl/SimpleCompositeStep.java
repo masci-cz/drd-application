@@ -50,6 +50,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
     if (currentIdx < 0) {
       doStep = false;
       currentChildIterator = null;
+      System.out.printf("Previous step (%s): Is already first\n", this);
       return applyOnCompositeStepOr(parent, CompositeStep::prev, null);
     }
 
@@ -57,6 +58,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
 
     if (!hasChildIterator && doStep) {
       doStep = false;
+      System.out.printf("Previous step (%s): Step from children\n", this);
       return steps.get(currentIdx);
     }
 
@@ -65,10 +67,12 @@ public abstract class SimpleCompositeStep implements CompositeStep {
         var prevStep = currentChildIterator.prev();
         doStep = false;
         currentChildIterator = null;
+        System.out.printf("Previous step (%s): Step from child iterator\n", this);
         return prevStep;
       } else {
         currentIdx--;
         doStep = true;
+        System.out.printf("Previous step (%s): Child iterator has no more steps\n", this);
         return prev();
       }
     }
@@ -84,6 +88,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
     if (currentIdx >= steps.size()) {
       doStep = false;
       currentChildIterator = null;
+      System.out.printf("Next step (%s): Is already first\n", this);
       return applyOnCompositeStepOr(parent, CompositeStep::next, null);
     }
 
@@ -91,6 +96,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
 
     if (!hasChildIterator && doStep) {
       doStep = false;
+      System.out.printf("Next step (%s): Step from children\n", this);
       return steps.get(currentIdx);
     }
 
@@ -99,10 +105,12 @@ public abstract class SimpleCompositeStep implements CompositeStep {
         var nextStep = currentChildIterator.next();
         doStep = false;
         currentChildIterator = null;
+        System.out.printf("Next step (%s): Step from child iterator\n", this);
         return nextStep;
       } else {
         currentIdx++;
         doStep = true;
+        System.out.printf("Next step (%s): Child iterator has no more steps\n", this);
         return next();
       }
     }

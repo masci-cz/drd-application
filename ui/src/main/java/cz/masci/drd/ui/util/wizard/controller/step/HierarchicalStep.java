@@ -45,18 +45,13 @@ public interface HierarchicalStep extends Step {
    */
   String nextText();
 
-  @Override
-  default BooleanExpression valid() {
-    return Optional.ofNullable(getParent())
-                   .map(Step::valid)
-                   .orElse(TRUE_PROPERTY);
-  }
-
-  @Override
-  default String title() {
-    return Optional.ofNullable(getParent())
-                   .map(Step::title)
-                   .orElse(null);
+  /**
+   * This method performs any necessary actions before move to other step.
+   *
+   * @see Step#valid()
+   */
+  default void completeStep() {
+    // do nothing
   }
 
   /**
@@ -88,6 +83,7 @@ public interface HierarchicalStep extends Step {
    * this method to perform any actions or validations that need to be done before proceeding to the previous step.
    */
   default void executeBeforePrev() {
+    completeStep();
     Optional.ofNullable(getParent())
             .ifPresent(HierarchicalStep::executeBeforePrev);
   }
@@ -97,7 +93,23 @@ public interface HierarchicalStep extends Step {
    * method to perform any actions or validations that need to be done before proceeding to the next step.
    */
   default void executeBeforeNext() {
+    completeStep();
     Optional.ofNullable(getParent())
             .ifPresent(HierarchicalStep::executeBeforeNext);
   }
+
+  @Override
+  default BooleanExpression valid() {
+    return Optional.ofNullable(getParent())
+                   .map(Step::valid)
+                   .orElse(TRUE_PROPERTY);
+  }
+
+  @Override
+  default String title() {
+    return Optional.ofNullable(getParent())
+                   .map(Step::title)
+                   .orElse(null);
+  }
+
 }

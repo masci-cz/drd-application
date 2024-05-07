@@ -67,18 +67,7 @@ public class BattleGroupStepController extends TitleLeafStep {
   }
 
   @Override
-  public void executeBeforePrev() {
-    execute();
-    super.executeBeforePrev();
-  }
-
-  @Override
-  public void executeBeforeNext() {
-    execute();
-    super.executeBeforeNext();
-  }
-
-  private void execute() {
+  public void completeStep() {
     if (isValid()) {
       interactor.createBattle(viewModel.getElements());
     }
