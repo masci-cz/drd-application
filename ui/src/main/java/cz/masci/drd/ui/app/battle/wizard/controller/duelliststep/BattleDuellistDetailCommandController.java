@@ -17,10 +17,10 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller.battlegroupstep;
+package cz.masci.drd.ui.app.battle.wizard.controller.duelliststep;
 
-import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
-import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistListModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.OperableDetailController;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
@@ -29,13 +29,13 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.List;
 import javafx.scene.layout.Region;
 
-public class BattleGroupDetailCommandController implements ViewProvider<Region> {
+public class BattleDuellistDetailCommandController implements ViewProvider<Region> {
 
-  private final OperableDetailController<String, BattleGroupDetailModel> operableDetailController;
+  private final OperableDetailController<String, BattleDuellistDetailModel> operableDetailController;
   private final CommandsViewBuilder viewBuilder;
 
 
-  public BattleGroupDetailCommandController(BattleGroupListModel viewModel) {
+  public BattleDuellistDetailCommandController(BattleDuellistListModel viewModel) {
     this.operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
     this.viewBuilder = new CommandsViewBuilder(
         List.of(

@@ -22,9 +22,11 @@ package cz.masci.drd.ui.app.battle.wizard.interactor;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import java.util.List;
 import java.util.stream.Stream;
+import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +36,31 @@ import org.springframework.stereotype.Service;
 public class BattleInteractor {
 
   private final BattleService battleService;
+  private final BattleMapper battleMapper;
 
   public void createBattle(final List<BattleGroupDetailModel> list) {
     try {
       battleService.createBattle();
-      battleService.addGroupList(list.stream().map(BattleGroupDetailModel::getName).toList());
+      battleService.addGroupList(list.stream()
+                                     .map(BattleGroupDetailModel::getName)
+                                     .toList());
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }
   }
 
   public Stream<GroupDTO> getGroups() {
-    return battleService.getGroups().stream();
+    return battleService.getGroups()
+                        .stream();
+  }
+
+  public void setDuellists(String groupName, ObservableList<BattleDuellistDetailModel> elements) {
+    var group = battleService.getGroup(groupName);
+    if (group != null) {
+      group.getDuellists()
+           .addAll(elements.stream()
+                           .map(battleMapper::mapDuellistFromModel)
+                           .toList());
+    }
   }
 }

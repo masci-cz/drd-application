@@ -23,7 +23,6 @@ import static cz.masci.springfx.mvci.util.BuilderUtils.enhanceValidatedNodeWithS
 import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
 import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty;
 import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumberOrEmptyWhenPropertyIsNotEmpty;
-import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumberWhenPropertyIsNotEmpty;
 
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
 import cz.masci.springfx.mvci.model.list.ListModel;
@@ -49,17 +48,18 @@ public class BattleDuellistDetailViewBuilder extends DetailViewBuilder<BattleDue
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
     var nameIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");
     var nameTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameIsNotEmptyConstraint);
-
-    var offenseTextField = createTextField("", 200.0);
+    var offenseTextField = createTextField("Útočné číslo", 200.0);
     var offenseIsNumberOrNotEmptyConstraint = isNumberOrEmptyWhenPropertyIsNotEmpty(offenseTextField.textProperty(), selectedProperty, "Útočné číslo");
     var offenseTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(offenseTextField, PropertyUtils.not(offenseTextField.delegateFocusedProperty())::addListener, offenseIsNumberOrNotEmptyConstraint);
-    var defenseTextField = createTextField("", 200.0);
+    var defenseTextField = createTextField("Obranné číslo", 200.0);
     var defenseIsNumberOrNotEmptyConstraint = isNumberOrEmptyWhenPropertyIsNotEmpty(defenseTextField.textProperty(), selectedProperty, "Obranné číslo");
-    var defense
-    var damageTextField = createTextField("", 200.0);
+    var defenseTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(defenseTextField, PropertyUtils.not(defenseTextField.delegateFocusedProperty())::addListener, defenseIsNumberOrNotEmptyConstraint);
+    var damageTextField = createTextField("Útočnost", 200.0);
     var damageIsNumberOrNotEmptyConstraint = isNumberOrEmptyWhenPropertyIsNotEmpty(damageTextField.textProperty(), selectedProperty, "Útočnost");
-    var liveTextField = createTextField("", 200.0);
+    var damageTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(damageTextField, PropertyUtils.not(damageTextField.delegateFocusedProperty())::addListener, damageIsNumberOrNotEmptyConstraint);
+    var liveTextField = createTextField("Životy", 200.0);
     var liveIsNumberOrNotEmptyConstraint = isNumberOrEmptyWhenPropertyIsNotEmpty(liveTextField.textProperty(), selectedProperty, "Životy");
+    var liveTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(liveTextField, PropertyUtils.not(liveTextField.delegateFocusedProperty())::addListener, liveIsNumberOrNotEmptyConstraint);
 
 
     bindBidirectional(nameTextField.textProperty(), BattleDuellistDetailModel::nameProperty);
@@ -72,7 +72,7 @@ public class BattleDuellistDetailViewBuilder extends DetailViewBuilder<BattleDue
 
     return VBoxBuilder.vBox()
                       .setSpacing(5.0)
-                      .addChildren(nameTextFieldWithValidation)
+                      .addChildren(nameTextFieldWithValidation, offenseTextFieldWithValidation, defenseTextFieldWithValidation, damageTextFieldWithValidation, liveTextFieldWithValidation)
                       .setPadding(new Insets(5.0, 5.0, 10.0, 5.0))
                       .setPrefWidth(400)
                       .getNode();

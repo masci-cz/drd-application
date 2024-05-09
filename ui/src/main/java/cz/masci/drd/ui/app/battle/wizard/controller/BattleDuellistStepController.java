@@ -34,7 +34,7 @@ public class BattleDuellistStepController extends SimpleCompositeStep {
     if (getCurrentIdx() < 0) {
       clearSteps();
       interactor.getGroups()
-                .map(group -> new BattleDuellistChildStepController(group.getName()))
+                .map(group -> new BattleDuellistChildStepController(interactor, group.getName()))
                 .forEach(this::addStep);
     }
 

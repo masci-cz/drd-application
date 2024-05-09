@@ -19,7 +19,7 @@
 
 package cz.masci.drd.ui.app.battle.wizard.controller;
 
-import cz.masci.drd.ui.app.battle.wizard.controller.battlegroupstep.BattleGroupDetailController;
+import cz.masci.drd.ui.app.battle.wizard.controller.groupstep.BattleGroupDetailController;
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;

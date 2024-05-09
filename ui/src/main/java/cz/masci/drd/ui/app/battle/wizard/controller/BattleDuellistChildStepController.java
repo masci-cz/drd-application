@@ -19,11 +19,64 @@
 
 package cz.masci.drd.ui.app.battle.wizard.controller;
 
-import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleLeafStep;
-import cz.masci.drd.ui.util.wizard.view.TestBattleStepViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.controller.duelliststep.BattleDuellistDetailController;
+import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistListModel;
+import cz.masci.drd.ui.app.battle.wizard.view.BattleDuellistListViewBuilder;
+import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
+import cz.masci.springfx.mvci.controller.impl.SimpleController;
+import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanExpression;
+import javafx.collections.transformation.FilteredList;
+import javafx.scene.layout.Region;
+import lombok.extern.slf4j.Slf4j;
 
-public class BattleDuellistChildStepController extends SimpleLeafStep {
-  public BattleDuellistChildStepController(String group) {
-    super(group, new TestBattleStepViewBuilder("Bojovníci skupiny - " + group).build());
+@Slf4j
+public class BattleDuellistChildStepController extends TitleLeafStep {
+
+  private final BorderPaneBuilder viewBuilder;
+  private final BattleDuellistListModel viewModel;
+  private final BattleInteractor interactor;
+
+  private final FilteredList<BattleDuellistDetailModel> filteredList;
+  private final String groupName;
+
+  public BattleDuellistChildStepController(BattleInteractor interactor, String groupName) {
+    super(groupName);
+
+    this.groupName = groupName;
+    this.interactor = interactor;
+    viewModel = new BattleDuellistListModel();
+    filteredList = new FilteredList<>(viewModel.getElements(), detailModel -> detailModel.isValid() && !detailModel.isDirty());
+
+    var battleDuellistListViewBuilder = new BattleDuellistListViewBuilder(viewModel);
+    var listController = new SimpleController<>(battleDuellistListViewBuilder);
+    var detailController = new BattleDuellistDetailController(viewModel);
+
+    viewBuilder = BorderPaneBuilder.builder()
+                                   .withCenter(listController.getView())
+                                   .withTop(detailController.getView());
+  }
+
+  @Override
+  public Region view() {
+    log.info("View of group {}", groupName);
+    return viewBuilder.build();
+  }
+
+  @Override
+  public BooleanExpression valid() {
+    return Bindings.size(filteredList)
+                   .greaterThanOrEqualTo(1);
+  }
+
+  @Override
+  public void completeStep() {
+    if (isValid()) {
+      interactor.setDuellists(groupName, viewModel.getElements());
+    }
   }
 }
+
