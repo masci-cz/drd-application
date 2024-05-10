@@ -19,14 +19,13 @@
 
 package cz.masci.drd.ui.util.wizard.controller.step;
 
+import static cz.masci.springfx.mvci.util.property.PropertyUtils.FALSE_PROPERTY;
+import static cz.masci.springfx.mvci.util.property.PropertyUtils.TRUE_PROPERTY;
+
 import java.util.Optional;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanWrapper;
 
 public interface HierarchicalStep extends Step {
-  BooleanProperty TRUE_PROPERTY = new ReadOnlyBooleanWrapper(true);
-
   void setParent(HierarchicalStep parent);
 
   HierarchicalStep getParent();
@@ -51,23 +50,26 @@ public interface HierarchicalStep extends Step {
    * @see Step#valid()
    */
   default void completeStep() {
-    // do nothing
+    System.out.println("Hierarchical Step: completeStep() " + getClass().getSimpleName());
+    Optional.ofNullable(getParent())
+        .ifPresent(HierarchicalStep::completeStep);
   }
 
   /**
    * Retrieves the expression that determines whether the previous button should be disabled.
+   * It doesn't depend on current {@code valid()}
    *
    * @return The BooleanExpression that determines whether the previous button should be disabled.
    */
   default BooleanExpression prevDisabled() {
     return Optional.ofNullable(getParent())
                    .map(HierarchicalStep::prevDisabled)
-                   .map(parentPrevDisabled -> parentPrevDisabled.or(valid().not()))
-                   .orElse(valid().not());
+                   .orElse(FALSE_PROPERTY);
   }
 
   /**
    * Retrieves the expression that determines whether the next button should be disabled.
+   * It is combination of parent {@code nextDisabled()} and current {@code valid().not()}.
    *
    * @return The BooleanExpression that determines whether the next button should be disabled.
    */

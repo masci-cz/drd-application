@@ -69,7 +69,9 @@ public class BattleDuellistChildStepController extends TitleLeafStep {
   @Override
   public BooleanExpression valid() {
     return Bindings.size(filteredList)
-                   .greaterThanOrEqualTo(1);
+                   .greaterThanOrEqualTo(1)
+                   .and(Bindings.size(viewModel.getElements())
+                                .isEqualTo(Bindings.size(filteredList)));
   }
 
   @Override
@@ -77,6 +79,7 @@ public class BattleDuellistChildStepController extends TitleLeafStep {
     if (isValid()) {
       interactor.setDuellists(groupName, viewModel.getElements());
     }
+    super.completeStep();
   }
 }
 

@@ -33,8 +33,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public class WizardViewBuilder {
 
   private final Supplier<Optional<Region>> onPrevAction;
@@ -73,7 +75,12 @@ public class WizardViewBuilder {
   }
 
   private void onAction(AnchorPane mainView, Supplier<Optional<Region>> regionSupplier) {
-    regionSupplier.get().ifPresent(newView -> setMainView(mainView, newView));
+    try {
+      regionSupplier.get()
+                    .ifPresent(newView -> setMainView(mainView, newView));
+    } catch (Exception e) {
+      log.error("Exception on step", e);
+    }
   }
 
   private void setMainView(AnchorPane mainView, Region view) {

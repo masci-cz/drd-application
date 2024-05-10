@@ -50,6 +50,13 @@ public interface Step {
    */
   BooleanExpression valid();
 
+  /**
+   * Boolean representation of valid expression
+   *
+   * @see Step#valid()
+   *
+   * @return boolean value of valid expression
+   */
   default boolean isValid() {
     return valid().get();
   }

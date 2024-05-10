@@ -23,10 +23,11 @@ import cz.masci.drd.ui.util.wizard.controller.step.CompositeStep;
 import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.binding.BooleanExpression;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class SimpleCompositeStep implements CompositeStep {
 
   @Setter
@@ -44,87 +45,109 @@ public abstract class SimpleCompositeStep implements CompositeStep {
 
   protected abstract String getNextText();
 
+  /**
+   * When going to previous step, there is no validation because we assume that go back is
+   * in most examples enabled.
+   *
+   * @return Previous step
+   */
   @Override
   public HierarchicalStep prev() {
     // is already first step
     if (currentIdx < 0) {
       doStep = false;
       currentChildIterator = null;
-      System.out.printf("Previous step (%s): Is already first\n", this);
+      log.debug("Previous step ({}): Is the first step - get step from parent", this.getClass().getSimpleName());
       return applyOnCompositeStepOr(parent, CompositeStep::prev, null);
     }
 
     boolean hasChildIterator = prepareChildIterator();
 
     if (!hasChildIterator && doStep) {
+      log.debug("Previous step ({}): Get {}. step", this.getClass().getSimpleName(), currentIdx);
       doStep = false;
-      System.out.printf("Previous step (%s): Step from children\n", this);
       return steps.get(currentIdx);
     }
 
-    if (isValid(hasChildIterator).get()) {
-      if (currentChildIterator != null && hasChildIterator) {
-        var prevStep = currentChildIterator.prev();
-        doStep = false;
-        currentChildIterator = null;
-        System.out.printf("Previous step (%s): Step from child iterator\n", this);
-        return prevStep;
-      } else {
-        currentIdx--;
-        doStep = true;
-        System.out.printf("Previous step (%s): Child iterator has no more steps\n", this);
-        return prev();
-      }
+    if (currentChildIterator != null && hasChildIterator) {
+      log.debug("Previous step ({}): Get step from {}. child", this.getClass().getSimpleName(), currentIdx);
+      var prevStep = currentChildIterator.prev();
+      doStep = false;
+      currentChildIterator = null;
+      return prevStep;
     }
 
-    doStep = false;
-    currentChildIterator = null;
-    return null;
+    log.debug("Previous step ({}): There is no more steps in {}. child", this.getClass().getSimpleName(), currentIdx);
+    currentIdx--;
+    doStep = true;
+    return prev();
   }
 
+  /**
+   * Get the next step only when is valid. Otherwise, it should return current
+   *
+   * @return Next step
+   */
   @Override
   public HierarchicalStep next() {
     // is already last step
     if (currentIdx >= steps.size()) {
       doStep = false;
       currentChildIterator = null;
-      System.out.printf("Next step (%s): Is already first\n", this);
+      log.debug("Next step ({}): Is the last step - get step from parent", this.getClass().getSimpleName());
       return applyOnCompositeStepOr(parent, CompositeStep::next, null);
     }
 
     boolean hasChildIterator = prepareChildIterator();
 
     if (!hasChildIterator && doStep) {
+      log.debug("Next step ({}): Get {}. step", this.getClass().getSimpleName(), currentIdx);
       doStep = false;
-      System.out.printf("Next step (%s): Step from children\n", this);
       return steps.get(currentIdx);
     }
 
-    if (isValid(hasChildIterator).get()) {
+    if (isValid(hasChildIterator)) {
       if (currentChildIterator != null && hasChildIterator) {
+        log.debug("Next step ({}): Get step from {}. child", this.getClass().getSimpleName(), currentIdx);
         var nextStep = currentChildIterator.next();
         doStep = false;
         currentChildIterator = null;
-        System.out.printf("Next step (%s): Step from child iterator\n", this);
         return nextStep;
       } else {
+        log.debug("Next step ({}): There is no more steps in {}. child", this.getClass().getSimpleName(), currentIdx);
         currentIdx++;
         doStep = true;
-        System.out.printf("Next step (%s): Child iterator has no more steps\n", this);
         return next();
       }
     }
 
+    log.debug("Next step ({}): Step is not valid - Get {}. child", this.getClass().getSimpleName(), currentIdx);
     doStep = false;
     currentChildIterator = null;
     return null;
   }
 
   @Override
+  public HierarchicalStep current() {
+    log.debug("Get current {}. step", currentIdx);
+    if (!isValidIndex(currentIdx)) {
+      throw new RuntimeException("Go to non valid step index");
+    }
+
+    if (prepareChildIterator()) {
+      var step = currentChildIterator.current();
+      currentChildIterator = null;
+      return step;
+    }
+
+    return steps.get(currentIdx);
+  }
+
+  @Override
   public HierarchicalStep goToStep(int index) {
-    System.out.printf("Call goToStep(): %s, current idx: %d, new idx: %d\n", getClass(), currentIdx, index);
+    log.debug("Go to {}. step from {}. step", index, currentIdx);
     if (!isValidIndex(index)) {
-      return null;
+      throw new RuntimeException("Go to non valid step index");
     }
 
     currentIdx = index;
@@ -202,12 +225,11 @@ public abstract class SimpleCompositeStep implements CompositeStep {
     }
   }
 
-  private BooleanExpression isValid(boolean hasChildIterator) {
+  private boolean isValid(boolean hasChildIterator) {
     if (hasChildIterator) {
-      return currentChildIterator.valid();
+      return currentChildIterator.isValid();
     }
-    return isValidIndex(currentIdx) ? steps.get(currentIdx)
-                                           .valid() : TRUE_PROPERTY;
+    return !isValidIndex(currentIdx) || steps.get(currentIdx).isValid();
   }
 
   private boolean hasPrev(boolean hasChildIterator) {

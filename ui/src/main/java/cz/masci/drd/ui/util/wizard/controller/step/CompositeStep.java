@@ -27,6 +27,8 @@ public interface CompositeStep extends HierarchicalStep {
 
   HierarchicalStep next();
 
+  HierarchicalStep current();
+
   HierarchicalStep goToStep(int index);
 
   void reset();

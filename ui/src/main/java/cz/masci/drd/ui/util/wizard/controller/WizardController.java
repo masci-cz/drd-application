@@ -29,15 +29,21 @@ public class WizardController {
 
   private Optional<Region> getNextView() {
     currentStep.executeBeforeNext();
-    currentStep = root.next();
-    updateWizardViewModel(currentStep);
+    var step = root.next();
+    if (step != null) {
+      currentStep = step;
+      updateWizardViewModel(currentStep);
+    }
     return Optional.ofNullable(currentStep.view());
   }
 
   private Optional<Region> getPrevView() {
     currentStep.executeBeforePrev();
-    currentStep = root.prev();
-    updateWizardViewModel(currentStep);
+    var step = root.prev();
+    if (step != null) {
+      currentStep = step;
+      updateWizardViewModel(currentStep);
+    }
     return Optional.ofNullable(currentStep.view());
   }
 
