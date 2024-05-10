@@ -17,13 +17,13 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleLeafStep;
 import cz.masci.drd.ui.util.wizard.view.TestBattleStepViewBuilder;
 
-public class BattleSelectActionStepController extends SimpleLeafStep {
-  public BattleSelectActionStepController() {
-    super("Vyberte akci pro bojovníka", new TestBattleStepViewBuilder("Vyberte akci pro bojovníka").build());
+public class BattleInitiativeStep extends SimpleLeafStep {
+  public BattleInitiativeStep() {
+    super("Iniciativa skupiny", new TestBattleStepViewBuilder("Iniciativa skupiny").build());
   }
 }

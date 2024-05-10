@@ -17,16 +17,18 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.step;
 
-import cz.masci.drd.ui.app.battle.wizard.step.BattleRootStep;
-import cz.masci.drd.ui.util.wizard.controller.WizardController;
-import org.springframework.stereotype.Component;
+import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryGroupModel;
+import cz.masci.drd.ui.app.battle.wizard.view.BattlePreparationSummaryViewBuilder;
+import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleLeafStep;
+import javafx.collections.ObservableList;
 
-@Component
-public class BattleWizardController extends WizardController {
+public class BattlePreparationSummaryStep extends SimpleLeafStep {
 
-  public BattleWizardController(BattleRootStep root) {
-    super(root);
+  public BattlePreparationSummaryStep(ObservableList<BattlePreparationSummaryGroupModel> duellists) {
+    super("Přehled bojovníků", new BattlePreparationSummaryViewBuilder(duellists).build());
   }
+
+
 }

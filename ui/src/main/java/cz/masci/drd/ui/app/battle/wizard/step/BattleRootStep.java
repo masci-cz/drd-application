@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
@@ -27,16 +27,17 @@ import javafx.beans.property.SimpleBooleanProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BattleRootStepController extends SimpleCompositeStep {
+public class BattleRootStep extends SimpleCompositeStep {
 
   private final BooleanProperty prevDisabled = new SimpleBooleanProperty(false);
   private final BooleanProperty nextDisabled = new SimpleBooleanProperty(false);
 
-  public BattleRootStepController(BattleInteractor interactor) {
-    addStep(new BattleGroupStepController(interactor));
-    addStep(new BattleDuellistStepController(interactor));
-    addStep(new BattleSelectActionStepController());
-    addStep(new BattleInitiativeStepController());
+  public BattleRootStep(BattleInteractor interactor) {
+    addStep(new BattleGroupStep(interactor));
+    addStep(new BattleDuellistStep(interactor));
+    addStep(new BattlePreparationStep(interactor));
+    addStep(new BattleSelectActionStep());
+    addStep(new BattleInitiativeStep());
   }
 
   @Override
@@ -44,7 +45,8 @@ public class BattleRootStepController extends SimpleCompositeStep {
     return switch (getCurrentIdx()) {
       case 1 -> "Zrušit bitvu";
       case 2 -> "Bojovníci";
-      case 3 -> "Výběr akcí";
+      case 3 -> "Přehled";
+      case 4 -> "Výběr akcí";
       default -> "Předchozí";
     };
   }
@@ -53,9 +55,10 @@ public class BattleRootStepController extends SimpleCompositeStep {
   protected String getNextText() {
     return switch (getCurrentIdx()) {
       case 0 -> "Bojovníci";
-      case 1 -> "Výběr akcí";
-      case 2 -> "Iniciativa";
-      case 3 -> "Spustit bitvu";
+      case 1 -> "Přehled";
+      case 2 -> "Výběr akcí";
+      case 3 -> "Iniciativa";
+      case 4 -> "Spustit bitvu";
       default -> "Další";
     };
   }

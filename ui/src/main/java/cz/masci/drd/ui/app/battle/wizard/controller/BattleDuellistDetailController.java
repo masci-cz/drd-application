@@ -17,25 +17,25 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller.groupstep;
+package cz.masci.drd.ui.app.battle.wizard.controller;
 
 import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
 
-import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
-import cz.masci.drd.ui.app.battle.wizard.view.BattleGroupDetailViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistListModel;
+import cz.masci.drd.ui.app.battle.wizard.view.BattleDuellistDetailViewBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
-public class BattleGroupDetailController implements ViewProvider<Region> {
+public class BattleDuellistDetailController implements ViewProvider<Region> {
 
   private final Builder<Region> builder;
 
-  public BattleGroupDetailController(BattleGroupListModel viewModel) {
-    var detailViewBuilder = new BattleGroupDetailViewBuilder(viewModel);
+  public BattleDuellistDetailController(BattleDuellistListModel viewModel) {
+    var detailViewBuilder = new BattleDuellistDetailViewBuilder(viewModel);
     var detailController = new SimpleController<>(detailViewBuilder);
-    var detailCommandController = new BattleGroupDetailCommandController(viewModel);
+    var detailCommandController = new BattleDuellistDetailCommandController(viewModel);
 
     builder = createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
   }

@@ -24,6 +24,7 @@ import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryGroupModel;
 import java.util.List;
 import java.util.stream.Stream;
 import javafx.collections.ObservableList;
@@ -49,9 +50,10 @@ public class BattleInteractor {
     }
   }
 
-  public Stream<GroupDTO> getGroups() {
+  public Stream<String> getGroupsNames() {
     return battleService.getGroups()
-                        .stream();
+                        .stream()
+                        .map(GroupDTO::getName);
   }
 
   public void setDuellists(String groupName, ObservableList<BattleDuellistDetailModel> elements) {
@@ -62,5 +64,12 @@ public class BattleInteractor {
                            .map(battleMapper::mapDuellistFromModel)
                            .toList());
     }
+  }
+
+  public List<BattlePreparationSummaryGroupModel> getPreparationSummary() {
+    return battleService.getGroups()
+                        .stream()
+                        .map(battleMapper::mapGroupToModel)
+                        .toList();
   }
 }

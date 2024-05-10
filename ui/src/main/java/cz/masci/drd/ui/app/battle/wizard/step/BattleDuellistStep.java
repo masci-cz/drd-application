@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
@@ -25,7 +25,7 @@ import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BattleDuellistStepController extends SimpleCompositeStep {
+public class BattleDuellistStep extends SimpleCompositeStep {
 
   private final BattleInteractor interactor;
 
@@ -33,8 +33,8 @@ public class BattleDuellistStepController extends SimpleCompositeStep {
   public HierarchicalStep next() {
     if (getCurrentIdx() < 0) {
       clearSteps();
-      interactor.getGroups()
-                .map(group -> new BattleDuellistChildStepController(interactor, group.getName()))
+      interactor.getGroupsNames()
+                .map(name -> new BattleDuellistChildStep(interactor, name))
                 .forEach(this::addStep);
     }
 

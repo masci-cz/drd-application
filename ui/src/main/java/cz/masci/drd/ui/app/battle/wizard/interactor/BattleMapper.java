@@ -20,7 +20,10 @@
 package cz.masci.drd.ui.app.battle.wizard.interactor;
 
 import cz.masci.drd.dto.DuellistDTO;
+import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryDuellistModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryGroupModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -32,4 +35,9 @@ public interface BattleMapper {
   @Mapping(target = "weapons", ignore = true)
   @Mapping(target = "selectedAction", ignore = true)
   DuellistDTO mapDuellistFromModel(BattleDuellistDetailModel model);
+
+  @Mapping(target = "live", source = "originalLive")
+  BattlePreparationSummaryDuellistModel mapDuellistToModel(DuellistDTO dto);
+
+  BattlePreparationSummaryGroupModel mapGroupToModel(GroupDTO dto);
 }

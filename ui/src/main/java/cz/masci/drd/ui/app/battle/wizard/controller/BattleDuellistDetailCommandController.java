@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller.duelliststep;
+package cz.masci.drd.ui.app.battle.wizard.controller;
 
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistListModel;

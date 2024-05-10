@@ -17,7 +17,7 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller.groupstep;
+package cz.masci.drd.ui.app.battle.wizard.controller;
 
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;

@@ -17,13 +17,13 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.app.battle.wizard.step;
 
-import cz.masci.drd.ui.app.battle.wizard.controller.groupstep.BattleGroupDetailController;
+import cz.masci.drd.ui.app.battle.wizard.controller.BattleDuellistDetailController;
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
-import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
-import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupListModel;
-import cz.masci.drd.ui.app.battle.wizard.view.BattleGroupListViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
+import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistListModel;
+import cz.masci.drd.ui.app.battle.wizard.view.BattleDuellistListViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
@@ -31,46 +31,55 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.layout.Region;
+import lombok.extern.slf4j.Slf4j;
 
-public class BattleGroupStepController extends TitleLeafStep {
+@Slf4j
+public class BattleDuellistChildStep extends TitleLeafStep {
 
   private final BorderPaneBuilder viewBuilder;
-  private final BattleGroupListModel viewModel;
+  private final BattleDuellistListModel viewModel;
   private final BattleInteractor interactor;
 
-  private final FilteredList<BattleGroupDetailModel> filteredList;
+  private final FilteredList<BattleDuellistDetailModel> filteredList;
+  private final String groupName;
 
-  public BattleGroupStepController(BattleInteractor interactor) {
-    super("Skupiny");
+  public BattleDuellistChildStep(BattleInteractor interactor, String groupName) {
+    super(groupName);
 
+    this.groupName = groupName;
     this.interactor = interactor;
-    viewModel = new BattleGroupListModel();
+    viewModel = new BattleDuellistListModel();
     filteredList = new FilteredList<>(viewModel.getElements(), detailModel -> detailModel.isValid() && !detailModel.isDirty());
 
-    var battleGroupListViewBuilder = new BattleGroupListViewBuilder(viewModel);
-    var listController = new SimpleController<>(battleGroupListViewBuilder);
-    var detailController = new BattleGroupDetailController(viewModel);
+    var battleDuellistListViewBuilder = new BattleDuellistListViewBuilder(viewModel);
+    var listController = new SimpleController<>(battleDuellistListViewBuilder);
+    var detailController = new BattleDuellistDetailController(viewModel);
 
     viewBuilder = BorderPaneBuilder.builder()
-        .withCenter(listController.getView())
-        .withTop(detailController.getView());
+                                   .withCenter(listController.getView())
+                                   .withTop(detailController.getView());
   }
 
   @Override
   public Region view() {
+    log.info("View of group {}", groupName);
     return viewBuilder.build();
   }
 
   @Override
   public BooleanExpression valid() {
-    return Bindings.size(filteredList).greaterThanOrEqualTo(2);
+    return Bindings.size(filteredList)
+                   .greaterThanOrEqualTo(1)
+                   .and(Bindings.size(viewModel.getElements())
+                                .isEqualTo(Bindings.size(filteredList)));
   }
 
   @Override
   public void completeStep() {
     if (isValid()) {
-      interactor.createBattle(viewModel.getElements());
+      interactor.setDuellists(groupName, viewModel.getElements());
     }
+    super.completeStep();
   }
-
 }
+
