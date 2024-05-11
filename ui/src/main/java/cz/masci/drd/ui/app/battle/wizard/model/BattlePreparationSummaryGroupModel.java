@@ -19,7 +19,38 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model;
 
-import java.util.List;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-public record BattlePreparationSummaryGroupModel(String name, List<BattlePreparationSummaryDuellistModel> duellists) {
+public class BattlePreparationSummaryGroupModel {
+  private final StringProperty name = new SimpleStringProperty();
+  private final ListProperty<BattlePreparationSummaryDuellistModel> duellists = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+  public String getName() {
+    return name.get();
+  }
+
+  public StringProperty nameProperty() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name.set(name);
+  }
+
+  public ObservableList<BattlePreparationSummaryDuellistModel> getDuellists() {
+    return duellists.get();
+  }
+
+  public ListProperty<BattlePreparationSummaryDuellistModel> duellistsProperty() {
+    return duellists;
+  }
+
+  public void setDuellists(ObservableList<BattlePreparationSummaryDuellistModel> duellists) {
+    this.duellists.set(duellists);
+  }
 }

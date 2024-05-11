@@ -59,6 +59,7 @@ public class BattleInteractor {
   public void setDuellists(String groupName, ObservableList<BattleDuellistDetailModel> elements) {
     var group = battleService.getGroup(groupName);
     if (group != null) {
+      group.getDuellists().clear();
       group.getDuellists()
            .addAll(elements.stream()
                            .map(battleMapper::mapDuellistFromModel)

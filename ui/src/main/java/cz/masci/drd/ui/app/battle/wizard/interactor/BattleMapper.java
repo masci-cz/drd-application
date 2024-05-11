@@ -24,6 +24,9 @@ import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryDuellistModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryGroupModel;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -40,4 +43,8 @@ public interface BattleMapper {
   BattlePreparationSummaryDuellistModel mapDuellistToModel(DuellistDTO dto);
 
   BattlePreparationSummaryGroupModel mapGroupToModel(GroupDTO dto);
+
+  default ObservableList<BattlePreparationSummaryDuellistModel> mapDuellistToModel(List<DuellistDTO> duellists) {
+    return FXCollections.observableArrayList(duellists.stream().map(this::mapDuellistToModel).toList());
+  }
 }
