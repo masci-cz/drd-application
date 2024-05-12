@@ -19,11 +19,34 @@
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
-import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleLeafStep;
-import cz.masci.drd.ui.util.wizard.view.TestBattleStepViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
+import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
+import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
+import lombok.RequiredArgsConstructor;
 
-public class BattleSelectActionStep extends SimpleLeafStep {
-  public BattleSelectActionStep() {
-    super("Vyberte akci pro bojovníka", new TestBattleStepViewBuilder("Vyberte akci pro bojovníka").build());
+@RequiredArgsConstructor
+public class BattleSelectActionStep extends SimpleCompositeStep {
+
+  private final BattleInteractor interactor;
+
+  @Override
+  public HierarchicalStep next() {
+    if (getCurrentIdx() < 0) {
+      clearSteps();
+      interactor.getAllDuellistNamesByGroups()
+                .map(BattleSelectActionChildStep::new)
+                .forEach(this::addStep);
+    }
+    return super.next();
+  }
+
+  @Override
+  protected String getPrevText() {
+    return "Předchozí";
+  }
+
+  @Override
+  protected String getNextText() {
+    return "Další";
   }
 }

@@ -36,7 +36,7 @@ public class BattleRootStep extends SimpleCompositeStep {
     addStep(new BattleGroupStep(interactor));
     addStep(new BattleDuellistStep(interactor));
     addStep(new BattlePreparationStep(interactor));
-    addStep(new BattleSelectActionStep());
+    addStep(new BattleSelectActionStep(interactor));
     addStep(new BattleInitiativeStep());
   }
 

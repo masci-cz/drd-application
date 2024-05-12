@@ -59,7 +59,8 @@ public class BattleInteractor {
   public void setDuellists(String groupName, ObservableList<BattleDuellistDetailModel> elements) {
     var group = battleService.getGroup(groupName);
     if (group != null) {
-      group.getDuellists().clear();
+      group.getDuellists()
+           .clear();
       group.getDuellists()
            .addAll(elements.stream()
                            .map(battleMapper::mapDuellistFromModel)
@@ -72,5 +73,17 @@ public class BattleInteractor {
                         .stream()
                         .map(battleMapper::mapGroupToModel)
                         .toList();
+  }
+
+  public List<String> getActionTypes() {
+    return List.of("Útok na blízko", "Kouzlení", "Příprava", "Útok na dálku", "Mluvení", "Jiná akce", "Čekání");
+  }
+
+  public Stream<String> getAllDuellistNamesByGroups() {
+    return battleService.getGroups()
+                        .stream()
+                        .flatMap(group -> group.getDuellists()
+                                               .stream()
+                                               .map(duellist -> String.format("%s - %s", group.getName(), duellist.getName())));
   }
 }
