@@ -33,8 +33,10 @@ public class BattleSelectActionStep extends SimpleCompositeStep {
   public HierarchicalStep next() {
     if (getCurrentIdx() < 0) {
       clearSteps();
-      interactor.getAllDuellistNamesByGroups()
-                .map(BattleSelectActionChildStep::new)
+      var actions = interactor.getActionTypes();
+      var duellists = interactor.getAllDuellistNamesByGroups();
+      duellists.stream()
+                .map(name -> new BattleSelectActionChildStep(name, actions, duellists))
                 .forEach(this::addStep);
     }
     return super.next();

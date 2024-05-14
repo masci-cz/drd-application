@@ -19,18 +19,25 @@
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
+import cz.masci.drd.ui.app.battle.wizard.model.SelectActionCloseCombatModel;
+import cz.masci.drd.ui.app.battle.wizard.model.SelectActionModel;
 import cz.masci.drd.ui.app.battle.wizard.view.BattleSelectActionViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.view.SelectActionCloseCombatViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
+import java.util.List;
 import javafx.scene.layout.Region;
 
 public class BattleSelectActionChildStep extends TitleLeafStep {
 
   private final BattleSelectActionViewBuilder viewBuilder;
 
-  public BattleSelectActionChildStep(String duellistName) {
+  public BattleSelectActionChildStep(String duellistName, List<String> actions, List<String> duellists) {
     super("Vyberte akci pro bojovníka - " + duellistName);
 
-    viewBuilder = new BattleSelectActionViewBuilder();
+    var viewModel = new SelectActionCloseCombatModel(duellistName, duellists);
+    viewBuilder = new BattleSelectActionViewBuilder(actions.stream()
+                                                           .map(name -> new SelectActionModel(name, new SelectActionCloseCombatViewBuilder(viewModel).build()))
+                                                           .toList());
   }
 
   @Override
