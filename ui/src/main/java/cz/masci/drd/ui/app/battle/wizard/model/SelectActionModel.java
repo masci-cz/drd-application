@@ -21,4 +21,4 @@ package cz.masci.drd.ui.app.battle.wizard.model;
 
 import javafx.scene.layout.Region;
 
-public record SelectActionModel(String name, Region view) {}
+public record SelectActionModel(String name, SelectActionCloseCombatModel action, Region view) {}

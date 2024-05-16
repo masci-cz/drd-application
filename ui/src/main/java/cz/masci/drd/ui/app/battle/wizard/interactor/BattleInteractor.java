@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.app.battle.wizard.interactor;
 
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
@@ -79,12 +80,7 @@ public class BattleInteractor {
     return List.of("Útok na blízko", "Kouzlení", "Příprava", "Útok na dálku", "Mluvení", "Jiná akce", "Čekání");
   }
 
-  public List<String> getAllDuellistNamesByGroups() {
-    return battleService.getGroups()
-                        .stream()
-                        .flatMap(group -> group.getDuellists()
-                                               .stream()
-                                               .map(duellist -> String.format("%s - %s", group.getName(), duellist.getName())))
-                        .toList();
+  public List<DuellistDTO> getAllDuellists() {
+    return battleService.getAllDuellists();
   }
 }

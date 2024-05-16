@@ -23,6 +23,7 @@ import cz.masci.drd.ui.app.battle.wizard.model.SelectActionModel;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
@@ -33,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BattleSelectActionViewBuilder implements Builder<Region> {
 
+  private final ObjectProperty<SelectActionModel> selectedAction;
   private final List<SelectActionModel> actions;
 
   @Override
@@ -52,6 +54,8 @@ public class BattleSelectActionViewBuilder implements Builder<Region> {
       BorderPane.setMargin(newValue.view(), new Insets(5.0, 5.0, 5.0, 5.0));
       borderPane.setCenter(newValue.view());
     });
+
+    selectedAction.bind(actionTypeComboBox.getSelectionModel().selectedItemProperty());
 
     return borderPane;
   }

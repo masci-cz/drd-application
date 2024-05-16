@@ -19,49 +19,50 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model;
 
+import cz.masci.drd.dto.DuellistDTO;
 import java.util.List;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class SelectActionCloseCombatModel {
-  private final ListProperty<String> duellists = new SimpleListProperty<>(FXCollections.observableArrayList());
-  private final StringProperty attacker = new SimpleStringProperty();
-  private final StringProperty selectedDefender = new SimpleStringProperty();
+  private final ListProperty<DuellistDTO> duellists = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final ObjectProperty<DuellistDTO> attacker = new SimpleObjectProperty<>();
+  private final ObjectProperty<DuellistDTO> selectedDefender = new SimpleObjectProperty<>();
 
-  public SelectActionCloseCombatModel(String attacker, List<String> duellists) {
+  public SelectActionCloseCombatModel(DuellistDTO attacker, List<DuellistDTO> duellists) {
     setAttacker(attacker);
     this.duellists.addAll(duellists);
   }
 
-  public String getAttacker() {
+  public DuellistDTO getAttacker() {
     return attacker.get();
   }
 
-  public StringProperty attackerProperty() {
+  public ObjectProperty<DuellistDTO> attackerProperty() {
     return attacker;
   }
 
-  public void setAttacker(String attacker) {
+  public void setAttacker(DuellistDTO attacker) {
     this.attacker.set(attacker);
   }
 
-  public ObservableList<String> duellistsProperty() {
+  public ObservableList<DuellistDTO> duellistsProperty() {
     return duellists;
   }
 
-  public String getSelectedDefender() {
+  public DuellistDTO getSelectedDefender() {
     return selectedDefender.get();
   }
 
-  public StringProperty selectedDefenderProperty() {
+  public ObjectProperty<DuellistDTO> selectedDefenderProperty() {
     return selectedDefender;
   }
 
-  public void setSelectedDefender(String selectedDefender) {
+  public void setSelectedDefender(DuellistDTO selectedDefender) {
     this.selectedDefender.set(selectedDefender);
   }
 }

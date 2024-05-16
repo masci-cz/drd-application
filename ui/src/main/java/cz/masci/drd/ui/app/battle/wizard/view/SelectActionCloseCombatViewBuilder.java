@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.app.battle.wizard.view;
 
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.app.battle.wizard.model.SelectActionCloseCombatModel;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -34,7 +35,7 @@ public class SelectActionCloseCombatViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    var duellistComboBox = new MFXComboBox<String>();
+    var duellistComboBox = new MFXComboBox<DuellistDTO>();
     duellistComboBox.setPromptText("Vyberte obránce");
     duellistComboBox.setFloatingText("Obránce");
     duellistComboBox.setItems(viewModel.duellistsProperty().filtered(duellist -> !viewModel.getAttacker().equals(duellist)));
