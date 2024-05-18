@@ -57,6 +57,11 @@ public class BattleInteractor {
                         .map(GroupDTO::getName);
   }
 
+  public Stream<GroupDTO> getGroups() {
+    return battleService.getGroups()
+                        .stream();
+  }
+
   public void setDuellists(String groupName, ObservableList<BattleDuellistDetailModel> elements) {
     var group = battleService.getGroup(groupName);
     if (group != null) {

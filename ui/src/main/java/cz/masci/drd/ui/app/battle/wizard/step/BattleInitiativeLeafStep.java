@@ -19,34 +19,31 @@
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
-import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
-import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
-import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
-import lombok.RequiredArgsConstructor;
+import cz.masci.drd.dto.GroupDTO;
+import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
+import cz.masci.drd.ui.util.wizard.view.TestBattleStepViewBuilder;
+import javafx.scene.layout.Region;
 
-@RequiredArgsConstructor
-public class BattleInitiativeStep extends SimpleCompositeStep {
+public class BattleInitiativeLeafStep extends TitleLeafStep {
 
-  private final BattleInteractor interactor;
+  private final TestBattleStepViewBuilder builder;
+  private final GroupDTO group;
 
-  @Override
-  public HierarchicalStep next() {
-    if (getCurrentIdx() < 0) {
-      clearSteps();
-      interactor.getGroups()
-                .map(BattleInitiativeLeafStep::new)
-                .forEach(this::addStep);
-    }
+  public BattleInitiativeLeafStep(GroupDTO group) {
+    super("Iniciativa skupiny - " + group.getName());
 
-    return super.next();
-  }
-  @Override
-  protected String getPrevText() {
-    return "Předchozi";
+    this.group = group;
+    builder = new TestBattleStepViewBuilder("Iniciativa skupiny - " + group.getName());
   }
 
   @Override
-  protected String getNextText() {
-    return "Další";
+  public void completeStep() {
+    group.setInitiative(4);
+    super.completeStep();
+  }
+
+  @Override
+  public Region view() {
+    return builder.build();
   }
 }
