@@ -26,33 +26,34 @@ import lombok.Data;
 
 @Data
 public class DuellistDTO {
+  private String groupName;
   /**
    * Name of the duellist
    */
-  String name;
+  private String name;
   /**
    * Selected action for next round
    */
-  Action<?> selectedAction;
-  List<WeaponDTO> weapons = new ArrayList<>();
+  private Action<?> selectedAction;
+  private List<WeaponDTO> weapons = new ArrayList<>();
   /**
    * Original live count
    */
-  int originalLive;
+  private int originalLive;
   /**
    * Current live count
    */
-  int currentLive;
+  private int currentLive;
   /**
    * Defense number
    */
-  int defense;
+  private int defense;
   /**
    * Temporal attribute for offense number
    */
-  int attack;
+  private int attack;
   /**
    * Temporal attribute for damage bonus
    */
-  int damage;
+  private int damage;
 }

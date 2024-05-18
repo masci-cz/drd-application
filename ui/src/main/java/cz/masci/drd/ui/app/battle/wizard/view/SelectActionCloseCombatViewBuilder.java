@@ -21,9 +21,11 @@ package cz.masci.drd.ui.app.battle.wizard.view;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.app.battle.wizard.model.SelectActionCloseCombatModel;
+import cz.masci.drd.ui.common.view.MFXComboBoxBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.geometry.Insets;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
@@ -35,23 +37,24 @@ public class SelectActionCloseCombatViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    var duellistComboBox = new MFXComboBox<DuellistDTO>();
-    duellistComboBox.setPromptText("Vyberte obránce");
-    duellistComboBox.setFloatingText("Obránce");
-    duellistComboBox.setItems(viewModel.duellistsProperty().filtered(duellist -> !viewModel.getAttacker().equals(duellist)));
-    duellistComboBox.getSelectionModel().bindItemBidirectional(viewModel.selectedDefenderProperty(), viewModel.duellistsProperty()::indexOf, (clearing, newValue, property) -> {
-      if (clearing) {
-        viewModel.setSelectedDefender(null);
-      } else {
-        property.setValue(newValue);
-      }
-    });
-    duellistComboBox.setMaxWidth(Double.MAX_VALUE);
+    MFXComboBox<DuellistDTO> duellistComboBox = MFXComboBoxBuilder.<DuellistDTO>builder()
+                                                                  .promptText("Vyberte obránce")
+                                                                  .floatingText("Obránce")
+                                                                  .converter(duellist -> String.format("%s - %s", duellist.getGroupName(), duellist.getName()))
+                                                                  .items(viewModel.duellistsProperty()
+                                                                                  .filtered(duellist -> !viewModel.getAttacker()
+                                                                                                                  .equals(duellist)))
+                                                                  .selectedItemProperty(viewModel.selectedDefenderProperty())
+                                                                  .maxWidth(Double.MAX_VALUE)
+                                                                  .build();
 
-    return VBoxBuilder.vBox()
-        .addChildren(duellistComboBox)
-        .setMaxWidth(Double.MAX_VALUE)
-        .setPadding(new Insets(5.0))
-        .getNode();
+    var result = VBoxBuilder.vBox()
+                            .addChildren(duellistComboBox)
+                            .setMaxWidth(Double.MAX_VALUE)
+                            .setPadding(new Insets(5.0))
+                            .getNode();
+    BorderPane.setMargin(result, new Insets(5.0));
+
+    return result;
   }
 }

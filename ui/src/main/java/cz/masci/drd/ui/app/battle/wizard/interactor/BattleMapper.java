@@ -33,11 +33,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface BattleMapper {
 
-  @Mapping(target = "originalLive", source = "live")
-  @Mapping(target = "currentLive", source = "live")
+  @Mapping(target = "originalLive", source = "model.live")
+  @Mapping(target = "currentLive", source = "model.live")
   @Mapping(target = "weapons", ignore = true)
   @Mapping(target = "selectedAction", ignore = true)
-  DuellistDTO mapDuellistFromModel(BattleDuellistDetailModel model);
+  DuellistDTO mapDuellistFromModel(String groupName, BattleDuellistDetailModel model);
 
   @Mapping(target = "live", source = "originalLive")
   BattlePreparationSummaryDuellistModel mapDuellistToModel(DuellistDTO dto);

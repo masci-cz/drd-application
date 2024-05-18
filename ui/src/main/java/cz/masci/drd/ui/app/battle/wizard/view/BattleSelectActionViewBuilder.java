@@ -19,6 +19,8 @@
 
 package cz.masci.drd.ui.app.battle.wizard.view;
 
+import static cz.masci.drd.ui.util.ViewBuilderUtils.createMFXComboBoxStringConverter;
+
 import cz.masci.drd.ui.app.battle.wizard.model.SelectActionModel;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -28,8 +30,8 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
+import org.reactfx.value.Val;
 
 @RequiredArgsConstructor
 public class BattleSelectActionViewBuilder implements Builder<Region> {
@@ -42,35 +44,22 @@ public class BattleSelectActionViewBuilder implements Builder<Region> {
     MFXComboBox<SelectActionModel> actionTypeComboBox = new MFXComboBox<>();
     actionTypeComboBox.getItems()
                       .addAll(actions);
-    actionTypeComboBox.setConverter(new ActionStringConverter());
+    actionTypeComboBox.setConverter(createMFXComboBoxStringConverter(SelectActionModel::name));
     actionTypeComboBox.setMaxWidth(Double.MAX_VALUE);
 
     BorderPane.setMargin(actionTypeComboBox, new Insets(5.0, 10.0, 5.0, 10.0));
     var borderPane = BorderPaneBuilder.builder()
-                            .withTop(actionTypeComboBox)
-                            .build();
+                                      .withTop(actionTypeComboBox)
+                                      .build();
 
-    actionTypeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-      BorderPane.setMargin(newValue.view(), new Insets(5.0, 5.0, 5.0, 5.0));
-      borderPane.setCenter(newValue.view());
-    });
-
-    selectedAction.bind(actionTypeComboBox.getSelectionModel().selectedItemProperty());
+    selectedAction.bind(actionTypeComboBox.getSelectionModel()
+                                          .selectedItemProperty());
+    borderPane.centerProperty()
+              .bind(Val.wrap(actionTypeComboBox.getSelectionModel()
+                                               .selectedItemProperty())
+                       .map(SelectActionModel::view)
+                       .orElseConst(null));
 
     return borderPane;
-  }
-
-  private static final class ActionStringConverter extends StringConverter<SelectActionModel> {
-    @Override
-    public String toString(SelectActionModel selectActionModel) {
-      return selectActionModel == null ? "" : selectActionModel.name();
-    }
-
-    @Override
-    public SelectActionModel fromString(String string) {
-      // You may need to implement the conversion from String to SelectActionModel, depending on your use case.
-      // For now, this method returns null.
-      return null;
-    }
   }
 }

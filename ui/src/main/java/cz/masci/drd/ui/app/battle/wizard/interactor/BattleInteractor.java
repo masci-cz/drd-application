@@ -64,7 +64,7 @@ public class BattleInteractor {
            .clear();
       group.getDuellists()
            .addAll(elements.stream()
-                           .map(battleMapper::mapDuellistFromModel)
+                           .map(duellist -> battleMapper.mapDuellistFromModel(groupName, duellist))
                            .toList());
     }
   }

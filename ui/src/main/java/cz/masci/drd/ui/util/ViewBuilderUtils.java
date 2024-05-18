@@ -23,10 +23,12 @@ import cz.masci.drd.ui.common.model.AbstractListModel;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
+import java.util.function.Function;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.util.StringConverter;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -42,6 +44,24 @@ public class ViewBuilderUtils {
     StackPane.setMargin(result, insets);
 
     return result;
+  }
+
+  public static <T> StringConverter<T> createMFXComboBoxStringConverter(Function<T, String> converter) {
+    return createMFXComboBoxStringConverter(converter, "");
+  }
+
+  public static <T> StringConverter<T> createMFXComboBoxStringConverter(Function<T, String> converter, String defaultValue) {
+    return new StringConverter<>() {
+      @Override
+      public String toString(T object) {
+        return object != null ? converter.apply(object) : defaultValue;
+      }
+
+      @Override
+      public T fromString(String string) {
+        return null;
+      }
+    };
   }
 
 }
