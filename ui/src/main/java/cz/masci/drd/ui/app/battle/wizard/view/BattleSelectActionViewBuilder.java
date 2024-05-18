@@ -19,11 +19,9 @@
 
 package cz.masci.drd.ui.app.battle.wizard.view;
 
-import static cz.masci.drd.ui.util.ViewBuilderUtils.createMFXComboBoxStringConverter;
-
 import cz.masci.drd.ui.app.battle.wizard.model.SelectActionModel;
+import cz.masci.drd.ui.common.view.MFXComboBoxBuilder;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
@@ -41,13 +39,13 @@ public class BattleSelectActionViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    MFXComboBox<SelectActionModel> actionTypeComboBox = new MFXComboBox<>();
-    actionTypeComboBox.getItems()
-                      .addAll(actions);
-    actionTypeComboBox.setConverter(createMFXComboBoxStringConverter(SelectActionModel::name));
-    actionTypeComboBox.setMaxWidth(Double.MAX_VALUE);
+    var actionTypeComboBox = MFXComboBoxBuilder.<SelectActionModel>builder()
+                                               .items(actions)
+                                               .converter(SelectActionModel::name)
+                                               .maxWidth(Double.MAX_VALUE)
+                                               .withEnhancement(node -> BorderPane.setMargin(node, new Insets(5.0, 10.0, 5.0, 10.0)))
+                                               .build();
 
-    BorderPane.setMargin(actionTypeComboBox, new Insets(5.0, 10.0, 5.0, 10.0));
     var borderPane = BorderPaneBuilder.builder()
                                       .withTop(actionTypeComboBox)
                                       .build();

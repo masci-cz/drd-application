@@ -21,8 +21,12 @@ package cz.masci.drd.ui.common.view;
 
 import cz.masci.drd.ui.util.ViewBuilderUtils;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import javafx.beans.property.ObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MFXComboBoxBuilder<T> {
@@ -32,6 +36,7 @@ public class MFXComboBoxBuilder<T> {
   private ObservableList<T> items;
   private ObjectProperty<T> selectedItemProperty;
   private Double maxWidth;
+  private final List<Consumer<MFXComboBox<T>>> enhancements = new ArrayList<>();
 
   private MFXComboBoxBuilder() {
   }
@@ -60,6 +65,11 @@ public class MFXComboBoxBuilder<T> {
     return this;
   }
 
+  public MFXComboBoxBuilder<T> items(List<T> items) {
+    this.items = FXCollections.observableArrayList(items);
+    return this;
+  }
+
   public MFXComboBoxBuilder<T> selectedItemProperty(ObjectProperty<T> selectedItemProperty) {
     this.selectedItemProperty = selectedItemProperty;
     return this;
@@ -67,6 +77,11 @@ public class MFXComboBoxBuilder<T> {
 
   public MFXComboBoxBuilder<T> maxWidth(Double maxWidth) {
     this.maxWidth = maxWidth;
+    return this;
+  }
+
+  public MFXComboBoxBuilder<T> withEnhancement(Consumer<MFXComboBox<T>> enhancement) {
+    enhancements.add(enhancement);
     return this;
   }
 
@@ -93,7 +108,7 @@ public class MFXComboBoxBuilder<T> {
     if (maxWidth != null) {
       result.setMaxWidth(maxWidth);
     }
-
+    enhancements.forEach(enhancement -> enhancement.accept(result));
 
     return result;
   }

@@ -65,4 +65,9 @@ public class SelectActionCloseCombatModel {
   public void setSelectedDefender(DuellistDTO selectedDefender) {
     this.selectedDefender.set(selectedDefender);
   }
+
+  @Override
+  public String toString() {
+    return "SelectActionCloseCombatModel{" + "selectedDefender=" + selectedDefender.get() + '}';
+  }
 }
