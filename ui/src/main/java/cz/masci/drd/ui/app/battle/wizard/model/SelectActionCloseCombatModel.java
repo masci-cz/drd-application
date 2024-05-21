@@ -20,6 +20,9 @@
 package cz.masci.drd.ui.app.battle.wizard.model;
 
 import cz.masci.drd.dto.DuellistDTO;
+import cz.masci.springfx.mvci.model.detail.ValidModel;
+import io.github.palexdev.materialfx.validation.Constraint;
+import io.github.palexdev.materialfx.validation.MFXValidator;
 import java.util.List;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
@@ -27,8 +30,11 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lombok.Getter;
 
-public class SelectActionCloseCombatModel {
+public class SelectActionCloseCombatModel implements ValidModel {
+  @Getter
+  private final MFXValidator validator = new MFXValidator();
   private final ListProperty<DuellistDTO> duellists = new SimpleListProperty<>(FXCollections.observableArrayList());
   private final ObjectProperty<DuellistDTO> attacker = new SimpleObjectProperty<>();
   private final ObjectProperty<DuellistDTO> selectedDefender = new SimpleObjectProperty<>();
@@ -36,6 +42,7 @@ public class SelectActionCloseCombatModel {
   public SelectActionCloseCombatModel(DuellistDTO attacker, List<DuellistDTO> duellists) {
     setAttacker(attacker);
     this.duellists.addAll(duellists);
+    validator.constraint(Constraint.of("Vyberte bojovnika", selectedDefender.isNotNull()));
   }
 
   public DuellistDTO getAttacker() {

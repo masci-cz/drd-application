@@ -22,8 +22,16 @@ package cz.masci.drd.ui.util;
 import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isInRange;
 
 import io.github.palexdev.materialfx.validation.Constraint;
+import io.github.palexdev.materialfx.validation.Constraint.Builder;
+import io.github.palexdev.materialfx.validation.MFXValidator;
+import io.github.palexdev.materialfx.validation.Severity;
+import io.github.palexdev.materialfx.validation.Validated;
+import java.util.function.Function;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.value.ObservableValue;
 import lombok.experimental.UtilityClass;
+import org.reactfx.value.Val;
 
 @UtilityClass
 public class ConstraintUtils {
@@ -40,5 +48,25 @@ public class ConstraintUtils {
    */
   public static Constraint isInAbilityScoresRange(IntegerProperty property, String fieldName) {
     return isInRange(property, fieldName, ABILITY_SCORE_MIN, ABILITY_SCORE_MAX);
+  }
+
+  /**
+   * Returns a constraint that validates whether the given test satisfies and the object is not empty.
+   *
+   * @param object the object from which the property is taken
+   * @param propertyFnc the object mapper
+   * @param test predicate for the constraint to validate
+   * @param message error message for the constraint
+   * @return a constraint that validates whether the given property satisfies to the test
+   */
+  public static <T, U extends Validated> Constraint createConstraint(String message, ObservableValue<T> parent, Function<T, ObservableValue<U>> propertyFnc) {
+    Val<Boolean> validProperty = Val.flatMap(parent, propertyFnc)
+                                    .flatMap(property -> property.getValidator()
+                                                                 .validProperty());
+    return Builder.build()
+                  .setSeverity(Severity.ERROR)
+                  .setMessage(message)
+                  .setCondition(Bindings.createBooleanBinding(() -> validProperty.getOrElse(false), validProperty))
+                  .get();
   }
 }

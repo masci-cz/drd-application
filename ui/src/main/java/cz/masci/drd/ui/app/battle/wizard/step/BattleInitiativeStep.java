@@ -40,6 +40,7 @@ public class BattleInitiativeStep extends SimpleCompositeStep {
 
     return super.next();
   }
+
   @Override
   protected String getPrevText() {
     return "Předchozi";

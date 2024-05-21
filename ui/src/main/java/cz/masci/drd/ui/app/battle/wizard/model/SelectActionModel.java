@@ -19,9 +19,10 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model;
 
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Region;
 
-public record SelectActionModel(String name, SelectActionCloseCombatModel action, Region view) {
+public record SelectActionModel(String name, ObservableValue<SelectActionCloseCombatModel> action, Region view) {
   @Override
   public String toString() {
     return "SelectActionModel{" + "name='" + name + '\'' + ", action=" + action + '}';

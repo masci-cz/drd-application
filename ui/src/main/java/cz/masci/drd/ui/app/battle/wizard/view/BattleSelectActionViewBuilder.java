@@ -19,11 +19,10 @@
 
 package cz.masci.drd.ui.app.battle.wizard.view;
 
+import cz.masci.drd.ui.app.battle.wizard.model.BattleSelectActionModel;
 import cz.masci.drd.ui.app.battle.wizard.model.SelectActionModel;
 import cz.masci.drd.ui.common.view.MFXComboBoxBuilder;
 import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
-import java.util.List;
-import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
@@ -34,13 +33,12 @@ import org.reactfx.value.Val;
 @RequiredArgsConstructor
 public class BattleSelectActionViewBuilder implements Builder<Region> {
 
-  private final ObjectProperty<SelectActionModel> selectedAction;
-  private final List<SelectActionModel> actions;
+  private final BattleSelectActionModel viewModel;
 
   @Override
   public Region build() {
     var actionTypeComboBox = MFXComboBoxBuilder.<SelectActionModel>builder()
-                                               .items(actions)
+                                               .items(viewModel.getActions())
                                                .converter(SelectActionModel::name)
                                                .maxWidth(Double.MAX_VALUE)
                                                .withEnhancement(node -> BorderPane.setMargin(node, new Insets(5.0, 10.0, 5.0, 10.0)))
@@ -50,7 +48,7 @@ public class BattleSelectActionViewBuilder implements Builder<Region> {
                                       .withTop(actionTypeComboBox)
                                       .build();
 
-    selectedAction.bind(actionTypeComboBox.getSelectionModel()
+    viewModel.selectedActionProperty().bind(actionTypeComboBox.getSelectionModel()
                                           .selectedItemProperty());
     borderPane.centerProperty()
               .bind(Val.wrap(actionTypeComboBox.getSelectionModel()
