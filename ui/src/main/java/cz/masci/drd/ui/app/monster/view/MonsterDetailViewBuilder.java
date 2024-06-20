@@ -31,12 +31,12 @@ import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.HBoxBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import javafx.beans.property.Property;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import org.reactfx.value.Var;
 
 public class MonsterDetailViewBuilder extends DetailViewBuilder<MonsterDetailModel> implements Builder<Region> {
 
@@ -46,7 +46,7 @@ public class MonsterDetailViewBuilder extends DetailViewBuilder<MonsterDetailMod
 
   @Override
   public Region build() {
-    Var<MonsterDetailModel> selectedProperty = viewModel.selectedElementProperty();
+    Property<MonsterDetailModel> selectedProperty = viewModel.selectedElementProperty();
 
     var nameTextField = createTextField("Jméno nestvůry", Double.MAX_VALUE);
     var nameIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Jméno nestvůry");

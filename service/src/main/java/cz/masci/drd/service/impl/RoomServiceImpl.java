@@ -41,7 +41,7 @@ public class RoomServiceImpl extends AbstractService<Room, RoomDTO> implements R
   @Override
   public final ObjectProperty<AdventureDTO> adventureProperty() {
     if (adventureProperty == null) {
-      adventureProperty = new SimpleObjectProperty();
+      adventureProperty = new SimpleObjectProperty<>();
     }
     return adventureProperty;
   }

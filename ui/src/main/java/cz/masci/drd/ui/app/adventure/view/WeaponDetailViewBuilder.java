@@ -29,10 +29,10 @@ import cz.masci.springfx.mvci.model.list.ListModel;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import javafx.beans.property.Property;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import org.reactfx.value.Var;
 
 public class WeaponDetailViewBuilder extends DetailViewBuilder<WeaponDetailModel> implements Builder<Region> {
 
@@ -42,7 +42,7 @@ public class WeaponDetailViewBuilder extends DetailViewBuilder<WeaponDetailModel
 
   @Override
   public Region build() {
-    Var<WeaponDetailModel> selectedProperty = viewModel.selectedElementProperty();
+    Property<WeaponDetailModel> selectedProperty = viewModel.selectedElementProperty();
 
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
     var nameisNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");

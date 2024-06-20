@@ -48,8 +48,9 @@ public class BattleSelectActionViewBuilder implements Builder<Region> {
                                       .withTop(actionTypeComboBox)
                                       .build();
 
-    viewModel.selectedActionProperty().bind(actionTypeComboBox.getSelectionModel()
-                                          .selectedItemProperty());
+    viewModel.selectedActionProperty()
+             .bind(actionTypeComboBox.getSelectionModel()
+                                     .selectedItemProperty());
     borderPane.centerProperty()
               .bind(Val.wrap(actionTypeComboBox.getSelectionModel()
                                                .selectedItemProperty())

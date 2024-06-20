@@ -28,10 +28,10 @@ import cz.masci.springfx.mvci.model.list.ListModel;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import javafx.beans.property.Property;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import org.reactfx.value.Var;
 
 public class BattleGroupDetailViewBuilder extends DetailViewBuilder<BattleGroupDetailModel> implements Builder<Region> {
 
@@ -41,7 +41,7 @@ public class BattleGroupDetailViewBuilder extends DetailViewBuilder<BattleGroupD
 
   @Override
   public Region build() {
-    Var<BattleGroupDetailModel> selectedProperty = viewModel.selectedElementProperty();
+    Property<BattleGroupDetailModel> selectedProperty = viewModel.selectedElementProperty();
 
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
     var nameisNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");

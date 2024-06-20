@@ -28,10 +28,10 @@ import cz.masci.springfx.mvci.util.BuilderUtils;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import javafx.beans.property.Property;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import org.reactfx.value.Var;
 
 public class AdventureDetailViewBuilder extends DetailViewBuilder<AdventureDetailModel> implements Builder<Region> {
 
@@ -41,7 +41,7 @@ public class AdventureDetailViewBuilder extends DetailViewBuilder<AdventureDetai
 
   @Override
   public Region build() {
-    Var<AdventureDetailModel> selectedProperty = viewModel.selectedElementProperty();
+    Property<AdventureDetailModel> selectedProperty = viewModel.selectedElementProperty();
     // create text fields with validation
     var nameTextField = createTextField("Název", Double.MAX_VALUE);
     var nameConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Název");

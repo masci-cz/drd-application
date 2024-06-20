@@ -76,7 +76,7 @@ public class RoomDTO implements Modifiable {
 
   public final ObjectProperty<AdventureDTO> adventureProperty() {
     if (adventureProperty == null) {
-      adventureProperty = new SimpleObjectProperty();
+      adventureProperty = new SimpleObjectProperty<>();
     }
     return adventureProperty;
   }
