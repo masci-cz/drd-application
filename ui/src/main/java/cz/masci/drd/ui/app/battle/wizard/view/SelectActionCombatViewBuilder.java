@@ -20,10 +20,12 @@
 package cz.masci.drd.ui.app.battle.wizard.view;
 
 import cz.masci.drd.dto.DuellistDTO;
-import cz.masci.drd.ui.app.battle.wizard.model.SelectActionCloseCombatModel;
+import cz.masci.drd.ui.app.battle.wizard.model.SelectedActionModel;
 import cz.masci.drd.ui.common.view.MFXComboBoxBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.validation.Constraint;
+import io.github.palexdev.materialfx.validation.MFXValidator;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
@@ -31,9 +33,9 @@ import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SelectActionCloseCombatViewBuilder implements Builder<Region> {
+public class SelectActionCombatViewBuilder implements Builder<Region> {
 
-  private final SelectActionCloseCombatModel viewModel;
+  private final SelectedActionModel viewModel;
 
   @Override
   public Region build() {
@@ -42,9 +44,9 @@ public class SelectActionCloseCombatViewBuilder implements Builder<Region> {
                                                                   .floatingText("Obránce")
                                                                   .converter(duellist -> String.format("%s - %s", duellist.getGroupName(), duellist.getName()))
                                                                   .items(viewModel.duellistsProperty()
-                                                                                  .filtered(duellist -> !viewModel.getAttacker()
+                                                                                  .filtered(duellist -> !viewModel.getActor()
                                                                                                                   .equals(duellist)))
-                                                                  .selectedItemProperty(viewModel.selectedDefenderProperty())
+                                                                  .selectedItemProperty(viewModel.consumerProperty())
                                                                   .maxWidth(Double.MAX_VALUE)
                                                                   .build();
 
@@ -54,6 +56,13 @@ public class SelectActionCloseCombatViewBuilder implements Builder<Region> {
                             .setPadding(new Insets(5.0))
                             .getNode();
     BorderPane.setMargin(result, new Insets(5.0));
+
+    // enhance viewModel constraints
+    var validator = new MFXValidator();
+    validator.constraint(Constraint.of("Vyberte obránce", viewModel.consumerProperty()
+                                                                   .isNotNull()));
+    viewModel.getValidator()
+             .dependsOn(validator);
 
     return result;
   }

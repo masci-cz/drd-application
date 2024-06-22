@@ -28,7 +28,7 @@ import cz.masci.drd.dto.actions.ShootAction;
 import cz.masci.drd.dto.actions.SpeechAction;
 import cz.masci.drd.dto.actions.WaitAction;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleSelectActionModel;
-import cz.masci.drd.ui.app.battle.wizard.model.SelectActionCloseCombatModel;
+import cz.masci.drd.ui.app.battle.wizard.model.SelectedActionModel;
 import cz.masci.drd.ui.app.battle.wizard.model.SelectActionModel;
 import cz.masci.drd.ui.app.battle.wizard.view.BattleSelectActionViewBuilder;
 import cz.masci.drd.ui.app.battle.wizard.view.SelectActionViewBuilderFactory;
@@ -45,14 +45,11 @@ public class BattleSelectActionChildStep extends TitleLeafStep {
   private final BattleSelectActionViewBuilder viewBuilder;
   private final BattleSelectActionModel viewModel;
 
-  public BattleSelectActionChildStep(DuellistDTO duellist, List<String> actions, List<DuellistDTO> duellists) {
-    super("Vyberte akci pro bojovníka - " + duellist.getName() + " ze skupiny " + duellist.getGroupName());
+  public BattleSelectActionChildStep(DuellistDTO actor, List<String> actions, List<DuellistDTO> duellists) {
+    super("Vyberte akci pro bojovníka - " + actor.getName() + " ze skupiny " + actor.getGroupName());
 
-    var actionViewModel = new SelectActionCloseCombatModel(duellist, duellists);
     viewModel = new BattleSelectActionModel(actions.stream()
-                                                   .map(name -> new SelectActionModel(name, new SimpleObjectProperty<>(actionViewModel),
-                                                       SelectActionViewBuilderFactory.createSelectActionViewBuilder(name, actionViewModel)
-                                                                                     .build()))
+                                                   .map(name -> createSelectActionModel(name, actor, duellists))
                                                    .toList());
     viewBuilder = new BattleSelectActionViewBuilder(viewModel);
   }
@@ -76,17 +73,27 @@ public class BattleSelectActionChildStep extends TitleLeafStep {
     return viewBuilder.build();
   }
 
+  private SelectActionModel createSelectActionModel(String name, DuellistDTO actor, List<DuellistDTO> duellists) {
+    var actionViewModel = new SelectedActionModel(actor, duellists);
+    return new SelectActionModel(name, new SimpleObjectProperty<>(actionViewModel),
+        SelectActionViewBuilderFactory.createSelectActionViewBuilder(name, actionViewModel)
+                                      .build());
+  }
+
   private void setDuellistAction(SelectActionModel model) {
     var action = model.action().getValue();
-    var actor = action.getAttacker();
-    var receiver = action.getSelectedDefender();
+    var actor = action.getActor();
+    var consumer = action.getConsumer();
+    var spell = action.getSpell();
+    var comment = action.getComment();
+
     actor.setSelectedAction(switch (model.name()) {
-      case "Útok na blízko" -> new CombatAction(actor, receiver);
-      case "Kouzlení" -> new MagicAction(actor, receiver, "Kouzlo");
+      case "Útok na blízko" -> new CombatAction(actor, consumer);
+      case "Kouzlení" -> new MagicAction(actor, consumer, spell);
       case "Příprava" -> new PrepareAction(actor);
-      case "Útok na dálku" -> new ShootAction(actor, receiver);
+      case "Útok na dálku" -> new ShootAction(actor, consumer);
       case "Mluvení" -> new SpeechAction(actor);
-      case "Jiná akce" -> new OtherAction(actor, "Jiná akce");
+      case "Jiná akce" -> new OtherAction(actor, comment);
       case "Čekání" -> new WaitAction(actor);
       default -> null;
     });

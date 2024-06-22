@@ -21,60 +21,75 @@ package cz.masci.drd.ui.app.battle.wizard.model;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.springfx.mvci.model.detail.ValidModel;
-import io.github.palexdev.materialfx.validation.Constraint;
 import io.github.palexdev.materialfx.validation.MFXValidator;
 import java.util.List;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
-public class SelectActionCloseCombatModel implements ValidModel {
+public class SelectedActionModel implements ValidModel {
   @Getter
   private final MFXValidator validator = new MFXValidator();
   private final ListProperty<DuellistDTO> duellists = new SimpleListProperty<>(FXCollections.observableArrayList());
-  private final ObjectProperty<DuellistDTO> attacker = new SimpleObjectProperty<>();
-  private final ObjectProperty<DuellistDTO> selectedDefender = new SimpleObjectProperty<>();
+  private final ObjectProperty<DuellistDTO> actor = new SimpleObjectProperty<>();
+  private final ObjectProperty<DuellistDTO> consumer = new SimpleObjectProperty<>();
+  private final StringProperty spell = new SimpleStringProperty();
+  private final StringProperty comment = new SimpleStringProperty();
 
-  public SelectActionCloseCombatModel(DuellistDTO attacker, List<DuellistDTO> duellists) {
-    setAttacker(attacker);
+  public SelectedActionModel(DuellistDTO actor, List<DuellistDTO> duellists) {
+    setActor(actor);
     this.duellists.addAll(duellists);
-    validator.constraint(Constraint.of("Vyberte bojovnika", selectedDefender.isNotNull()));
+//    validator.constraint(Constraint.of("Vyberte bojovníka", selectedDefender.isNotNull()));
   }
 
-  public DuellistDTO getAttacker() {
-    return attacker.get();
+  public DuellistDTO getActor() {
+    return actor.get();
   }
 
-  public ObjectProperty<DuellistDTO> attackerProperty() {
-    return attacker;
-  }
-
-  public void setAttacker(DuellistDTO attacker) {
-    this.attacker.set(attacker);
+  public void setActor(DuellistDTO actor) {
+    this.actor.set(actor);
   }
 
   public ObservableList<DuellistDTO> duellistsProperty() {
     return duellists;
   }
 
-  public DuellistDTO getSelectedDefender() {
-    return selectedDefender.get();
+  public DuellistDTO getConsumer() {
+    return consumer.get();
   }
 
-  public ObjectProperty<DuellistDTO> selectedDefenderProperty() {
-    return selectedDefender;
+  public ObjectProperty<DuellistDTO> consumerProperty() {
+    return consumer;
   }
 
-  public void setSelectedDefender(DuellistDTO selectedDefender) {
-    this.selectedDefender.set(selectedDefender);
+  public StringProperty spellProperty() {
+    return spell;
+  }
+
+  public String getSpell() {
+    return spell.get();
+  }
+
+  public String getComment() {
+    return comment.get();
+  }
+
+  public StringProperty commentProperty() {
+    return comment;
   }
 
   @Override
   public String toString() {
-    return "SelectActionCloseCombatModel{" + "selectedDefender=" + selectedDefender.get() + '}';
+    return "SelectedActionModel{" +
+        "actor=" + actor +
+        ", consumer=" + consumer +
+        ", spell=" + spell +
+        '}';
   }
 }
