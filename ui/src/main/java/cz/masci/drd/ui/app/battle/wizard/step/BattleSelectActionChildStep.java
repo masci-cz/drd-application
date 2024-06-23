@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BattleSelectActionChildStep extends TitleLeafStep {
 
-  private final BattleSelectActionViewBuilder viewBuilder;
+  private final Region view;
   private final BattleSelectActionModel viewModel;
 
   public BattleSelectActionChildStep(DuellistDTO actor, List<String> actions, List<DuellistDTO> duellists) {
@@ -51,7 +51,7 @@ public class BattleSelectActionChildStep extends TitleLeafStep {
     viewModel = new BattleSelectActionModel(actions.stream()
                                                    .map(name -> createSelectActionModel(name, actor, duellists))
                                                    .toList());
-    viewBuilder = new BattleSelectActionViewBuilder(viewModel);
+    view = new BattleSelectActionViewBuilder(viewModel).build();
   }
 
   @Override
@@ -70,7 +70,7 @@ public class BattleSelectActionChildStep extends TitleLeafStep {
 
   @Override
   public Region view() {
-    return viewBuilder.build();
+    return view;
   }
 
   private SelectActionModel createSelectActionModel(String name, DuellistDTO actor, List<DuellistDTO> duellists) {
