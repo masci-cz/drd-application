@@ -34,7 +34,7 @@ public class BattleInitiativeStep extends SimpleCompositeStep {
     if (getCurrentIdx() < 0) {
       clearSteps();
       interactor.getGroups()
-                .map(BattleInitiativeLeafStep::new)
+                .map(BattleInitiativeChildStep::new)
                 .forEach(this::addStep);
     }
 

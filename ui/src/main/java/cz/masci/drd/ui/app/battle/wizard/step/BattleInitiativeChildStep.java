@@ -20,25 +20,38 @@
 package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.dto.GroupDTO;
+import cz.masci.drd.ui.app.battle.wizard.view.BattleInitiativeViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
-import cz.masci.drd.ui.util.wizard.view.TestBattleStepViewBuilder;
+import cz.masci.springfx.mvci.util.constraint.ConditionUtils;
+import javafx.beans.binding.BooleanExpression;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.layout.Region;
 
-public class BattleInitiativeLeafStep extends TitleLeafStep {
+public class BattleInitiativeChildStep extends TitleLeafStep {
 
-  private final TestBattleStepViewBuilder builder;
+  private final BattleInitiativeViewBuilder builder;
   private final GroupDTO group;
+  private final StringProperty initiative = new SimpleStringProperty();
 
-  public BattleInitiativeLeafStep(GroupDTO group) {
+  public BattleInitiativeChildStep(GroupDTO group) {
     super("Iniciativa skupiny - " + group.getName());
 
     this.group = group;
-    builder = new TestBattleStepViewBuilder("Iniciativa skupiny - " + group.getName());
+    builder = new BattleInitiativeViewBuilder(initiative);
+  }
+
+  @Override
+  public BooleanExpression valid() {
+    return ConditionUtils.isNumber(initiative);
   }
 
   @Override
   public void completeStep() {
-    group.setInitiative(4);
+    if (isValid()) {
+      var initiativeInt = Integer.parseInt(initiative.get());
+      group.setInitiative(initiativeInt);
+    }
     super.completeStep();
   }
 
