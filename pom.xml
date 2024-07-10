@@ -80,7 +80,7 @@
         <javafx.version>21</javafx.version>
         <controlsfx.version>11.2.1</controlsfx.version>
         <apache.lang.version>3.11</apache.lang.version>
-        <cz.masci.commons.springfx>0.0.29</cz.masci.commons.springfx>
+        <cz.masci.commons.springfx>0.0.30</cz.masci.commons.springfx>
     </properties>
 
     <dependencyManagement>

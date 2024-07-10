@@ -38,6 +38,7 @@ public class BattleRootStep extends SimpleCompositeStep {
     addStep(new BattlePreparationStep(interactor));
     addStep(new BattleSelectActionStep(interactor));
     addStep(new BattleInitiativeStep(interactor));
+    addStep(new BattleActionStep(interactor));
   }
 
   @Override
