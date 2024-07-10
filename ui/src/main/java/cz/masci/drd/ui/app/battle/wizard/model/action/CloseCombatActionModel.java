@@ -19,18 +19,18 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model.action;
 
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.ui.util.expression.ParseStringAddBaseIntegerBinding;
 import cz.masci.springfx.mvci.util.constraint.ConditionUtils;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.IntegerExpression;
 import javafx.beans.binding.NumberBinding;
+import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class CloseCombatActionModel {
   private final StringProperty rollAttack = new SimpleStringProperty();
   private final StringProperty rollDefense = new SimpleStringProperty();
@@ -39,11 +39,20 @@ public class CloseCombatActionModel {
   private final BooleanExpression success;
   private final IntegerExpression life;
 
-  public CloseCombatActionModel(int baseAttack, int baseDefense, int baseDamage) {
+  private final IntegerExpression attack;
+  private final IntegerExpression defense;
+
+  private final DuellistDTO attacker;
+  private final DuellistDTO defender;
+
+  public CloseCombatActionModel(DuellistDTO attacker, DuellistDTO defender) {
+    this.attacker = attacker;
+    this.defender = defender;
+
     // A = base attack + roll attack
-    IntegerBinding attack = new ParseStringAddBaseIntegerBinding(baseAttack, rollAttack);
+    attack = new ParseStringAddBaseIntegerBinding(attacker.getAttack(), rollAttack);
     // B = base defense + roll defense
-    IntegerBinding defense = new ParseStringAddBaseIntegerBinding(baseDefense, rollDefense);
+    defense = new ParseStringAddBaseIntegerBinding(defender.getDefense(), rollDefense);
     // diff = A - B
     NumberBinding diff = attack.subtract(defense);
     // roll attack and roll defense are numbers
@@ -59,7 +68,7 @@ public class CloseCombatActionModel {
 
       @Override
       protected int computeValue() {
-        int num = success.get() ? diff.intValue() + baseDamage : 0;
+        int num = success.get() ? diff.intValue() + attacker.getDamage() : 0;
         return num < 0 ? 1 : num;
       }
     };
@@ -101,5 +110,37 @@ public class CloseCombatActionModel {
 
   public IntegerExpression lifeProperty() {
     return life;
+  }
+
+  public String getAttackerName() {
+    return attacker.getName();
+  }
+
+  public String getDefenderName() {
+    return defender.getName();
+  }
+
+  public String getBaseAttack() {
+    return String.valueOf(attacker.getAttack());
+  }
+
+  public String getBaseDefense() {
+    return String.valueOf(defender.getDefense());
+  }
+
+  public String getAttackerLife() {
+    return String.format("%d/%d", attacker.getCurrentLive(), attacker.getOriginalLive());
+  }
+
+  public String getDefenderLife() {
+    return String.format("%d/%d", defender.getCurrentLive(), defender.getOriginalLive());
+  }
+
+  public StringExpression getAttackResult() {
+    return attack.asString();
+  }
+
+  public StringExpression getDefenseResult() {
+    return defense.asString();
   }
 }

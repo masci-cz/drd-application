@@ -33,7 +33,7 @@ public abstract class SimpleCompositeStep implements CompositeStep {
   @Setter
   @Getter
   private HierarchicalStep parent;
-  private final List<HierarchicalStep> steps = new ArrayList<>();
+  protected final List<HierarchicalStep> steps = new ArrayList<>();
 
   @Getter
   private int currentIdx = -1;

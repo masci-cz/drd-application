@@ -21,6 +21,7 @@ package cz.masci.drd.ui.app.battle.wizard.interactor;
 
 import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.GroupDTO;
+import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
@@ -87,5 +88,29 @@ public class BattleInteractor {
 
   public List<DuellistDTO> getAllDuellists() {
     return battleService.getAllDuellists();
+  }
+
+  public void startRound() {
+    try {
+      battleService.startRound();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public boolean hasAction() {
+    return !battleService.getActions().isEmpty();
+  }
+
+  public Action<?> pollAction() {
+    return battleService.getActions().poll();
+  }
+
+  public void startBattle() {
+    try {
+      battleService.startBattle();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
