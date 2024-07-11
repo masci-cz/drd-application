@@ -38,6 +38,7 @@ public class CloseCombatActionModel {
   private final BooleanExpression valid;
   private final BooleanExpression success;
   private final IntegerExpression life;
+  private int lifeResult;
 
   private final IntegerExpression attack;
   private final IntegerExpression defense;
@@ -78,11 +79,30 @@ public class CloseCombatActionModel {
     };
   }
 
+  public void execute() {
+    if (isValid() && isSuccess()) {
+      defender.setCurrentLive(defender.getCurrentLive() - lifeResult);
+    }
+  }
+
   public void bindRollAttack(ObservableStringValue observable) {
     if (rollAttack.isBound()) {
       rollAttack.unbind();
     }
     rollAttack.bind(observable);
+  }
+
+  public void bindLife(StringProperty property) {
+    // listen to changes on the observable
+    property.addListener((obs, oldVal, newVal) -> {
+      try {
+        lifeResult = Integer.parseInt(newVal);
+      } catch (NumberFormatException e) {
+        lifeResult = 0;
+      }
+    });
+    // bind observable to changes in computed life
+    life.addListener((obs, oldVal, newVal) -> property.setValue(newVal.toString()));
   }
 
   public void bindRollDefense(ObservableStringValue observable) {
@@ -106,14 +126,6 @@ public class CloseCombatActionModel {
 
   public BooleanExpression successProperty() {
     return success;
-  }
-
-  public int getLife() {
-    return life.get();
-  }
-
-  public IntegerExpression lifeProperty() {
-    return life;
   }
 
   public String getAttackerName() {

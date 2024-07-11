@@ -59,12 +59,11 @@ public class CloseCombatActionViewBuilder implements Builder<Region> {
     // bind
     attackResult.textProperty()
                 .bind(viewModel.getAttackResult());
-    defenseLifeResult.textProperty()
-                     .bind(viewModel.lifeProperty().asString());
     defenseResult.textProperty()
                  .bind(viewModel.getDefenseResult());
     viewModel.bindRollAttack(attackRoll.textProperty());
     viewModel.bindRollDefense(defenseRoll.textProperty());
+    viewModel.bindLife(defenseLifeResult.textProperty());
     defenderDefendedBox.visibleProperty()
                        .bind(Bindings.and(viewModel.validProperty(), viewModel.successProperty().not()));
     defenderNotDefendedBox.visibleProperty()
