@@ -106,9 +106,12 @@ public class BattleInteractor {
     return battleService.getActions().poll();
   }
 
-  public void startBattle() {
+  public void prepareRound() {
     try {
-      battleService.startBattle();
+      switch (battleService.getState()) {
+        case NEW -> battleService.startBattle();
+        case ROUND -> battleService.endRound();
+      }
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }

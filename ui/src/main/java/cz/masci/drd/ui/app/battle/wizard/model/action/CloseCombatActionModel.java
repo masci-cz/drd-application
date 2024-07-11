@@ -68,8 +68,12 @@ public class CloseCombatActionModel {
 
       @Override
       protected int computeValue() {
-        int num = success.get() ? diff.intValue() + attacker.getDamage() : 0;
-        return num < 0 ? 1 : num;
+        return success.get() ? computeDamage(diff.intValue(), attacker.getDamage()) : 0;
+      }
+
+      private int computeDamage(int diff, int damage) {
+        int num = diff + damage;
+        return num <= 0 ? 1 : num;
       }
     };
   }

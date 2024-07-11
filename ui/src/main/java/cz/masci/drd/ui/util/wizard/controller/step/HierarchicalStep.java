@@ -51,8 +51,6 @@ public interface HierarchicalStep extends Step {
    */
   default void completeStep() {
     System.out.println("Hierarchical Step: completeStep() " + getClass().getSimpleName());
-    Optional.ofNullable(getParent())
-        .ifPresent(HierarchicalStep::completeStep);
   }
 
   /**

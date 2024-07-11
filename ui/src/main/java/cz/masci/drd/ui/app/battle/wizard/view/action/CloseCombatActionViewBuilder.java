@@ -24,6 +24,7 @@ import cz.masci.springfx.mvci.util.MFXBuilderUtils;
 import io.github.palexdev.materialfx.builders.layout.FlowPaneBuilder;
 import io.github.palexdev.materialfx.builders.layout.HBoxBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -59,19 +60,21 @@ public class CloseCombatActionViewBuilder implements Builder<Region> {
     attackResult.textProperty()
                 .bind(viewModel.getAttackResult());
     defenseLifeResult.textProperty()
-                     .bind(viewModel.lifeProperty()
-                                    .asString(""));
+                     .bind(viewModel.lifeProperty().asString());
     defenseResult.textProperty()
                  .bind(viewModel.getDefenseResult());
     viewModel.bindRollAttack(attackRoll.textProperty());
     viewModel.bindRollDefense(defenseRoll.textProperty());
-    defenderDefendedBox.visibleProperty().bind(viewModel.successProperty().not());
-    defenderNotDefendedBox.visibleProperty().bind(viewModel.successProperty());
+    defenderDefendedBox.visibleProperty()
+                       .bind(Bindings.and(viewModel.validProperty(), viewModel.successProperty().not()));
+    defenderNotDefendedBox.visibleProperty()
+                          .bind(Bindings.and(viewModel.validProperty(), viewModel.successProperty()));
 
     return VBoxBuilder.vBox()
                       .setSpacing(5.0)
                       .addChildren(
                           FlowPaneBuilder.flowPane()
+                                         .setHGap(10.0)
                                          .addChildren(
                                              new Label("Bojovník"),
                                              new Label(viewModel.getAttackerName()),
@@ -89,6 +92,7 @@ public class CloseCombatActionViewBuilder implements Builder<Region> {
                                          .setMaxWidth(Double.MAX_VALUE)
                                          .getNode(),
                           FlowPaneBuilder.flowPane()
+                                         .setHGap(10.0)
                                          .addChildren(
                                              new Label("Bojovník"),
                                              new Label(viewModel.getDefenderName()),
