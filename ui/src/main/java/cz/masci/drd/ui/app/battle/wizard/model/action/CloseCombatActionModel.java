@@ -39,6 +39,7 @@ public class CloseCombatActionModel {
   private final BooleanExpression success;
   private final IntegerExpression life;
   private int lifeResult;
+  private boolean isCancelled;
 
   private final IntegerExpression attack;
   private final IntegerExpression defense;
@@ -80,7 +81,7 @@ public class CloseCombatActionModel {
   }
 
   public void execute() {
-    if (isValid() && isSuccess()) {
+    if (isValid() && isSuccess() && !isCancelled) {
       defender.setCurrentLive(defender.getCurrentLive() - lifeResult);
     }
   }
@@ -110,6 +111,10 @@ public class CloseCombatActionModel {
       rollDefense.unbind();
     }
     rollDefense.bind(observable);
+  }
+
+  public void cancel() {
+    isCancelled = true;
   }
 
   public boolean isValid() {

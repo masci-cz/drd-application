@@ -49,6 +49,11 @@ public class BattleActionStep extends SimpleCompositeStep {
   }
 
   @Override
+  public HierarchicalStep prev() {
+    return super.prev();
+  }
+
+  @Override
   protected String getPrevText() {
     return "Zrušit kolo";
   }

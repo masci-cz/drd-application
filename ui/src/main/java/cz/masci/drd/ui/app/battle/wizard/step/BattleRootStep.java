@@ -48,6 +48,7 @@ public class BattleRootStep extends SimpleCompositeStep {
       case 2 -> "Bojovníci";
       case 3 -> "Přehled";
       case 4 -> "Výběr akcí";
+      case 5 -> "Zrušit kolo";
       default -> "Předchozí";
     };
   }
@@ -60,6 +61,7 @@ public class BattleRootStep extends SimpleCompositeStep {
       case 2 -> "Výběr akcí";
       case 3 -> "Iniciativa";
       case 4 -> "Spustit bitvu";
+      case 5 -> "Další kolo";
       default -> "Další";
     };
   }

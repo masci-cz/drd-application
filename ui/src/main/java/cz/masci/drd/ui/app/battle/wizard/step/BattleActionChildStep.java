@@ -42,11 +42,14 @@ public class BattleActionChildStep extends TitleLeafStep {
   }
 
   @Override
-  public void executeBeforeNext() {
-    if (viewModel.isValid()) {
-      viewModel.execute();
-    }
-    super.executeBeforeNext();
+  public void completeStep() {
+    viewModel.execute();
+  }
+
+  @Override
+  public void executeBeforePrev() {
+    viewModel.cancel();
+    super.executeBeforePrev();
   }
 
   @Override
