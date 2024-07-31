@@ -22,6 +22,7 @@ package cz.masci.drd.ui.app.battle.wizard.step;
 import cz.masci.drd.dto.actions.CombatAction;
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.app.battle.wizard.model.action.CloseCombatActionModel;
+import cz.masci.drd.ui.app.battle.wizard.view.action.CloseCombatActionViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,8 @@ public class BattleActionStep extends SimpleCompositeStep {
         var action = interactor.pollAction();
         if (action instanceof CombatAction combatAction) {
           var combatActionModel = new CloseCombatActionModel(combatAction.getAttacker(), combatAction.getDefender());
-          addStep(new BattleActionChildStep("Test", combatActionModel));
+          var builder = new CloseCombatActionViewBuilder(combatActionModel);
+          addStep(new BattleActionChildStep<>("Test", combatActionModel, builder));
         }
       }
     }

@@ -31,7 +31,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
 
-public class CloseCombatActionModel {
+public class CloseCombatActionModel implements BattleActionModel {
   private final StringProperty rollAttack = new SimpleStringProperty();
   private final StringProperty rollDefense = new SimpleStringProperty();
 
@@ -80,10 +80,21 @@ public class CloseCombatActionModel {
     };
   }
 
+  @Override
   public void execute() {
     if (isValid() && isSuccess() && !isCancelled) {
       defender.setCurrentLive(defender.getCurrentLive() - lifeResult);
     }
+  }
+
+  @Override
+  public void cancel() {
+    isCancelled = true;
+  }
+
+  @Override
+  public BooleanExpression validProperty() {
+    return valid;
   }
 
   public void bindRollAttack(ObservableStringValue observable) {
@@ -113,16 +124,8 @@ public class CloseCombatActionModel {
     rollDefense.bind(observable);
   }
 
-  public void cancel() {
-    isCancelled = true;
-  }
-
   public boolean isValid() {
     return valid.get();
-  }
-
-  public BooleanExpression validProperty() {
-    return valid;
   }
 
   public boolean isSuccess() {

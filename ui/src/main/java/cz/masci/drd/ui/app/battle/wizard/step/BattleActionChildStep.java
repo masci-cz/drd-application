@@ -19,21 +19,21 @@
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
-import cz.masci.drd.ui.app.battle.wizard.model.action.CloseCombatActionModel;
-import cz.masci.drd.ui.app.battle.wizard.view.action.CloseCombatActionViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.model.action.BattleActionModel;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
 import javafx.beans.binding.BooleanExpression;
 import javafx.scene.layout.Region;
+import javafx.util.Builder;
 
-public class BattleActionChildStep extends TitleLeafStep {
+public class BattleActionChildStep<T extends BattleActionModel> extends TitleLeafStep {
 
-  private final CloseCombatActionViewBuilder builder;
-  private final CloseCombatActionModel viewModel;
+  private final Builder<Region> builder;
+  private final T viewModel;
 
-  public BattleActionChildStep(String title, CloseCombatActionModel viewModel) {
+  public BattleActionChildStep(String title, T viewModel, Builder<Region> builder) {
     super(title);
     this.viewModel = viewModel;
-    builder = new CloseCombatActionViewBuilder(viewModel);
+    this.builder = builder;
   }
 
   @Override
