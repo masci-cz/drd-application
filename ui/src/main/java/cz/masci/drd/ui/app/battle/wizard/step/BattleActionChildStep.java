@@ -19,6 +19,7 @@
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
+import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
 import cz.masci.drd.ui.app.battle.wizard.model.action.BattleActionModel;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
 import javafx.beans.binding.BooleanExpression;
@@ -29,11 +30,13 @@ public class BattleActionChildStep<T extends BattleActionModel> extends TitleLea
 
   private final Builder<Region> builder;
   private final T viewModel;
+  private final BattleInteractor interactor;
 
-  public BattleActionChildStep(String title, T viewModel, Builder<Region> builder) {
+  public BattleActionChildStep(String title, T viewModel, Builder<Region> builder, BattleInteractor interactor) {
     super(title);
     this.viewModel = viewModel;
     this.builder = builder;
+    this.interactor = interactor;
   }
 
   @Override
@@ -43,7 +46,7 @@ public class BattleActionChildStep<T extends BattleActionModel> extends TitleLea
 
   @Override
   public void completeStep() {
-    viewModel.execute();
+    interactor.addRoundHistory(viewModel.execute());
   }
 
   @Override

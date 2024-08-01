@@ -47,49 +47,7 @@ public class BattleActionStep extends SimpleCompositeStep {
   public HierarchicalStep next() {
     if (getCurrentIdx() < 0) {
       interactor.startRound();
-      clearSteps();
-      while (interactor.hasAction()) {
-        var action = interactor.pollAction();
-        var step = switch (action) {
-          case CombatAction combatAction -> {
-            var combatActionModel = new CombatActionModel(combatAction.getAttacker(), combatAction.getDefender());
-            var builder = new CloseCombatActionViewBuilder(combatActionModel);
-            yield new BattleActionChildStep<>("Test", combatActionModel, builder);
-          }
-          case ShootAction shootAction -> {
-            var shootActionModel = new CombatActionModel(shootAction.getAttacker(), shootAction.getDefender());
-            var builder = new ShootActionViewBuilder(shootActionModel);
-            yield new BattleActionChildStep<>("Test", shootActionModel, builder);
-          }
-          case MagicAction magicAction -> {
-            var magicActionModel = new MagicActionModel(magicAction.getAttacker(), magicAction.getDefender(), magicAction.getSpell());
-            var builder = new MagicActionViewBuilder(magicActionModel);
-            yield new BattleActionChildStep<>("Test", magicActionModel, builder);
-          }
-          case OtherAction simpleAction -> {
-            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s provádí akci %s", simpleAction.getActor().getName(), simpleAction.getOther()));
-            var builder = new SimpleActionViewBuilder(simpleActionModel);
-            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
-          }
-          case PrepareAction simpleAction -> {
-            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s se připravuje", simpleAction.getActor().getName()));
-            var builder = new SimpleActionViewBuilder(simpleActionModel);
-            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
-          }
-          case SpeechAction simpleAction -> {
-            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s mluví", simpleAction.getActor().getName()));
-            var builder = new SimpleActionViewBuilder(simpleActionModel);
-            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
-          }
-          case WaitAction simpleAction -> {
-            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s vyčkává", simpleAction.getActor().getName()));
-            var builder = new SimpleActionViewBuilder(simpleActionModel);
-            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
-          }
-          default -> throw new IllegalStateException("Unexpected value: " + action);
-        };
-        addStep(step);
-      }
+      prepareSteps();
     }
     if (getCurrentIdx() == steps.size()) {
       interactor.endRound();
@@ -102,7 +60,6 @@ public class BattleActionStep extends SimpleCompositeStep {
     interactor.cancelRound();
     reset();
     return super.prev();
-//    return applyOnCompositeStepOr(getParent(), CompositeStep::prev, null);
   }
 
   @Override
@@ -114,4 +71,51 @@ public class BattleActionStep extends SimpleCompositeStep {
   protected String getNextText() {
     return "Další";
   }
+
+  private void prepareSteps() {
+    clearSteps();
+    while (interactor.hasAction()) {
+      var action = interactor.pollAction();
+      var step = switch (action) {
+        case CombatAction combatAction -> {
+          var combatActionModel = new CombatActionModel(combatAction.getAttacker(), combatAction.getDefender());
+          var builder = new CloseCombatActionViewBuilder(combatActionModel);
+          yield new BattleActionChildStep<>("Test", combatActionModel, builder, interactor);
+        }
+        case ShootAction shootAction -> {
+          var shootActionModel = new CombatActionModel(shootAction.getAttacker(), shootAction.getDefender());
+          var builder = new ShootActionViewBuilder(shootActionModel);
+          yield new BattleActionChildStep<>("Test", shootActionModel, builder, interactor);
+        }
+        case MagicAction magicAction -> {
+          var magicActionModel = new MagicActionModel(magicAction.getAttacker(), magicAction.getDefender(), magicAction.getSpell());
+          var builder = new MagicActionViewBuilder(magicActionModel);
+          yield new BattleActionChildStep<>("Test", magicActionModel, builder, interactor);
+        }
+        case OtherAction simpleAction -> {
+          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s provádí akci %s", simpleAction.getActor().getName(), simpleAction.getOther()));
+          var builder = new SimpleActionViewBuilder(simpleActionModel);
+          yield new BattleActionChildStep<>("Test", simpleActionModel, builder, interactor);
+        }
+        case PrepareAction simpleAction -> {
+          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s se připravuje", simpleAction.getActor().getName()));
+          var builder = new SimpleActionViewBuilder(simpleActionModel);
+          yield new BattleActionChildStep<>("Test", simpleActionModel, builder, interactor);
+        }
+        case SpeechAction simpleAction -> {
+          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s mluví", simpleAction.getActor().getName()));
+          var builder = new SimpleActionViewBuilder(simpleActionModel);
+          yield new BattleActionChildStep<>("Test", simpleActionModel, builder, interactor);
+        }
+        case WaitAction simpleAction -> {
+          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s vyčkává", simpleAction.getActor().getName()));
+          var builder = new SimpleActionViewBuilder(simpleActionModel);
+          yield new BattleActionChildStep<>("Test", simpleActionModel, builder, interactor);
+        }
+        default -> throw new IllegalStateException("Unexpected value: " + action);
+      };
+      addStep(step);
+    }
+  }
+
 }

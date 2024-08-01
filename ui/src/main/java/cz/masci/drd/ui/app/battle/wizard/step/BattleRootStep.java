@@ -36,10 +36,12 @@ public class BattleRootStep extends SimpleCompositeStep {
   public BattleRootStep(BattleInteractor interactor) {
     addStep(new BattleGroupStep(interactor));
     addStep(new BattleDuellistStep(interactor));
+    // TODO group all actions steps under BattleRoundStep
     addStep(new BattlePreparationStep(interactor));
     addStep(new BattleSelectActionStep(interactor));
     addStep(new BattleInitiativeStep(interactor));
     addStep(new BattleActionStep(interactor));
+    addStep(new BattleRoundSummaryStep(interactor));
   }
 
   @Override
@@ -50,6 +52,7 @@ public class BattleRootStep extends SimpleCompositeStep {
       case 3 -> "Přehled";
       case 4 -> "Výběr akcí";
       case 5 -> "Zrušit kolo";
+      case 6 -> "Další kolo";
       default -> "Předchozí";
     };
   }
@@ -62,7 +65,8 @@ public class BattleRootStep extends SimpleCompositeStep {
       case 2 -> "Výběr akcí";
       case 3 -> "Iniciativa";
       case 4 -> "Spustit bitvu";
-      case 5 -> "Další kolo";
+      case 5 -> "Výsledek kola";
+      case 6 -> "Další kolo";
       default -> "Další";
     };
   }
@@ -86,7 +90,7 @@ public class BattleRootStep extends SimpleCompositeStep {
 
   @Override
   public HierarchicalStep prev() {
-    if (getCurrentIdx() == 5) {
+    if (getCurrentIdx() == 5 || getCurrentIdx() == 6) {
       return goToStep(2);
     }
     return super.prev();
@@ -94,7 +98,7 @@ public class BattleRootStep extends SimpleCompositeStep {
 
   @Override
   public HierarchicalStep next() {
-    if (getCurrentIdx() == 6) {
+    if (getCurrentIdx() == 7) {
       return goToStep(2);
     }
     return super.next();

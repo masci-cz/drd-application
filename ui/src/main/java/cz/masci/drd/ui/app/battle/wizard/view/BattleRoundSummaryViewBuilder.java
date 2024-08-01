@@ -17,27 +17,31 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.view.action;
+package cz.masci.drd.ui.app.battle.wizard.view;
 
-import cz.masci.drd.ui.app.battle.wizard.model.action.SimpleActionModel;
-import io.github.palexdev.materialfx.builders.layout.FlowPaneBuilder;
+import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
+import java.util.List;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SimpleActionViewBuilder implements Builder<Region> {
+public class BattleRoundSummaryViewBuilder implements Builder<Region> {
 
-  private final SimpleActionModel viewModel;
+  private final List<String> history;
 
   @Override
   public Region build() {
-    return FlowPaneBuilder.flowPane()
-        .addChildren(new Label(viewModel.action()))
+    var nodes = history.stream().map(Label::new).toArray(Node[]::new);
+
+    return VBoxBuilder.vBox()
+        .setSpacing(5.0)
+        .addChildren(nodes)
         .setMaxWidth(Double.MAX_VALUE)
-        .setPadding(new Insets(10.0))
+        .setPadding(new Insets(5.0))
         .getNode();
   }
 }

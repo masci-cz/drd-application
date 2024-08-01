@@ -81,10 +81,12 @@ public class CombatActionModel implements BattleActionModel {
   }
 
   @Override
-  public void execute() {
+  public String execute() {
     if (isValid() && isSuccess() && !isCancelled) {
       defender.setCurrentLive(defender.getCurrentLive() - lifeResult);
     }
+
+    return isValid() && !isCancelled ? getResult() : "Nevalidní výsledek";
   }
 
   @Override
@@ -166,5 +168,11 @@ public class CombatActionModel implements BattleActionModel {
 
   public StringExpression getDefenseResult() {
     return defense.asString();
+  }
+
+  private String getResult() {
+    return isSuccess()
+        ? String.format("Bojovník %s zasáhl bojovníka %s za %d životů. Bojovník %s %s.", getAttackerName(), getDefenderName(), lifeResult, getDefenderName(), defender.getCurrentLive() > 0 ? "přežil" : "nepřežil")
+        : String.format("Bojovník %s nezasáhl bojovníka %s. Bojovník %s přežil", getAttackerName(), getDefenderName(), getDefenderName());
   }
 }

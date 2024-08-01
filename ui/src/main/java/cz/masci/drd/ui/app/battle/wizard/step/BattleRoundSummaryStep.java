@@ -17,12 +17,25 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.model.action;
+package cz.masci.drd.ui.app.battle.wizard.step;
 
-import javafx.beans.binding.BooleanExpression;
+import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
+import cz.masci.drd.ui.app.battle.wizard.view.BattleRoundSummaryViewBuilder;
+import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
+import javafx.scene.layout.Region;
 
-public interface BattleActionModel {
-  String execute();
-  void cancel();
-  BooleanExpression validProperty();
+public class BattleRoundSummaryStep extends TitleLeafStep {
+
+  private final BattleRoundSummaryViewBuilder builder;
+
+  public BattleRoundSummaryStep(BattleInteractor interactor) {
+    super("Výsledek kola");
+
+    builder = new BattleRoundSummaryViewBuilder(interactor.getRoundHistory());
+  }
+
+  @Override
+  public Region view() {
+    return builder.build();
+  }
 }

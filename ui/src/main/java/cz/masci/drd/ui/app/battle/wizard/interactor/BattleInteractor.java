@@ -27,9 +27,11 @@ import cz.masci.drd.service.exception.BattleException;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleDuellistDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattleGroupDetailModel;
 import cz.masci.drd.ui.app.battle.wizard.model.BattlePreparationSummaryGroupModel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import javafx.collections.ObservableList;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,8 @@ public class BattleInteractor {
 
   private final BattleService battleService;
   private final BattleMapper battleMapper;
+  @Getter
+  private final List<String> roundHistory = new ArrayList<>();
 
   public void createBattle(final List<BattleGroupDetailModel> list) {
     try {
@@ -93,6 +97,7 @@ public class BattleInteractor {
   public void startRound() {
     try {
       battleService.startRound();
+      roundHistory.clear();
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }
@@ -112,6 +117,10 @@ public class BattleInteractor {
     } catch (BattleException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void addRoundHistory(String roundHistory) {
+    this.roundHistory.add(roundHistory);
   }
 
   public boolean hasAction() {

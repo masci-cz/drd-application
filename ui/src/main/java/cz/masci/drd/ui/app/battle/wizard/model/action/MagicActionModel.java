@@ -47,7 +47,7 @@ public class MagicActionModel implements BattleActionModel {
   }
 
   @Override
-  public void execute() {
+  public String execute() {
     if (isValid() && !isCancelled) {
       try {
         var lifeResult = Integer.parseInt(life.getValue());
@@ -56,6 +56,10 @@ public class MagicActionModel implements BattleActionModel {
         // do nothing
       }
     }
+
+    return isValid() && !isCancelled
+        ? String.format("Bojovník %s použil kouzlo na bojovníka %s. Bojovník %s byl zraněn za %s životů. Bojovník %s %s.", getAttackerName(), getDefenderName(), getDefenderName(), life.getValue(), getDefenderName(), defender.getCurrentLive() > 0 ? "přežil" : "nepřežil")
+        : "Nevalidní výsledek";
   }
 
   @Override

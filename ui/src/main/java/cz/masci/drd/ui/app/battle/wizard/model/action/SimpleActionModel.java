@@ -24,8 +24,9 @@ import javafx.beans.binding.BooleanExpression;
 
 public record SimpleActionModel(String action) implements BattleActionModel {
   @Override
-  public void execute() {
+  public String execute() {
     // do nothing
+    return action;
   }
 
   @Override
