@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,34 +17,24 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto.actions;
+package cz.masci.drd.ui.app.battle.wizard.model.action;
 
-import cz.masci.drd.dto.DuellistDTO;
-import lombok.Getter;
-import org.springframework.util.StringUtils;
+import cz.masci.springfx.mvci.util.property.PropertyUtils;
+import javafx.beans.binding.BooleanExpression;
 
-@Getter
-public class OtherAction extends SingleActorAction {
-
-  private final String other;
-
-  public OtherAction(DuellistDTO actor, String other) {
-    super(actor);
-    this.other = other;
-  }
-
-  @Override
-  public boolean isPrepared() {
-    return StringUtils.hasLength(other);
-  }
-
+public record SimpleActionModel(String action) implements BattleActionModel {
   @Override
   public void execute() {
-    result = String.format("Bojovník %s provádí %s", actor.getName(), other);
+    // do nothing
   }
 
   @Override
-  public ActionType getActionType() {
-    return ActionType.OTHER;
+  public void cancel() {
+    // do nothing
+  }
+
+  @Override
+  public BooleanExpression validProperty() {
+    return PropertyUtils.TRUE_PROPERTY;
   }
 }

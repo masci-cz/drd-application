@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023
+ * Copyright (c) 2024
  *
  * This file is part of DrD.
  *
@@ -17,34 +17,23 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.dto.actions;
+package cz.masci.drd.ui.app.battle.wizard.view.action;
 
-import cz.masci.drd.dto.DuellistDTO;
-import lombok.Getter;
-import org.springframework.util.StringUtils;
+import cz.masci.drd.ui.app.battle.wizard.model.action.CombatActionModel;
 
-@Getter
-public class OtherAction extends SingleActorAction {
+public class ShootActionViewBuilder extends CombatActionViewBuilder {
 
-  private final String other;
-
-  public OtherAction(DuellistDTO actor, String other) {
-    super(actor);
-    this.other = other;
+  public ShootActionViewBuilder(CombatActionModel viewModel) {
+    super(viewModel);
   }
 
   @Override
-  public boolean isPrepared() {
-    return StringUtils.hasLength(other);
+  protected String getAttackText() {
+    return "střílí na";
   }
 
   @Override
-  public void execute() {
-    result = String.format("Bojovník %s provádí %s", actor.getName(), other);
-  }
-
-  @Override
-  public ActionType getActionType() {
-    return ActionType.OTHER;
+  protected String getDefenseText() {
+    return "uhybá střelbě";
   }
 }

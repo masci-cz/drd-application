@@ -19,21 +19,25 @@
 
 package cz.masci.drd.ui.app.battle.wizard.view.action;
 
-import cz.masci.drd.ui.app.battle.wizard.model.action.CombatActionModel;
+import cz.masci.drd.ui.app.battle.wizard.model.action.SimpleActionModel;
+import io.github.palexdev.materialfx.builders.layout.FlowPaneBuilder;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
+import javafx.util.Builder;
+import lombok.RequiredArgsConstructor;
 
-public class CloseCombatActionViewBuilder extends CombatActionViewBuilder {
+@RequiredArgsConstructor
+public class SimpleActionViewBuilder implements Builder<Region> {
 
-  public CloseCombatActionViewBuilder(CombatActionModel viewModel) {
-    super(viewModel);
-  }
+  private final SimpleActionModel viewModel;
 
   @Override
-  protected String getAttackText() {
-    return "útočí na";
-  }
-
-  @Override
-  protected String getDefenseText() {
-    return "se brání útoku";
+  public Region build() {
+    return FlowPaneBuilder.flowPane()
+        .addChildren(new Label(viewModel.action()))
+        .setMaxWidth(Double.MAX_VALUE)
+        .setPadding(new Insets(10, 10, 10, 10))
+        .getNode();
   }
 }

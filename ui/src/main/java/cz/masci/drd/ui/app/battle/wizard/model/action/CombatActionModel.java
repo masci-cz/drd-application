@@ -31,7 +31,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
 
-public class CloseCombatActionModel implements BattleActionModel {
+public class CombatActionModel implements BattleActionModel {
   private final StringProperty rollAttack = new SimpleStringProperty();
   private final StringProperty rollDefense = new SimpleStringProperty();
 
@@ -47,7 +47,7 @@ public class CloseCombatActionModel implements BattleActionModel {
   private final DuellistDTO attacker;
   private final DuellistDTO defender;
 
-  public CloseCombatActionModel(DuellistDTO attacker, DuellistDTO defender) {
+  public CombatActionModel(DuellistDTO attacker, DuellistDTO defender) {
     this.attacker = attacker;
     this.defender = defender;
 

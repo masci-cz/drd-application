@@ -20,9 +20,20 @@
 package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.dto.actions.CombatAction;
+import cz.masci.drd.dto.actions.MagicAction;
+import cz.masci.drd.dto.actions.OtherAction;
+import cz.masci.drd.dto.actions.PrepareAction;
+import cz.masci.drd.dto.actions.ShootAction;
+import cz.masci.drd.dto.actions.SpeechAction;
+import cz.masci.drd.dto.actions.WaitAction;
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
-import cz.masci.drd.ui.app.battle.wizard.model.action.CloseCombatActionModel;
+import cz.masci.drd.ui.app.battle.wizard.model.action.CombatActionModel;
+import cz.masci.drd.ui.app.battle.wizard.model.action.MagicActionModel;
+import cz.masci.drd.ui.app.battle.wizard.model.action.SimpleActionModel;
 import cz.masci.drd.ui.app.battle.wizard.view.action.CloseCombatActionViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.view.action.MagicActionViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.view.action.ShootActionViewBuilder;
+import cz.masci.drd.ui.app.battle.wizard.view.action.SimpleActionViewBuilder;
 import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +51,45 @@ public class BattleActionStep extends SimpleCompositeStep {
       clearSteps();
       while (interactor.hasAction()) {
         var action = interactor.pollAction();
-        if (action instanceof CombatAction combatAction) {
-          var combatActionModel = new CloseCombatActionModel(combatAction.getAttacker(), combatAction.getDefender());
-          var builder = new CloseCombatActionViewBuilder(combatActionModel);
-          addStep(new BattleActionChildStep<>("Test", combatActionModel, builder));
-        }
+        var step = switch (action) {
+          case CombatAction combatAction -> {
+            var combatActionModel = new CombatActionModel(combatAction.getAttacker(), combatAction.getDefender());
+            var builder = new CloseCombatActionViewBuilder(combatActionModel);
+            yield new BattleActionChildStep<>("Test", combatActionModel, builder);
+          }
+          case ShootAction shootAction -> {
+            var shootActionModel = new CombatActionModel(shootAction.getAttacker(), shootAction.getDefender());
+            var builder = new ShootActionViewBuilder(shootActionModel);
+            yield new BattleActionChildStep<>("Test", shootActionModel, builder);
+          }
+          case MagicAction magicAction -> {
+            var magicActionModel = new MagicActionModel(magicAction.getAttacker(), magicAction.getDefender(), magicAction.getSpell());
+            var builder = new MagicActionViewBuilder(magicActionModel);
+            yield new BattleActionChildStep<>("Test", magicActionModel, builder);
+          }
+          case OtherAction simpleAction -> {
+            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s provádí akci %s", simpleAction.getActor().getName(), simpleAction.getOther()));
+            var builder = new SimpleActionViewBuilder(simpleActionModel);
+            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
+          }
+          case PrepareAction simpleAction -> {
+            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s se připravuje", simpleAction.getActor().getName()));
+            var builder = new SimpleActionViewBuilder(simpleActionModel);
+            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
+          }
+          case SpeechAction simpleAction -> {
+            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s mluví", simpleAction.getActor().getName()));
+            var builder = new SimpleActionViewBuilder(simpleActionModel);
+            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
+          }
+          case WaitAction simpleAction -> {
+            var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s vyčkává", simpleAction.getActor().getName()));
+            var builder = new SimpleActionViewBuilder(simpleActionModel);
+            yield new BattleActionChildStep<>("Test", simpleActionModel, builder);
+          }
+          default -> throw new IllegalStateException("Unexpected value: " + action);
+        };
+        addStep(step);
       }
     }
     return super.next();
