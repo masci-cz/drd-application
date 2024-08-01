@@ -150,6 +150,17 @@ public abstract class SimpleCompositeStep implements CompositeStep {
       throw new RuntimeException("Go to non valid step index");
     }
 
+    int delta = currentIdx - index;
+    if (delta > 0) {
+      for (int i = 0; i < delta; i++) {
+        var step = currentIdx - i < steps.size() ? steps.get(currentIdx - i) : null;
+        if (step instanceof CompositeStep compositeStep) {
+          compositeStep.reset();
+        }
+      }
+    }
+    // TODO: forward each composite step to the end
+
     currentIdx = index;
 
     if (prepareChildIterator()) {

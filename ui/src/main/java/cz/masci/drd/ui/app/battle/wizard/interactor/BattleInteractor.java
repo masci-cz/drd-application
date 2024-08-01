@@ -98,6 +98,22 @@ public class BattleInteractor {
     }
   }
 
+  public void endRound() {
+    try {
+      battleService.endRound();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void cancelRound() {
+    try {
+      battleService.cancelRound();
+    } catch (BattleException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public boolean hasAction() {
     return !battleService.getActions().isEmpty();
   }

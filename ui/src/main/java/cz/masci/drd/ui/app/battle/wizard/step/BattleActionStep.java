@@ -45,7 +45,6 @@ public class BattleActionStep extends SimpleCompositeStep {
 
   @Override
   public HierarchicalStep next() {
-    // Initiate action steps same way as in cz.masci.drd.ui.app.battle.slide.presenter.impl.BattleActionSlide.getControllers
     if (getCurrentIdx() < 0) {
       interactor.startRound();
       clearSteps();
@@ -92,12 +91,18 @@ public class BattleActionStep extends SimpleCompositeStep {
         addStep(step);
       }
     }
+    if (getCurrentIdx() == steps.size()) {
+      interactor.endRound();
+    }
     return super.next();
   }
 
   @Override
   public HierarchicalStep prev() {
+    interactor.cancelRound();
+    reset();
     return super.prev();
+//    return applyOnCompositeStepOr(getParent(), CompositeStep::prev, null);
   }
 
   @Override

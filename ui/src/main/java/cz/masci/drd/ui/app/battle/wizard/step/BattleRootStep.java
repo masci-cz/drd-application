@@ -20,6 +20,7 @@
 package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
+import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
 import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
@@ -67,6 +68,11 @@ public class BattleRootStep extends SimpleCompositeStep {
   }
 
   @Override
+  public String nextText() {
+    return getNextText();
+  }
+
+  @Override
   public BooleanExpression prevDisabled() {
     prevDisabled.set(!hasPrev());
     return prevDisabled;
@@ -74,7 +80,23 @@ public class BattleRootStep extends SimpleCompositeStep {
 
   @Override
   public BooleanExpression nextDisabled() {
-    nextDisabled.set(!hasNext());
+    nextDisabled.set(!hasNext() && getCurrentIdx() != 5);
     return nextDisabled;
+  }
+
+  @Override
+  public HierarchicalStep prev() {
+    if (getCurrentIdx() == 5) {
+      return goToStep(2);
+    }
+    return super.prev();
+  }
+
+  @Override
+  public HierarchicalStep next() {
+    if (getCurrentIdx() == 6) {
+      return goToStep(2);
+    }
+    return super.next();
   }
 }
