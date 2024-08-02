@@ -19,10 +19,17 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model.action;
 
+import cz.masci.drd.dto.DuellistDTO;
 import javafx.beans.binding.BooleanExpression;
 
 public interface BattleActionModel {
   String execute();
   void cancel();
   BooleanExpression validProperty();
+  DuellistDTO getActor();
+
+  default boolean isAlive() {
+    return getActor().getCurrentLive() > 0;
+  }
+
 }

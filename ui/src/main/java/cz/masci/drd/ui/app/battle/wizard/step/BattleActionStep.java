@@ -52,6 +52,15 @@ public class BattleActionStep extends SimpleCompositeStep {
     if (getCurrentIdx() == steps.size()) {
       interactor.endRound();
     }
+    if (isValidIndex(getCurrentIdx())) {
+      var newStep = steps.get(getCurrentIdx());
+      if (newStep instanceof BattleActionChildStep<?> actionStep) {
+        if (!actionStep.isActorAlive()) {
+          removeStep(getCurrentIdx());
+        }
+      }
+    }
+    // It should be ok to check current step that
     return super.next();
   }
 
@@ -80,37 +89,37 @@ public class BattleActionStep extends SimpleCompositeStep {
         case CombatAction combatAction -> {
           var combatActionModel = new CombatActionModel(combatAction.getAttacker(), combatAction.getDefender());
           var builder = new CloseCombatActionViewBuilder(combatActionModel);
-          yield new BattleActionChildStep<>(getTitle(combatActionModel.getAttackerName()), combatActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(combatActionModel, builder, interactor);
         }
         case ShootAction shootAction -> {
           var shootActionModel = new CombatActionModel(shootAction.getAttacker(), shootAction.getDefender());
           var builder = new ShootActionViewBuilder(shootActionModel);
-          yield new BattleActionChildStep<>(getTitle(shootActionModel.getAttackerName()), shootActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(shootActionModel, builder, interactor);
         }
         case MagicAction magicAction -> {
           var magicActionModel = new MagicActionModel(magicAction.getAttacker(), magicAction.getDefender(), magicAction.getSpell());
           var builder = new MagicActionViewBuilder(magicActionModel);
-          yield new BattleActionChildStep<>(getTitle(magicActionModel.getAttackerName()), magicActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(magicActionModel, builder, interactor);
         }
         case OtherAction simpleAction -> {
-          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s provádí akci %s", simpleAction.getActor().getName(), simpleAction.getOther()));
+          var simpleActionModel = new SimpleActionModel(simpleAction.getActor(), String.format("provádí akci %s", simpleAction.getOther()));
           var builder = new SimpleActionViewBuilder(simpleActionModel);
-          yield new BattleActionChildStep<>(getTitle(simpleAction.getActor().getName()), simpleActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(simpleActionModel, builder, interactor);
         }
         case PrepareAction simpleAction -> {
-          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s se připravuje", simpleAction.getActor().getName()));
+          var simpleActionModel = new SimpleActionModel(simpleAction.getActor(), "se připravuje");
           var builder = new SimpleActionViewBuilder(simpleActionModel);
-          yield new BattleActionChildStep<>(getTitle(simpleAction.getActor().getName()), simpleActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(simpleActionModel, builder, interactor);
         }
         case SpeechAction simpleAction -> {
-          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s mluví", simpleAction.getActor().getName()));
+          var simpleActionModel = new SimpleActionModel(simpleAction.getActor(), "mluví");
           var builder = new SimpleActionViewBuilder(simpleActionModel);
-          yield new BattleActionChildStep<>(getTitle(simpleAction.getActor().getName()), simpleActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(simpleActionModel, builder, interactor);
         }
         case WaitAction simpleAction -> {
-          var simpleActionModel = new SimpleActionModel(String.format("Bojovník %s vyčkává", simpleAction.getActor().getName()));
+          var simpleActionModel = new SimpleActionModel(simpleAction.getActor(), "vyčkává");
           var builder = new SimpleActionViewBuilder(simpleActionModel);
-          yield new BattleActionChildStep<>(getTitle(simpleAction.getActor().getName()), simpleActionModel, builder, interactor);
+          yield new BattleActionChildStep<>(simpleActionModel, builder, interactor);
         }
         default -> throw new IllegalStateException("Unexpected value: " + action);
       };
@@ -118,7 +127,4 @@ public class BattleActionStep extends SimpleCompositeStep {
     }
   }
   
-  private String getTitle(String actor) {
-    return String.format("Proveďte akci pro bojovníka %s", actor);
-  }
 }

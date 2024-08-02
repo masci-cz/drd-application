@@ -19,14 +19,16 @@
 
 package cz.masci.drd.ui.app.battle.wizard.model.action;
 
+import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.springfx.mvci.util.property.PropertyUtils;
 import javafx.beans.binding.BooleanExpression;
 
-public record SimpleActionModel(String action) implements BattleActionModel {
+public record SimpleActionModel(DuellistDTO actor, String action) implements BattleActionModel {
+
   @Override
   public String execute() {
     // do nothing
-    return action;
+    return String.format("Bojovník %s %s", actor.getName(), action);
   }
 
   @Override
@@ -37,5 +39,10 @@ public record SimpleActionModel(String action) implements BattleActionModel {
   @Override
   public BooleanExpression validProperty() {
     return PropertyUtils.TRUE_PROPERTY;
+  }
+
+  @Override
+  public DuellistDTO getActor() {
+    return actor;
   }
 }

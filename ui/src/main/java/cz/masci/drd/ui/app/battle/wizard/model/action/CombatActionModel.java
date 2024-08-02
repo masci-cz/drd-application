@@ -99,6 +99,11 @@ public class CombatActionModel implements BattleActionModel {
     return valid;
   }
 
+  @Override
+  public DuellistDTO getActor() {
+    return attacker;
+  }
+
   public void bindRollAttack(ObservableStringValue observable) {
     if (rollAttack.isBound()) {
       rollAttack.unbind();

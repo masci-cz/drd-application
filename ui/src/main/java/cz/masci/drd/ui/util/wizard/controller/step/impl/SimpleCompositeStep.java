@@ -219,6 +219,12 @@ public abstract class SimpleCompositeStep implements CompositeStep {
     step.setParent(this);
   }
 
+  public void removeStep(int index) {
+    if (isValidIndex(index)) {
+      steps.remove(index);
+    }
+  }
+
   public void clearSteps() {
     steps.clear();
   }

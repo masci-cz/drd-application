@@ -32,8 +32,8 @@ public class BattleActionChildStep<T extends BattleActionModel> extends TitleLea
   private final T viewModel;
   private final BattleInteractor interactor;
 
-  public BattleActionChildStep(String title, T viewModel, Builder<Region> builder, BattleInteractor interactor) {
-    super(title);
+  public BattleActionChildStep(T viewModel, Builder<Region> builder, BattleInteractor interactor) {
+    super(String.format("Proveďte akci pro bojovníka %s", viewModel.getActor().getName()));
     this.viewModel = viewModel;
     this.builder = builder;
     this.interactor = interactor;
@@ -58,5 +58,9 @@ public class BattleActionChildStep<T extends BattleActionModel> extends TitleLea
   @Override
   public BooleanExpression valid() {
     return viewModel.validProperty();
+  }
+
+  public boolean isActorAlive() {
+    return viewModel.isAlive();
   }
 }

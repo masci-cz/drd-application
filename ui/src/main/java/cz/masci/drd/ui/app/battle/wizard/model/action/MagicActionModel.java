@@ -72,6 +72,11 @@ public class MagicActionModel implements BattleActionModel {
     return valid;
   }
 
+  @Override
+  public DuellistDTO getActor() {
+    return attacker;
+  }
+
   public void bindLife(StringProperty property) {
     life.bind(property);
   }
