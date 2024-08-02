@@ -84,7 +84,7 @@ public class BattleRootStep extends SimpleCompositeStep {
 
   @Override
   public BooleanExpression nextDisabled() {
-    nextDisabled.set(!hasNext() && getCurrentIdx() != 5);
+    nextDisabled.set(!hasNext() && getCurrentIdx() != 6);
     return nextDisabled;
   }
 

@@ -39,12 +39,16 @@ public interface BattleMapper {
   @Mapping(target = "selectedAction", ignore = true)
   DuellistDTO mapDuellistFromModel(String groupName, BattleDuellistDetailModel model);
 
-  @Mapping(target = "live", source = "originalLive")
+  @Mapping(target = "live", expression = "java( getLiveDescription(dto.getCurrentLive(), dto.getOriginalLive()))")
   BattlePreparationSummaryDuellistModel mapDuellistToModel(DuellistDTO dto);
 
   BattlePreparationSummaryGroupModel mapGroupToModel(GroupDTO dto);
 
   default ObservableList<BattlePreparationSummaryDuellistModel> mapDuellistToModel(List<DuellistDTO> duellists) {
     return FXCollections.observableArrayList(duellists.stream().map(this::mapDuellistToModel).toList());
+  }
+
+  default String getLiveDescription(int currentLive, int originalLive) {
+    return String.format("%d/%d", currentLive, originalLive);
   }
 }
