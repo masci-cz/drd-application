@@ -36,8 +36,9 @@ public class BattleSelectActionStep extends SimpleCompositeStep {
       var actions = interactor.getActionTypes();
       var duellists = interactor.getAllDuellists();
       duellists.stream()
-                .map(name -> new BattleSelectActionChildStep(name, actions, duellists))
-                .forEach(this::addStep);
+               .filter(duellist -> duellist.getCurrentLive() > 0)
+               .map(name -> new BattleSelectActionChildStep(name, actions, duellists))
+               .forEach(this::addStep);
       interactor.prepareRound();
     }
     return super.next();
