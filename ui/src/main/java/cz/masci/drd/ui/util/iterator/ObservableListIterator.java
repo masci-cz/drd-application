@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ObservableListIterator<E> {
+public class ObservableListIterator<E> implements Iterable<E> {
 
   private final ListIterator<E> iterator;
   private final int size;
@@ -55,10 +55,12 @@ public class ObservableListIterator<E> {
     log.trace("current: {}", currentProperty.get());
   }
 
+  @Override
   public E previous() {
     return get(iterator::hasPrevious, iterator::previous);
   }
 
+  @Override
   public E next() {
     return get(iterator::hasNext, iterator::next);
   }
@@ -71,22 +73,23 @@ public class ObservableListIterator<E> {
     return hasNextProperty.get();
   }
 
+  @Override
   public E getCurrent() {
     return currentProperty.get();
   }
 
-  private E get(Supplier<Boolean> hasPreviousOrNext, Supplier<E> previousOrNext) {
+  private E get(Supplier<Boolean> hasFutureElement, Supplier<E> futureElement) {
     var lastPreviousIndex = iterator.previousIndex();
     var lastNextIndex = iterator.nextIndex();
 
     log.trace("get element");
-    if (hasPreviousOrNext.get()) {
-      var future = previousOrNext.get();
+    if (hasFutureElement.get()) {
+      var future = futureElement.get();
       if (future.equals(currentProperty.get())) {
-        if (hasPreviousOrNext.get()) {
+        if (hasFutureElement.get()) {
           lastPreviousIndex = iterator.previousIndex();
           lastNextIndex = iterator.nextIndex();
-          currentProperty.set(previousOrNext.get());
+          currentProperty.set(futureElement.get());
         } else {
           currentProperty.set(null);
         }

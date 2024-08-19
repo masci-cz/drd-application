@@ -21,8 +21,8 @@ package cz.masci.drd.ui.app.battle.slide.presenter.impl;
 
 import cz.masci.drd.service.BattleService;
 import cz.masci.drd.service.exception.BattleException;
-import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleGroupSlideController;
 import cz.masci.drd.ui.app.battle.dto.BattleSlidePropertiesDTO;
+import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleGroupSlideController;
 import javafx.beans.binding.Bindings;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxWeaver;

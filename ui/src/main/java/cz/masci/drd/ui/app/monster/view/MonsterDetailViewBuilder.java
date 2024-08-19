@@ -19,143 +19,108 @@
 
 package cz.masci.drd.ui.app.monster.view;
 
-import static cz.masci.drd.ui.util.ReactFxUtils.selectVarOrElseConst;
+import static cz.masci.springfx.mvci.util.BuilderUtils.enhanceValidatedNodeWithSupportingText;
+import static cz.masci.springfx.mvci.util.MFXBuilderUtils.createTextField;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumberOrEmptyWhenPropertyIsNotEmpty;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumberWhenPropertyIsNotEmpty;
 
 import cz.masci.drd.ui.app.monster.model.MonsterDetailModel;
-import cz.masci.drd.ui.app.monster.model.MonsterListModel;
-import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.drd.ui.util.PropertyUtils;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
-import cz.masci.springfx.mvci.util.BuilderUtils;
+import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.util.property.PropertyUtils;
+import cz.masci.springfx.mvci.view.builder.DetailViewBuilder;
 import io.github.palexdev.materialfx.builders.layout.HBoxBuilder;
 import io.github.palexdev.materialfx.builders.layout.VBoxBuilder;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.property.Property;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.util.Builder;
-import lombok.RequiredArgsConstructor;
-import org.reactfx.value.Var;
 
-@RequiredArgsConstructor
-public class MonsterDetailViewBuilder implements Builder<Region> {
+public class MonsterDetailViewBuilder extends DetailViewBuilder<MonsterDetailModel> implements Builder<Region> {
 
-  private final MonsterListModel viewModel;
+  public MonsterDetailViewBuilder(ListModel<MonsterDetailModel> viewModel) {
+    super(viewModel);
+  }
 
   @Override
   public Region build() {
-    Var<MonsterDetailModel> selectedProperty = viewModel.selectedElementProperty();
+    Property<MonsterDetailModel> selectedProperty = viewModel.selectedElementProperty();
 
-    var nameTextField = ViewBuilderUtils.createTextField("Jméno nestvůry", Double.MAX_VALUE);
-    var nameIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Jméno nestvůry");
-    var nameTextFieldWithValidation = BuilderUtils.enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameIsNotEmptyConstraint);
+    var nameTextField = createTextField("Jméno nestvůry", Double.MAX_VALUE);
+    var nameIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(nameTextField.textProperty(), selectedProperty, "Jméno nestvůry");
+    var nameTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(nameTextField, PropertyUtils.not(nameTextField.delegateFocusedProperty())::addListener, nameIsNotEmptyConstraint);
 
-    var viabilityTextField = ViewBuilderUtils.createTextField("Životaschopnost", Double.MAX_VALUE);
-    var viabilityIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(viabilityTextField.textProperty(), selectedProperty, "Životaschopnost");
-    var viabilityTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(viabilityTextField, PropertyUtils.not(viabilityTextField.delegateFocusedProperty())::addListener, viabilityIsNotEmptyConstraint);
+    var viabilityTextField = createTextField("Životaschopnost", Double.MAX_VALUE);
+    var viabilityIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(viabilityTextField.textProperty(), selectedProperty, "Životaschopnost");
+    var viabilityTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(viabilityTextField, PropertyUtils.not(viabilityTextField.delegateFocusedProperty())::addListener, viabilityIsNotEmptyConstraint);
 
-    var attackTextField = ViewBuilderUtils.createTextField("Útočné číslo", Double.MAX_VALUE);
-    var attackIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(attackTextField.textProperty(), selectedProperty,  "Útočné číslo");
-    var attackTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(attackTextField, PropertyUtils.not(attackTextField.delegateFocusedProperty())::addListener, attackIsNotEmptyConstraint);
+    var attackTextField = createTextField("Útočné číslo", Double.MAX_VALUE);
+    var attackIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(attackTextField.textProperty(), selectedProperty,  "Útočné číslo");
+    var attackTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(attackTextField, PropertyUtils.not(attackTextField.delegateFocusedProperty())::addListener, attackIsNotEmptyConstraint);
 
-    var defenceTextField = ViewBuilderUtils.createTextField("Obranné číslo", Double.MAX_VALUE);
-    var defenceIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(defenceTextField.textProperty(), selectedProperty, "Obranné číslo");
-    var defenceIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(defenceTextField.textProperty(), selectedProperty, "Obranné číslo");
-    var defenceTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(defenceTextField, PropertyUtils.not(defenceTextField.delegateFocusedProperty())::addListener, defenceIsNotEmptyConstraint, defenceIsNumberConstraint);
+    var defenceTextField = createTextField("Obranné číslo", Double.MAX_VALUE);
+    var defenceIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(defenceTextField.textProperty(), selectedProperty, "Obranné číslo");
+    var defenceIsNumberConstraint = isNumberWhenPropertyIsNotEmpty(defenceTextField.textProperty(), selectedProperty, "Obranné číslo");
+    var defenceTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(defenceTextField, PropertyUtils.not(defenceTextField.delegateFocusedProperty())::addListener, defenceIsNotEmptyConstraint, defenceIsNumberConstraint);
 
-    var enduranceTextField = ViewBuilderUtils.createTextField("Odolnost", Double.MAX_VALUE);
-    var enduranceIsNotEmptyConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(enduranceTextField.textProperty(), selectedProperty, "Odolnost");
-    var enduranceTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(enduranceTextField, PropertyUtils.not(enduranceTextField.delegateFocusedProperty())::addListener, enduranceIsNotEmptyConstraint);
+    var enduranceTextField = createTextField("Odolnost", Double.MAX_VALUE);
+    var enduranceIsNotEmptyConstraint = isNumberWhenPropertyIsNotEmpty(enduranceTextField.textProperty(), selectedProperty, "Odolnost");
+    var enduranceTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(enduranceTextField, PropertyUtils.not(enduranceTextField.delegateFocusedProperty())::addListener, enduranceIsNotEmptyConstraint);
 
-    var dimensionTextField = ViewBuilderUtils.createTextField("Velikost", Double.MAX_VALUE);
-    var dimensionIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(dimensionTextField.textProperty(), selectedProperty, "Velikost");
-    var dimensionTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(dimensionTextField, PropertyUtils.not(dimensionTextField.delegateFocusedProperty())::addListener, dimensionIsNotEmptyConstraint);
+    var dimensionTextField = createTextField("Velikost", Double.MAX_VALUE);
+    var dimensionIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(dimensionTextField.textProperty(), selectedProperty, "Velikost");
+    var dimensionTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(dimensionTextField, PropertyUtils.not(dimensionTextField.delegateFocusedProperty())::addListener, dimensionIsNotEmptyConstraint);
 
-    var combativenessTextField = ViewBuilderUtils.createTextField("Bojovnost", Double.MAX_VALUE);
-    var combativenessIsNumberConstraint = ConstraintUtils.isNumberOrEmptyWhenPropertyIsNotEmpty(combativenessTextField.textProperty(), selectedProperty, "Bojovnost");
-    var combativenessTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(combativenessTextField, PropertyUtils.not(combativenessTextField.delegateFocusedProperty())::addListener, combativenessIsNumberConstraint);
+    var combativenessTextField = createTextField("Bojovnost", Double.MAX_VALUE);
+    var combativenessIsNumberConstraint = isNumberOrEmptyWhenPropertyIsNotEmpty(combativenessTextField.textProperty(), selectedProperty, "Bojovnost");
+    var combativenessTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(combativenessTextField, PropertyUtils.not(combativenessTextField.delegateFocusedProperty())::addListener, combativenessIsNumberConstraint);
 
-    var vulnerabilityTextField = ViewBuilderUtils.createTextField("Zranitelnost", Double.MAX_VALUE);
-    var vulnerabilityIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(vulnerabilityTextField.textProperty(), selectedProperty, "Zranitelnost");
-    var vulnerabilityTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(vulnerabilityTextField, PropertyUtils.not(vulnerabilityTextField.delegateFocusedProperty())::addListener, vulnerabilityIsNotEmptyConstraint);
+    var vulnerabilityTextField = createTextField("Zranitelnost", Double.MAX_VALUE);
+    var vulnerabilityIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(vulnerabilityTextField.textProperty(), selectedProperty, "Zranitelnost");
+    var vulnerabilityTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(vulnerabilityTextField, PropertyUtils.not(vulnerabilityTextField.delegateFocusedProperty())::addListener, vulnerabilityIsNotEmptyConstraint);
 
-    var moveabilityTextField = ViewBuilderUtils.createTextField("Pohyblivost", Double.MAX_VALUE);
-    var moveabilityIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(moveabilityTextField.textProperty(), selectedProperty, "Pohyblivost");
-    var moveabilityTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(moveabilityTextField, PropertyUtils.not(moveabilityTextField.delegateFocusedProperty())::addListener, moveabilityIsNotEmptyConstraint);
+    var moveabilityTextField = createTextField("Pohyblivost", Double.MAX_VALUE);
+    var moveabilityIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(moveabilityTextField.textProperty(), selectedProperty, "Pohyblivost");
+    var moveabilityTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(moveabilityTextField, PropertyUtils.not(moveabilityTextField.delegateFocusedProperty())::addListener, moveabilityIsNotEmptyConstraint);
 
-    var staminaTextField = ViewBuilderUtils.createTextField("Vytrvalost", Double.MAX_VALUE);
+    var staminaTextField = createTextField("Vytrvalost", Double.MAX_VALUE);
 
-    var intelligenceTextField = ViewBuilderUtils.createTextField("Inteligence", Double.MAX_VALUE);
-    var intelligenceIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(intelligenceTextField.textProperty(), selectedProperty, "Inteligence");
-    var intelligenceIsNumberConstraint = ConstraintUtils.isNumberWhenPropertyIsNotEmpty(intelligenceTextField.textProperty(), selectedProperty, "Inteligence");
-    var intelligenceTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(intelligenceTextField, PropertyUtils.not(intelligenceTextField.delegateFocusedProperty())::addListener, intelligenceIsNotEmptyConstraint, intelligenceIsNumberConstraint);
+    var intelligenceTextField = createTextField("Inteligence", Double.MAX_VALUE);
+    var intelligenceIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(intelligenceTextField.textProperty(), selectedProperty, "Inteligence");
+    var intelligenceIsNumberConstraint = isNumberWhenPropertyIsNotEmpty(intelligenceTextField.textProperty(), selectedProperty, "Inteligence");
+    var intelligenceTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(intelligenceTextField, PropertyUtils.not(intelligenceTextField.delegateFocusedProperty())::addListener, intelligenceIsNotEmptyConstraint, intelligenceIsNumberConstraint);
 
-    var convictionTextField = ViewBuilderUtils.createTextField("Přesvědčení", Double.MAX_VALUE);
-    var convictionIsNotEmptyConstraint = ConstraintUtils.isNumberOrEmptyWhenPropertyIsNotEmpty(convictionTextField.textProperty(), selectedProperty, "Přesvědčení");
-    var convictionTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(convictionTextField, PropertyUtils.not(convictionTextField.delegateFocusedProperty())::addListener, convictionIsNotEmptyConstraint);
+    var convictionTextField = createTextField("Přesvědčení", Double.MAX_VALUE);
+    var convictionIsNotEmptyConstraint = isNumberOrEmptyWhenPropertyIsNotEmpty(convictionTextField.textProperty(), selectedProperty, "Přesvědčení");
+    var convictionTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(convictionTextField, PropertyUtils.not(convictionTextField.delegateFocusedProperty())::addListener, convictionIsNotEmptyConstraint);
 
-    var treasureTextField = ViewBuilderUtils.createTextField("Poklady", Double.MAX_VALUE);
-    var treasureIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(treasureTextField.textProperty(), selectedProperty, "Poklady");
-    var treasureTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(treasureTextField, PropertyUtils.not(treasureTextField.delegateFocusedProperty())::addListener, treasureIsNotEmptyConstraint);
+    var treasureTextField = createTextField("Poklady", Double.MAX_VALUE);
+    var treasureIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(treasureTextField.textProperty(), selectedProperty, "Poklady");
+    var treasureTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(treasureTextField, PropertyUtils.not(treasureTextField.delegateFocusedProperty())::addListener, treasureIsNotEmptyConstraint);
 
-    var experienceTextField = ViewBuilderUtils.createTextField("Zkušenost", Double.MAX_VALUE);
-    var experienceIsNotEmptyConstraint = ConstraintUtils.isNotEmptyWhenPropertyIsNotEmpty(experienceTextField.textProperty(), selectedProperty, "Zkušenost");
-    var experienceTextFieldWithValidation = ViewBuilderUtils.enhanceValidatedNodeWithSupportingText(experienceTextField, PropertyUtils.not(experienceTextField.delegateFocusedProperty())::addListener, experienceIsNotEmptyConstraint);
+    var experienceTextField = createTextField("Zkušenost", Double.MAX_VALUE);
+    var experienceIsNotEmptyConstraint = isNotEmptyWhenPropertyIsNotEmpty(experienceTextField.textProperty(), selectedProperty, "Zkušenost");
+    var experienceTextFieldWithValidation = enhanceValidatedNodeWithSupportingText(experienceTextField, PropertyUtils.not(experienceTextField.delegateFocusedProperty())::addListener, experienceIsNotEmptyConstraint);
 
-    var descriptionTextField = ViewBuilderUtils.createTextField("Popis", Double.MAX_VALUE);
+    var descriptionTextField = createTextField("Popis", Double.MAX_VALUE);
 
-    // create nullable properties
-    Var<String> nameProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::nameProperty, "");
-    Var<String> viabilityProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::viabilityProperty, "");
-    Var<String> attackProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::attackProperty, "");
-    Var<String> defenceProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::defenceProperty, "");
-    Var<String> enduranceProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::enduranceProperty, "");
-    Var<String> dimensionProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::dimensionProperty, "");
-    Var<String> combativenessProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::combativenessProperty, "");
-    Var<String> vulnerabilityProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::vulnerabilityProperty, "");
-    Var<String> moveabilityProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::moveabilityProperty, "");
-    Var<String> staminaProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::staminaProperty, "");
-    Var<String> intelligenceProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::intelligenceProperty, "");
-    Var<String> convictionProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::convictionProperty, "");
-    Var<String> treasureProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::treasureProperty, "");
-    Var<String> experienceProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::experienceProperty, "");
-    Var<String> descriptionProperty = selectVarOrElseConst(selectedProperty, MonsterDetailModel::descriptionProperty, "");
-
-    // bind nullable properties to text fields
-    nameTextField.textProperty().bindBidirectional(nameProperty);
-    viabilityTextField.textProperty().bindBidirectional(viabilityProperty);
-    attackTextField.textProperty().bindBidirectional(attackProperty);
-    defenceTextField.textProperty().bindBidirectional(defenceProperty);
-    enduranceTextField.textProperty().bindBidirectional(enduranceProperty);
-    dimensionTextField.textProperty().bindBidirectional(dimensionProperty);
-    combativenessTextField.textProperty().bindBidirectional(combativenessProperty);
-    vulnerabilityTextField.textProperty().bindBidirectional(vulnerabilityProperty);
-    moveabilityTextField.textProperty().bindBidirectional(moveabilityProperty);
-    staminaTextField.textProperty().bindBidirectional(staminaProperty);
-    intelligenceTextField.textProperty().bindBidirectional(intelligenceProperty);
-    convictionTextField.textProperty().bindBidirectional(convictionProperty);
-    treasureTextField.textProperty().bindBidirectional(treasureProperty);
-    experienceTextField.textProperty().bindBidirectional(experienceProperty);
-    descriptionTextField.textProperty().bindBidirectional(descriptionProperty);
-
-    // listen to changes and update source
-    ChangeListener<String> changeListener = (obs, oldValue, newValue) -> viewModel.updateElementsProperty();
-    nameProperty.observeChanges(changeListener);
-    viabilityProperty.observeChanges(changeListener);
-    attackProperty.observeChanges(changeListener);
-    defenceProperty.observeChanges(changeListener);
-    enduranceProperty.observeChanges(changeListener);
-    dimensionProperty.observeChanges(changeListener);
-    combativenessProperty.observeChanges(changeListener);
-    vulnerabilityProperty.observeChanges(changeListener);
-    moveabilityProperty.observeChanges(changeListener);
-    staminaProperty.observeChanges(changeListener);
-    intelligenceProperty.observeChanges(changeListener);
-    convictionProperty.observeChanges(changeListener);
-    treasureProperty.observeChanges(changeListener);
-    experienceProperty.observeChanges(changeListener);
-    descriptionProperty.observeChanges(changeListener);
+    bindBidirectional(nameTextField.textProperty(), MonsterDetailModel::nameProperty);
+    bindBidirectional(viabilityTextField.textProperty(), MonsterDetailModel::viabilityProperty);
+    bindBidirectional(attackTextField.textProperty(), MonsterDetailModel::attackProperty);
+    bindBidirectional(defenceTextField.textProperty(), MonsterDetailModel::defenceProperty);
+    bindBidirectional(enduranceTextField.textProperty(), MonsterDetailModel::enduranceProperty);
+    bindBidirectional(dimensionTextField.textProperty(), MonsterDetailModel::dimensionProperty);
+    bindBidirectional(combativenessTextField.textProperty(), MonsterDetailModel::combativenessProperty);
+    bindBidirectional(vulnerabilityTextField.textProperty(), MonsterDetailModel::vulnerabilityProperty);
+    bindBidirectional(moveabilityTextField.textProperty(), MonsterDetailModel::moveabilityProperty);
+    bindBidirectional(staminaTextField.textProperty(), MonsterDetailModel::staminaProperty);
+    bindBidirectional(intelligenceTextField.textProperty(), MonsterDetailModel::intelligenceProperty);
+    bindBidirectional(convictionTextField.textProperty(), MonsterDetailModel::convictionProperty);
+    bindBidirectional(treasureTextField.textProperty(), MonsterDetailModel::treasureProperty);
+    bindBidirectional(experienceTextField.textProperty(), MonsterDetailModel::experienceProperty);
+    bindBidirectional(descriptionTextField.textProperty(), MonsterDetailModel::descriptionProperty);
 
     viewModel.setOnFocusView(nameTextField::requestFocus);
 

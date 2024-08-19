@@ -17,20 +17,16 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util;
+package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import javafx.application.Platform;
-import lombok.experimental.UtilityClass;
+import cz.masci.drd.ui.common.controller.battlewizard.view.BattleStepViewBuilder;
 
-@UtilityClass
-public class ConcurrentUtils {
+public class BattleController extends LeafStep {
 
-  /**
-   * Runs the given GUI-related code in the JavaFX Application Thread.
-   *
-   * @param guiStuff the runnable representing the GUI-related code to be executed
-   */
-  public static void runInFXThread(Runnable guiStuff) {
-    Platform.runLater(guiStuff);
+  public BattleController() {
+    super(new BattleStepViewBuilder("Battle"));
+
+    setTitle("Battle");
   }
+
 }

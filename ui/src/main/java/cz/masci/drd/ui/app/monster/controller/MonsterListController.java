@@ -19,8 +19,8 @@
 
 package cz.masci.drd.ui.app.monster.controller;
 
-import cz.masci.drd.ui.app.monster.view.MonsterListViewBuilder;
 import cz.masci.drd.ui.app.monster.model.MonsterListModel;
+import cz.masci.drd.ui.app.monster.view.MonsterListViewBuilder;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
 

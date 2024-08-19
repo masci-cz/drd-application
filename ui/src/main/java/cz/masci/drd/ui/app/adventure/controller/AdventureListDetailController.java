@@ -23,16 +23,16 @@ import cz.masci.drd.ui.app.adventure.interactor.AdventureInteractor;
 import cz.masci.drd.ui.app.adventure.model.AdventureListModel;
 import cz.masci.drd.ui.common.controller.StatusBarController;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
-import cz.masci.drd.ui.util.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import cz.masci.springfx.mvci.view.builder.ListDetailViewBuilder;
+import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
+import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdventureListDetailController implements ViewProvider<Region> {
 
-  private final ListDetailViewBuilder viewBuilder;
+  private final BorderPaneBuilder viewBuilder;
   private final AdventureListModel viewModel;
   private final AdventureInteractor interactor;
 
@@ -46,11 +46,11 @@ public class AdventureListDetailController implements ViewProvider<Region> {
     var listCommandController = new AdventureListCommandController(viewModel, statusBarViewModel, interactor);
     var statusBarController = new StatusBarController(statusBarViewModel);
 
-    viewBuilder = ListDetailViewBuilder.builder()
-        .withCenter(listController.getView())
-        .withRight(detailController.getView())
-        .withTop(listCommandController.getView())
-        .withBottom(statusBarController.getView());
+    viewBuilder = BorderPaneBuilder.builder()
+                                   .withCenter(listController.getView())
+                                   .withRight(detailController.getView())
+                                   .withTop(listCommandController.getView())
+                                   .withBottom(statusBarController.getView());
   }
 
   @Override

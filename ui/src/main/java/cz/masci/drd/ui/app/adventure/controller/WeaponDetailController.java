@@ -19,11 +19,12 @@
 
 package cz.masci.drd.ui.app.adventure.controller;
 
+import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
+
 import cz.masci.drd.ui.app.adventure.interactor.WeaponInteractor;
 import cz.masci.drd.ui.app.adventure.model.WeaponListModel;
 import cz.masci.drd.ui.app.adventure.view.WeaponDetailViewBuilder;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
@@ -38,7 +39,7 @@ public class WeaponDetailController implements ViewProvider<Region> {
     var detailController = new SimpleController<>(detailViewBuilder);
     var detailCommandController = new WeaponDetailCommandController(viewModel, statusBarViewModel, interactor);
 
-    builder = ViewBuilderUtils.createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
+    builder = createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
   }
 
   @Override

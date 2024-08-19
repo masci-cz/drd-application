@@ -19,45 +19,30 @@
 
 package cz.masci.drd.ui.app.adventure.model;
 
-import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.springfx.mvci.model.detail.DetailModel;
-import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import io.github.palexdev.materialfx.validation.MFXValidator;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.StringProperty;
-import lombok.Getter;
-import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmpty;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNumber;
 
-public class WeaponDetailModel implements DetailModel<Long> {
-  private final ObjectProperty<Long> id = new SimpleObjectProperty<>();
+import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
+import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class WeaponDetailModel extends BaseDetailModel<Long> {
   private final DirtyStringProperty name = new DirtyStringProperty("");
   private final DirtyStringProperty strength = new DirtyStringProperty("");
   private final DirtyStringProperty damage = new DirtyStringProperty("");
-  @Getter
-  private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
-  @Getter
-  private final MFXValidator validator = new MFXValidator();
 
   public WeaponDetailModel() {
-    composite.addAll(name, strength, damage);
-    validator.constraint(ConstraintUtils.isNotEmpty(name, "Název zbraně"));
-    validator.constraint(ConstraintUtils.isNotEmpty(strength, "Útočné číslo zbraně"));
-    validator.constraint(ConstraintUtils.isNumber(strength, "Útočné číslo zbraně"));
-    validator.constraint(ConstraintUtils.isNotEmpty(damage, "Útočnost zbraně"));
-    validator.constraint(ConstraintUtils.isNumber(damage, "Útočnost zbraně"));
+    addComposites(name, strength, damage);
+    addConstraints(
+        isNotEmpty(name, "Název zbraně"),
+        isNotEmpty(strength, "Útočné číslo zbraně"),
+        isNumber(strength, "Útočné číslo zbraně"),
+        isNotEmpty(damage, "Útočnost zbraně"),
+        isNumber(damage,"Útočnost zbraně")
+    );
   }
 
   // region Setters and Getters
-  @Override
-  public Long getId() {
-    return id.get();
-  }
-
-  public void setId(Long id) {
-    this.id.set(id);
-  }
-
   public String getName() {
     return name.get();
   }

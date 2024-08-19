@@ -20,14 +20,11 @@
 package cz.masci.drd.ui.app.adventure.view;
 
 import static cz.masci.drd.ui.util.ViewBuilderUtils.buildAddButton;
-import static cz.masci.drd.ui.util.ViewBuilderUtils.initSelectionModel;
 
 import cz.masci.drd.ui.app.adventure.model.WeaponDetailModel;
 import cz.masci.drd.ui.app.adventure.model.WeaponListModel;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
-import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
+import cz.masci.springfx.mvci.util.builder.MFXTableViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXTableView;
-import java.util.List;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Builder;
@@ -44,21 +41,10 @@ public class WeaponListViewBuilder implements Builder<Region> {
   }
 
   private MFXTableView<WeaponDetailModel> buildTable() {
-    var result = new MFXTableView<>(viewModel.getElements());
-    result.setMaxHeight(Double.MAX_VALUE);
-    result.setMaxWidth(Double.MAX_VALUE);
-
-    var nameColumn = ViewBuilderUtils.createTableColumn("Název", WeaponDetailModel::getName);
-    nameColumn.setPrefWidth(300);
-    var strengthColumn = ViewBuilderUtils.createTableColumn("Útočné číslo", WeaponDetailModel::getStrength);
-    var damageColumn = ViewBuilderUtils.createTableColumn("Útočnost", WeaponDetailModel::getDamage);
-
-    result.getTableColumns().addAll(List.of(nameColumn, strengthColumn, damageColumn));
-    result.setTableRowFactory(data -> new DirtyMFXTableRow<>(result, data, "dirty-row"));
-    result.getSelectionModel().setAllowsMultipleSelection(false);
-
-    initSelectionModel(result.getSelectionModel(), result::update, viewModel);
-
-    return result;
+    return MFXTableViewBuilder.builder(viewModel)
+                              .column("Název", WeaponDetailModel::getName, 300.0)
+                              .column("Útočné číslo", WeaponDetailModel::getStrength, 150.0)
+                              .column("Útočnost", WeaponDetailModel::getDamage, 150.0)
+                              .build();
   }
 }

@@ -20,17 +20,27 @@
 package cz.masci.drd.ui.common.model;
 
 import cz.masci.springfx.mvci.model.detail.DetailModel;
-import cz.masci.springfx.mvci.model.list.SimpleListModel;
+import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
+import javafx.beans.Observable;
+import javafx.util.Callback;
 
-public abstract class AbstractListModel<T, E extends DetailModel<T>> extends SimpleListModel<T, E> {
+public abstract class AbstractListModel<T, E extends DetailModel<T>> extends BaseListModel<T, E> {
+
+  public AbstractListModel() {
+    super();
+  }
+
+  public AbstractListModel(Callback<E, Observable[]> extractor) {
+    super(extractor);
+  }
 
   protected abstract E newElement();
 
   public void createItem() {
     var element = newElement();
     elements.add(element);
-    selectElement(element);
-    focusView();
+    select(element);
+    focus();
   }
 
 }

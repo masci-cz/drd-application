@@ -21,9 +21,9 @@ package cz.masci.drd.dto.actions;
 
 import cz.masci.drd.dto.DuellistDTO;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
+@Getter
 public class OtherAction extends SingleActorAction {
 
   private final String other;

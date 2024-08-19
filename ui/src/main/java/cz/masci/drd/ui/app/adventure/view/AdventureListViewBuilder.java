@@ -20,12 +20,10 @@
 package cz.masci.drd.ui.app.adventure.view;
 
 import static cz.masci.drd.ui.util.ViewBuilderUtils.buildAddButton;
-import static cz.masci.drd.ui.util.ViewBuilderUtils.initSelectionModel;
 
 import cz.masci.drd.ui.app.adventure.model.AdventureDetailModel;
 import cz.masci.drd.ui.app.adventure.model.AdventureListModel;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
-import cz.masci.springfx.mvci.view.impl.DirtyMFXTableRow;
+import cz.masci.springfx.mvci.util.builder.MFXTableViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXTableView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -39,19 +37,12 @@ public class AdventureListViewBuilder implements Builder<Region> {
 
   @Override
   public Region build() {
-    var result = new MFXTableView<>(viewModel.getElements());
-    result.setMaxHeight(Double.MAX_VALUE);
-    result.setMaxWidth(Double.MAX_VALUE);
+    return new StackPane(buildTable(), buildAddButton(viewModel));
+  }
 
-    var nameColumn = ViewBuilderUtils.createTableColumn("Název", AdventureDetailModel::getName);
-    nameColumn.setPrefWidth(400);
-
-    result.getTableColumns().add(nameColumn);
-    result.setTableRowFactory(data -> new DirtyMFXTableRow<>(result, data, "dirty-row"));
-    result.getSelectionModel().setAllowsMultipleSelection(false);
-
-    initSelectionModel(result.getSelectionModel(), result::update, viewModel);
-
-    return new StackPane(result, buildAddButton(viewModel));
+  public MFXTableView<AdventureDetailModel> buildTable() {
+    return MFXTableViewBuilder.builder(viewModel)
+                              .column("Název", AdventureDetailModel::getName, 400.0)
+                              .build();
   }
 }

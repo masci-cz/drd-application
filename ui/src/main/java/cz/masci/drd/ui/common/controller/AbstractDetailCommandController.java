@@ -19,56 +19,46 @@
 
 package cz.masci.drd.ui.common.controller;
 
+import static cz.masci.springfx.mvci.util.ConcurrentUtils.runInFXThread;
+
+import cz.masci.drd.ui.common.interactor.CRUDInteractor;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.drd.ui.common.view.DeleteConfirmDialog;
-import cz.masci.drd.ui.util.BackgroundTaskBuilder;
-import cz.masci.drd.ui.util.ConcurrentUtils;
-import cz.masci.drd.ui.common.interactor.CRUDInteractor;
 import cz.masci.springfx.mvci.controller.ViewProvider;
+import cz.masci.springfx.mvci.controller.impl.OperableDetailController;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
-import cz.masci.springfx.mvci.model.detail.DirtyModel;
-import cz.masci.springfx.mvci.model.detail.ValidModel;
 import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.util.List;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
-import org.reactfx.value.Val;
 
 @Slf4j
-public abstract class AbstractDetailCommandController<E, T extends DetailModel<E>> implements ViewProvider<Region> {
+public abstract class AbstractDetailCommandController<I, E extends DetailModel<I>> implements ViewProvider<Region> {
   // external properties
-  private final ListModel<T> viewModel;
-  private final Val<T> selectedItemProperty;
-  private final CRUDInteractor<T> interactor;
+  private final CRUDInteractor<E> interactor;
   private final StatusBarViewModel statusBarViewModel;
   // internal properties
+  private final OperableDetailController<I, E> operableDetailController;
   private final CommandsViewBuilder viewBuilder;
-  private final BooleanProperty saveDisableProperty = new SimpleBooleanProperty(true);
-  private final BooleanProperty discardDisableProperty = new SimpleBooleanProperty(true);
-  private final BooleanProperty deleteDisableProperty = new SimpleBooleanProperty(true);
 
-  public AbstractDetailCommandController(ListModel<T> viewModel, StatusBarViewModel statusBarViewModel, CRUDInteractor<T> interactor) {
-    this.viewModel = viewModel;
-    this.selectedItemProperty = Val.wrap(viewModel.selectedElementProperty());
+  public AbstractDetailCommandController(ListModel<E> viewModel, StatusBarViewModel statusBarViewModel, CRUDInteractor<E> interactor) {
+    operableDetailController = new OperableDetailController<>(viewModel.selectedElementProperty(), viewModel);
     this.statusBarViewModel = statusBarViewModel;
     this.interactor = interactor;
     this.viewBuilder =
         new CommandsViewBuilder(
             List.of(
-                ButtonBuilder.builder().text("Uložit").command(this::saveItem).styleClass("filledTonal").disableExpression(saveDisableProperty).build(MFXButton::new),
-                ButtonBuilder.builder().text("Zrušit").command(this::discardDirtyItem).styleClass("outlined").disableExpression(discardDisableProperty).build(MFXButton::new),
-                ButtonBuilder.builder().text("Smazat").command(this::showDeleteItemConfirmDialog).disableExpression(deleteDisableProperty).styleClass("outlined").build(MFXButton::new)
+                ButtonBuilder.builder().text("Uložit").command(this::saveItem).styleClass("filledTonal").disableExpression(operableDetailController.saveDisabledProperty()).build(MFXButton::new),
+                ButtonBuilder.builder().text("Zrušit").command(this::discardDirtyItem).styleClass("outlined").disableExpression(operableDetailController.discardDisabledProperty()).build(MFXButton::new),
+                ButtonBuilder.builder().text("Smazat").command(this::showDeleteItemConfirmDialog).disableExpression(operableDetailController.deleteDisabledProperty()).styleClass("outlined").build(MFXButton::new)
             ),
             Pos.CENTER_RIGHT
         );
-    initDisableProperties();
   }
 
   @Override
@@ -80,44 +70,19 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
 
   protected abstract String getDeleteConfirmDialogContent();
 
-  protected abstract String getItemDisplayInfo(T item);
-
-  private void initDisableProperties() {
-    // delete disabled => not selected
-    Val<Boolean> dirtyProperty = selectedItemProperty.flatMap(DirtyModel::isDirtyProperty);
-    Val<Boolean> validProperty = selectedItemProperty.flatMap(ValidModel::validProperty);
-    Val<Boolean> saveDisable = Val.combine(dirtyProperty, validProperty, (dirty, valid) -> !dirty || !valid);
-    deleteDisableProperty.bind(Bindings.createBooleanBinding(selectedItemProperty::isEmpty, selectedItemProperty));
-    saveDisableProperty.bind(Bindings.createBooleanBinding(() -> selectedItemProperty.isEmpty() || saveDisable.getOrElse(true), selectedItemProperty, saveDisable));
-    discardDisableProperty.bind(Bindings.createBooleanBinding(() -> selectedItemProperty.isEmpty() || !dirtyProperty.getOrElse(true), selectedItemProperty, dirtyProperty));
-  }
+  protected abstract String getItemDisplayInfo(E item);
 
   private void discardDirtyItem() {
-    if (!discardDisableProperty.get()) {
-      selectedItemProperty.ifPresent(item -> {
-        if (item.isTransient()) {
-          viewModel.removeElement(item);
-        } else {
-          item.reset();
-        }
-      });
-    }
+    operableDetailController.discard();
   }
 
   private void saveItem(Runnable postGuiStuff) {
-    if (!saveDisableProperty.get()) {
-      log.debug("Clicked save item");
-      selectedItemProperty.ifPresent(item ->
+      operableDetailController.update((item, afterSave) ->
         BackgroundTaskBuilder
             .task(() -> {
               log.debug("Saving item {}", item);
               var savedItem = interactor.save(item);
-              ConcurrentUtils.runInFXThread(() -> {
-                if (item.isTransient()) {
-                  item.setId(savedItem.getId());
-                }
-                item.rebaseline();
-              });
+              runInFXThread(() -> afterSave.accept(savedItem));
               return savedItem;
             })
             .onFailed(task -> {
@@ -129,7 +94,6 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
             .postGuiCall(postGuiStuff)
             .start()
       );
-    }
   }
 
   private void showDeleteItemConfirmDialog(Runnable postGuiStuff) {
@@ -138,19 +102,18 @@ public abstract class AbstractDetailCommandController<E, T extends DetailModel<E
   }
 
   private void deleteItem(Runnable postGuiStuff) {
-    if (!deleteDisableProperty.get()) {
-      selectedItemProperty.ifPresent(item -> BackgroundTaskBuilder
-          .task(() -> {
-            log.debug("Deleting item {}", getItemDisplayInfo(item));
-            interactor.delete(item);
-            ConcurrentUtils.runInFXThread(() -> viewModel.removeElement(item));
-            return item;
-          })
-          .onFailed(task -> statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při mazání %s : %s", getItemDisplayInfo(item), task.getException().getLocalizedMessage())))
-          .onSucceeded(deletedItem -> statusBarViewModel.setInfoMessage(String.format("Záznam byl smazán %s", getItemDisplayInfo(deletedItem))))
-          .postGuiCall(postGuiStuff)
-          .start());
-    }
+      operableDetailController.remove((item, afterDelete) ->
+          BackgroundTaskBuilder
+              .task(() -> {
+                log.debug("Deleting item {}", getItemDisplayInfo(item));
+                interactor.delete(item);
+                runInFXThread(afterDelete);
+                return item;
+              })
+              .onFailed(task -> statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při mazání %s : %s", getItemDisplayInfo(item), task.getException().getLocalizedMessage())))
+              .onSucceeded(deletedItem -> statusBarViewModel.setInfoMessage(String.format("Záznam byl smazán %s", getItemDisplayInfo(deletedItem))))
+              .postGuiCall(postGuiStuff)
+              .start());
   }
 
 }

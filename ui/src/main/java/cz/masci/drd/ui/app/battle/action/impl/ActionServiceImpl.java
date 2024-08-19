@@ -19,9 +19,9 @@
 
 package cz.masci.drd.ui.app.battle.action.impl;
 
-import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleSelectActionSlideController;
 import cz.masci.drd.ui.app.battle.action.ActionService;
 import cz.masci.drd.ui.app.battle.action.SelectAction;
+import cz.masci.drd.ui.app.battle.slide.controller.impl.BattleSelectActionSlideController;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ListableBeanFactory;

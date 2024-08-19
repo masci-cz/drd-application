@@ -60,10 +60,10 @@ public class JavaFxApplication extends Application {
   @Override
   public void start(Stage stage) {
     var homeScreenController = applicationContext.getBean(HomeScreenController.class);
-    Scene scene = new Scene(homeScreenController.getView());
+    Scene scene = new Scene(homeScreenController.getView(), 800, 600);
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
-    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
+//    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
     stage.show();
   }
 

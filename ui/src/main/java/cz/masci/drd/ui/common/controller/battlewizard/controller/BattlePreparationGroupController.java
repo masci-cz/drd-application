@@ -17,20 +17,17 @@
  *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.util;
+package cz.masci.drd.ui.common.controller.battlewizard.controller;
 
-import java.util.function.Function;
-import javafx.beans.property.Property;
-import lombok.experimental.UtilityClass;
-import org.reactfx.value.Var;
+import cz.masci.drd.ui.common.controller.battlewizard.view.BattlePreparationGroupStepViewBuilder;
+import javafx.beans.property.IntegerProperty;
 
-@UtilityClass
-public class ReactFxUtils {
+public class BattlePreparationGroupController extends LeafStep {
 
-  public static  <T, U> Var<U> selectVarOrElseConst(Var<T> src, Function<T, Property<U>> property, U constValue) {
-    return src.flatMap(property)
-        .orElseConst(constValue)
-        .asVar(newValue -> src.ifPresent(srcProperty -> property.apply(srcProperty).setValue(newValue)));
+  public BattlePreparationGroupController(IntegerProperty groupCount) {
+    setView(new BattlePreparationGroupStepViewBuilder(groupCount).build());
+
+    nextDisableProperty().bind(groupCount.asObject().isNull().or(groupCount.lessThan(2)));
+    setTitle("Groups");
   }
-
 }

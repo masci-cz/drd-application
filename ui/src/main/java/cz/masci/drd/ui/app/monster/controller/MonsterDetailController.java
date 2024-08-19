@@ -19,11 +19,12 @@
 
 package cz.masci.drd.ui.app.monster.controller;
 
+import static cz.masci.springfx.mvci.util.BuilderUtils.createDetailWithCommandViewBuilder;
+
 import cz.masci.drd.ui.app.monster.interactor.MonsterInteractor;
+import cz.masci.drd.ui.app.monster.model.MonsterListModel;
 import cz.masci.drd.ui.app.monster.view.MonsterDetailViewBuilder;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
-import cz.masci.drd.ui.app.monster.model.MonsterListModel;
-import cz.masci.drd.ui.util.ViewBuilderUtils;
 import cz.masci.springfx.mvci.controller.ViewProvider;
 import cz.masci.springfx.mvci.controller.impl.SimpleController;
 import javafx.scene.layout.Region;
@@ -38,7 +39,7 @@ public class MonsterDetailController implements ViewProvider<Region> {
     var detailController = new SimpleController<>(detailViewBuilder);
     var detailCommandController = new MonsterDetailCommandController(viewModel, statusBarViewModel, interactor);
 
-    builder = ViewBuilderUtils.createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
+    builder = createDetailWithCommandViewBuilder(detailController.getView(), detailCommandController.getView());
   }
 
   @Override

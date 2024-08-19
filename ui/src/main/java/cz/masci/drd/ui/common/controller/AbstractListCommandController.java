@@ -19,33 +19,32 @@
 
 package cz.masci.drd.ui.common.controller;
 
-import cz.masci.drd.ui.common.model.StatusBarViewModel;
-import cz.masci.drd.ui.util.BackgroundTaskBuilder;
-import cz.masci.drd.ui.util.ConcurrentUtils;
+import static cz.masci.springfx.mvci.util.ConcurrentUtils.runInFXThread;
+
 import cz.masci.drd.ui.common.interactor.CRUDInteractor;
+import cz.masci.drd.ui.common.model.StatusBarViewModel;
 import cz.masci.springfx.mvci.controller.ViewProvider;
+import cz.masci.springfx.mvci.controller.impl.OperableManagerController;
 import cz.masci.springfx.mvci.model.detail.DetailModel;
-import cz.masci.springfx.mvci.model.detail.DirtyModel;
-import cz.masci.springfx.mvci.model.list.ListModel;
+import cz.masci.springfx.mvci.model.list.impl.BaseListModel;
+import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.view.builder.ButtonBuilder;
 import cz.masci.springfx.mvci.view.builder.CommandsViewBuilder;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class AbstractListCommandController<E, T extends DetailModel<E>> implements ViewProvider<Region> {
-  private final ListModel<T> viewModel;
-  private final CRUDInteractor<T> interactor;
+public abstract class AbstractListCommandController<I, E extends DetailModel<I>> implements ViewProvider<Region> {
+  private final CRUDInteractor<E> interactor;
   private final StatusBarViewModel statusBarViewModel;
+  private final OperableManagerController<I, E> operableManagerController;
   private final CommandsViewBuilder viewBuilder;
 
-  public AbstractListCommandController(ListModel<T> viewModel, StatusBarViewModel statusBarViewModel, CRUDInteractor<T> interactor) {
-    this.viewModel = viewModel;
+  public AbstractListCommandController(BaseListModel<I, E> viewModel, StatusBarViewModel statusBarViewModel, CRUDInteractor<E> interactor) {
+    this.operableManagerController = new OperableManagerController<>(viewModel, viewModel.getElements());
     this.statusBarViewModel = statusBarViewModel;
     this.interactor = interactor;
     viewBuilder = new CommandsViewBuilder(
@@ -62,15 +61,13 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
     return viewBuilder.build();
   }
 
-  protected abstract String getItemDisplayInfo(T item);
+  protected abstract String getItemDisplayInfo(E item);
 
   private void load(Runnable postGuiStuff) {
-    viewModel.selectElement(null);
-    viewModel.getElements().clear();
     BackgroundTaskBuilder
         .task(interactor::list)
         .postGuiCall(postGuiStuff)
-        .onSucceeded(viewModel.getElements()::setAll)
+        .onSucceeded(operableManagerController::addAll)
         .start();
   }
 
@@ -79,15 +76,10 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
     AtomicInteger savedCount = new AtomicInteger(0);
     BackgroundTaskBuilder
         .task(() -> {
-          getDirtyElements().forEach(item -> {
+          operableManagerController.update((item, afterSave) -> {
             try {
               var savedItem = interactor.save(item);
-              ConcurrentUtils.runInFXThread(() -> {
-                if (item.isTransient()) {
-                  item.setId(savedItem.getId());
-                }
-                item.rebaseline();
-              });
+              runInFXThread(() -> afterSave.accept(savedItem));
               savedCount.incrementAndGet();
             } catch (Exception e) {
               statusBarViewModel.setErrorMessage(String.format("Něco se pokazilo při ukládání %s : %s", getItemDisplayInfo(item), e.getLocalizedMessage()));
@@ -102,19 +94,8 @@ public abstract class AbstractListCommandController<E, T extends DetailModel<E>>
 
   private void discard() {
     statusBarViewModel.clearMessage();
-    var elementsToRemove = new ArrayList<T>();
-    getDirtyElements().forEach(element -> {
-      if (element.isTransient()) {
-        elementsToRemove.add(element);
-      } else {
-        element.reset();
-      }
-    });
-    elementsToRemove.forEach(viewModel::removeElement);
+    operableManagerController.discard();
     statusBarViewModel.setInfoMessage("Byly zrušeny provedené změny");
   }
 
-  private Stream<T> getDirtyElements() {
-    return viewModel.getElements().stream().filter(DirtyModel::isDirty);
-  }
 }

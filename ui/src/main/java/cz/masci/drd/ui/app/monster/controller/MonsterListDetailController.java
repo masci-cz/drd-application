@@ -20,19 +20,19 @@
 package cz.masci.drd.ui.app.monster.controller;
 
 import cz.masci.drd.ui.app.monster.interactor.MonsterInteractor;
+import cz.masci.drd.ui.app.monster.model.MonsterListModel;
 import cz.masci.drd.ui.common.controller.StatusBarController;
 import cz.masci.drd.ui.common.model.StatusBarViewModel;
-import cz.masci.drd.ui.app.monster.model.MonsterListModel;
-import cz.masci.drd.ui.util.BackgroundTaskBuilder;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import cz.masci.springfx.mvci.view.builder.ListDetailViewBuilder;
+import cz.masci.springfx.mvci.util.builder.BackgroundTaskBuilder;
+import cz.masci.springfx.mvci.view.builder.BorderPaneBuilder;
 import javafx.scene.layout.Region;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MonsterListDetailController implements ViewProvider<Region> {
 
-  private final ListDetailViewBuilder viewBuilder;
+  private final BorderPaneBuilder viewBuilder;
   private final MonsterListModel viewModel;
   private final MonsterInteractor interactor;
 
@@ -46,7 +46,7 @@ public class MonsterListDetailController implements ViewProvider<Region> {
     var managerController = new MonsterListCommandController(viewModel, statusBarViewModel, interactor);
     var statusBarController = new StatusBarController(statusBarViewModel);
 
-    viewBuilder = ListDetailViewBuilder.builder()
+    viewBuilder = BorderPaneBuilder.builder()
         .withCenter(listController.getView())
         .withRight(detailController.getView())
         .withTop(managerController.getView())

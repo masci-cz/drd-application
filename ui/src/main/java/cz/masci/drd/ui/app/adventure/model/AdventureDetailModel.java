@@ -19,41 +19,21 @@
 
 package cz.masci.drd.ui.app.adventure.model;
 
-import cz.masci.drd.ui.util.ConstraintUtils;
-import cz.masci.springfx.mvci.model.detail.DetailModel;
+import static cz.masci.springfx.mvci.util.constraint.ConstraintUtils.isNotEmpty;
+
+import cz.masci.springfx.mvci.model.detail.impl.BaseDetailModel;
 import cz.masci.springfx.mvci.model.dirty.DirtyStringProperty;
-import io.github.palexdev.materialfx.validation.MFXValidator;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import lombok.Getter;
-import org.nield.dirtyfx.tracking.CompositeDirtyProperty;
 
-public class AdventureDetailModel implements DetailModel<Long> {
+public class AdventureDetailModel extends BaseDetailModel<Long> {
 
-  private final ObjectProperty<Long> id = new SimpleObjectProperty<>();
   private final DirtyStringProperty name = new DirtyStringProperty("");
-  // dirty and validator
-  @Getter
-  private final CompositeDirtyProperty composite = new CompositeDirtyProperty();
-  @Getter
-  private final MFXValidator validator = new MFXValidator();
 
   public AdventureDetailModel() {
-    composite.add(name);
-    validator.constraint(ConstraintUtils.isNotEmpty(name, "Název"));
+    addComposites(name);
+    addConstraints(isNotEmpty(name, "Název"));
   }
 
   // region Setters and Getters
-  @Override
-  public Long getId() {
-    return id.get();
-  }
-
-  @Override
-  public void setId(Long id) {
-    this.id.set(id);
-  }
-
   public String getName() {
     return name.get();
   }

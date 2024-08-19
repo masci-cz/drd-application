@@ -22,13 +22,16 @@ package cz.masci.drd.dto.actions;
 import cz.masci.drd.dto.DuellistDTO;
 import java.util.Objects;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
 public class CombatAction implements Action<CombatActionResult> {
 
+  @Getter
   private final DuellistDTO attacker;
+  @Getter
   private final DuellistDTO defender;
 
   private Integer attackerDiceRoll;

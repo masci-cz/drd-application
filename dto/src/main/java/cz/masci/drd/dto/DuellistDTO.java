@@ -23,36 +23,41 @@ import cz.masci.drd.dto.actions.Action;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(onlyExplicitlyIncluded = true)
 public class DuellistDTO {
+  @ToString.Include
+  private String groupName;
   /**
    * Name of the duellist
    */
-  String name;
+  @ToString.Include
+  private String name;
   /**
    * Selected action for next round
    */
-  Action<?> selectedAction;
-  List<WeaponDTO> weapons = new ArrayList<>();
+  private Action<?> selectedAction;
+  private List<WeaponDTO> weapons = new ArrayList<>();
   /**
    * Original live count
    */
-  int originalLive;
+  private int originalLive;
   /**
    * Current live count
    */
-  int currentLive;
+  private int currentLive;
   /**
    * Defense number
    */
-  int defense;
+  private int defense;
   /**
    * Temporal attribute for offense number
    */
-  int attack;
+  private int attack;
   /**
    * Temporal attribute for damage bonus
    */
-  int damage;
+  private int damage;
 }
