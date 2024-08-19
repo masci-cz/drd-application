@@ -21,7 +21,7 @@ package cz.masci.drd.ui.app.home.controller;
 
 import cz.masci.drd.ui.app.adventure.controller.AdventureListDetailController;
 import cz.masci.drd.ui.app.adventure.controller.WeaponListDetailController;
-import cz.masci.drd.ui.app.battle.BattleFactory;
+import cz.masci.drd.ui.app.battle.wizard.controller.BattleWizardController;
 import cz.masci.drd.ui.app.home.view.HomeScreenViewBuilder;
 import cz.masci.drd.ui.app.monster.controller.MonsterListDetailController;
 import cz.masci.springfx.mvci.controller.ViewProvider;
@@ -45,7 +45,7 @@ public class HomeScreenController implements ViewProvider<Region> {
   private final AdventureListDetailController adventureListDetailController;
   private final MonsterListDetailController monsterListDetailController;
   private final WeaponListDetailController weaponListDetailController;
-  private final BattleFactory battleFactory;
+  private final BattleWizardController battleWizardController;
 
   @Override
   public Region getView() {
@@ -53,7 +53,7 @@ public class HomeScreenController implements ViewProvider<Region> {
         createAction(StageType.ADVENTURES, getSceneForView(adventureListDetailController, 800, 600)),
         createAction(StageType.MONSTERS, getSceneForView(monsterListDetailController, 800, 800)),
         createAction(StageType.WEAPONS, getSceneForView(weaponListDetailController, 800, 600)),
-        createAction(StageType.BATTLE, battleFactory::getScene)
+        createAction(StageType.BATTLE, getSceneForView(battleWizardController, 800, 600))
     ).build();
   }
 
