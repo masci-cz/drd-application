@@ -7,6 +7,13 @@ spring:
     url: jdbc:derby:drd-db;create=true
     username: drd
 
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        dialect: org.hibernate.dialect.DerbyDialect
+
 #  flyway:
 #    enabled: true
 #    locations: "classpath:db/migration"
