@@ -27,7 +27,7 @@
             <groupId>cz.masci.drd</groupId>
             <artifactId>model</artifactId>
         </dependency>
-        
+
         <!--Test dependencies-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,6 +62,11 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-derby</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
