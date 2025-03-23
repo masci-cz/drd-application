@@ -154,7 +154,7 @@
                                         </environment>
                                         <project>
                                             <java>
-                                                <mainClass>org.springframework.boot.loader.JarLauncher</mainClass>
+                                                <mainClass>org.springframework.boot.loader.launch.JarLauncher</mainClass>
                                             </java>
                                         </project>
                                         <assemble>
