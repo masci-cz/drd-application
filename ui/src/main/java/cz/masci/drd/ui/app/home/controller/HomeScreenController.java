@@ -25,9 +25,6 @@ import cz.masci.drd.ui.app.battle.wizard.controller.BattleWizardController;
 import cz.masci.drd.ui.app.home.view.HomeScreenViewBuilder;
 import cz.masci.drd.ui.app.monster.controller.MonsterListDetailController;
 import cz.masci.springfx.mvci.controller.ViewProvider;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
@@ -36,11 +33,15 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 @Component
 @RequiredArgsConstructor
 public class HomeScreenController implements ViewProvider<Region> {
 
-  private final Map<StageType, Stage> stages = new HashMap<>();
+  private final Map<StageType, Stage> stages = new EnumMap<>(StageType.class);
 
   private final AdventureListDetailController adventureListDetailController;
   private final MonsterListDetailController monsterListDetailController;

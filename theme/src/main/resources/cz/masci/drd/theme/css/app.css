@@ -122,13 +122,20 @@
 .mfx-button.tile {
     -fx-background-color: -md-sys-color-primary-container-light;
     -fx-text-fill: -md-sys-color-on-primary-container-light;
+    -fx-border-width: 2px;
+    -fx-border-radius: 18px;
+    -fx-border-color: -md-sys-color-primary-container-light;
     -mfx-depth-level: LEVEL5;
 }
 
-.mfx-button.tile:hover,
-.mfx-button.tile:focused {
+.mfx-button.tile:hover {
     -fx-background-color: -md-sys-color-primary-light;
+    -fx-border-color: -md-sys-color-primary-light;
     -fx-text-fill: -md-sys-color-on-primary-light;
+}
+
+.mfx-button.tile:focused {
+    -fx-border-color: -md-sys-color-primary-light;
 }
 
 /************************/

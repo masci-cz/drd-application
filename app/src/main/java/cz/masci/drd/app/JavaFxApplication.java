@@ -63,7 +63,7 @@ public class JavaFxApplication extends Application {
     Scene scene = new Scene(homeScreenController.getView(), 800, 600);
     stage.setTitle("Aplikace Dračí Doupě");
     stage.setScene(scene);
-//    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
+    stage.setOnCloseRequest(homeScreenController::doOnCloseRequest);
     stage.show();
   }
 
