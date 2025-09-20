@@ -39,6 +39,6 @@ public class Room {
   
   @NotNull
   @ManyToOne
-  @JoinColumn(name = "adventure_id", nullable = false)
+  @JoinColumn(name = "ADVENTURE_ID", nullable = false)
   private Adventure adventure;
 }

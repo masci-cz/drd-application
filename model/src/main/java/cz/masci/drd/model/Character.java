@@ -9,6 +9,7 @@ import lombok.Data;
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CHARACTER_ID", nullable = false, updatable = false)
     private Long id;
     private String name;
     @Column(name = "class")
@@ -16,4 +17,7 @@ public class Character {
     private CharacterClass characterClass;
     private Integer level;
     private Integer experience;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ABILITY_ID")
+    private Ability ability;
 }
