@@ -14,25 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/**
+ * Author:  Daniel
+ * Created: 20. 9. 2025
+ */
+CREATE TABLE ABILITY (
+    ABILITY_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
+    STRENGTH SMALLINT NOT NULL,
+    DEXTERITY SMALLINT NOT NULL,
+    CONSTITUTION SMALLINT NOT NULL,
+    INTELLIGENCE SMALLINT NOT NULL,
+    CHARISMA SMALLINT NOT NULL
+);
 
-package cz.masci.drd.model;
-
-import jakarta.persistence.*;
-import lombok.Data;
-
-@Entity
-@Table(name = "ABILITY")
-@Data
-public class Ability {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ABILITY_ID", nullable = false, updatable = false)
-    private Long id;
-    @OneToOne(mappedBy = "ability")
-    private Character character;
-    private Integer strength;
-    private Integer dexterity;
-    private Integer constitution;
-    private Integer intelligence;
-    private Integer charisma;
-}
+CREATE TABLE "CHARACTER" (
+    CHARACTER_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
+    NAME VARCHAR(255) NOT NULL,
+    CLASS VARCHAR(20) NOT NULL,
+    LEVEL SMALLINT NOT NULL,
+    EXPERIENCE INTEGER NOT NULL,
+    ABILITY_ID BIGINT CONSTRAINT ability_foreign_key REFERENCES ABILITY
+);
