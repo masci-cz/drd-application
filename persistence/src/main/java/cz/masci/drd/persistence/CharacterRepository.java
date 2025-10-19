@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+package cz.masci.drd.persistence;
 
-/**
- *
- * @author Daniel
- */
-@Entity
-@Table(name = "ROOM")
-@Data
-public class Room {
+import cz.masci.drd.model.GameCharacter;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ROOM_ID", nullable = false, updatable = false)
-  private Long id;
-
-  @NotNull
-  private String name;
-  
-  @NotNull
-  @ManyToOne
-  @JoinColumn(name = "ADVENTURE_ID", nullable = false)
-  private Adventure adventure;
+public interface CharacterRepository extends JpaRepository<GameCharacter, Long> {
 }

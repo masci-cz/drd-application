@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.model;
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 /**
- *
- * @author Daniel
+ * Author:  Daniel
+ * Created: 20. 9. 2025
  */
-@Entity
-@Table(name = "ROOM")
-@Data
-public class Room {
+CREATE TABLE ABILITY (
+    ABILITY_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
+    STRENGTH SMALLINT NOT NULL,
+    DEXTERITY SMALLINT NOT NULL,
+    CONSTITUTION SMALLINT NOT NULL,
+    INTELLIGENCE SMALLINT NOT NULL,
+    CHARISMA SMALLINT NOT NULL
+);
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ROOM_ID", nullable = false, updatable = false)
-  private Long id;
-
-  @NotNull
-  private String name;
-  
-  @NotNull
-  @ManyToOne
-  @JoinColumn(name = "ADVENTURE_ID", nullable = false)
-  private Adventure adventure;
-}
+CREATE TABLE GAME_CHARACTER (
+    CHARACTER_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
+    NAME VARCHAR(255) NOT NULL,
+    CHARACTER_CLASS VARCHAR(20) NOT NULL,
+    LEVEL SMALLINT NOT NULL,
+    EXPERIENCE INTEGER NOT NULL,
+    ABILITY_ID BIGINT CONSTRAINT ability_foreign_key REFERENCES ABILITY
+);

@@ -16,14 +16,9 @@
  */
 package cz.masci.drd.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -35,8 +30,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Adventure {
 
   @Id
-  @GeneratedValue(generator = "native")
-  @GenericGenerator(name = "native", strategy = "native")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ADVENTURE_ID", nullable = false, updatable = false)
   private Long id;
   

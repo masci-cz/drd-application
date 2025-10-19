@@ -102,6 +102,11 @@
     -fx-text-fill: -md-sys-color-on-primary-light;
 }
 
+.mfx-button.filled:hover {
+    /* Layer the surface-tint color with 8% opacity on top of the primary color */
+    -fx-background-color: ladder(-md-sys-color-surface-tint-light, transparent 92%, -md-sys-color-surface-tint-light), -md-sys-color-primary-light;
+}
+
 /* Filled tonal button */
 .mfx-button.filledTonal {
     -fx-background-color: -md-sys-color-secondary-container-light;
@@ -116,6 +121,11 @@
     -fx-border-width: 1px;
     -fx-border-radius: 20px;
     -fx-border-type: solid;
+}
+
+.mfx-button.outlined:hover {
+    /* Layer the surface-tint color with 8% opacity on top of the primary color */
+    -fx-background-color: ladder(-md-sys-color-primary-light, transparent 92%, -md-sys-color-primary-light), -md-sys-color-background-light;
 }
 
 /* Tile button */

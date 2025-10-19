@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,21 @@ import cz.masci.drd.dto.MonsterDTO;
 import cz.masci.drd.model.Monster;
 import cz.masci.drd.persistence.MonsterRepository;
 import cz.masci.drd.service.mapper.MonsterMapper;
-import cz.masci.commons.springfx.exception.CrudException;
-import java.util.List;
-import java.util.Optional;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static cz.masci.drd.service.impl.TestConstants.LONG_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -50,13 +53,14 @@ public class MonsterServiceImplTest {
     private MonsterServiceImpl monsterService;
 
     @Test
-    void getById() throws CrudException {
+    @SneakyThrows
+    void getById() {
         var mockMonster = mock(MonsterDTO.class);
         
         when(monsterRepository.findById(any())).thenReturn(Optional.of(mock(Monster.class)));
         when(monsterMapper.mapToDto(any())).thenReturn(mockMonster);
 
-        var result = monsterService.getById(1l);
+        var result = monsterService.getById(LONG_ID);
 
         assertTrue(result.isPresent());
         
@@ -66,13 +70,14 @@ public class MonsterServiceImplTest {
     }
 
     @Test
-    void list() throws CrudException {
-        var expectedMosters = List.of(mock(MonsterDTO.class), mock(MonsterDTO.class));
+    @SneakyThrows
+    void list() {
+        var expectedMonsters = List.of(mock(MonsterDTO.class), mock(MonsterDTO.class));
         var mockMonsterEntityList = List.of(mock(Monster.class), mock(Monster.class));
         
         var i = 0;
         for (var entity : mockMonsterEntityList) {
-            when(monsterMapper.mapToDto(entity)).thenReturn(expectedMosters.get(i++));
+            when(monsterMapper.mapToDto(entity)).thenReturn(expectedMonsters.get(i++));
         }
         when(monsterRepository.findAll()).thenReturn(mockMonsterEntityList);
         
@@ -80,12 +85,13 @@ public class MonsterServiceImplTest {
 
         assertThat(result)
                 .isNotNull()
-                .hasSameSizeAs(expectedMosters)
-                .containsAll(expectedMosters);
+                .hasSameSizeAs(expectedMonsters)
+                .containsAll(expectedMonsters);
     }
     
     @Test
-    void save() throws CrudException {
+    @SneakyThrows
+    void save() {
         var mockMonster = mock(MonsterDTO.class);
         
         when(monsterRepository.save(any())).thenReturn(mock(Monster.class));
@@ -98,7 +104,8 @@ public class MonsterServiceImplTest {
     }
     
     @Test
-    void delete() throws CrudException {
+    @SneakyThrows
+    void delete() {
         when(monsterMapper.mapToEntity(any())).thenReturn(mock(Monster.class));
         
         monsterService.delete(mock(MonsterDTO.class));

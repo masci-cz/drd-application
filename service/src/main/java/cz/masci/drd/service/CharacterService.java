@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.masci.drd.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+package cz.masci.drd.service;
 
-/**
- *
- * @author Daniel
- */
-@Entity
-@Table(name = "ROOM")
-@Data
-public class Room {
+import cz.masci.commons.springfx.exception.CrudException;
+import cz.masci.commons.springfx.service.CrudService;
+import cz.masci.drd.dto.CharacterDto;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ROOM_ID", nullable = false, updatable = false)
-  private Long id;
+import java.util.Optional;
 
-  @NotNull
-  private String name;
-  
-  @NotNull
-  @ManyToOne
-  @JoinColumn(name = "ADVENTURE_ID", nullable = false)
-  private Adventure adventure;
+public interface CharacterService extends CrudService<CharacterDto> {
+
+    Optional<CharacterDto> findById(Long id) throws CrudException;
 }

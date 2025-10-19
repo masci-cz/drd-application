@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +20,20 @@ import cz.masci.drd.dto.AdventureDTO;
 import cz.masci.drd.model.Adventure;
 import cz.masci.drd.persistence.AdventureRepository;
 import cz.masci.drd.service.mapper.AdventureMapper;
-import cz.masci.commons.springfx.exception.CrudException;
-import java.util.List;
-import java.util.Optional;
-import static org.assertj.core.api.Assertions.*;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static cz.masci.drd.service.impl.TestConstants.LONG_ID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -51,13 +52,14 @@ public class AdventureServiceImplTest {
   private AdventureServiceImpl adventureService;
 
   @Test
-  void getById() throws CrudException {
+  @SneakyThrows
+  void getById() {
     var mockAdventure = mock(AdventureDTO.class);
 
     when(adventureRepository.findById(any())).thenReturn(Optional.of(mock(Adventure.class)));
     when(adventureMapper.mapToDto(any())).thenReturn(mockAdventure);
 
-    var result = adventureService.getById(1l);
+    var result = adventureService.getById(LONG_ID);
     assertThat(result)
         .isPresent()
         .get()
@@ -65,7 +67,8 @@ public class AdventureServiceImplTest {
   }
 
   @Test
-  void list() throws CrudException {
+  @SneakyThrows
+  void list() {
     var expectedAdventures = List.of(mock(AdventureDTO.class), mock(AdventureDTO.class));
     var mockAdventureEntityList = List.of(mock(Adventure.class), mock(Adventure.class));
 
@@ -84,7 +87,8 @@ public class AdventureServiceImplTest {
   }
 
   @Test
-  void save() throws CrudException {
+  @SneakyThrows
+  void save() {
     var mockAdventure = mock(AdventureDTO.class);
 
     when(adventureRepository.save(any())).thenReturn(mock(Adventure.class));
@@ -97,7 +101,8 @@ public class AdventureServiceImplTest {
   }
 
   @Test
-  void delete() throws CrudException {
+  @SneakyThrows
+  void delete() {
     when(adventureMapper.mapToEntity(any())).thenReturn(mock(Adventure.class));
 
     adventureService.delete(mock(AdventureDTO.class));
