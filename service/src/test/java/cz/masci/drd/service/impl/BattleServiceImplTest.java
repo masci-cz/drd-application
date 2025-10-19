@@ -1,20 +1,18 @@
 /*
- * Copyright (c) 2023
+ * Copyright (C) 2025 Daniel Masek
  *
- * This file is part of DrD.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * DrD is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free
- *  Software Foundation, either version 3 of the License, or (at your option)
- *   any later version.
- *
- * DrD is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
- *    License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package cz.masci.drd.service.impl;
@@ -30,6 +28,7 @@ import cz.masci.drd.dto.DuellistDTO;
 import cz.masci.drd.dto.actions.Action;
 import cz.masci.drd.dto.actions.ActionType;
 import cz.masci.drd.service.exception.BattleException;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 class BattleServiceImplTest {
@@ -69,14 +68,16 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void addGroup_sameName() throws BattleException {
+  @SneakyThrows
+  void addGroup_sameName() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
     assertThrows(BattleException.class, () -> battleService.addGroup(GROUP_1));
   }
 
   @Test
-  void addGroup() throws BattleException {
+  @SneakyThrows
+  void addGroup() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
 
@@ -95,7 +96,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void removeGroup() throws BattleException {
+  @SneakyThrows
+  void removeGroup() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
 
@@ -116,7 +118,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void prepare_fewGroups() throws BattleException {
+  @SneakyThrows
+  void prepare_fewGroups() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
 
@@ -124,7 +127,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void startBattle_fewDuellists() throws BattleException {
+  @SneakyThrows
+  void startBattle_fewDuellists() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
     battleService.addGroup(GROUP_2);
@@ -135,7 +139,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void startBattle() throws BattleException {
+  @SneakyThrows
+  void startBattle() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
     battleService.addGroup(GROUP_2);
@@ -157,7 +162,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void setGroupInitiative_wrongBattleState() throws BattleException {
+  @SneakyThrows
+  void setGroupInitiative_wrongBattleState() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
 
@@ -165,7 +171,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void setGroupInitiative() throws BattleException {
+  @SneakyThrows
+  void setGroupInitiative() {
     battleService.createBattle();
     battleService.addGroup(GROUP_1);
     battleService.addGroup(GROUP_2);
@@ -189,7 +196,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void startRound_duellistsAreNotReady() throws BattleException {
+  @SneakyThrows
+  void startRound_duellistsAreNotReady() {
     // prepare groups
     var duellist1 = new DuellistDTO();
     var duellist2 = new DuellistDTO();
@@ -206,7 +214,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void startRound_initiativeIsNotSet() throws BattleException {
+  @SneakyThrows
+  void startRound_initiativeIsNotSet() {
     // prepare groups
     var duellist1 = new DuellistDTO();
     var duellist2 = new DuellistDTO();
@@ -227,7 +236,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void startRound() throws BattleException {
+  @SneakyThrows
+  void startRound() {
     // prepare groups
     var duellist1group1 = new DuellistDTO();
     var duellist2group2 = new DuellistDTO();
@@ -276,7 +286,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void endRound_actionListIsNotEmpty() throws BattleException {
+  @SneakyThrows
+  void endRound_actionListIsNotEmpty() {
     // prepare groups
     var duellist1group1 = new DuellistDTO();
     var duellist2group2 = new DuellistDTO();
@@ -313,7 +324,8 @@ class BattleServiceImplTest {
   }
 
   @Test
-  void endRound_continueBattle() throws BattleException {
+  @SneakyThrows
+  void endRound_continueBattle() {
     // prepare groups
     var duellist1group1 = new DuellistDTO();
     var duellist2group2 = new DuellistDTO();
@@ -360,7 +372,8 @@ class BattleServiceImplTest {
   }
 
   // TODO: Finish end battle condition
-  void endRound_endBattle() throws BattleException {
+  @SneakyThrows
+  void endRound_endBattle() {
     // prepare groups
     var duellist1group1 = new DuellistDTO();
     var duellist2group2 = new DuellistDTO();

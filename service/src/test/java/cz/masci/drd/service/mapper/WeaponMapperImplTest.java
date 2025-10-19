@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,11 @@
  */
 package cz.masci.drd.service.mapper;
 
-import static cz.masci.drd.service.impl.TestConstants.LONG_ID;
-import static cz.masci.drd.service.impl.TestConstants.WEAPON_DAMAGE;
-import static cz.masci.drd.service.impl.TestConstants.WEAPON_NAME;
-import static cz.masci.drd.service.impl.TestConstants.WEAPON_STRENGTH;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import cz.masci.drd.service.impl.TestUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static cz.masci.drd.service.impl.TestConstants.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -34,13 +28,8 @@ import org.junit.jupiter.api.Test;
  */
 public class WeaponMapperImplTest {
 
-  private WeaponMapperImpl weaponMapper;
+  private final WeaponMapper weaponMapper = new WeaponMapperImpl();
 
-  @BeforeEach
-  void init() {
-    weaponMapper = new WeaponMapperImpl();
-  }
-  
   @Test
   public void mapToDto_null() {
     var result = weaponMapper.mapToDto(null);

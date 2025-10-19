@@ -15,8 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.model;
+package cz.masci.drd.dto;
 
-public enum CharacterClass {
-    WARRIOR, SORCERER, RANGER, THIEF, ALCHEMIST
+import cz.masci.commons.springfx.data.Modifiable;
+import lombok.Data;
+
+@Data
+public class CharacterDto implements Modifiable {
+    private Long id;
+    private String name;
+    private CharacterClass characterClass;
+    private Integer level;
+    private Integer experience;
+    private AbilityDto ability;
 }

@@ -14,24 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Author:  Daniel
- * Created: 20. 9. 2025
- */
-CREATE TABLE ABILITY (
-    ABILITY_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
-    STRENGTH SMALLINT NOT NULL,
-    DEXTERITY SMALLINT NOT NULL,
-    CONSTITUTION SMALLINT NOT NULL,
-    INTELLIGENCE SMALLINT NOT NULL,
-    CHARISMA SMALLINT NOT NULL
-);
 
-CREATE TABLE GAME_CHARACTER (
-    CHARACTER_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
-    NAME VARCHAR(255) NOT NULL,
-    CHARACTER_CLASS VARCHAR(20) NOT NULL,
-    LEVEL SMALLINT NOT NULL,
-    EXPERIENCE INTEGER NOT NULL,
-    ABILITY_ID BIGINT CONSTRAINT ability_foreign_key REFERENCES ABILITY
-);
+package cz.masci.drd.service;
+
+import cz.masci.commons.springfx.exception.CrudException;
+import cz.masci.commons.springfx.service.CrudService;
+import cz.masci.drd.dto.CharacterDto;
+
+import java.util.Optional;
+
+public interface CharacterService extends CrudService<CharacterDto> {
+
+    Optional<CharacterDto> findById(Long id) throws CrudException;
+}

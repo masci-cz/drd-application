@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,9 @@
  */
 package cz.masci.drd.service.impl;
 
-import cz.masci.drd.dto.AdventureDTO;
-import cz.masci.drd.dto.MonsterDTO;
-import cz.masci.drd.dto.RoomDTO;
-import cz.masci.drd.dto.WeaponDTO;
-import cz.masci.drd.model.Adventure;
-import cz.masci.drd.model.Monster;
-import cz.masci.drd.model.Room;
-import cz.masci.drd.model.Weapon;
+import cz.masci.drd.dto.*;
+import cz.masci.drd.model.*;
+
 import static cz.masci.drd.service.impl.TestConstants.*;
 
 /**
@@ -132,4 +127,39 @@ public class TestUtils {
       
       return room;
     }
+
+    public static GameCharacter createGameCharacterEntity() {
+        var ability = new Ability();
+        ability.setStrength(STRENGTH_VALUE);
+        ability.setDexterity(DEXTERITY_VALUE);
+        ability.setConstitution(CONSTITUTION_VALUE);
+        ability.setIntelligence(INTELLIGENCE_VALUE);
+        ability.setCharisma(CHARISMA_VALUE);
+
+        var character = new GameCharacter();
+        character.setName(CHARACTER_NAME);
+        character.setCharacterClass(CHARACTER_CLASS.name());
+        character.setLevel(LEVEL_VALUE);
+        character.setExperience(EXPERIENCE_VALUE);
+        character.setAbility(ability);
+        return character;
+    }
+
+    public static CharacterDto createCharacterDto() {
+        var abilityDto = new AbilityDto();
+        abilityDto.setStrength(STRENGTH_VALUE);
+        abilityDto.setDexterity(DEXTERITY_VALUE);
+        abilityDto.setConstitution(CONSTITUTION_VALUE);
+        abilityDto.setIntelligence(INTELLIGENCE_VALUE);
+        abilityDto.setCharisma(CHARISMA_VALUE);
+
+        var characterDto = new CharacterDto();
+        characterDto.setName(CHARACTER_NAME);
+        characterDto.setCharacterClass(CHARACTER_CLASS);
+        characterDto.setLevel(LEVEL_VALUE);
+        characterDto.setExperience(EXPERIENCE_VALUE);
+        characterDto.setAbility(abilityDto);
+        return characterDto;
+    }
+
 }

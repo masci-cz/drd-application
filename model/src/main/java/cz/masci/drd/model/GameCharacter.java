@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * Author:  Daniel
- * Created: 20. 9. 2025
- */
-CREATE TABLE ABILITY (
-    ABILITY_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
-    STRENGTH SMALLINT NOT NULL,
-    DEXTERITY SMALLINT NOT NULL,
-    CONSTITUTION SMALLINT NOT NULL,
-    INTELLIGENCE SMALLINT NOT NULL,
-    CHARISMA SMALLINT NOT NULL
-);
 
-CREATE TABLE GAME_CHARACTER (
-    CHARACTER_ID BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL PRIMARY KEY,
-    NAME VARCHAR(255) NOT NULL,
-    CHARACTER_CLASS VARCHAR(20) NOT NULL,
-    LEVEL SMALLINT NOT NULL,
-    EXPERIENCE INTEGER NOT NULL,
-    ABILITY_ID BIGINT CONSTRAINT ability_foreign_key REFERENCES ABILITY
-);
+package cz.masci.drd.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Table(name = "GAME_CHARACTER")
+@Data
+public class GameCharacter {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CHARACTER_ID", nullable = false, updatable = false)
+    private Long id;
+    private String name;
+    @Column(name = "CHARACTER_CLASS")
+    private String characterClass;
+    private Integer level;
+    private Integer experience;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ABILITY_ID")
+    private Ability ability;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Daniel
+ * Copyright (C) 2025 Daniel Masek
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,21 +21,21 @@ import cz.masci.drd.dto.RoomDTO;
 import cz.masci.drd.model.Room;
 import cz.masci.drd.persistence.RoomRepository;
 import cz.masci.drd.service.mapper.RoomMapper;
-import cz.masci.commons.springfx.exception.CrudException;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.assertj.core.api.Assertions.*;
-import org.mockito.ArgumentCaptor;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -54,7 +54,8 @@ public class RoomServiceImplTest {
   private RoomServiceImpl roomService;
 
   @Test
-  void list_noAdventure() throws CrudException {
+  @SneakyThrows
+  void list_noAdventure() {
     var result = roomService.list();
 
     assertThat(result)
@@ -62,7 +63,8 @@ public class RoomServiceImplTest {
   }
 
   @Test
-  void list() throws CrudException {
+  @SneakyThrows
+  void list() {
     var roomEntity = mock(Room.class);
     var room = mock(RoomDTO.class);
     
@@ -80,7 +82,8 @@ public class RoomServiceImplTest {
   }
 
   @Test
-  void save() throws CrudException {
+  @SneakyThrows
+  void save() {
     var roomToSave = TestUtils.createRoomWithoutAdventure();
     var roomEntity = TestUtils.createRoomEntityWithoutAdventure();
     var savedRoom = mock(RoomDTO.class);
@@ -103,7 +106,8 @@ public class RoomServiceImplTest {
   }
 
   @Test
-  void delete() throws CrudException {
+  @SneakyThrows
+  void delete() {
     var roomToDelete = mock(RoomDTO.class);
     var roomEntity = mock(Room.class);
     ArgumentCaptor<Room> roomCaptor = ArgumentCaptor.forClass(Room.class);

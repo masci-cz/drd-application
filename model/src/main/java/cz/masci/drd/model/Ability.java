@@ -28,8 +28,6 @@ public class Ability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ABILITY_ID", nullable = false, updatable = false)
     private Long id;
-    @OneToOne(mappedBy = "ability")
-    private Character character;
     private Integer strength;
     private Integer dexterity;
     private Integer constitution;

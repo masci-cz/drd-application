@@ -15,26 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.model;
+package cz.masci.drd.persistence;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import cz.masci.drd.model.GameCharacter;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Entity
-@Table(name = "\"CHARACTER\"")
-@Data
-public class Character {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CHARACTER_ID", nullable = false, updatable = false)
-    private Long id;
-    private String name;
-    @Column(name = "class")
-    @Enumerated(EnumType.STRING)
-    private CharacterClass characterClass;
-    private Integer level;
-    private Integer experience;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ABILITY_ID")
-    private Ability ability;
+public interface CharacterRepository extends JpaRepository<GameCharacter, Long> {
 }
