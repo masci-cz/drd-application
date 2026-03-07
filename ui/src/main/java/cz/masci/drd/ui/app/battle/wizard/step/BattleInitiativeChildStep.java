@@ -1,36 +1,33 @@
 /*
- * Copyright (c) 2024
+ * Copyright (C) 2026 Daniel Masek
  *
- * This file is part of DrD.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * DrD is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free
- *  Software Foundation, either version 3 of the License, or (at your option)
- *   any later version.
- *
- * DrD is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
- *    License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.dto.GroupDTO;
 import cz.masci.drd.ui.app.battle.wizard.view.BattleInitiativeViewBuilder;
-import cz.masci.drd.ui.util.wizard.controller.step.impl.TitleLeafStep;
+import cz.masci.drd.ui.util.wizard.model.WizardLeafStep;
 import cz.masci.springfx.mvci.util.constraint.ConditionUtils;
+import cz.masci.wizard.simple.SimpleLeafStep;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.layout.Region;
 
-public class BattleInitiativeChildStep extends TitleLeafStep {
+public class BattleInitiativeChildStep extends WizardLeafStep {
 
-  private final BattleInitiativeViewBuilder builder;
   private final GroupDTO group;
   private final StringProperty initiative = new SimpleStringProperty();
 
@@ -38,7 +35,7 @@ public class BattleInitiativeChildStep extends TitleLeafStep {
     super("Iniciativa skupiny - " + group.getName());
 
     this.group = group;
-    builder = new BattleInitiativeViewBuilder(initiative);
+    super.setBuilder(new BattleInitiativeViewBuilder(initiative));
   }
 
   @Override
@@ -47,16 +44,8 @@ public class BattleInitiativeChildStep extends TitleLeafStep {
   }
 
   @Override
-  public void completeStep() {
-    if (isValid()) {
-      var initiativeInt = Integer.parseInt(initiative.get());
-      group.setInitiative(initiativeInt);
-    }
-    super.completeStep();
-  }
-
-  @Override
-  public Region view() {
-    return builder.build();
+  protected void complete(SimpleLeafStep<WizardLeafStep> wizardLeafStepV3SimpleLeafStep) {
+    var initiativeInt = Integer.parseInt(initiative.get());
+    group.setInitiative(initiativeInt);
   }
 }

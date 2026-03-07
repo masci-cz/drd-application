@@ -1,56 +1,53 @@
 /*
- * Copyright (c) 2024
+ * Copyright (C) 2026 Daniel Masek
  *
- * This file is part of DrD.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * DrD is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free
- *  Software Foundation, either version 3 of the License, or (at your option)
- *   any later version.
- *
- * DrD is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
- *    License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package cz.masci.drd.ui.app.battle.wizard.step;
 
 import cz.masci.drd.ui.app.battle.wizard.interactor.BattleInteractor;
-import cz.masci.drd.ui.util.wizard.controller.step.HierarchicalStep;
-import cz.masci.drd.ui.util.wizard.controller.step.impl.SimpleCompositeStep;
+import cz.masci.drd.ui.util.wizard.model.WizardHierarchicalStep;
+import cz.masci.drd.ui.util.wizard.model.WizardStepProvider;
+import cz.masci.wizard.simple.SimpleHierarchicalStep;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class BattleSelectActionStep extends SimpleCompositeStep {
+public class BattleSelectActionStep extends WizardHierarchicalStep {
 
   private final BattleInteractor interactor;
 
   @Override
-  public HierarchicalStep next() {
-    if (getCurrentIdx() < 0) {
-      clearSteps();
-      var actions = interactor.getActionTypes();
-      var duellists = interactor.getAllDuellists();
-      duellists.stream()
-               .filter(duellist -> duellist.getCurrentLive() > 0)
-               .map(name -> new BattleSelectActionChildStep(name, actions, duellists))
-               .forEach(this::addStep);
-      interactor.prepareRound();
-    }
-    return super.next();
+  protected void initStep(SimpleHierarchicalStep<WizardHierarchicalStep> step) {
+    step.clearChildren();
+    var actions = interactor.getActionTypes();
+    var duellists = interactor.getAllDuellists();
+    duellists.stream()
+            .filter(duellist -> duellist.getCurrentLive() > 0)
+            .map(name -> new BattleSelectActionChildStep(name, actions, duellists))
+            .map(WizardStepProvider::getStep)
+            .forEach(step::addChild);
+    interactor.prepareRound();
   }
 
   @Override
-  protected String getPrevText() {
+  protected String getPrevText(int idx) {
     return "Předchozí";
   }
 
   @Override
-  protected String getNextText() {
+  protected String getNextText(int idx) {
     return "Další";
   }
 }

@@ -4,3 +4,7 @@ DERBY_SYSTEM_HOME: data
 logging:
   level:
     cz.masci.drd: debug
+
+spring:
+  flyway:
+    enabled: true

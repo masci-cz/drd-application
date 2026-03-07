@@ -1,20 +1,18 @@
 /*
- * Copyright (c) 2024
+ * Copyright (C) 2026 Daniel Masek
  *
- * This file is part of DrD.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * DrD is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free
- *  Software Foundation, either version 3 of the License, or (at your option)
- *   any later version.
- *
- * DrD is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
- *    License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package cz.masci.drd.ui.app.home.controller;
@@ -46,15 +44,16 @@ public class HomeScreenController implements ViewProvider<Region> {
   private final AdventureListDetailController adventureListDetailController;
   private final MonsterListDetailController monsterListDetailController;
   private final WeaponListDetailController weaponListDetailController;
+//  private final BattleWizardController battleWizardController;
   private final BattleWizardController battleWizardController;
 
   @Override
   public Region getView() {
     return new HomeScreenViewBuilder(
-        createAction(StageType.ADVENTURES, getSceneForView(adventureListDetailController, 800, 600)),
-        createAction(StageType.MONSTERS, getSceneForView(monsterListDetailController, 800, 800)),
-        createAction(StageType.WEAPONS, getSceneForView(weaponListDetailController, 800, 600)),
-        createAction(StageType.BATTLE, getSceneForView(battleWizardController, 800, 600))
+        createAction(StageType.ADVENTURES, getSceneForView(adventureListDetailController, 600)),
+        createAction(StageType.MONSTERS, getSceneForView(monsterListDetailController, 800)),
+        createAction(StageType.WEAPONS, getSceneForView(weaponListDetailController, 600)),
+        createAction(StageType.BATTLE, getSceneForView(battleWizardController, 600))
     ).build();
   }
 
@@ -79,8 +78,8 @@ public class HomeScreenController implements ViewProvider<Region> {
     };
   }
 
-  private Supplier<Scene> getSceneForView(ViewProvider<?> viewProvider, double width, double height) {
-    return () -> new Scene(viewProvider.getView(), width, height);
+  private Supplier<Scene> getSceneForView(ViewProvider<?> viewProvider, double height) {
+    return () -> new Scene(viewProvider.getView(), 800, height);
   }
 
   @Getter
