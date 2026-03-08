@@ -96,7 +96,7 @@
         <javafx.version>${java.version}</javafx.version>
         <controlsfx.version>11.2.1</controlsfx.version>
         <apache.lang.version>3.11</apache.lang.version>
-        <cz.masci.commons.springfx>0.0.31-SNAPSHOT</cz.masci.commons.springfx>
+        <cz.masci.commons.springfx>0.0.32</cz.masci.commons.springfx>
         <wizard.version>1.0.0</wizard.version>
 
         <!-- Spring boot dependencies override versions -->
