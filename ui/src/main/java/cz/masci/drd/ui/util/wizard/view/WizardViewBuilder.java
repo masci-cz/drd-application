@@ -1,20 +1,18 @@
 /*
- * Copyright (c) 2024
+ * Copyright (C) 2026 Daniel Masek
  *
- * This file is part of DrD.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * DrD is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free
- *  Software Foundation, either version 3 of the License, or (at your option)
- *   any later version.
- *
- * DrD is distributed in the hope that it will be useful, but WITHOUT ANY
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public
- *    License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- *  along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package cz.masci.drd.ui.util.wizard.view;
@@ -55,12 +53,22 @@ public class WizardViewBuilder {
     var main = new AnchorPane();
     setMainView(main, firstView);
 
-    var prevBtn = ButtonBuilder.builder().text("PREVIOUS").styleClass("outlined").command(() -> onAction(main, onPrevAction)).disableExpression(viewModel.prevDisableProperty()).build(MFXButton::new);
+    var prevBtn = ButtonBuilder.builder()
+            .text("PREVIOUS")
+            .styleClass("outlined")
+            .command(() -> onAction(main, onPrevAction))
+            .disableExpression(viewModel.prevDisableProperty())
+            .build(MFXButton::new);
     prevBtn.textProperty().bind(viewModel.prevTextProperty());
     AnchorPane.setLeftAnchor(prevBtn, 10.0);
     AnchorPane.setBottomAnchor(prevBtn, 5.0);
     AnchorPane.setTopAnchor(prevBtn, 5.0);
-    var nextBtn = ButtonBuilder.builder().text("NEXT").styleClass("filled").command(() -> onAction(main, onNextAction)).disableExpression(viewModel.nextDisableProperty()).build(MFXButton::new);
+    var nextBtn = ButtonBuilder.builder()
+            .text("NEXT")
+            .styleClass("filled")
+            .command(() -> onAction(main, onNextAction))
+            .disableExpression(viewModel.nextDisableProperty())
+            .build(MFXButton::new);
     nextBtn.textProperty().bind(viewModel.nextTextProperty());
     AnchorPane.setRightAnchor(nextBtn, 10.0);
     AnchorPane.setBottomAnchor(nextBtn, 5.0);

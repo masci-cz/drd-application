@@ -15,17 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.masci.drd.ui.app.battle.wizard.controller;
+package cz.masci.drd.ui.util.wizard.model;
 
-import cz.masci.drd.ui.app.battle.wizard.step.BattleRootStep;
-import cz.masci.drd.ui.util.wizard.controller.WizardController;
-import org.springframework.stereotype.Component;
+import cz.masci.wizard.api.step.Step;
 
-@Component
-public class BattleWizardController extends WizardController {
-
-    public BattleWizardController(BattleRootStep rootStep) {
-        super(rootStep.getStep());
-    }
-
+public interface WizardStepProvider {
+    Step getStep();
 }
